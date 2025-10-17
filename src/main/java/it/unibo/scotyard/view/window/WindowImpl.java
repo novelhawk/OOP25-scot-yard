@@ -9,7 +9,7 @@ import javax.swing.JPanel;
 public class WindowImpl extends JFrame implements Window {
 
     public static final String WINDOW_TITLE = "Scotland Yard";
-    public static final int PROPORTION = 5;
+    public static final int PROPORTION = 2;
 
     private final JFrame frame;
     private final int screenWidth;
@@ -44,7 +44,7 @@ public class WindowImpl extends JFrame implements Window {
         this.setSize(this.getWidth(), this.getHeight());
 
         this.setLocationByPlatform(true);
-        this.pack();
+
         this.setVisible(true);
     }
 
