@@ -85,7 +85,7 @@ public class MapPanel extends JPanel {
         loadBackgroundImage();
         calculateOriginalMapBounds();
 
-        // handle resize events (tower-defense pattern)
+        // handle resize events
         addComponentListener(new ComponentAdapter() {
             @Override
             public void componentResized(final ComponentEvent e) {
@@ -99,7 +99,7 @@ public class MapPanel extends JPanel {
     /**
      * Calculates the original map bounds based on node positions.
      * This establishes the logical coordinate space boundaries.
-     * Following tower-defense pattern: logical space is independent of screen size.
+     * 
      */
     private void calculateOriginalMapBounds() {
         int maxX = 0;
@@ -118,10 +118,8 @@ public class MapPanel extends JPanel {
 
     /**
      * Calculates the dynamic scale and offset to fit the map in the available
-     * space. Following tower-defense pattern: only calculated on resize, not every
-     * frame.
-     * Also pre-scales the background image for performance (similar to
-     * tower-defense ImageLoader).
+     * space.
+     * Also pre-scales the background image for performance
      */
     private void calculateScaleAndOffset() {
         final int availableWidth = getWidth();
@@ -145,11 +143,10 @@ public class MapPanel extends JPanel {
         offsetX = (availableWidth - scaledWidth) / 2;
         offsetY = (availableHeight - scaledHeight) / 2;
 
-        // Pre-scale background image (tower-defense optimization: pre-scale resources)
+        // Pre-scale background image
         prescaleBackgroundImage(availableWidth, availableHeight);
 
-        // Cache scaled node positions (tower-defense optimization: avoid recalculating
-        // each frame)
+        // Cache scaled node positions
         cacheScaledNodePositions();
 
         // Mark as calculated to avoid recalculating every frame
@@ -157,9 +154,7 @@ public class MapPanel extends JPanel {
     }
 
     /**
-     * Caches scaled positions for all nodes.
-     * Following tower-defense pattern: pre-calculate positions on resize, not every
-     * frame.
+     * Caches scaled positions for all nodes
      * Similar to their approach of converting logical coordinates to screen
      * coordinates once.
      */
@@ -174,7 +169,6 @@ public class MapPanel extends JPanel {
 
     /**
      * Pre-scales the background image to the current window size.
-     * Following tower-defense pattern: pre-scale images on resize, not every frame.
      * Similar to their ImageLoader(cellSize) approach.
      */
     private void prescaleBackgroundImage(final int width, final int height) {
