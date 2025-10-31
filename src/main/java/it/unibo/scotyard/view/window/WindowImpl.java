@@ -1,45 +1,58 @@
 package it.unibo.scotyard.view.window;
 
-import java.awt.Dimension;
-import java.awt.Toolkit;
+import java.util.Objects;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-public class WindowImpl extends JFrame implements Window {
-    public static final String WINDOW_TITLE = "Scotland Yard";
-    public static final int PROPORTION = 2;
+import it.unibo.scotyard.commons.engine.Size;
 
-    private final int screenWidth;
-    private final int screenHeight;
+/**
+ * main game window.
+ */
+public final class WindowImpl extends JFrame implements Window {
 
-    public WindowImpl() {
-        super(WindowImpl.WINDOW_TITLE);
-        final Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
-        this.screenWidth = (int) screen.getWidth() / WindowImpl.PROPORTION;
-        this.screenHeight = (int) screen.getHeight() / WindowImpl.PROPORTION;
+    private static final long serialVersionUID = 1L;
+    private static final String WINDOW_TITLE = "Scotland Yard";
+
+    private final int windowWidth;
+    private final int windowHeight;
+
+    /**
+     * Creates a window with specified resolution.
+     * 
+     * @param resolution the window size
+     * @throws NullPointerException if resolution is null
+     */
+    public WindowImpl(final Size resolution) {
+        super(WINDOW_TITLE);
+        Objects.requireNonNull(resolution, "Resolution cannot be null");
+
+        this.windowWidth = resolution.getWidth();
+        this.windowHeight = resolution.getHeight();
     }
 
     @Override
-    public int getWidth() {
-        return this.screenWidth;
+    public int getWindowWidth() {
+        return this.windowWidth;
     }
 
     @Override
-    public int getHeight() {
-        return this.screenHeight;
+    public int getWindowHeight() {
+        return this.windowHeight;
     }
 
     @Override
-    public void setBody(JPanel panel) {
-        this.setContentPane(panel);
+    public void setBody(final JPanel panel) {
+        Objects.requireNonNull(panel, "Panel cannot be null");
+        setContentPane(panel);
     }
 
     @Override
     public void display() {
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setSize(this.getWidth(), this.getHeight());
-        this.setLocationByPlatform(true);
-        this.setVisible(true);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setSize(this.windowWidth, this.windowHeight);
+        setLocationByPlatform(true);
+        setVisible(true);
     }
 }

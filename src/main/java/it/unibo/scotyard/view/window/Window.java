@@ -2,12 +2,35 @@ package it.unibo.scotyard.view.window;
 
 import javax.swing.JPanel;
 
+/**
+ * Main application window interface.
+ */
 public interface Window {
+
+    /**
+     * Sets the main content panel.
+     * 
+     * @param panel the content panel to display
+     * @throws NullPointerException if panel is null
+     */
     void setBody(JPanel panel);
 
-    int getWidth();
+    /**
+     * Returns the window width.
+     * 
+     * @return width in pixels
+     */
+    int getWindowWidth();
 
-    int getHeight();
+    /**
+     * Returns the window height.
+     * 
+     * @return height in pixels
+     */
+    int getWindowHeight();
 
+    /**
+     * Displays the window.
+     */
     void display();
 }
