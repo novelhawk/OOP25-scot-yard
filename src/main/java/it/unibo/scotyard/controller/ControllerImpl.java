@@ -5,8 +5,8 @@ import java.util.Objects;
 import it.unibo.scotyard.commons.engine.Size;
 import it.unibo.scotyard.controller.gamelauncher.GameLauncherController;
 import it.unibo.scotyard.controller.gamelauncher.GameLauncherControllerImpl;
-import it.unibo.scotyard.controller.menu.StartMenuController;
-import it.unibo.scotyard.controller.menu.StartMenuControllerImpl;
+import it.unibo.scotyard.controller.menu.MainMenuController;
+import it.unibo.scotyard.controller.menu.MainMenuControllerImpl;
 import it.unibo.scotyard.model.Model;
 import it.unibo.scotyard.view.ViewImpl;
 
@@ -61,7 +61,7 @@ public final class ControllerImpl implements Controller {
     private void run(final Size resolution) {
         this.selectedResolution = Objects.requireNonNull(resolution, "Resolution cannot be null");
 
-        final StartMenuController menuController = new StartMenuControllerImpl(this, this.view);
+        final MainMenuController menuController = new MainMenuControllerImpl(this, this.view);
         menuController.run();
     }
 }

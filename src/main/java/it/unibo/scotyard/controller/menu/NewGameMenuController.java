@@ -1,12 +1,12 @@
 package it.unibo.scotyard.controller.menu;
 
 /**
- * Controller for the start menu screen.
+ * Controller for the start new game menu screen.
  */
-public interface StartMenuController {
+public interface NewGameMenuController {
 
     /**
-     * Displays the start menu.
+     * Displays the start new game menu.
      */
     void run();
 

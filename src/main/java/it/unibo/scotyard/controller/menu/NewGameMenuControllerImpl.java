@@ -8,7 +8,7 @@ import it.unibo.scotyard.view.View;
 /**
  * start menu controller.
  */
-public final class StartMenuControllerImpl implements StartMenuController {
+public final class NewGameMenuControllerImpl implements NewGameMenuController {
 
     private final Controller controller;
     private final View view;
@@ -20,14 +20,14 @@ public final class StartMenuControllerImpl implements StartMenuController {
      * @param view       the view component
      * @throws NullPointerException if any parameter is null
      */
-    public StartMenuControllerImpl(final Controller controller, final View view) {
+    public NewGameMenuControllerImpl(final Controller controller, final View view) {
         this.controller = Objects.requireNonNull(controller, "Controller cannot be null");
         this.view = Objects.requireNonNull(view, "View cannot be null");
     }
 
     @Override
     public void run() {
-        this.view.displayMenu(this);
+        this.view.displayNewGameMenu(this);
     }
 
     @Override

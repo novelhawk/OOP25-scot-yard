@@ -12,17 +12,17 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import it.unibo.scotyard.commons.engine.Size;
-import it.unibo.scotyard.controller.menu.StartMenuController;
+import it.unibo.scotyard.controller.menu.NewGameMenuController;
 
 /**
  * start menu view
  */
-public final class StartMenuViewImpl extends JFrame implements StartMenuView {
+public final class NewGameMenuViewImpl extends JFrame implements NewGameMenuView {
 
     private static final long serialVersionUID = 1L;
 
     // Window properties
-    private static final String WINDOW_TITLE = "Scotland Yard - Main Menu";
+    private static final String WINDOW_TITLE = "Scotland Yard - New Game Menu";
 
     // Color scheme
     private static final Color BACKGROUND_COLOR = new Color(62, 39, 35);
@@ -30,25 +30,28 @@ public final class StartMenuViewImpl extends JFrame implements StartMenuView {
 
     // Typography
     private static final Font TITLE_FONT = new Font("Arial", Font.BOLD, 36);
+    private static final Font SELECTION_FONT = new Font("Arial", Font.BOLD, 28);
 
     // UI text
     private static final String TITLE_TEXT = "Scotland Yard";
-    private static final String START_BUTTON_TEXT = "Avvia";
+    private static final String SELECT_GAME_MODE_TEXT = "Seleziona modalità";
+    private static final String SELECT_GAME_DIFFICULTY_TEXT = "Seleziona difficoltà";
+    private static final String START_BUTTON_TEXT = "Avvia gioco";
 
     // Layout spacing
     private static final int TITLE_SPACING = 40;
 
-    private final StartMenuController controller;
+    private final NewGameMenuController controller;
     private final Size resolution;
 
     /**
-     * Creates the start menu view.
+     * Creates the start new game menu view.
      * 
      * @param controller the menu controller
      * @param resolution the window size
      * @throws NullPointerException if any parameter is null
      */
-    public StartMenuViewImpl(final StartMenuController controller, final Size resolution) {
+    public NewGameMenuViewImpl(final NewGameMenuController controller, final Size resolution) {
         super(WINDOW_TITLE);
         this.controller = Objects.requireNonNull(controller, "Controller cannot be null");
         this.resolution = Objects.requireNonNull(resolution, "Resolution cannot be null");
@@ -80,7 +83,10 @@ public final class StartMenuViewImpl extends JFrame implements StartMenuView {
         final JPanel mainPanel = createMainPanel();
 
         mainPanel.add(Box.createVerticalGlue());
-        mainPanel.add(createTitleLabel());
+        //mainPanel.add(createTitleLabel());
+        mainPanel.add(createSelectGameModeLabel());
+        mainPanel.add(Box.createVerticalStrut(TITLE_SPACING));
+        mainPanel.add(createSelectGameDifficultyLabel());
         mainPanel.add(Box.createVerticalStrut(TITLE_SPACING));
         mainPanel.add(createStartButton());
         mainPanel.add(Box.createVerticalGlue());
@@ -100,6 +106,24 @@ public final class StartMenuViewImpl extends JFrame implements StartMenuView {
     private JLabel createTitleLabel() {
         final JLabel label = new JLabel(TITLE_TEXT);
         label.setFont(TITLE_FONT);
+        label.setForeground(ACCENT_COLOR);
+        label.setAlignmentX(CENTER_ALIGNMENT);
+        return label;
+    }
+
+    // select game mode label
+    private JLabel createSelectGameModeLabel(){
+        final JLabel label = new JLabel(SELECT_GAME_MODE_TEXT);
+        label.setFont(SELECTION_FONT);
+        label.setForeground(ACCENT_COLOR);
+        label.setAlignmentX(CENTER_ALIGNMENT);
+        return label;
+    }
+
+    // select game difficulty label
+    private JLabel createSelectGameDifficultyLabel(){
+        final JLabel label = new JLabel(SELECT_GAME_DIFFICULTY_TEXT);
+        label.setFont(SELECTION_FONT);
         label.setForeground(ACCENT_COLOR);
         label.setAlignmentX(CENTER_ALIGNMENT);
         return label;

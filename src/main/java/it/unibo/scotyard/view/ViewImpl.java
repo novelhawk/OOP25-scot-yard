@@ -11,12 +11,15 @@ import javax.swing.SwingUtilities;
 import it.unibo.scotyard.commons.dtos.map.MapInfo;
 import it.unibo.scotyard.commons.engine.Size;
 import it.unibo.scotyard.controller.gamelauncher.GameLauncherController;
-import it.unibo.scotyard.controller.menu.StartMenuController;
+import it.unibo.scotyard.controller.menu.MainMenuController;
+import it.unibo.scotyard.controller.menu.NewGameMenuController;
 import it.unibo.scotyard.view.gamelauncher.GameLauncherView;
 import it.unibo.scotyard.view.gamelauncher.GameLauncherViewImpl;
 import it.unibo.scotyard.view.map.MapPanel;
-import it.unibo.scotyard.view.menu.StartMenuView;
-import it.unibo.scotyard.view.menu.StartMenuViewImpl;
+import it.unibo.scotyard.view.menu.MainMenuView;
+import it.unibo.scotyard.view.menu.MainMenuViewImpl;
+import it.unibo.scotyard.view.menu.NewGameMenuView;
+import it.unibo.scotyard.view.menu.NewGameMenuViewImpl;
 import it.unibo.scotyard.view.sidebar.Sidebar;
 import it.unibo.scotyard.view.window.Window;
 import it.unibo.scotyard.view.window.WindowImpl;
@@ -93,11 +96,19 @@ public final class ViewImpl implements View {
     }
 
     @Override
-    public void displayMenu(final StartMenuController controller) {
+    public void displayMainMenu(final MainMenuController controller) {
         Objects.requireNonNull(controller, "Controller cannot be null");
 
-        final StartMenuView menuView = new StartMenuViewImpl(controller, getMaxResolution());
+        final MainMenuView menuView = new MainMenuViewImpl(controller, getMaxResolution());
         menuView.display();
+    }
+
+    @Override
+    public void displayNewGameMenu(final NewGameMenuController controller) {
+        Objects.requireNonNull(controller, "Controller cannot be null");
+
+        final NewGameMenuView newGameMenuView = new NewGameMenuViewImpl(controller, getMaxResolution());
+        newGameMenuView.display();
     }
 
     @Override
