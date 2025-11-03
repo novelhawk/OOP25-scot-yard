@@ -1,12 +1,14 @@
 package it.unibo.scotyard.view.menu;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.util.Objects;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -24,22 +26,30 @@ public final class NewGameMenuViewImpl extends JFrame implements NewGameMenuView
     // Window properties
     private static final String WINDOW_TITLE = "Scotland Yard - New Game Menu";
 
+    // Component sizes
+    private static final int COMBO_WIDTH = 200;
+    private static final int COMBO_HEIGHT = 30;
+
     // Color scheme
     private static final Color BACKGROUND_COLOR = new Color(62, 39, 35);
     private static final Color ACCENT_COLOR = new Color(255, 171, 145);
 
     // Typography
     private static final Font TITLE_FONT = new Font("Arial", Font.BOLD, 36);
-    private static final Font SELECTION_FONT = new Font("Arial", Font.BOLD, 28);
+    private static final Font SELECTION_FONT = new Font("Arial", Font.BOLD, 26);
+    private static final Font BUTTON_FONT = new Font("Arial", Font.PLAIN, 20);
 
     // UI text
     private static final String TITLE_TEXT = "Scotland Yard";
     private static final String SELECT_GAME_MODE_TEXT = "Seleziona modalità";
     private static final String SELECT_GAME_DIFFICULTY_TEXT = "Seleziona difficoltà";
     private static final String START_BUTTON_TEXT = "Avvia gioco";
+    private static final String GO_BACK_BUTTON_TEXT = "Torna indietro";
+    private static final String [] GAME_MODES_STRING = {"Mister X", "Detective"};
 
     // Layout spacing
     private static final int TITLE_SPACING = 40;
+    private static final int BUTTONS_SPACING = 20;
 
     private final NewGameMenuController controller;
     private final Size resolution;
@@ -85,16 +95,18 @@ public final class NewGameMenuViewImpl extends JFrame implements NewGameMenuView
         mainPanel.add(Box.createVerticalGlue());
         //mainPanel.add(createTitleLabel());
         mainPanel.add(createSelectGameModeLabel());
+        mainPanel.add(Box.createVerticalStrut(BUTTONS_SPACING));
+        mainPanel.add(createSelectionGameModeComboBox());
         mainPanel.add(Box.createVerticalStrut(TITLE_SPACING));
-        mainPanel.add(createSelectGameDifficultyLabel());
-        mainPanel.add(Box.createVerticalStrut(TITLE_SPACING));
-        mainPanel.add(createStartButton());
+        mainPanel.add(createSelectGameDifficultyLabel());    
+        mainPanel.add(Box.createVerticalStrut(BUTTONS_SPACING));
+        mainPanel.add(createStartGameButton());
         mainPanel.add(Box.createVerticalGlue());
 
         setContentPane(mainPanel);
     }
 
-    // main container panel
+    // Main container panel
     private JPanel createMainPanel() {
         final JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
@@ -102,16 +114,7 @@ public final class NewGameMenuViewImpl extends JFrame implements NewGameMenuView
         return panel;
     }
 
-    // title label
-    private JLabel createTitleLabel() {
-        final JLabel label = new JLabel(TITLE_TEXT);
-        label.setFont(TITLE_FONT);
-        label.setForeground(ACCENT_COLOR);
-        label.setAlignmentX(CENTER_ALIGNMENT);
-        return label;
-    }
-
-    // select game mode label
+    // Select game mode label
     private JLabel createSelectGameModeLabel(){
         final JLabel label = new JLabel(SELECT_GAME_MODE_TEXT);
         label.setFont(SELECTION_FONT);
@@ -120,7 +123,7 @@ public final class NewGameMenuViewImpl extends JFrame implements NewGameMenuView
         return label;
     }
 
-    // select game difficulty label
+    // Select game difficulty label
     private JLabel createSelectGameDifficultyLabel(){
         final JLabel label = new JLabel(SELECT_GAME_DIFFICULTY_TEXT);
         label.setFont(SELECTION_FONT);
@@ -129,16 +132,23 @@ public final class NewGameMenuViewImpl extends JFrame implements NewGameMenuView
         return label;
     }
 
-    // start button with action
-    private JButton createStartButton() {
+    // Start game button
+    private JButton createStartGameButton() {
         final JButton button = new JButton(START_BUTTON_TEXT);
         button.setAlignmentX(CENTER_ALIGNMENT);
-
         button.addActionListener(e -> {
             this.controller.play();
             close();
         });
-
         return button;
     }
+
+    // Selection game mode combo box
+    private JComboBox<?> createSelectionGameModeComboBox(){
+        final JComboBox<?> comboBox = new JComboBox<>(GAME_MODES_STRING);
+        comboBox.setMaximumSize(new Dimension(COMBO_WIDTH, COMBO_HEIGHT));
+        return comboBox;
+    }
+
+
 }

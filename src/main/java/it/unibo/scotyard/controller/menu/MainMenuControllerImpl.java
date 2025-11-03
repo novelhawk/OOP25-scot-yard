@@ -29,8 +29,8 @@ public class MainMenuControllerImpl implements MainMenuController{
 
     @Override
     public void newGame() {
-        // TO DO
-        this.view.displayNewGameMenu(null);
+        final NewGameMenuController newGameMenuController = new NewGameMenuControllerImpl(this.controller, this.view);
+        this.view.displayNewGameMenu(newGameMenuController) ;
     }
 
     @Override
