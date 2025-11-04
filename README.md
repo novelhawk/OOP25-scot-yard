@@ -7,3 +7,202 @@ Progetto universitario per il corso di Programmazione ad Oggetti dell'Universit�
 - Java 21
 - Gradle ??
 
+#Map render REF.(commit: 6cf70ea)
+
+Model-View-Controller. Il punto di
+ingresso dell'applicazione, classe ScotlandYard, che
+contiene il metodo main. Si istanziano i tre componenti principali dell'architettura MVC,
+passando al
+controller i riferimenti al model e alla view. Una volta creati questi
+oggetti, viene invocato il metodo launch del controller, delegando a
+quest'ultimo l'intera gestione del flusso applicativo.
+
+Il controller principale, implementato dalla classe ControllerImpl, agisce
+come coordinatore centrale dell'applicazione. Quando viene chiamato il
+metodo launch, il controller non avvia direttamente il gioco ma crea un
+GameLauncherController, passandogli la view e una callback che verrà
+eseguita quando l'utente avrà selezionato la risoluzione desiderata.
+Questa callback è il metodo run del controller stesso, che accetta come
+parametro un oggetto Size rappresentante la risoluzione scelta. Il
+GameLauncherController si occupa quindi di gestire la finestra di
+selezione della risoluzione, un'interfaccia grafica che mostra all'utente
+tutte le risoluzioni disponibili e compatibili con il suo schermo.
+
+La gestione delle risoluzioni:
+Il sistema mantiene una lista di risoluzioni
+predefinite nella classe Constants, dove sono elencate le dimensioni
+standard supportate dall'applicazione.
+Quando il GameLauncherController viene inizializzato, interroga la view per ottenere
+la risoluzione massima dello schermo dell'utente attraverso il metodo
+getMaxResolution, che utilizza le API di AWT per recuperare le dimensioni
+fisiche del display. Una volta ottenuta questa informazione, il controller
+filtra la lista delle risoluzioni predefinite, mantenendo solo quelle che
+possono essere visualizzate completamente sullo schermo dell'utente. Se
+per qualche motivo nessuna risoluzione risulta compatibile, il sistema
+utilizza come fallback la risoluzione più piccola disponibile.
+Il controller seleziona automaticamente come default la risoluzione centrale
+nell'elenco filtrato, fornendo un punto di partenza ragionevole per
+l'utente.
+
+La view del launcher, implementata in GameLauncherViewImpl, è una finestra
+Swing di dimensioni fisse che presenta un'interfaccia minimale con il
+titolo del gioco, una combo box per la selezione della risoluzione e un
+pulsante per avviare il gioco. Quando l'utente clicca sul pulsante di avvio,
+la view notifica il controller della selezione, che a sua volta invoca la
+callback passata durante l'inizializzazione, chiudendo poi la finestra
+del launcher.
+
+A questo punto entra in gioco il secondo controller intermedio, lo
+StartMenuController. Quando la callback viene eseguita, il ControllerImpl
+memorizza la risoluzione selezionata e crea un'istanza di
+StartMenuControllerImpl, passandogli un riferimento a se stesso e alla
+view. Questo controller ha il compito di gestire il menu principale del
+gioco, che viene visualizzato attraverso la StartMenuViewImpl.
+//TODO.
+Quando viene premuto il pulsante di avvio, il menu controller invoca il
+metodo startGame del controller principale, chiudendo poi la finestra del
+menu.
+
+Il metodo startGame rappresenta il punto di svolta dove l'applicazione
+passa dalla fase di configurazione alla fase di gioco vera e propria. La
+prima operazione che viene eseguita è l'inizializzazione del model, che
+fino a questo momento era rimasto inattivo. Quando viene invocato il
+metodo initialize del ModelImpl, questo crea un'istanza di MapReader, una
+classe dedicata alla lettura e nel parsing dei dati della mappa dal
+formato JSON. Il MapReader carica il file di default della mappa, che si
+trova nelle risorse del progetto nel percorso
+it/unibo/scotyard/model/map/ScotlandYardMap.json.
+
+Il processo di lettura del JSON è gestito attraverso la libreria Gson di
+Google. Il MapReader apre uno stream di input dal classpath delle risorse,
+crea un reader e utilizza Gson per parsare il
+contenuto JSON in un JsonObject. La struttura del file JSON è ben definita
+e contiene diverse sezioni fondamentali. La sezione nodes contiene un
+array di oggetti, dove ciascun oggetto rappresenta una stazione sulla
+mappa con un identificativo numerico univoco e coordinate x e y che
+definiscono la posizione logica della stazione nello spazio cartesiano.
+Queste coordinate non rappresentano pixel sullo schermo, ma piuttosto
+unità in uno spazio logico di riferimento che verrà successivamente
+scalato per adattarsi alla finestra di gioco.
+
+La sezione connections definisce tutti i collegamenti tra le stazioni,
+specificando per ciascuno il nodo di partenza, il nodo di arrivo e il tipo
+di trasporto utilizzabile su quella connessione. I tipi di trasporto sono
+definiti dall'enum TransportType e includono TAXI, BUS, UNDERGROUND e
+FERRY. Alcune connessioni possono avere anche un array di waypoints,
+ovvero nodi intermedi attraverso cui la linea di collegamento deve passare
+per (effeto grafico piu decente), e fedele alla mappa originale.
+La sezione revealTurns contiene un array di numeri interi
+che indicano in quali turni la posizione di Mr. X viene rivelata ai
+detective //TODEFINE.
+Infine, la sezione initialPositions definisce le possibili
+posizioni iniziali sia per Mr. X che per i detective, anche se attualmente
+questa funzionalità non è ancora pienamente utilizzata nel gioco
+//TODEFINE.
+
+Il MapReader trasforma tutti questi dati JSON in oggetti Java.
+I nodi vengono convertiti in istanze di MapNode, che estendono la
+classe di base Node aggiungendo funzionalità specifiche per il model
+layer. Le connessioni diventano oggetti MapConnection con logica per
+gestire i waypoints e i tipi di trasporto. Tutti questi oggetti vengono
+poi aggregati in un'istanza di MapData, che rappresenta l'intera struttura
+della mappa con tutti i suoi metadati. MapData è una classe immutabile
+che fornisce numerosi metodi di interrogazione per navigare la struttura
+della mappa, trovare nodi specifici, ottenere le connessioni da un
+determinato nodo, verificare quali nodi sono raggiungibili e controllare
+se un turno è un reveal turn.
+
+Una volta che il model ha completato l'inizializzazione e la MapData è
+disponibile, il controller procede con l'inizializzazione della view.
+
+Separazione tra il model layer e il view layer attraverso l'uso di Data Transfer Objects.
+La classe MapData, che appartiene al package model, non viene passata
+direttamente alla view. Invece, viene invocato il metodo info di MapData,
+che crea e restituisce un'implementazione di MapInfo.
+Questo DTO fornisce un'interfaccia più
+ristretta e orientata alla visualizzazione, esponendo solo i metodi
+necessari per il rendering senza dare accesso a tutta la logica di
+business del model. MapInfo espone stream di nodi e connessioni invece di
+liste, permettendo un'elaborazione più efficiente e funzionale dei dati.
+
+La view, quando riceve il MapInfo attraverso il metodo initialize, crea
+due componenti principali: il MapPanel e la Sidebar. Il MapPanel è il
+cuore della rappresentazione grafica della mappa.
+La Sidebar è //TODO.
+
+Il MapPanel separa lo spazio logico della mappa dallo spazio fisico dello schermo.
+Permette di definire le coordinate dei nodi una volta sola
+in uno spazio logico di riferimento, e poi scalare tutto dinamicamente in
+base alle dimensioni effettive della finestra. Quando il MapPanel viene
+inizializzato, la prima cosa che fa è determinare i limiti dello spazio
+logico analizzando tutti i nodi e trovando le coordinate massime in x e y.
+Questi valori definiscono la dimensione originale della mappa in unità
+logiche.
+
+Ogni volta che la finestra viene ridimensionata, il MapPanel deve
+ricalcolare il fattore di scala e gli offset necessari per centrare la
+mappa. Questo calcolo avviene nel metodo calculateScaleAndOffset, che
+viene invocato in modo lazy durante il rendering solo quando il flag
+scaleCalculated è false. Il sistema calcola due fattori di scala separati
+per la larghezza e l'altezza, considerando anche i margini da lasciare
+intorno alla mappa, e poi utilizza il minore dei due per garantire che
+l'intera mappa rimanga visibile senza distorsioni. Una volta determinato
+il fattore di scala, vengono calcolati gli offset orizzontali e verticali
+necessari per centrare la mappa nello spazio disponibile.
+
+Per ottimizzare le performance, il MapPanel implementa diverse strategie
+di caching. Le posizioni scalate di tutti i nodi vengono pre-calcolate e
+memorizzate in una mappa quando cambia la dimensione della finestra,
+evitando di rieseguire gli stessi calcoli geometrici per ogni frame di
+rendering. Anche l'immagine di background, se presente, viene pre-scalata
+alla dimensione della finestra in modo da poter essere semplicemente
+copiata durante il paintComponent senza dover applicare trasformazioni
+costose ad ogni frame. Questa immagine di background è un file PNG che
+viene caricato dalle risorse attraverso ImageIO e fornisce un contesto
+visivo per la mappa.
+
+Il processo di rendering vero e proprio, che avviene nel metodo
+paintComponent, segue una sequenza ben precisa. Prima viene attivato
+l'antialiasing e vengono impostate varie hint di rendering per
+massimizzare la qualità visiva. Poi viene disegnato il background
+pre-scalato, seguito dal titolo della mappa centrato nella parte superiore
+della finestra e dalla legenda che spiega i colori dei diversi tipi di
+trasporto. Successivamente vengono renderizzate tutte le connessioni tra i
+nodi, con una logica particolare per cui le connessioni diverse dai taxi
+vengono disegnate prima, e quelle taxi vengono disegnate sopra. Questo
+crea un effetto di layering dove le linee gialle dei taxi risultano più
+visibili. Infine vengono disegnati i nodi stessi, rappresentati come
+cerchi bianchi.
+
+Ogni tipo di trasporto ha caratteristiche visive distintive. I taxi sono
+rappresentati da linee gialle sottili continue, i bus da linee verdi
+spesse continue, le underground da linee rosse tratteggiate di media
+larghezza, e i ferry da linee nere tratteggiate.
+
+I nodi stessi vengono disegnati con una logica che comunica
+visivamente quali tipi di trasporto sono disponibili da quella stazione.
+Ogni nodo ha un cerchio bianco centrale con il numero della stazione,
+circondato da un bordo nero. Se il nodo è una stazione ferry, il bordo è
+tratteggiato invece che continuo. Intorno al bordo esterno del nodo,
+vengono disegnati archi colorati che rappresentano i tipi di trasporto
+disponibili escludendo i taxi, dato che tutti i nodi hanno accesso ai
+taxi. Se un nodo ha accesso a bus e underground, avrà due archi
+semicircolari, uno verde e uno rosso, che circondano il nodo come una
+corona colorata.
+
+Una volta che la view è stata completamente inizializzata con il MapPanel
+e la Sidebar, il controller invoca il metodo displayWindow della view,
+passando la risoluzione che era stata selezionata all'inizio. La view crea
+quindi un'istanza di WindowImpl con quella risoluzione, imposta il
+mainContainer come contenuto della finestra, e chiama il metodo display
+che rende la finestra visibile. A questo punto l'applicazione entra nello
+stato di gioco attivo, anche se per il momento mostra solo la mappa
+statica senza interazioni.
+
+Il mainContainer è un JPanel con layout BorderLayout che contiene il
+MapPanel al centro e la Sidebar a est.
+Dopo aver reso la
+finestra visibile, la view forza un aggiornamento del layout utilizzando
+SwingUtilities.invokeLater per garantire che tutte le operazioni di layout
+e repaint avvengano correttamente sul thread di gestione degli eventi di
+Swing.
