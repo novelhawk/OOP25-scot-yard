@@ -31,12 +31,17 @@ public final class NewGameMenuControllerImpl implements NewGameMenuController {
     }
 
     @Override
-    public void play() {
-        this.controller.startGame();
+    public void play(String gameMode, String difficultyLevel, String playerName) {
+        this.controller.startGame(gameMode, difficultyLevel, playerName);
     }
 
     @Override
     public void exit() {
         this.controller.exit();
+    }
+
+    @Override
+    public void mainMenu(){
+        this.controller.displayMainMenu();
     }
 }

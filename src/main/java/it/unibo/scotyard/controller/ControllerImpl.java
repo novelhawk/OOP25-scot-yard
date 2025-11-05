@@ -40,7 +40,15 @@ public final class ControllerImpl implements Controller {
     }
 
     @Override
-    public void startGame() {
+    public void displayMainMenu(){
+        final MainMenuController menuController = new MainMenuControllerImpl(this, this.view);
+        menuController.run();
+    }
+
+    @Override
+    public void startGame(String gameMode, String difficultyLevel, String playerName) {
+        // TO DO : usare i parametri passati
+
         // Load map data from model
         this.model.initialize();
 
@@ -61,7 +69,6 @@ public final class ControllerImpl implements Controller {
     private void run(final Size resolution) {
         this.selectedResolution = Objects.requireNonNull(resolution, "Resolution cannot be null");
 
-        final MainMenuController menuController = new MainMenuControllerImpl(this, this.view);
-        menuController.run();
+        this.displayMainMenu();
     }
 }

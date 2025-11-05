@@ -12,6 +12,7 @@ import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 
 import it.unibo.scotyard.commons.engine.Size;
 import it.unibo.scotyard.controller.menu.NewGameMenuController;
@@ -35,21 +36,23 @@ public final class NewGameMenuViewImpl extends JFrame implements NewGameMenuView
     private static final Color ACCENT_COLOR = new Color(255, 171, 145);
 
     // Typography
-    private static final Font TITLE_FONT = new Font("Arial", Font.BOLD, 36);
-    private static final Font SELECTION_FONT = new Font("Arial", Font.BOLD, 26);
-    private static final Font BUTTON_FONT = new Font("Arial", Font.PLAIN, 20);
+    private static final Font LABEL_FONT = new Font("Arial", Font.PLAIN, 20);
+    private static final Font BUTTON_FONT = new Font("Arial", Font.BOLD, 20);
+    private static final Font USER_FONT = new Font("Arial", Font.PLAIN, 16);
 
     // UI text
-    private static final String TITLE_TEXT = "Scotland Yard";
-    private static final String SELECT_GAME_MODE_TEXT = "Seleziona modalità";
-    private static final String SELECT_GAME_DIFFICULTY_TEXT = "Seleziona difficoltà";
+    private static final String PLAYER_NAME_TEXT = "Inserire nome";
+    private static final String SELECT_GAME_MODE_TEXT = "Selezionare modalità";
+    private static final String SELECT_GAME_DIFFICULTY_TEXT = "Selezionare difficoltà";
     private static final String START_BUTTON_TEXT = "Avvia gioco";
     private static final String GO_BACK_BUTTON_TEXT = "Torna indietro";
-    private static final String [] GAME_MODES_STRING = {"Mister X", "Detective"};
+    private static final String [] GAME_MODES_STRINGS = {"Mister X", "Detective"};
+    private static final String [] DIFFICULTY_LEVELS_STRINGS = {"Facile", "Media", "Difficile"};
 
     // Layout spacing
-    private static final int TITLE_SPACING = 40;
-    private static final int BUTTONS_SPACING = 20;
+    private static final int SMALL_SPACING = 20;
+    private static final int DOUBLE_SPACING = 40;
+    
 
     private final NewGameMenuController controller;
     private final Size resolution;
@@ -80,7 +83,7 @@ public final class NewGameMenuViewImpl extends JFrame implements NewGameMenuView
         dispose();
     }
 
-    // window properties
+    // Window properties
     private void setupWindow() {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(this.resolution.getWidth(), this.resolution.getHeight());
@@ -93,16 +96,28 @@ public final class NewGameMenuViewImpl extends JFrame implements NewGameMenuView
         final JPanel mainPanel = createMainPanel();
 
         mainPanel.add(Box.createVerticalGlue());
-        //mainPanel.add(createTitleLabel());
-        mainPanel.add(createSelectGameModeLabel());
-        mainPanel.add(Box.createVerticalStrut(BUTTONS_SPACING));
-        mainPanel.add(createSelectionGameModeComboBox());
-        mainPanel.add(Box.createVerticalStrut(TITLE_SPACING));
-        mainPanel.add(createSelectGameDifficultyLabel());    
-        mainPanel.add(Box.createVerticalStrut(BUTTONS_SPACING));
-        mainPanel.add(createStartGameButton());
-        mainPanel.add(Box.createVerticalGlue());
+        mainPanel.add(createPlayerNameLabel());
+        mainPanel.add(Box.createVerticalStrut(SMALL_SPACING));
+        mainPanel.add(createPlayerNameTextField());
+        mainPanel.add(Box.createVerticalStrut(DOUBLE_SPACING));
 
+        mainPanel.add(createSelectGameModeLabel());
+        mainPanel.add(Box.createVerticalStrut(SMALL_SPACING));
+        final JComboBox<?> gameModeComboBox = createSelectionGameModeComboBox();
+        mainPanel.add(gameModeComboBox);
+        mainPanel.add(Box.createVerticalStrut(DOUBLE_SPACING));
+
+        mainPanel.add(createSelectGameDifficultyLabel());    
+        mainPanel.add(Box.createVerticalStrut(SMALL_SPACING));
+        final JComboBox<?> difficultyLevelComboBox = createSelectionDifficultyLevelComboBox();
+        mainPanel.add(difficultyLevelComboBox);
+        mainPanel.add(Box.createVerticalStrut(DOUBLE_SPACING));
+
+        mainPanel.add(createStartGameButton(gameModeComboBox, difficultyLevelComboBox));
+        mainPanel.add(Box.createVerticalStrut(DOUBLE_SPACING));
+        mainPanel.add(createGoBackButton());
+        mainPanel.add(Box.createVerticalGlue());
+        
         setContentPane(mainPanel);
     }
 
@@ -114,41 +129,98 @@ public final class NewGameMenuViewImpl extends JFrame implements NewGameMenuView
         return panel;
     }
 
-    // Select game mode label
-    private JLabel createSelectGameModeLabel(){
-        final JLabel label = new JLabel(SELECT_GAME_MODE_TEXT);
-        label.setFont(SELECTION_FONT);
+    // Insert player name label
+    private JLabel createPlayerNameLabel(){
+        final JLabel label = new JLabel(PLAYER_NAME_TEXT);
+        label.setFont(LABEL_FONT);
         label.setForeground(ACCENT_COLOR);
         label.setAlignmentX(CENTER_ALIGNMENT);
         return label;
     }
 
-    // Select game difficulty label
-    private JLabel createSelectGameDifficultyLabel(){
-        final JLabel label = new JLabel(SELECT_GAME_DIFFICULTY_TEXT);
-        label.setFont(SELECTION_FONT);
+    // Insert player name textfield
+    private JTextField createPlayerNameTextField(){
+        final JTextField textField = new JTextField();
+        textField.setMaximumSize(new Dimension(COMBO_WIDTH, COMBO_HEIGHT));
+        textField.setFont(USER_FONT);
+        textField.setForeground(BACKGROUND_COLOR);
+        textField.setAlignmentX(CENTER_ALIGNMENT);
+        return textField;
+    }
+
+    // Selection game mode label
+    private JLabel createSelectGameModeLabel(){
+        final JLabel label = new JLabel(SELECT_GAME_MODE_TEXT);
+        label.setFont(LABEL_FONT);
         label.setForeground(ACCENT_COLOR);
         label.setAlignmentX(CENTER_ALIGNMENT);
         return label;
+    }
+
+    // Selection game mode combo box
+    private JComboBox<?> createSelectionGameModeComboBox(){
+        final JComboBox<?> comboBox = new JComboBox<>(GAME_MODES_STRINGS);
+        comboBox.setFont(USER_FONT);
+        comboBox.setForeground(BACKGROUND_COLOR);
+        comboBox.setMaximumSize(new Dimension(COMBO_WIDTH, COMBO_HEIGHT));
+        return comboBox;
+    }
+
+    // Seleceted game mode String
+    private String getSelectedGameMode(JComboBox<?> comboBox){
+        return comboBox.getSelectedItem().toString();
+    }
+
+    // Selection game difficulty label
+    private JLabel createSelectGameDifficultyLabel(){
+        final JLabel label = new JLabel(SELECT_GAME_DIFFICULTY_TEXT);
+        label.setFont(LABEL_FONT);
+        label.setForeground(ACCENT_COLOR);
+        label.setAlignmentX(CENTER_ALIGNMENT);
+        return label;
+    }
+
+    // Selection game mode combo box
+    private JComboBox<?> createSelectionDifficultyLevelComboBox(){
+        final JComboBox<?> comboBox = new JComboBox<>(DIFFICULTY_LEVELS_STRINGS);
+        comboBox.setFont(USER_FONT);
+        comboBox.setForeground(BACKGROUND_COLOR);
+        comboBox.setMaximumSize(new Dimension(COMBO_WIDTH, COMBO_HEIGHT));
+        return comboBox;
+    }
+
+    // Seleceted difficulty level String
+    private String getSelectedDifficultyLevel(JComboBox<?> comboBox){
+        return comboBox.getSelectedItem().toString();
     }
 
     // Start game button
-    private JButton createStartGameButton() {
+    private JButton createStartGameButton(JComboBox<?> gameModeComboBox, JComboBox<?> difficultyLevelComboBox) {
         final JButton button = new JButton(START_BUTTON_TEXT);
+        button.setFont(BUTTON_FONT);
+        button.setForeground(BACKGROUND_COLOR);
+        button.setBackground(ACCENT_COLOR);
         button.setAlignmentX(CENTER_ALIGNMENT);
         button.addActionListener(e -> {
-            this.controller.play();
+            System.out.println(getSelectedGameMode(gameModeComboBox));
+            this.controller.play(getSelectedGameMode(gameModeComboBox), getSelectedDifficultyLevel(difficultyLevelComboBox),"Ciao");
             close();
         });
         return button;
     }
 
-    // Selection game mode combo box
-    private JComboBox<?> createSelectionGameModeComboBox(){
-        final JComboBox<?> comboBox = new JComboBox<>(GAME_MODES_STRING);
-        comboBox.setMaximumSize(new Dimension(COMBO_WIDTH, COMBO_HEIGHT));
-        return comboBox;
+    // Go back button
+    private JButton createGoBackButton(){
+        final JButton button = new JButton(GO_BACK_BUTTON_TEXT);
+        button.setFont(BUTTON_FONT);
+        button.setForeground(BACKGROUND_COLOR);
+        button.setBackground(ACCENT_COLOR);
+        button.setAlignmentX(CENTER_ALIGNMENT);
+        button.addActionListener(e -> {
+            close();
+            this.controller.mainMenu();
+        });
+        return button;
     }
-
 
 }

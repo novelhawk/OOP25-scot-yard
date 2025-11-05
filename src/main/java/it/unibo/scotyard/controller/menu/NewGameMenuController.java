@@ -12,11 +12,19 @@ public interface NewGameMenuController {
 
     /**
      * Initiates game start sequence.
+     * @param gameMode the game mode 
+     * @param difficultyLevel the difficulty level
+     * @param playerName the name of the player (useful to save the current game)
      */
-    void play();
+    void play(String gameMode, String difficultyLevel, String playerName);
 
     /**
      * Exits the application.
      */
     void exit();
+
+    /**
+     * Displays the main menu.
+     */
+    void mainMenu();
 }
