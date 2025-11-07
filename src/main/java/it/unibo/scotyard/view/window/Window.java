@@ -30,6 +30,12 @@ public interface Window {
     int getWindowHeight();
 
     /**
+     * Sets : default close operation, size, location by platform.
+     * Before first display.
+     */
+    void setsMainFeatures();
+
+    /**
      * Displays the window.
      */
     void display();

@@ -1,25 +1,20 @@
 package it.unibo.scotyard.view.menu;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Font;
 import java.util.Objects;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import it.unibo.scotyard.commons.engine.Size;
 import it.unibo.scotyard.controller.menu.MainMenuController;
 
-public class MainMenuViewImpl extends JFrame implements MainMenuView{
-
-    private static final long serialVersionUID = 1L;
-
-    // Window properties
-    private static final String WINDOW_TITLE = "Scotland Yard - Main Menu";
+public class MainMenuViewImpl  implements MainMenuView{
 
     // Color scheme
     private static final Color BACKGROUND_COLOR = new Color(62, 39, 35);
@@ -41,7 +36,7 @@ public class MainMenuViewImpl extends JFrame implements MainMenuView{
     private static final int BUTTONS_SPACING = 20;
 
     private final MainMenuController controller;
-    private final Size resolution;
+    final JPanel mainPanel;
 
     /**
      * Creates the main menu view.
@@ -51,38 +46,21 @@ public class MainMenuViewImpl extends JFrame implements MainMenuView{
      * @throws NullPointerException if any parameter is null
      */
     public MainMenuViewImpl(final MainMenuController controller, final Size resolution) {
-        super(WINDOW_TITLE);
+        //super(WINDOW_TITLE);
         this.controller = Objects.requireNonNull(controller, "Controller cannot be null");
-        this.resolution = Objects.requireNonNull(resolution, "Resolution cannot be null");
+        //this.resolution = Objects.requireNonNull(resolution, "Resolution cannot be null");
 
-        setupWindow();
-
+        this.mainPanel = createMainPanel();
         buildUI();
-    }
-    
-
-    @Override
-    public void display() {
-        setVisible(true);
     }
 
     @Override
     public void close() {
-        dispose();
+        this.controller.exit();
     }
-
-    // Window properties
-    private void setupWindow() {
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(this.resolution.getWidth(), this.resolution.getHeight());
-        setLocationRelativeTo(null);
-        setResizable(false);
-    }
-
+    
     // UI components
     private void buildUI() {
-        final JPanel mainPanel = createMainPanel();
-
         mainPanel.add(Box.createVerticalGlue());
         mainPanel.add(createTitleLabel());
         mainPanel.add(Box.createVerticalStrut(TITLE_SPACING));
@@ -95,8 +73,6 @@ public class MainMenuViewImpl extends JFrame implements MainMenuView{
         mainPanel.add(createExitButton());
         mainPanel.add(Box.createVerticalStrut(BUTTONS_SPACING));
         mainPanel.add(Box.createVerticalGlue());
-
-        setContentPane(mainPanel);
     }
 
     // Main container panel
@@ -107,12 +83,17 @@ public class MainMenuViewImpl extends JFrame implements MainMenuView{
         return panel;
     }
 
+    @Override
+    public JPanel getMainPanel() {
+        return this.mainPanel;
+    }
+
     // Title label
     private JLabel createTitleLabel(){
         final JLabel label = new JLabel(TITLE_TEXT);
         label.setFont(TITLE_FONT);
         label.setForeground(ACCENT_COLOR);
-        label.setAlignmentX(CENTER_ALIGNMENT);
+        label.setAlignmentX(Component.CENTER_ALIGNMENT);
         return label;
     }
 
@@ -122,10 +103,9 @@ public class MainMenuViewImpl extends JFrame implements MainMenuView{
         button.setFont(BUTTON_FONT);
         button.setBackground(ACCENT_COLOR);
         button.setForeground(BACKGROUND_COLOR);
-        button.setAlignmentX(CENTER_ALIGNMENT);
+        button.setAlignmentX(Component.CENTER_ALIGNMENT);
         button.addActionListener(e ->{
-            this.controller.newGame();
-            close();
+            this.controller.newGameMenu();
         });
         return button;
     }
@@ -136,7 +116,7 @@ public class MainMenuViewImpl extends JFrame implements MainMenuView{
         button.setFont(BUTTON_FONT);
         button.setBackground(ACCENT_COLOR);
         button.setForeground(BACKGROUND_COLOR);
-        button.setAlignmentX(CENTER_ALIGNMENT);
+        button.setAlignmentX(Component.CENTER_ALIGNMENT);
         button.addActionListener(e -> {
             // TO DO 
         });
@@ -149,7 +129,7 @@ public class MainMenuViewImpl extends JFrame implements MainMenuView{
         button.setFont(BUTTON_FONT);
         button.setBackground(ACCENT_COLOR);
         button.setForeground(BACKGROUND_COLOR);
-        button.setAlignmentX(CENTER_ALIGNMENT);
+        button.setAlignmentX(Component.CENTER_ALIGNMENT);
         button.addActionListener(e -> {
             // TO DO
         });
@@ -162,11 +142,10 @@ public class MainMenuViewImpl extends JFrame implements MainMenuView{
         button.setFont(BUTTON_FONT);
         button.setBackground(ACCENT_COLOR);
         button.setForeground(BACKGROUND_COLOR);
-        button.setAlignmentX(CENTER_ALIGNMENT);
+        button.setAlignmentX(Component.CENTER_ALIGNMENT);
         button.addActionListener(e -> {
-            this.controller.exit();
+            close();
         });
         return button;
     }
-    
 }

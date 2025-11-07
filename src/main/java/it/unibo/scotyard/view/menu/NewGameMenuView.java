@@ -1,14 +1,16 @@
 package it.unibo.scotyard.view.menu;
 
+import javax.swing.JPanel;
+
 /**
  * start new game menu screen.
  */
 public interface NewGameMenuView {
 
     /**
-     * Displays the new game menu window.
+     * @return the main panel of the main menu.
      */
-    void display();
+    JPanel getMainPanel();
 
     /**
      * Closes the new game menu window.

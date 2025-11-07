@@ -1,19 +1,21 @@
 package it.unibo.scotyard.controller.menu;
 
+import javax.swing.JPanel;
+
 /**
  * Controller for the main menu screen.
  */
 public interface MainMenuController {
 
     /**
-     * Displays the main menu.
+     * @return the main panel of the main menu.
      */
-    void run();
+    JPanel getMainPanel();
 
     /**
      * Displays new game menu.
      */
-    void newGame();
+    void newGameMenu();
 
     /**
      * Exits the application.

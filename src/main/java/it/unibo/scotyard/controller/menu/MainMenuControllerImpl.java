@@ -2,8 +2,12 @@ package it.unibo.scotyard.controller.menu;
 
 import java.util.Objects;
 
+import javax.swing.JPanel;
+
 import it.unibo.scotyard.controller.Controller;
 import it.unibo.scotyard.view.View;
+import it.unibo.scotyard.view.menu.MainMenuView;
+import it.unibo.scotyard.view.menu.MainMenuViewImpl;
 
 public class MainMenuControllerImpl implements MainMenuController{
 
@@ -23,19 +27,18 @@ public class MainMenuControllerImpl implements MainMenuController{
     }
 
     @Override
-    public void run() {
-        this.view.displayMainMenu(this);
+    public JPanel getMainPanel() {
+        final MainMenuView menuView = new MainMenuViewImpl(this, this.view.getMaxResolution());
+        return menuView.getMainPanel();
     }
 
     @Override
-    public void newGame() {
-        final NewGameMenuController newGameMenuController = new NewGameMenuControllerImpl(this.controller, this.view);
-        this.view.displayNewGameMenu(newGameMenuController) ;
+    public void newGameMenu() {
+        this.controller.loadNewGameMenu();
     }
 
     @Override
     public void exit() {
         this.controller.exit();
     }
-    
 }

@@ -1,12 +1,15 @@
 package it.unibo.scotyard.controller;
 
 import java.util.Objects;
+import javax.swing.JPanel;
 
 import it.unibo.scotyard.commons.engine.Size;
 import it.unibo.scotyard.controller.gamelauncher.GameLauncherController;
 import it.unibo.scotyard.controller.gamelauncher.GameLauncherControllerImpl;
 import it.unibo.scotyard.controller.menu.MainMenuController;
 import it.unibo.scotyard.controller.menu.MainMenuControllerImpl;
+import it.unibo.scotyard.controller.menu.NewGameMenuController;
+import it.unibo.scotyard.controller.menu.NewGameMenuControllerImpl;
 import it.unibo.scotyard.model.Model;
 import it.unibo.scotyard.view.ViewImpl;
 
@@ -40,9 +43,21 @@ public final class ControllerImpl implements Controller {
     }
 
     @Override
-    public void displayMainMenu(){
+    public void displayPanel(JPanel panel){
+        this.view.displayPanel(panel);
+    }
+
+    @Override
+    public void loadMainMenu(){
         final MainMenuController menuController = new MainMenuControllerImpl(this, this.view);
-        menuController.run();
+        this.displayPanel(menuController.getMainPanel());
+    }
+
+
+    @Override
+    public void loadNewGameMenu(){
+        final NewGameMenuController menuController = new NewGameMenuControllerImpl(this, this.view);
+        this.displayPanel(menuController.getMainPanel());
     }
 
     @Override
@@ -56,7 +71,7 @@ public final class ControllerImpl implements Controller {
         this.view.initialize(this.model.getMapData().info());
 
         // Display game window with selected resolution
-        this.view.displayWindow(this.selectedResolution);
+        this.view.displayGameWindow(this.selectedResolution);
     }
 
     @Override
@@ -69,6 +84,7 @@ public final class ControllerImpl implements Controller {
     private void run(final Size resolution) {
         this.selectedResolution = Objects.requireNonNull(resolution, "Resolution cannot be null");
 
-        this.displayMainMenu();
+        this.view.setWindowMainFeatures();
+        this.loadMainMenu();
     }
 }

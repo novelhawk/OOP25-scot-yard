@@ -1,6 +1,7 @@
 package it.unibo.scotyard.view.menu;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.util.Objects;
@@ -9,7 +10,6 @@ import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -20,12 +20,7 @@ import it.unibo.scotyard.controller.menu.NewGameMenuController;
 /**
  * start menu view
  */
-public final class NewGameMenuViewImpl extends JFrame implements NewGameMenuView {
-
-    private static final long serialVersionUID = 1L;
-
-    // Window properties
-    private static final String WINDOW_TITLE = "Scotland Yard - New Game Menu";
+public final class NewGameMenuViewImpl implements NewGameMenuView {
 
     // Component sizes
     private static final int COMBO_WIDTH = 200;
@@ -55,7 +50,7 @@ public final class NewGameMenuViewImpl extends JFrame implements NewGameMenuView
     
 
     private final NewGameMenuController controller;
-    private final Size resolution;
+    private final JPanel mainPanel;
 
     /**
      * Creates the start new game menu view.
@@ -65,36 +60,19 @@ public final class NewGameMenuViewImpl extends JFrame implements NewGameMenuView
      * @throws NullPointerException if any parameter is null
      */
     public NewGameMenuViewImpl(final NewGameMenuController controller, final Size resolution) {
-        super(WINDOW_TITLE);
         this.controller = Objects.requireNonNull(controller, "Controller cannot be null");
-        this.resolution = Objects.requireNonNull(resolution, "Resolution cannot be null");
 
-        setupWindow();
+        this.mainPanel = createMainPanel();
         buildUI();
     }
 
     @Override
-    public void display() {
-        setVisible(true);
-    }
-
-    @Override
     public void close() {
-        dispose();
-    }
-
-    // Window properties
-    private void setupWindow() {
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(this.resolution.getWidth(), this.resolution.getHeight());
-        setLocationRelativeTo(null);
-        setResizable(false);
+        this.controller.exit();
     }
 
     // UI components
     private void buildUI() {
-        final JPanel mainPanel = createMainPanel();
-
         mainPanel.add(Box.createVerticalGlue());
         mainPanel.add(createPlayerNameLabel());
         mainPanel.add(Box.createVerticalStrut(SMALL_SPACING));
@@ -117,8 +95,6 @@ public final class NewGameMenuViewImpl extends JFrame implements NewGameMenuView
         mainPanel.add(Box.createVerticalStrut(DOUBLE_SPACING));
         mainPanel.add(createGoBackButton());
         mainPanel.add(Box.createVerticalGlue());
-        
-        setContentPane(mainPanel);
     }
 
     // Main container panel
@@ -129,12 +105,17 @@ public final class NewGameMenuViewImpl extends JFrame implements NewGameMenuView
         return panel;
     }
 
+    @Override
+    public JPanel getMainPanel() {
+        return this.mainPanel;
+    }
+
     // Insert player name label
     private JLabel createPlayerNameLabel(){
         final JLabel label = new JLabel(PLAYER_NAME_TEXT);
         label.setFont(LABEL_FONT);
         label.setForeground(ACCENT_COLOR);
-        label.setAlignmentX(CENTER_ALIGNMENT);
+        label.setAlignmentX(Component.CENTER_ALIGNMENT);
         return label;
     }
 
@@ -144,7 +125,7 @@ public final class NewGameMenuViewImpl extends JFrame implements NewGameMenuView
         textField.setMaximumSize(new Dimension(COMBO_WIDTH, COMBO_HEIGHT));
         textField.setFont(USER_FONT);
         textField.setForeground(BACKGROUND_COLOR);
-        textField.setAlignmentX(CENTER_ALIGNMENT);
+        textField.setAlignmentX(Component.CENTER_ALIGNMENT);
         return textField;
     }
 
@@ -153,7 +134,7 @@ public final class NewGameMenuViewImpl extends JFrame implements NewGameMenuView
         final JLabel label = new JLabel(SELECT_GAME_MODE_TEXT);
         label.setFont(LABEL_FONT);
         label.setForeground(ACCENT_COLOR);
-        label.setAlignmentX(CENTER_ALIGNMENT);
+        label.setAlignmentX(Component.CENTER_ALIGNMENT);
         return label;
     }
 
@@ -176,7 +157,7 @@ public final class NewGameMenuViewImpl extends JFrame implements NewGameMenuView
         final JLabel label = new JLabel(SELECT_GAME_DIFFICULTY_TEXT);
         label.setFont(LABEL_FONT);
         label.setForeground(ACCENT_COLOR);
-        label.setAlignmentX(CENTER_ALIGNMENT);
+        label.setAlignmentX(Component.CENTER_ALIGNMENT);
         return label;
     }
 
@@ -200,11 +181,9 @@ public final class NewGameMenuViewImpl extends JFrame implements NewGameMenuView
         button.setFont(BUTTON_FONT);
         button.setForeground(BACKGROUND_COLOR);
         button.setBackground(ACCENT_COLOR);
-        button.setAlignmentX(CENTER_ALIGNMENT);
+        button.setAlignmentX(Component.CENTER_ALIGNMENT);
         button.addActionListener(e -> {
-            System.out.println(getSelectedGameMode(gameModeComboBox));
             this.controller.play(getSelectedGameMode(gameModeComboBox), getSelectedDifficultyLevel(difficultyLevelComboBox),"Ciao");
-            close();
         });
         return button;
     }
@@ -215,9 +194,8 @@ public final class NewGameMenuViewImpl extends JFrame implements NewGameMenuView
         button.setFont(BUTTON_FONT);
         button.setForeground(BACKGROUND_COLOR);
         button.setBackground(ACCENT_COLOR);
-        button.setAlignmentX(CENTER_ALIGNMENT);
+        button.setAlignmentX(Component.CENTER_ALIGNMENT);
         button.addActionListener(e -> {
-            close();
             this.controller.mainMenu();
         });
         return button;

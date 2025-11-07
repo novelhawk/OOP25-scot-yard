@@ -49,10 +49,14 @@ public final class WindowImpl extends JFrame implements Window {
     }
 
     @Override
-    public void display() {
+    public void setsMainFeatures(){
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(this.windowWidth, this.windowHeight);
         setLocationByPlatform(true);
+    }
+
+    @Override
+    public void display() {
         setVisible(true);
     }
 }

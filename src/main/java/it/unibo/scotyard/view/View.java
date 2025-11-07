@@ -4,8 +4,6 @@ import javax.swing.JPanel;
 
 import it.unibo.scotyard.commons.engine.Size;
 import it.unibo.scotyard.controller.gamelauncher.GameLauncherController;
-import it.unibo.scotyard.controller.menu.MainMenuController;
-import it.unibo.scotyard.controller.menu.NewGameMenuController;
 
 /**
  * view interface coordinating all UI components.
@@ -34,22 +32,19 @@ public interface View {
      */
     void displayLauncher(GameLauncherController controller);
 
-    /**
-     * Displays the main menu screen.
-     * 
-     * @param controller the menu controller
-     * @throws NullPointerException if controller is null
+    /*
+     * Sets window main features (deafult close operation, size, location by platform)
+     * To be called before first window display.
      */
-    void displayMainMenu(MainMenuController controller);
-
+    void setWindowMainFeatures();
 
     /**
-     * Displays the start menu screen.
+     * Displays the input panel.
+     * Used to display MainMenu + NewGameMenu
      * 
-     * @param controller the menu controller
-     * @throws NullPointerException if controller is null
+     * @param panel 
      */
-    void displayNewGameMenu(NewGameMenuController controller);
+    void displayPanel(JPanel panel);
 
     /**
      * Displays the main game window with specified resolution.
@@ -57,7 +52,12 @@ public interface View {
      * @param resolution the window size
      * @throws NullPointerException if resolution is null
      */
-    void displayWindow(Size resolution);
+    void displayGameWindow(Size resolution);
+
+    /**
+     * Creates the game panel with the map and the sidebar.
+     */
+    void createGamePanel();
 
     /**
      * Returns the maximum available screen resolution.

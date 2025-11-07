@@ -1,5 +1,7 @@
 package it.unibo.scotyard.controller;
 
+import javax.swing.JPanel;
+
 /**
  * Main controller interface for the application flow.
  */
@@ -11,9 +13,20 @@ public interface Controller {
     void launch();
 
     /**
-     * Displays the main menu.
+     * Displays the panel passed.
+     * @param panel the panel to display on the window.
      */
-    void displayMainMenu();
+    void displayPanel(JPanel panel);
+
+    /**
+     * Loads the main menu.
+     */
+    void loadMainMenu();
+
+    /** 
+     * Loads the new game menu.
+    */
+    void loadNewGameMenu();
 
     /**
      * Starts the game with selected configuration.
@@ -27,6 +40,4 @@ public interface Controller {
      * Exits the application.
      */
     void exit();
-
-    
 }

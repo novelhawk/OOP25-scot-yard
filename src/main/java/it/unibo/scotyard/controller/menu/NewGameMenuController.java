@@ -1,14 +1,16 @@
 package it.unibo.scotyard.controller.menu;
 
+import javax.swing.JPanel;
+
 /**
  * Controller for the start new game menu screen.
  */
 public interface NewGameMenuController {
 
     /**
-     * Displays the start new game menu.
+     * @return the main panel of the new game menu.
      */
-    void run();
+     JPanel getMainPanel();
 
     /**
      * Initiates game start sequence.

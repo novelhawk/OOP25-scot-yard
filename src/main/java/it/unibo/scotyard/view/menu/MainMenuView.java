@@ -1,17 +1,19 @@
 package it.unibo.scotyard.view.menu;
 
+import javax.swing.JPanel;
+
 /**
  * Main menu screen.
  */
 public interface MainMenuView {
 
     /**
-     * Displays the main menu window.
+     * @return the main panel of the main menu.
      */
-    void display();
+    JPanel getMainPanel();
 
     /**
-     * Closes the new game menu window.
+     * Closes the main menu window and exits the application.
      */
     void close();
 }

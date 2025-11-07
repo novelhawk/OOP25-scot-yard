@@ -11,15 +11,9 @@ import javax.swing.SwingUtilities;
 import it.unibo.scotyard.commons.dtos.map.MapInfo;
 import it.unibo.scotyard.commons.engine.Size;
 import it.unibo.scotyard.controller.gamelauncher.GameLauncherController;
-import it.unibo.scotyard.controller.menu.MainMenuController;
-import it.unibo.scotyard.controller.menu.NewGameMenuController;
 import it.unibo.scotyard.view.gamelauncher.GameLauncherView;
 import it.unibo.scotyard.view.gamelauncher.GameLauncherViewImpl;
 import it.unibo.scotyard.view.map.MapPanel;
-import it.unibo.scotyard.view.menu.MainMenuView;
-import it.unibo.scotyard.view.menu.MainMenuViewImpl;
-import it.unibo.scotyard.view.menu.NewGameMenuView;
-import it.unibo.scotyard.view.menu.NewGameMenuViewImpl;
 import it.unibo.scotyard.view.sidebar.Sidebar;
 import it.unibo.scotyard.view.window.Window;
 import it.unibo.scotyard.view.window.WindowImpl;
@@ -32,13 +26,14 @@ public final class ViewImpl implements View {
     private Window window;
     private MapPanel mapPanel;
     private Sidebar sidebar;
-    private final JPanel mainContainer;
+    private JPanel mainContainer;
 
     /**
      * new view instance.
      */
     public ViewImpl() {
         this.mainContainer = new JPanel(new BorderLayout());
+        this.window = new WindowImpl(this.getMaxResolution());
     }
 
     /**
@@ -53,9 +48,6 @@ public final class ViewImpl implements View {
 
         this.mapPanel = new MapPanel(mapInfo);
         this.sidebar = new Sidebar();
-
-        this.mainContainer.add(this.sidebar, BorderLayout.EAST);
-        this.mainContainer.add(this.mapPanel, BorderLayout.CENTER);
     }
 
     @Override
@@ -63,7 +55,6 @@ public final class ViewImpl implements View {
         if (this.window == null) {
             throw new IllegalStateException("Window non inizializzata. Chiamare displayWindow() prima.");
         }
-
         this.window.display();
         forceLayoutUpdate();
     }
@@ -96,30 +87,33 @@ public final class ViewImpl implements View {
     }
 
     @Override
-    public void displayMainMenu(final MainMenuController controller) {
-        Objects.requireNonNull(controller, "Controller cannot be null");
-
-        final MainMenuView menuView = new MainMenuViewImpl(controller, getMaxResolution());
-        menuView.display();
+    public void setWindowMainFeatures(){
+        this.window.setsMainFeatures();
     }
 
     @Override
-    public void displayNewGameMenu(final NewGameMenuController controller) {
-        Objects.requireNonNull(controller, "Controller cannot be null");
-
-        final NewGameMenuView newGameMenuView = new NewGameMenuViewImpl(controller, getMaxResolution());
-        newGameMenuView.display();
+    public void displayPanel(JPanel panel){
+        this.mainContainer = panel;
+        this.window.setBody(this.mainContainer);
+        this.window.display();
     }
 
     @Override
-    public void displayWindow(final Size resolution) {
+    public void displayGameWindow(final Size resolution) {
         Objects.requireNonNull(resolution, "Resolution cannot be null");
-
-        this.window = new WindowImpl(resolution);
+        
+        this.createGamePanel();
         this.window.setBody(this.mainContainer);
         this.window.display();
 
         forceLayoutUpdate();
+    }
+
+    @Override
+    public void createGamePanel(){
+        this.mainContainer = new JPanel(new BorderLayout());
+        this.mainContainer.add(this.sidebar, BorderLayout.EAST);
+        this.mainContainer.add(this.mapPanel, BorderLayout.CENTER);
     }
 
     @Override
