@@ -76,7 +76,8 @@ public final class NewGameMenuViewImpl implements NewGameMenuView {
         mainPanel.add(Box.createVerticalGlue());
         mainPanel.add(createPlayerNameLabel());
         mainPanel.add(Box.createVerticalStrut(SMALL_SPACING));
-        mainPanel.add(createPlayerNameTextField());
+        final JTextField playerTextField = createPlayerNameTextField();
+        mainPanel.add(playerTextField);
         mainPanel.add(Box.createVerticalStrut(DOUBLE_SPACING));
 
         mainPanel.add(createSelectGameModeLabel());
@@ -91,7 +92,7 @@ public final class NewGameMenuViewImpl implements NewGameMenuView {
         mainPanel.add(difficultyLevelComboBox);
         mainPanel.add(Box.createVerticalStrut(DOUBLE_SPACING));
 
-        mainPanel.add(createStartGameButton(gameModeComboBox, difficultyLevelComboBox));
+        mainPanel.add(createStartGameButton(gameModeComboBox, difficultyLevelComboBox, playerTextField));
         mainPanel.add(Box.createVerticalStrut(DOUBLE_SPACING));
         mainPanel.add(createGoBackButton());
         mainPanel.add(Box.createVerticalGlue());
@@ -175,15 +176,20 @@ public final class NewGameMenuViewImpl implements NewGameMenuView {
         return comboBox.getSelectedItem().toString();
     }
 
+    // Player name String
+    private String getPlayerName(JTextField textField){
+        return textField.getText();
+    }
+
     // Start game button
-    private JButton createStartGameButton(JComboBox<?> gameModeComboBox, JComboBox<?> difficultyLevelComboBox) {
+    private JButton createStartGameButton(JComboBox<?> gameModeComboBox, JComboBox<?> difficultyLevelComboBox, JTextField playerTextField) {
         final JButton button = new JButton(START_BUTTON_TEXT);
         button.setFont(BUTTON_FONT);
         button.setForeground(BACKGROUND_COLOR);
         button.setBackground(ACCENT_COLOR);
         button.setAlignmentX(Component.CENTER_ALIGNMENT);
         button.addActionListener(e -> {
-            this.controller.play(getSelectedGameMode(gameModeComboBox), getSelectedDifficultyLevel(difficultyLevelComboBox),"Ciao");
+            this.controller.play(getSelectedGameMode(gameModeComboBox), getSelectedDifficultyLevel(difficultyLevelComboBox), getPlayerName(playerTextField));
         });
         return button;
     }
