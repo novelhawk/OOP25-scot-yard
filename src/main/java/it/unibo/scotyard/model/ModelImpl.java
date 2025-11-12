@@ -42,4 +42,12 @@ public final class ModelImpl implements Model {
         }
         return this.mapData;
     }
+
+    @Override
+    public Game getGameData(){
+        if (!this.initialized || this.mapData == null) {
+            throw new IllegalStateException("Modello non inizializzato. Chiamare initialize() prima.");
+        }
+        return this.game;
+    }
 }

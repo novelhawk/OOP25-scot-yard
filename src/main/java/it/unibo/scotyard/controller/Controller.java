@@ -2,6 +2,9 @@ package it.unibo.scotyard.controller;
 
 import javax.swing.JPanel;
 
+import it.unibo.scotyard.commons.engine.Size;
+import it.unibo.scotyard.model.game.Game;
+
 /**
  * Main controller interface for the application flow.
  */
@@ -27,6 +30,13 @@ public interface Controller {
      * Loads the new game menu.
     */
     void loadNewGameMenu();
+
+    /**
+     * Loads the game panel and initializes the view with map data.
+     * 
+     * @param resolution the resoultion of the window
+     */
+    void loadGamePanel(final Size resolution);
 
     /**
      * Starts the game with selected configuration.

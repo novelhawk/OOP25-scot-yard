@@ -1,5 +1,6 @@
 package it.unibo.scotyard.model;
 
+import it.unibo.scotyard.model.game.Game;
 import it.unibo.scotyard.model.map.MapData;
 
 /**
@@ -23,4 +24,12 @@ public interface Model {
      * @throws IllegalStateException if model not initialized
      */
     MapData getMapData();
+
+    /**
+     * Return the data of the game created.
+     * 
+     * @return the game data
+     * @throwsIllegalStateException if model not initialized
+     */
+    Game getGameData();
 }

@@ -3,8 +3,6 @@ package it.unibo.scotyard.model.players;
 import java.util.HashMap;
 import java.util.Map;
 
-import it.unibo.scotyard.model.map.MapNode;
-
 public class Bobby extends PlayerImpl{
 
     public Bobby() {

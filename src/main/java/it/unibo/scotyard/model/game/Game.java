@@ -1,6 +1,5 @@
 package it.unibo.scotyard.model.game;
 
-import it.unibo.scotyard.model.players.Player;
 import it.unibo.scotyard.model.players.TicketType;
 
 public interface Game {
@@ -13,11 +12,16 @@ public interface Game {
     void initialize(String gameMode, String levelDifficulty);
 
     /**
-     * Return the number of tickets of a specific type possessed by a specific player.
-     * @param player the player (detective, bobby or Mister X)
+     * Return the current game mode.
+     * @return the game mode
+     */
+    GameMode getGameMode();
+
+    /**
+     * Return the number of tickets of a specific type possessed by the user player.
      * @param ticketType the type of ticket
      */
-    int getNumberTickets(Player player, TicketType ticketType);
+    int getNumberTicketsUserPlayer(TicketType ticketType);
 
     /**
      * Returns the current round number.

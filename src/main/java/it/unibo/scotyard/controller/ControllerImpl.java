@@ -4,6 +4,8 @@ import java.util.Objects;
 import javax.swing.JPanel;
 
 import it.unibo.scotyard.commons.engine.Size;
+import it.unibo.scotyard.controller.game.GameController;
+import it.unibo.scotyard.controller.game.GameControllerImpl;
 import it.unibo.scotyard.controller.gamelauncher.GameLauncherController;
 import it.unibo.scotyard.controller.gamelauncher.GameLauncherControllerImpl;
 import it.unibo.scotyard.controller.menu.MainMenuController;
@@ -12,6 +14,7 @@ import it.unibo.scotyard.controller.menu.NewGameMenuController;
 import it.unibo.scotyard.controller.menu.NewGameMenuControllerImpl;
 import it.unibo.scotyard.model.Model;
 import it.unibo.scotyard.view.ViewImpl;
+import it.unibo.scotyard.view.game.GameView;
 
 /**
  * Main controller coordinating the MVC flow.
@@ -61,16 +64,22 @@ public final class ControllerImpl implements Controller {
     }
 
     @Override
-    public void startGame(String gameMode, String difficultyLevel, String playerName) {
+    public void loadGamePanel(final Size resolution){
+        Objects.requireNonNull(resolution, "Resolution cannot be null");
+        final GameView gameView = this.view.createGameView(this.model.getMapData().info());
+        final GameController gameController = new GameControllerImpl(this.model.getGameData(), gameView);
+        gameController.updateSidebar();
+        this.displayPanel(gameController.getMainPanel());
+        this.view.forceLayoutUpdate(gameController.getMainPanel(), gameController.getMapPanel());
+    }
 
+    @Override
+    public void startGame(String gameMode, String difficultyLevel, String playerName) {
         // Initialize the game and load map data from model
         this.model.initialize(gameMode, difficultyLevel);
 
-        // Initialize view with map data
-        this.view.initialize(this.model.getMapData().info());
-
-        // Display game window with selected resolution
-        this.view.displayGameWindow(this.selectedResolution);
+        // Load the game panel
+        this.loadGamePanel(selectedResolution);
     }
 
     @Override

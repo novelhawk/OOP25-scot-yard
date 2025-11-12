@@ -22,9 +22,8 @@ public class GameImpl implements Game {
 
 
     public GameImpl(String gameMode, String levelOfDifficulty) {
-        this.initialize(gameMode, levelOfDifficulty);
         this.additionalPlayers = new ArrayList<>();
-        this.round = 0;
+        this.initialize(gameMode, levelOfDifficulty);
     }
 
     @Override
@@ -33,6 +32,7 @@ public class GameImpl implements Game {
         this.gameDifficulty = setGameDifficulty(levelDifficulty);
         this.setPlayers();
         this.setIA();
+        this.round = 0;
     }
 
     private GameMode setGameMode(String inputGameMode){
@@ -88,7 +88,17 @@ public class GameImpl implements Game {
     }
 
     @Override
-    public int getNumberTickets(Player player, TicketType ticketType){
+    public GameMode getGameMode(){
+        return this.gameMode;
+    }
+
+    @Override
+    public int getNumberTicketsUserPlayer(TicketType ticketType){
+        return this.getNumberTickets(this.userPlayer,ticketType);
+    }
+
+    
+    private int getNumberTickets(Player player, TicketType ticketType){
         return player.getNumberTickets(ticketType);
     }
 
