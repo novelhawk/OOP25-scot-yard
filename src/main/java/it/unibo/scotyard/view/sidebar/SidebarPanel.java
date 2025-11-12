@@ -26,7 +26,7 @@ public final class SidebarPanel extends JPanel {
 
     // Color scheme
     private static final Color BACKGROUND_COLOR = new Color(62, 39, 35);
-    private static final Color ACCENT_COLOR = new Color(255, 171, 145);
+    private static final Color ACCENT_COLOR = new Color(255, 255, 255);
     
     // Typography
     private static final Font TITLE_FONT = new Font("Arial", Font.BOLD, 16);
@@ -39,13 +39,20 @@ public final class SidebarPanel extends JPanel {
 
     // Texts
     private static final String  INVENTORY_TEXT = "Inventario";
+    private static final String TAXI_TICKETS_TEXT = "Biglietti Taxi";
+    private static final String BUS_TICKETS_TEXT = "Biglietti Bus";
+    private static final String UNDERGROUND_TICKETS_TEXT = "Biglietti Metro";
+    private static final String BLACK_TICKETS_TEXT = "Biglietti neri";
+    private static final String DOUBLE_MOVE_TICKETS_TEXT = "Biglietti doppia mossa";
 
     // Components
     JLabel currentGameModeLabel;
     JLabel roundLabel;
-    JLabel ticketsTaxiLabel;
-    JLabel ticketsBusLabel;
-    JLabel ticketsMetroLabel;
+    JLabel taxiTicketsLabel;
+    JLabel busTicketsLabel;
+    JLabel undergroundTicketsLabel;
+    JLabel blackTicketsLabel;
+    JLabel doubleMoveTicketsLabel;
     
 
     /**
@@ -77,8 +84,22 @@ public final class SidebarPanel extends JPanel {
 
         this.add(createInventoryLabel());
         this.add(Box.createVerticalStrut(SMALL_SPACING));
-
-
+        this.taxiTicketsLabel = createTicketLabel(TAXI_TICKETS_TEXT);
+        this.add(taxiTicketsLabel);
+        this.add(Box.createVerticalStrut(SMALL_SPACING));
+        this.busTicketsLabel = createTicketLabel(BUS_TICKETS_TEXT);
+        this.add(busTicketsLabel);
+        this.add(Box.createVerticalStrut(SMALL_SPACING));
+        this.undergroundTicketsLabel = createTicketLabel(UNDERGROUND_TICKETS_TEXT);
+        this.add(undergroundTicketsLabel);
+        this.add(Box.createVerticalStrut(SMALL_SPACING));
+        this.blackTicketsLabel = createTicketLabel(BLACK_TICKETS_TEXT);
+        this.add(blackTicketsLabel);
+        this.add(Box.createVerticalStrut(SMALL_SPACING));
+        this.doubleMoveTicketsLabel = createTicketLabel(DOUBLE_MOVE_TICKETS_TEXT);
+        this.add(doubleMoveTicketsLabel);
+  
+        this.add(Box.createVerticalGlue());
     }
 
     private JLabel createCurrentGameModeLabel(){
@@ -101,7 +122,15 @@ public final class SidebarPanel extends JPanel {
         final JLabel label = new JLabel(INVENTORY_TEXT);
         label.setFont(SUBTITLE_FONT);
         label.setForeground(ACCENT_COLOR);
-        label.setAlignmentX(Component.LEFT_ALIGNMENT);
+        label.setAlignmentX(Component.CENTER_ALIGNMENT);
+        return label;
+    }
+
+    private JLabel createTicketLabel(String text){
+        final JLabel label = new JLabel(text);
+        label.setFont(TICKETS_FONT);
+        label.setForeground(ACCENT_COLOR);
+        label.setAlignmentX(Component.CENTER_ALIGNMENT);
         return label;
     }
 
@@ -129,5 +158,74 @@ public final class SidebarPanel extends JPanel {
     public void updateRoundLabel(int roundNumber){
         this.roundLabel.setText("Round " + Integer.toString(roundNumber));
     }
+
+    /**
+     * Method which is called by the GameController when updating the sideabar displaying.
+     * Updates the text of the taxiTicketsLabel according to current number of taxi tickets 
+     * possessed by the user player.
+     * 
+     * @param tickets the number of tickets
+     */
+    public void updateTaxiTicketsLabel(int tickets){
+        if(tickets==-1){
+            this.taxiTicketsLabel.setText(TAXI_TICKETS_TEXT + " : infiniti");
+        } else{
+            this.taxiTicketsLabel.setText(TAXI_TICKETS_TEXT + " : " + Integer.toString(tickets));
+        }
+    }
     
+    /**
+     * Method which is called by the GameController when updating the sideabar displaying.
+     * Updates the text of the busTicketsLabel according to current number of bus tickets 
+     * possessed by the user player.
+     * 
+     * @param tickets the number of tickets
+     */
+    public void updateBusTicketsLabel(int tickets){
+        if(tickets==-1){
+            this.busTicketsLabel.setText(BUS_TICKETS_TEXT + " : infiniti");
+        } else{
+            this.busTicketsLabel.setText(BUS_TICKETS_TEXT + " : " + Integer.toString(tickets));
+        }
+        
+    }
+
+    /**
+     * Method which is called by the GameController when updating the sideabar displaying.
+     * Updates the text of the undergroundTicketsLabel according to current number of underground tickets 
+     * possessed by the user player.
+     * 
+     * @param tickets the number of tickets
+     */
+    public void updateUndergroundTicketsLabel(int tickets){
+        if(tickets==-1){
+            this.undergroundTicketsLabel.setText(UNDERGROUND_TICKETS_TEXT + " : infiniti");
+        } else{ 
+            this.undergroundTicketsLabel.setText(UNDERGROUND_TICKETS_TEXT + " : " + Integer.toString(tickets));
+        }
+    }
+
+    /**
+     * Method which is called by the GameController when updating the sideabar displaying.
+     * Updates the text of the blackTicketsLabel according to current number of black tickets 
+     * possessed by the user player.
+     * 
+     * @param tickets the number of tickets
+     */
+    public void updateBlackTicketsLabel(int tickets){
+        this.blackTicketsLabel.setText(BLACK_TICKETS_TEXT + " : " + Integer.toString(tickets));
+    }
+
+    /**
+     * Method which is called by the GameController when updating the sideabar displaying.
+     * Updates the text of the doubleMoveTicketsLabel according to current number of double move tickets 
+     * possessed by the user player.
+     * 
+     * @param tickets the number of tickets
+     */
+    public void updateDoubleMoveTicketsLabel(int tickets){
+        this.doubleMoveTicketsLabel.setText(DOUBLE_MOVE_TICKETS_TEXT + " : " + Integer.toString(tickets));
+    }
+
+
 }

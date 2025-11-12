@@ -2,9 +2,6 @@ package it.unibo.scotyard.controller;
 
 import javax.swing.JPanel;
 
-import it.unibo.scotyard.commons.engine.Size;
-import it.unibo.scotyard.model.game.Game;
-
 /**
  * Main controller interface for the application flow.
  */

@@ -23,6 +23,7 @@ public class GameImpl implements Game {
 
     public GameImpl(String gameMode, String levelOfDifficulty) {
         this.additionalPlayers = new ArrayList<>();
+        this.round = 0;
         this.initialize(gameMode, levelOfDifficulty);
     }
 
@@ -32,7 +33,7 @@ public class GameImpl implements Game {
         this.gameDifficulty = setGameDifficulty(levelDifficulty);
         this.setPlayers();
         this.setIA();
-        this.round = 0;
+        this.round++;
     }
 
     private GameMode setGameMode(String inputGameMode){

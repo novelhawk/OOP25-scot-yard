@@ -53,6 +53,11 @@ public class GameControllerImpl implements GameController {
     public void updateSidebar(){
         this.view.getSidebar().setGameModeLabel(this.getGameMode());
         this.view.getSidebar().updateRoundLabel(this.getNumberRound());
+        this.view.getSidebar().updateTaxiTicketsLabel(this.getNumberTicketsUserPlayer(TicketType.TAXI));
+        this.view.getSidebar().updateBusTicketsLabel(this.getNumberTicketsUserPlayer(TicketType.BUS));
+        this.view.getSidebar().updateUndergroundTicketsLabel(this.getNumberTicketsUserPlayer(TicketType.UNDERGROUND));
+        this.view.getSidebar().updateBlackTicketsLabel(this.getNumberTicketsUserPlayer(TicketType.BLACK));
+        this.view.getSidebar().updateDoubleMoveTicketsLabel(this.getNumberTicketsUserPlayer(TicketType.DOUBLE_MOVE));
     }
 
 }
