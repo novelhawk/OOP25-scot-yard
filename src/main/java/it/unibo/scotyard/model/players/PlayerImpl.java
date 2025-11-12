@@ -1,18 +1,41 @@
 package it.unibo.scotyard.model.players;
 
-public class PlayerImpl implements Player{
+import java.util.Map;
 
-    private int currentPosition;
+import it.unibo.scotyard.model.map.MapNode;
 
-    @Override
-    public void setInitialPosition() {
-        // TO DO : generate random initial position 
-        throw new UnsupportedOperationException("Unimplemented method 'getInitialPosition'");
+public abstract class PlayerImpl implements Player{
+
+    protected static final int NONE = 0;
+    protected static final int INFINITE = -1;
+
+    protected MapNode currentPosition;
+    protected Map<TicketType,Integer> tickets;
+
+    public PlayerImpl(){
+        this.currentPosition = setInitialPosition();
+        this.tickets = this.setInitialTickets();
     }
 
     @Override
-    public int getCurrentPosition(){
+    public abstract Map<TicketType, Integer> setInitialTickets();
+
+    @Override
+    public MapNode setInitialPosition() {
+        return new MapNode(0, 0, 0);
+        // TODO : generate random initial position 
+        //throw new UnsupportedOperationException("Unimplemented method 'getInitialPosition'");
+    }
+
+    @Override
+    public MapNode getCurrentPosition(){
         return this.currentPosition;
     }
+
+    @Override
+    public int getNumberTickets(TicketType ticketType){
+        return this.tickets.get(ticketType);
+    }
+
     
 }

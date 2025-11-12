@@ -11,8 +11,10 @@ public interface Model {
      * Initializes the model by loading required data.
      * 
      * @throws IllegalStateException if initialization fails
+     * @param gameMode the selected game mode
+     * @param levelDifficulty the selected level of difficulty
      */
-    void initialize();
+    void initialize(String gameMode, String levelDifficulty);
 
     /**
      * Returns the loaded map data.

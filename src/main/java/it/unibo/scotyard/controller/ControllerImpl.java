@@ -62,10 +62,9 @@ public final class ControllerImpl implements Controller {
 
     @Override
     public void startGame(String gameMode, String difficultyLevel, String playerName) {
-        // TO DO : usare i parametri passati
 
-        // Load map data from model
-        this.model.initialize();
+        // Initialize the game and load map data from model
+        this.model.initialize(gameMode, difficultyLevel);
 
         // Initialize view with map data
         this.view.initialize(this.model.getMapData().info());
