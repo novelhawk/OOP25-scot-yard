@@ -148,10 +148,8 @@ necessari per il rendering senza dare accesso a tutta la logica di
 business del model. MapInfo espone stream di nodi e connessioni invece di
 liste, permettendo un'elaborazione più efficiente e funzionale dei dati.
 
-La view, quando riceve il MapInfo attraverso il metodo initialize, crea
-due componenti principali: il MapPanel e la Sidebar. Il MapPanel è il
-cuore della rappresentazione grafica della mappa.
-La Sidebar è //TODO.
+//IRE 
+Il controller chiama il metodo loadGamePanel in cui vengono creati la GameView e il GameController. Per creare la prima viene passato come argomento un'implementazione di MapInfo, ottenuta chiamando il metodo getMapData.info del Model. La GameView si compone di un pannello principale, il MainPanel che è diviso in due parti : il MapPanel, che è il cuore della rappresentazione grafica della mappa; e la Sidebar, che permette all'utente di tenere traccia di info importanti durante lo svoglimento della partita.
 
 Il MapPanel separa lo spazio logico della mappa dallo spazio fisico dello schermo.
 Permette di definire le coordinate dei nodi una volta sola
@@ -213,19 +211,11 @@ taxi. Se un nodo ha accesso a bus e underground, avrà due archi
 semicircolari, uno verde e uno rosso, che circondano il nodo come una
 corona colorata.
 
-Una volta che la view è stata completamente inizializzata con il MapPanel
-e la Sidebar, il controller invoca il metodo displayWindow della view,
-passando la risoluzione che era stata selezionata all'inizio. La view crea
-quindi un'istanza di WindowImpl con quella risoluzione, imposta il
-mainContainer come contenuto della finestra, e chiama il metodo display
-che rende la finestra visibile. A questo punto l'applicazione entra nello
-stato di gioco attivo, anche se per il momento mostra solo la mappa
-statica senza interazioni.
+//IRE
+La Sidebar, in particolare, contiene il nome del tipo di giocatore attuale dell'utente (detective o mister X), il numero del round attuale, l'inventario (biglietti) e ... 
+//TODO ; bottoni per giocare, bottone che apre schermata con regole
 
-Il mainContainer è un JPanel con layout BorderLayout che contiene il
-MapPanel al centro e la Sidebar a est.
-Dopo aver reso la
-finestra visibile, la view forza un aggiornamento del layout utilizzando
-SwingUtilities.invokeLater per garantire che tutte le operazioni di layout
-e repaint avvengano correttamente sul thread di gestione degli eventi di
-Swing.
+// IRE
+Una volta che la GameView è stata completamente inizializzata con il MapPane le la Sidebar, viene creato il GameController, che prende in ingresso il model del Game, attraverso il metodo getGameData del model, e la GameView. Dopdoiché viene subito aggiornata la sidebar, tramite il metodo updateSidebar del GameController, che aggiorna correttamente il nome del tipo di giocatore dell'utente (a seconda della modalità di gioco), il numero del round e l'inventario. //TODO : aggiunte alla sidebar
+Tutti questi dati vengono presi dal GameController attraverso dei getter che richimano il model Game.
+Una volta fatto ciò, viene mostrato il MainPanel della GameView tramite il metodo displayPanel della view principale e viene poi chiamato il metodo forceLayoutUpdate della view, che prende come parametri il MainPanel e la MapPanel della GameView. In questo metodo la view forza un aggiornamento del layout utilizzando SwingUtilities.invokeLater per garantire che tutte le operazioni di layout e repaint avvengano correttamente sul thread di gestione degli eventi di Swing.

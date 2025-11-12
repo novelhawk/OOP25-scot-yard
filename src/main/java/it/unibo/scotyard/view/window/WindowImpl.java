@@ -15,8 +15,8 @@ public final class WindowImpl extends JFrame implements Window {
     private static final long serialVersionUID = 1L;
     private static final String WINDOW_TITLE = "Scotland Yard";
 
-    private final int windowWidth;
-    private final int windowHeight;
+    private int windowWidth;
+    private int windowHeight;
 
     /**
      * Creates a window with specified resolution.
@@ -28,8 +28,7 @@ public final class WindowImpl extends JFrame implements Window {
         super(WINDOW_TITLE);
         Objects.requireNonNull(resolution, "Resolution cannot be null");
 
-        this.windowWidth = resolution.getWidth();
-        this.windowHeight = resolution.getHeight();
+        this.setResoultion(resolution);
     }
 
     @Override
@@ -48,9 +47,15 @@ public final class WindowImpl extends JFrame implements Window {
         setContentPane(panel);
     }
 
+    private void setResoultion(Size resolution){
+        this.windowWidth = resolution.getWidth();
+        this.windowHeight = resolution.getHeight();
+    }
+
     @Override
-    public void setsMainFeatures(){
+    public void setsMainFeatures(Size resolution){
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setResoultion(resolution);
         setSize(this.windowWidth, this.windowHeight);
         setLocationByPlatform(true);
     }

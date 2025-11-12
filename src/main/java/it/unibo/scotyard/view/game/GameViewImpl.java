@@ -3,10 +3,8 @@ package it.unibo.scotyard.view.game;
 import java.awt.BorderLayout;
 
 import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
 
 import it.unibo.scotyard.commons.dtos.map.MapInfo;
-import it.unibo.scotyard.controller.game.GameController;
 import it.unibo.scotyard.view.map.MapPanel;
 import it.unibo.scotyard.view.sidebar.SidebarPanel;
 
@@ -15,8 +13,6 @@ public class GameViewImpl implements GameView{
     private MapPanel mapPanel;
     private SidebarPanel sidebar;
     private JPanel mainPanel;
-
-    private GameController gameController;
 
     public GameViewImpl(final MapInfo mapInfo){
         this.mapPanel = new MapPanel(mapInfo);

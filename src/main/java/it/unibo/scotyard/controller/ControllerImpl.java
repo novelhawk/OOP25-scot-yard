@@ -64,8 +64,7 @@ public final class ControllerImpl implements Controller {
     }
 
     @Override
-    public void loadGamePanel(final Size resolution){
-        Objects.requireNonNull(resolution, "Resolution cannot be null");
+    public void loadGamePanel(){
         final GameView gameView = this.view.createGameView(this.model.getMapData().info());
         final GameController gameController = new GameControllerImpl(this.model.getGameData(), gameView);
         gameController.updateSidebar();
@@ -79,7 +78,7 @@ public final class ControllerImpl implements Controller {
         this.model.initialize(gameMode, difficultyLevel);
 
         // Load the game panel
-        this.loadGamePanel(selectedResolution);
+        this.loadGamePanel();
     }
 
     @Override
@@ -92,7 +91,7 @@ public final class ControllerImpl implements Controller {
     private void run(final Size resolution) {
         this.selectedResolution = Objects.requireNonNull(resolution, "Resolution cannot be null");
 
-        this.view.setWindowMainFeatures();
+        this.view.setWindowMainFeatures(resolution);
         this.loadMainMenu();
     }
 }

@@ -10,7 +10,6 @@ import javax.swing.SwingUtilities;
 
 import it.unibo.scotyard.commons.dtos.map.MapInfo;
 import it.unibo.scotyard.commons.engine.Size;
-import it.unibo.scotyard.controller.game.GameController;
 import it.unibo.scotyard.controller.gamelauncher.GameLauncherController;
 import it.unibo.scotyard.view.game.GameView;
 import it.unibo.scotyard.view.game.GameViewImpl;
@@ -50,8 +49,8 @@ public final class ViewImpl implements View {
     }
 
     @Override
-    public void setWindowMainFeatures(){
-        this.window.setsMainFeatures();
+    public void setWindowMainFeatures(Size resolution){
+        this.window.setsMainFeatures(resolution);
     }
 
     @Override

@@ -30,11 +30,15 @@ public final class SidebarPanel extends JPanel {
     
     // Typography
     private static final Font TITLE_FONT = new Font("Arial", Font.BOLD, 16);
-    private static final Font ROUND_FONT = new Font("Arial", Font.PLAIN, 14);
-    private static final Font TICKET_FONT = new Font("Arial", Font.PLAIN, 11);
+    private static final Font SUBTITLE_FONT = new Font("Arial", Font.BOLD, 14);
+    private static final Font TICKETS_FONT = new Font("Arial", Font.PLAIN, 11);
 
     // Layout spacing
     private static final int SPACING = 10;
+    private static final int SMALL_SPACING = 6;
+
+    // Texts
+    private static final String  INVENTORY_TEXT = "Inventario";
 
     // Components
     JLabel currentGameModeLabel;
@@ -71,6 +75,9 @@ public final class SidebarPanel extends JPanel {
         this.add(roundLabel);
         this.add(Box.createVerticalStrut(SPACING));
 
+        this.add(createInventoryLabel());
+        this.add(Box.createVerticalStrut(SMALL_SPACING));
+
 
     }
 
@@ -84,9 +91,17 @@ public final class SidebarPanel extends JPanel {
 
     private JLabel createCountRoundLabel(){
         final JLabel label = new JLabel("Round : ");
-        label.setFont(ROUND_FONT);
+        label.setFont(SUBTITLE_FONT);
         label.setForeground(ACCENT_COLOR);
         label.setAlignmentX(Component.CENTER_ALIGNMENT);
+        return label;
+    }
+
+    private JLabel createInventoryLabel(){
+        final JLabel label = new JLabel(INVENTORY_TEXT);
+        label.setFont(SUBTITLE_FONT);
+        label.setForeground(ACCENT_COLOR);
+        label.setAlignmentX(Component.LEFT_ALIGNMENT);
         return label;
     }
 

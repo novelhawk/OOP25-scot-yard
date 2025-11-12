@@ -33,10 +33,8 @@ public interface Controller {
 
     /**
      * Loads the game panel and initializes the view with map data.
-     * 
-     * @param resolution the resoultion of the window
      */
-    void loadGamePanel(final Size resolution);
+    void loadGamePanel();
 
     /**
      * Starts the game with selected configuration.
