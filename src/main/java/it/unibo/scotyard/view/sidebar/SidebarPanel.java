@@ -1,17 +1,23 @@
 package it.unibo.scotyard.view.sidebar;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextArea;
 
 import it.unibo.scotyard.model.game.GameMode;
+import it.unibo.scotyard.view.game.GameView;
 
 /**
  * Sidebar panel for game UI.
@@ -29,21 +35,22 @@ public final class SidebarPanel extends JPanel {
     private static final Color ACCENT_COLOR = new Color(255, 255, 255);
     
     // Typography
-    private static final Font TITLE_FONT = new Font("Arial", Font.BOLD, 16);
-    private static final Font SUBTITLE_FONT = new Font("Arial", Font.BOLD, 14);
-    private static final Font TICKETS_FONT = new Font("Arial", Font.PLAIN, 11);
+    private static final Font TITLE_FONT = new Font("Arial", Font.BOLD, 20);
+    private static final Font SUBTITLE_FONT = new Font("Arial", Font.BOLD, 16);
+    private static final Font TEXT_FONT = new Font("Arial", Font.PLAIN, 14);
 
     // Layout spacing
     private static final int SPACING = 10;
     private static final int SMALL_SPACING = 6;
 
     // Texts
-    private static final String  INVENTORY_TEXT = "Inventario";
-    private static final String TAXI_TICKETS_TEXT = "Biglietti Taxi";
-    private static final String BUS_TICKETS_TEXT = "Biglietti Bus";
-    private static final String UNDERGROUND_TICKETS_TEXT = "Biglietti Metro";
+    private static final String INVENTORY_TEXT = "Inventario";
+    private static final String TAXI_TICKETS_TEXT = "Biglietti taxi";
+    private static final String BUS_TICKETS_TEXT = "Biglietti bus";
+    private static final String UNDERGROUND_TICKETS_TEXT = "Biglietti metro";
     private static final String BLACK_TICKETS_TEXT = "Biglietti neri";
     private static final String DOUBLE_MOVE_TICKETS_TEXT = "Biglietti doppia mossa";
+    private static final String LOAD_RULES_TEXT = "Regole";
 
     // Components
     JLabel currentGameModeLabel;
@@ -53,15 +60,20 @@ public final class SidebarPanel extends JPanel {
     JLabel undergroundTicketsLabel;
     JLabel blackTicketsLabel;
     JLabel doubleMoveTicketsLabel;
+    JButton loadRulesButton;
     
+    GameView gameView;
+    GameMode currentGameMode;
 
     /**
      * Creates a sidebar panel.
      */
-    public SidebarPanel() {
+    public SidebarPanel(GameView gameView) {
         setupSidebar();
         buildContent();
+        this.gameView = gameView;
     }
+
 
     // Configure sidebar properties
     private void setupSidebar() {
@@ -98,6 +110,9 @@ public final class SidebarPanel extends JPanel {
         this.add(Box.createVerticalStrut(SMALL_SPACING));
         this.doubleMoveTicketsLabel = createTicketLabel(DOUBLE_MOVE_TICKETS_TEXT);
         this.add(doubleMoveTicketsLabel);
+        this.add(Box.createVerticalStrut(SPACING));
+        this.loadRulesButton = createLoadRulesButton(LOAD_RULES_TEXT);
+        this.add(loadRulesButton);
   
         this.add(Box.createVerticalGlue());
     }
@@ -106,6 +121,7 @@ public final class SidebarPanel extends JPanel {
         final JLabel label = new JLabel("Player");
         label.setFont(TITLE_FONT);
         label.setForeground(ACCENT_COLOR);
+        label.setAlignmentY(Component.TOP_ALIGNMENT);
         label.setAlignmentX(Component.CENTER_ALIGNMENT);
         return label;
     }
@@ -114,6 +130,7 @@ public final class SidebarPanel extends JPanel {
         final JLabel label = new JLabel("Round : ");
         label.setFont(SUBTITLE_FONT);
         label.setForeground(ACCENT_COLOR);
+        label.setAlignmentY(Component.TOP_ALIGNMENT);
         label.setAlignmentX(Component.CENTER_ALIGNMENT);
         return label;
     }
@@ -122,28 +139,95 @@ public final class SidebarPanel extends JPanel {
         final JLabel label = new JLabel(INVENTORY_TEXT);
         label.setFont(SUBTITLE_FONT);
         label.setForeground(ACCENT_COLOR);
+        label.setAlignmentY(Component.TOP_ALIGNMENT);
         label.setAlignmentX(Component.CENTER_ALIGNMENT);
         return label;
     }
 
     private JLabel createTicketLabel(String text){
         final JLabel label = new JLabel(text);
-        label.setFont(TICKETS_FONT);
+        label.setFont(TEXT_FONT);
         label.setForeground(ACCENT_COLOR);
+        label.setAlignmentY(Component.TOP_ALIGNMENT);
         label.setAlignmentX(Component.CENTER_ALIGNMENT);
         return label;
     }
 
+    /*
+     * This method is called by the GameController. It creates the main JPanel
+     * of a small window which displays the summary of the rules.
+     * The window will be created by the GameController. 
+     */
+    public JPanel createRulesPanel(){
+        final JPanel panel = new JPanel(new BorderLayout());
+        panel.setBorder(BorderFactory.createEmptyBorder(PADDING, PADDING, PADDING, PADDING));
+        panel.setBackground(BACKGROUND_COLOR);
+        JTextArea textArea = new JTextArea();
+        textArea.setFont(TEXT_FONT);
+        if(this.currentGameMode.equals(GameMode.DETECTIVE)){
+            textArea.append("Nel gioco sono presenti : 1 detective, 1 fuggitivo (Mister X) e 2 o 3 bobby (aiutanti del detective).\n"
+            + "L'obiettivo del detective è catturare Mister X il prima possibile. Il gioco si compone di 23 round.\n"
+            + "La posizione di Mister X è nascosta, ma è possibile vedere quali mezzi usa nei suoi spostamenti (tranne \n"
+            + "se utilizza un biglietto nero) e la sua posizione viene rivelata dopo i turni : 3, 8, 13.\n"
+            + "Il detective e i bobby possono muoversi su tre mezzi di trasporto : taxi, bus, metropolitana.\n"
+            + "Il traghetto può essere usato solo da Mister X, con i biglietti neri. Il detective ha un numero limitato \n"
+            + "di biglietti per ciascun mezzo; mentre i bobby no. I vari giocatori non possono trovarsi in contemporanea \n"
+            + "su una stessa posizione della mappa. Se questo accade con un detective e Mister X, o con un bobby e \n"
+            + "Mister X, allora il gioco termina, con la vittoria del detective. \n" 
+            + "Il gioco, invece, termina con la vittoria di Mister X se il detective e i bobby non lo hanno preso alla \n"
+            + "fine dell'ultimo round, oppure se il detective non può più muoversi (in un qualsiasi turno) a causa \n"
+            + "dell'esaurimento dei suoi biglietti.");
+        }
+        if(this.currentGameMode.equals(GameMode.MISTER_X)){
+            textArea.setText("Nel gioco sono presenti : 1 detective, 1 fuggitivo (Mister X) e 2 o 3 bobby (aiutanti del detective).\n"
+            + "L'obiettivo di Mister X è non farsi catturare dal detective e dai bobby. Il gioco si compone di 23 round.\n"
+            + "La posizione di Mister X è nascosta ma l'avversario può vedere quali mezzi usa nei suoi spostamenti e la \n"
+            + "sua posizione viene rivelata dopo i turni : 3, 8, 13.\n"
+            + "Mister X può utilizzare i tre mezzi di trasporto principali (taxi, bus, metropolitana) senza limiti, dato \n " 
+            + "che non ha dei biglietti infiniti per questi mezzi. Mister X possiede, però, dei biglietti speciali : \n"
+            + "- biglietto doppia mossa, che gli consente di fare due spostamenti (con mezzi diversi) in un unico turno\n"
+            + "- biglietto nero, che nasconde il mezzo utilizzato e che consente l'uso del traghetto\n"
+            + "  (non usaebile in altro modo).\n" 
+            + "Il gioco termina con la vittoria del detective se Mister X viene catturato entro la fine dell'ultimo round.\n"
+            + "Altrimenti, il gioco termina con la vittoria di Mister X se non viene catturato entro la fine dell'ultimo \n" 
+            + "round, oppure se, in un qualsiasi turno il detective non può più effettuare spostamenti.");
+        }
+        textArea.setBackground(BACKGROUND_COLOR);
+        textArea.setForeground(ACCENT_COLOR);
+        panel.add(textArea, BorderLayout.CENTER);
+        return panel;
+    }
+
+    private JButton createLoadRulesButton(String text){
+        final JButton button = new JButton(text);
+        button.setFont(TEXT_FONT);
+        button.setBackground(ACCENT_COLOR);
+        button.setForeground(BACKGROUND_COLOR);
+        button.setAlignmentY(Component.BOTTOM_ALIGNMENT);
+        button.setAlignmentX(Component.CENTER_ALIGNMENT);
+        button.addActionListener(new ActionListener(){
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                gameView.displayRulesWindow(createRulesPanel());
+            }
+            
+        });
+        return button;
+    }
+
+    
     /**
      * Sets the game mode label, according to the game mode selected.
      * 
      * @param gameMode the game mode chosen by the user
      */
     public void setGameModeLabel(GameMode gameMode){
-        if(gameMode.equals(GameMode.DETECTIVE)){
+        this.currentGameMode = gameMode;
+        if(this.currentGameMode.equals(GameMode.DETECTIVE)){
             this.currentGameModeLabel.setText("Detective");
         } else{
-            if(gameMode.equals(GameMode.MISTER_X)){
+            if(this.currentGameMode.equals(GameMode.MISTER_X)){
                 this.currentGameModeLabel.setText("Mister X");
             }
         }

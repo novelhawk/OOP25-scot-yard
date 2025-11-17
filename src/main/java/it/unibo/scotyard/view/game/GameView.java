@@ -21,4 +21,12 @@ public interface GameView {
      * @return the map panel component
      */
     MapPanel getMapPanel();
+
+    /**
+     * Displays the small window which displays a summary of the game rules.
+     * This method is called after the user has pressed the button rules in the sidebar.
+     * 
+     * @param panel the panel of the rules window.
+     */
+    void displayRulesWindow(JPanel panel);
 }

@@ -56,7 +56,6 @@ public final class ControllerImpl implements Controller {
         this.displayPanel(menuController.getMainPanel());
     }
 
-
     @Override
     public void loadNewGameMenu(){
         final NewGameMenuController menuController = new NewGameMenuControllerImpl(this, this.view);
@@ -91,7 +90,7 @@ public final class ControllerImpl implements Controller {
     private void run(final Size resolution) {
         this.selectedResolution = Objects.requireNonNull(resolution, "Resolution cannot be null");
 
-        this.view.setWindowMainFeatures(resolution);
+        this.view.setWindowMainFeatures(this.selectedResolution);
         this.loadMainMenu();
     }
 }

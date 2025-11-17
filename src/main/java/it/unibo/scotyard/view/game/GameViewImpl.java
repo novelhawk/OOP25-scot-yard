@@ -5,10 +5,17 @@ import java.awt.BorderLayout;
 import javax.swing.JPanel;
 
 import it.unibo.scotyard.commons.dtos.map.MapInfo;
+import it.unibo.scotyard.commons.engine.Size;
 import it.unibo.scotyard.view.map.MapPanel;
 import it.unibo.scotyard.view.sidebar.SidebarPanel;
+import it.unibo.scotyard.view.window.Window;
+import it.unibo.scotyard.view.window.WindowImpl;
 
 public class GameViewImpl implements GameView{
+
+    private static final int SMALL_WINDOW_WIDTH = 700;
+    private static final int SMALL_WINDOW_HEIGHT = 270;
+    private static final String RULES_WINDOW_TITLE = "Regole";
 
     private MapPanel mapPanel;
     private SidebarPanel sidebar;
@@ -16,7 +23,7 @@ public class GameViewImpl implements GameView{
 
     public GameViewImpl(final MapInfo mapInfo){
         this.mapPanel = new MapPanel(mapInfo);
-        this.sidebar = new SidebarPanel();
+        this.sidebar = new SidebarPanel(this);
 
         this.mainPanel = new JPanel(new BorderLayout());
         this.mainPanel.add(this.sidebar, BorderLayout.EAST);
@@ -36,5 +43,15 @@ public class GameViewImpl implements GameView{
     @Override
     public MapPanel getMapPanel() {
         return this.mapPanel;
+    }
+
+    @Override
+    public void displayRulesWindow(JPanel panel){
+        final Size smallSize = Size.of(SMALL_WINDOW_WIDTH, SMALL_WINDOW_HEIGHT);
+        Window rulesWindow = new WindowImpl(smallSize, RULES_WINDOW_TITLE);
+        rulesWindow.setsMainFeatures(smallSize);
+        rulesWindow.setHideOnClose();
+        rulesWindow.setBody(panel);
+        rulesWindow.display();
     }
 }

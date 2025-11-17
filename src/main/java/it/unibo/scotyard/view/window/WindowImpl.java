@@ -13,7 +13,6 @@ import it.unibo.scotyard.commons.engine.Size;
 public final class WindowImpl extends JFrame implements Window {
 
     private static final long serialVersionUID = 1L;
-    private static final String WINDOW_TITLE = "Scotland Yard";
 
     private int windowWidth;
     private int windowHeight;
@@ -24,8 +23,8 @@ public final class WindowImpl extends JFrame implements Window {
      * @param resolution the window size
      * @throws NullPointerException if resolution is null
      */
-    public WindowImpl(final Size resolution) {
-        super(WINDOW_TITLE);
+    public WindowImpl(final Size resolution, String windowTitle) {
+        super(windowTitle);
         Objects.requireNonNull(resolution, "Resolution cannot be null");
 
         this.setResoultion(resolution);
@@ -64,4 +63,10 @@ public final class WindowImpl extends JFrame implements Window {
     public void display() {
         setVisible(true);
     }
+
+    @Override
+    public void setHideOnClose(){
+        setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+    }
+    
 }

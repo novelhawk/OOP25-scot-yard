@@ -23,6 +23,7 @@ import it.unibo.scotyard.view.window.WindowImpl;
  * view implementation coordinating all UI components
  */
 public final class ViewImpl implements View {
+    private static final String MAIN_WINDOW_TITLE = "Scotland Yard";
 
     private Window window;
     private JPanel mainContainer;
@@ -32,7 +33,7 @@ public final class ViewImpl implements View {
      */
     public ViewImpl() {
         this.mainContainer = new JPanel(new BorderLayout());
-        this.window = new WindowImpl(this.getMaxResolution());
+        this.window = new WindowImpl(this.getMaxResolution(), MAIN_WINDOW_TITLE);
     }
 
     @Override

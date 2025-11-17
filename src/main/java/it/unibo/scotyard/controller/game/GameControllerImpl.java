@@ -51,13 +51,14 @@ public class GameControllerImpl implements GameController {
 
     @Override
     public void updateSidebar(){
-        this.view.getSidebar().setGameModeLabel(this.getGameMode());
-        this.view.getSidebar().updateRoundLabel(this.getNumberRound());
-        this.view.getSidebar().updateTaxiTicketsLabel(this.getNumberTicketsUserPlayer(TicketType.TAXI));
-        this.view.getSidebar().updateBusTicketsLabel(this.getNumberTicketsUserPlayer(TicketType.BUS));
-        this.view.getSidebar().updateUndergroundTicketsLabel(this.getNumberTicketsUserPlayer(TicketType.UNDERGROUND));
-        this.view.getSidebar().updateBlackTicketsLabel(this.getNumberTicketsUserPlayer(TicketType.BLACK));
-        this.view.getSidebar().updateDoubleMoveTicketsLabel(this.getNumberTicketsUserPlayer(TicketType.DOUBLE_MOVE));
+        SidebarPanel sidebar = this.getSidebarPanel();
+        sidebar.setGameModeLabel(this.getGameMode());
+        sidebar.updateRoundLabel(this.getNumberRound());
+        sidebar.updateTaxiTicketsLabel(this.getNumberTicketsUserPlayer(TicketType.TAXI));
+        sidebar.updateBusTicketsLabel(this.getNumberTicketsUserPlayer(TicketType.BUS));
+        sidebar.updateUndergroundTicketsLabel(this.getNumberTicketsUserPlayer(TicketType.UNDERGROUND));
+        sidebar.updateBlackTicketsLabel(this.getNumberTicketsUserPlayer(TicketType.BLACK));
+        sidebar.updateDoubleMoveTicketsLabel(this.getNumberTicketsUserPlayer(TicketType.DOUBLE_MOVE));
     }
 
 }
