@@ -52,16 +52,39 @@ la view notifica il controller della selezione, che a sua volta invoca la
 callback passata durante l'inizializzazione, chiudendo poi la finestra
 del launcher.
 
-A questo punto entra in gioco il secondo controller intermedio, lo
-StartMenuController. Quando la callback viene eseguita, il ControllerImpl
-memorizza la risoluzione selezionata e crea un'istanza di
-StartMenuControllerImpl, passandogli un riferimento a se stesso e alla
-view. Questo controller ha il compito di gestire il menu principale del
-gioco, che viene visualizzato attraverso la StartMenuViewImpl.
-//TODO.
-Quando viene premuto il pulsante di avvio, il menu controller invoca il
-metodo startGame del controller principale, chiudendo poi la finestra del
-menu.
+// IRE
+Quando la callback viene eseguita, il ControllerImpl memorizza la 
+risoluzione selezionata e crea una nuova finestra, che sarà poi la
+finestra principale, in cui verrà mostrato il menù e anche il gioco
+vero e proprio. Una volta creata questa, viene caricato il menù principale,
+attraverso la creazione di un controller intermedio : MainMenuController.
+Questo controller ha il compito di gestire il menu principale del
+gioco. Al suo interno viene creata la MainMenuView nel metodo getMainPanel
+del relativo controller, che restituisce il JPanel creato dalla view e che viene
+restituito dal metodo getMainPanel della MainMenuView. In questo JPanel sono 
+presenti 4 JButton : "Nuova partita" permette di iniziare una nuova partita, 
+"Carica partita" permette di caricare una delle partite salvate (//TODO), 
+"Statistiche" permette di visualizzare la partita più lunga e il numero di vittorie 
+e sconfitte nelle varie partite (//TODO), "Esci" che chiude l'applicazione. 
+Il controller principale usa questo JPanel, tramite il metodo getMainPanel del
+MainMenuController, come argomento per il metodo displayPanel che, al suo interno, 
+richiama il metodo displayPanel della view principale, prendendo sempre come 
+argomento un JPanel. 
+
+//IRE
+Con la pressione del JButton "Nuova partita" viene chiamato il metodo
+newGameMenu del MainMenuController, in cui viene chiamato il metodo
+loadNewGameMenu del contoller principale. In questo viene creato un nuovo 
+controller intermedio, ovvero il NewGameMenuController, che si occupa della 
+gestione del menù per creare una nuova partita. Analogamente al main menu, viene
+creata la NewGameMenuView nel relativo controller nel metodo getMainPanel, che 
+restituisce il JPanel creato dalla view e che viene restituito dal metodo getMainPanel
+della view. In questo JPanel l'utente inserisce il proprio nome e poi seleziona : la
+modalità di gioco (Mister X o Detective) e il livello di difficoltà (facile, medio, 
+difficile). Sono presenti due JButton : "Torna indietro" invoca il metodo loadMainMenu 
+del controller princiaple, riportando al main menu; "Avvia gioco" invoca il metodo
+startGame del controller principale, passando tre argomenti ovvero la modalità di gioco
+selezionata, il livello di difficoltà selezionato e il nome del giocatore.
 
 Il metodo startGame rappresenta il punto di svolta dove l'applicazione
 passa dalla fase di configurazione alla fase di gioco vera e propria. La

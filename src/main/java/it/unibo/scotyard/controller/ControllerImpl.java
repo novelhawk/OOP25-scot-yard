@@ -1,12 +1,15 @@
 package it.unibo.scotyard.controller;
 
 import java.util.Objects;
+import javax.swing.JPanel;
 
 import it.unibo.scotyard.commons.engine.Size;
 import it.unibo.scotyard.controller.gamelauncher.GameLauncherController;
 import it.unibo.scotyard.controller.gamelauncher.GameLauncherControllerImpl;
-import it.unibo.scotyard.controller.menu.StartMenuController;
-import it.unibo.scotyard.controller.menu.StartMenuControllerImpl;
+import it.unibo.scotyard.controller.menu.MainMenuController;
+import it.unibo.scotyard.controller.menu.MainMenuControllerImpl;
+import it.unibo.scotyard.controller.menu.NewGameMenuController;
+import it.unibo.scotyard.controller.menu.NewGameMenuControllerImpl;
 import it.unibo.scotyard.model.Model;
 import it.unibo.scotyard.view.ViewImpl;
 
@@ -40,7 +43,27 @@ public final class ControllerImpl implements Controller {
     }
 
     @Override
-    public void startGame() {
+    public void displayPanel(JPanel panel){
+        this.view.displayPanel(panel);
+    }
+
+    @Override
+    public void loadMainMenu(){
+        final MainMenuController menuController = new MainMenuControllerImpl(this, this.view);
+        this.displayPanel(menuController.getMainPanel());
+    }
+
+
+    @Override
+    public void loadNewGameMenu(){
+        final NewGameMenuController menuController = new NewGameMenuControllerImpl(this, this.view);
+        this.displayPanel(menuController.getMainPanel());
+    }
+
+    @Override
+    public void startGame(String gameMode, String difficultyLevel, String playerName) {
+        // TO DO : usare i parametri passati
+
         // Load map data from model
         this.model.initialize();
 
@@ -48,7 +71,7 @@ public final class ControllerImpl implements Controller {
         this.view.initialize(this.model.getMapData().info());
 
         // Display game window with selected resolution
-        this.view.displayWindow(this.selectedResolution);
+        this.view.displayGameWindow(this.selectedResolution);
     }
 
     @Override
@@ -61,7 +84,7 @@ public final class ControllerImpl implements Controller {
     private void run(final Size resolution) {
         this.selectedResolution = Objects.requireNonNull(resolution, "Resolution cannot be null");
 
-        final StartMenuController menuController = new StartMenuControllerImpl(this, this.view);
-        menuController.run();
+        this.view.setWindowMainFeatures();
+        this.loadMainMenu();
     }
 }
