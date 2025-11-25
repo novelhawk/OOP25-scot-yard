@@ -45,8 +45,8 @@ public final class GameLauncherViewImpl extends JFrame implements GameLauncherVi
     private static final int BUTTON_HEIGHT = 40;
 
     // Color scheme
-    private static final Color BACKGROUND_COLOR = new Color(62, 39, 35);
-    private static final Color ACCENT_COLOR = new Color(255, 171, 145);
+    private static final Color BACKGROUND_COLOR = new Color(0, 0, 0); // black
+    private static final Color ACCENT_COLOR = new Color(31, 81, 255); // neon blue
     private static final Color BUTTON_TEXT_COLOR = BACKGROUND_COLOR;
 
     // Typography

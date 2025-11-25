@@ -1,6 +1,7 @@
 package it.unibo.scotyard.model.players;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class MisterX extends PlayerImpl{
@@ -11,7 +12,6 @@ public class MisterX extends PlayerImpl{
 
     public MisterX() {
         super();
-        //this.tickets = this.setInitialTickets();
     }
 
     @Override
@@ -23,6 +23,12 @@ public class MisterX extends PlayerImpl{
         ticketsMap.put(TicketType.BUS, INFINITE);
         ticketsMap.put(TicketType.UNDERGROUND, INFINITE);
         return ticketsMap;
+    }
+
+    @Override
+    public void setInitialPosition(List<Integer> initialPositions) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'setInitialPosition'");
     }
     
 }

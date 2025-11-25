@@ -27,8 +27,8 @@ public final class NewGameMenuViewImpl implements NewGameMenuView {
     private static final int COMBO_HEIGHT = 30;
 
     // Color scheme
-    private static final Color BACKGROUND_COLOR = new Color(62, 39, 35);
-    private static final Color ACCENT_COLOR = new Color(255, 171, 145);
+    private static final Color BACKGROUND_COLOR = new Color(0, 0, 0); // black
+    private static final Color ACCENT_COLOR = new Color(31, 81, 255); // neon blue
 
     // Typography
     private static final Font LABEL_FONT = new Font("Arial", Font.PLAIN, 20);

@@ -1,5 +1,6 @@
 package it.unibo.scotyard.model.players;
 
+import java.util.List;
 import java.util.Map;
 
 import it.unibo.scotyard.model.map.MapNode;
@@ -12,9 +13,10 @@ public interface Player {
     /**
      * Generates a random initial position for the player.
      * 
-     * @return the initial position of the player.ì
+     * @param initialPositions the initial positions (taken from the json of the map)
+     * @return the initial position of the player
      */
-    MapNode setInitialPosition(); 
+    void setInitialPosition(List<Integer> initialPositions); 
 
     /**
      * @return the map containing the number of tickets possessed by the player for each ticket type

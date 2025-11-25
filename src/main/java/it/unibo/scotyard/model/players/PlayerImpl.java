@@ -1,5 +1,6 @@
 package it.unibo.scotyard.model.players;
 
+import java.util.List;
 import java.util.Map;
 
 import it.unibo.scotyard.model.map.MapNode;
@@ -13,19 +14,20 @@ public abstract class PlayerImpl implements Player{
     protected Map<TicketType,Integer> tickets;
 
     public PlayerImpl(){
-        this.currentPosition = setInitialPosition();
         this.tickets = this.setInitialTickets();
+        //this.setInitialPosition(null);
     }
 
     @Override
     public abstract Map<TicketType, Integer> setInitialTickets();
 
-    @Override
-    public MapNode setInitialPosition() {
-        return new MapNode(0, 0, 0);
-        // TODO : generate random initial position 
-        //throw new UnsupportedOperationException("Unimplemented method 'getInitialPosition'");
+    protected MapNode generateRandomInitialPosition(List<Integer> initialPositions){
+        MapNode initialMapNode = new MapNode(INFINITE, NONE, INFINITE);
+        return initialMapNode;
     }
+
+    @Override
+    public abstract void setInitialPosition(List<Integer> initialPositions);
 
     @Override
     public MapNode getCurrentPosition(){

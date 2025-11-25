@@ -43,7 +43,7 @@ public class GameImpl implements Game {
             case "Mister X" :
                 return GameMode.MISTER_X;
             default : 
-                return GameMode.DETECTIVE; //TOMODIFY
+                return GameMode.DETECTIVE; 
         }
     }
 
@@ -56,7 +56,7 @@ public class GameImpl implements Game {
             case "Difficle" : 
                 return GameDifficulty.DIFFICULT;
             default :
-                return GameDifficulty.EASY; //TOMODIFY
+                return GameDifficulty.EASY; 
         }
     }
 

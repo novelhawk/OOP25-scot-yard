@@ -31,13 +31,19 @@ public final class SidebarPanel extends JPanel {
     private static final int PADDING = 10;
 
     // Color scheme
-    private static final Color BACKGROUND_COLOR = new Color(62, 39, 35);
-    private static final Color ACCENT_COLOR = new Color(255, 255, 255);
+    private static final Color BACKGROUND_COLOR = new Color(0, 0, 0); // black
+    private static final Color ACCENT_COLOR = new Color(31, 81, 255); // neon blue
+    private static final Color TAXI_COLOR = new Color(255, 255, 85); // yellow
+    private static final Color BUS_COLOR = new Color(58, 132, 36); // green
+    private static final Color UNDERGROUND_COLOR = new Color(200, 43, 29); // red
+    private static final Color FERRY_COLOR = new Color(128, 128, 128); // grey
+    private static final Color DOUBLE_MOVE_COLOR = new Color(255,255,255); // white
     
     // Typography
-    private static final Font TITLE_FONT = new Font("Arial", Font.BOLD, 20);
-    private static final Font SUBTITLE_FONT = new Font("Arial", Font.BOLD, 16);
+    private static final Font TITLE_FONT = new Font("Arial", Font.BOLD, 24);
+    private static final Font SUBTITLE_FONT = new Font("Arial", Font.BOLD, 18);
     private static final Font TEXT_FONT = new Font("Arial", Font.PLAIN, 14);
+    private static final Font BUTTON_FONT = new Font("Arial", Font.BOLD, 14);
 
     // Layout spacing
     private static final int SPACING = 10;
@@ -86,7 +92,6 @@ public final class SidebarPanel extends JPanel {
     // Sidebar content
     private void buildContent() {
         this.currentGameModeLabel = createCurrentGameModeLabel();
-        this.add(Box.createVerticalGlue());
         this.add(this.currentGameModeLabel);
         this.add(Box.createVerticalStrut(SPACING));
 
@@ -111,6 +116,9 @@ public final class SidebarPanel extends JPanel {
         this.doubleMoveTicketsLabel = createTicketLabel(DOUBLE_MOVE_TICKETS_TEXT);
         this.add(doubleMoveTicketsLabel);
         this.add(Box.createVerticalStrut(SPACING));
+
+        // TODO : aggiungere pannello per tracciamento posizioni e mezzi usati da Mister X
+
         this.loadRulesButton = createLoadRulesButton(LOAD_RULES_TEXT);
         this.add(loadRulesButton);
   
@@ -147,7 +155,25 @@ public final class SidebarPanel extends JPanel {
     private JLabel createTicketLabel(String text){
         final JLabel label = new JLabel(text);
         label.setFont(TEXT_FONT);
-        label.setForeground(ACCENT_COLOR);
+        switch (text) {
+            case TAXI_TICKETS_TEXT:
+                label.setForeground(TAXI_COLOR);
+                break;
+            case BUS_TICKETS_TEXT:
+                label.setForeground(BUS_COLOR);
+                break;
+            case UNDERGROUND_TICKETS_TEXT:
+                label.setForeground(UNDERGROUND_COLOR);
+                break;
+            case BLACK_TICKETS_TEXT:
+                label.setForeground(FERRY_COLOR);
+                break;
+            case DOUBLE_MOVE_TICKETS_TEXT:
+                label.setForeground(DOUBLE_MOVE_COLOR);
+                break;
+            default:
+                label.setForeground(ACCENT_COLOR);
+        }
         label.setAlignmentY(Component.TOP_ALIGNMENT);
         label.setAlignmentX(Component.CENTER_ALIGNMENT);
         return label;
@@ -200,18 +226,16 @@ public final class SidebarPanel extends JPanel {
 
     private JButton createLoadRulesButton(String text){
         final JButton button = new JButton(text);
-        button.setFont(TEXT_FONT);
+        button.setFont(BUTTON_FONT);
         button.setBackground(ACCENT_COLOR);
         button.setForeground(BACKGROUND_COLOR);
         button.setAlignmentY(Component.BOTTOM_ALIGNMENT);
         button.setAlignmentX(Component.CENTER_ALIGNMENT);
         button.addActionListener(new ActionListener(){
-
             @Override
             public void actionPerformed(ActionEvent e) {
                 gameView.displayRulesWindow(createRulesPanel());
             }
-            
         });
         return button;
     }
