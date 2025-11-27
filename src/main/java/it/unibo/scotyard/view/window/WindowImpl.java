@@ -1,5 +1,6 @@
 package it.unibo.scotyard.view.window;
 
+import java.awt.Dimension;
 import java.util.Objects;
 
 import javax.swing.JFrame;
@@ -14,13 +15,15 @@ public final class WindowImpl extends JFrame implements Window {
 
     private static final long serialVersionUID = 1L;
     private static final String WINDOW_TITLE = "Scotland Yard";
+    private static final double ASPECT_RATIO = 2570.0 / 1926.0;
+    private static final int MIN_WIDTH = 800;
 
     private final int windowWidth;
     private final int windowHeight;
 
     /**
      * Creates a window with specified resolution.
-     * 
+     *
      * @param resolution the window size
      * @throws NullPointerException if resolution is null
      */
@@ -46,10 +49,13 @@ public final class WindowImpl extends JFrame implements Window {
     public void setBody(final JPanel panel) {
         Objects.requireNonNull(panel, "Panel cannot be null");
         setContentPane(panel);
+
+        // Imposta dimensione minima proporzionale
+        setMinimumSize(new Dimension(MIN_WIDTH, (int) (MIN_WIDTH / ASPECT_RATIO)));
     }
 
     @Override
-    public void setsMainFeatures(){
+    public void setsMainFeatures() {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(this.windowWidth, this.windowHeight);
         setLocationByPlatform(true);
@@ -58,5 +64,10 @@ public final class WindowImpl extends JFrame implements Window {
     @Override
     public void display() {
         setVisible(true);
+    }
+
+    @Override
+    public boolean isVisible() {
+        return super.isVisible();
     }
 }

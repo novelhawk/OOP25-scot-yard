@@ -19,27 +19,26 @@ import it.unibo.scotyard.view.window.Window;
 import it.unibo.scotyard.view.window.WindowImpl;
 
 /**
- * view implementation coordinating all UI components
+ * view implementation coordinating all UI components.
  */
 public final class ViewImpl implements View {
 
     private Window window;
     private MapPanel mapPanel;
     private Sidebar sidebar;
-    private JPanel mainContainer;
+    private final JPanel mainContainer;
 
     /**
      * new view instance.
      */
     public ViewImpl() {
         this.mainContainer = new JPanel(new BorderLayout());
-        this.window = new WindowImpl(this.getMaxResolution());
     }
 
     /**
      * Initializes the view with map data.
      * Must be called before displaying the window.
-     * 
+     *
      * @param mapInfo the map information DTO
      * @throws NullPointerException if mapInfo is null
      */
@@ -87,33 +86,53 @@ public final class ViewImpl implements View {
     }
 
     @Override
-    public void setWindowMainFeatures(){
+    public void setWindowMainFeatures() {
+        if (this.window == null) {
+            this.window = new WindowImpl(getMaxResolution());
+            this.window.setBody(this.mainContainer);
+        }
         this.window.setsMainFeatures();
     }
 
     @Override
-    public void displayPanel(JPanel panel){
-        this.mainContainer = panel;
-        this.window.setBody(this.mainContainer);
-        this.window.display();
+    public void displayPanel(final JPanel panel) {
+        Objects.requireNonNull(panel, "Panel cannot be null");
+
+        this.mainContainer.removeAll();
+        this.mainContainer.add(panel, BorderLayout.CENTER);
+        this.mainContainer.revalidate();
+        this.mainContainer.repaint();
+
+        if (this.window != null && !this.window.isVisible()) {
+            this.window.display();
+        }
     }
 
     @Override
     public void displayGameWindow(final Size resolution) {
         Objects.requireNonNull(resolution, "Resolution cannot be null");
-        
-        this.createGamePanel();
-        this.window.setBody(this.mainContainer);
-        this.window.display();
 
+        if (this.window == null) {
+            this.window = new WindowImpl(resolution);
+            this.window.setBody(this.mainContainer);
+            this.window.setsMainFeatures();
+        }
+
+        createGamePanel();
+
+        if (!this.window.isVisible()) {
+            this.window.display();
+        }
         forceLayoutUpdate();
     }
 
     @Override
-    public void createGamePanel(){
-        this.mainContainer = new JPanel(new BorderLayout());
+    public void createGamePanel() {
+        this.mainContainer.removeAll();
         this.mainContainer.add(this.sidebar, BorderLayout.EAST);
         this.mainContainer.add(this.mapPanel, BorderLayout.CENTER);
+        this.mainContainer.revalidate();
+        this.mainContainer.repaint();
     }
 
     @Override

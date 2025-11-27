@@ -12,28 +12,29 @@ public interface View {
 
     /**
      * Displays the main view.
-     * 
+     *
      * @throws IllegalStateException if view not properly initialized
      */
     void display();
 
     /**
      * Returns the main content panel.
-     * 
+     *
      * @return the content panel
      */
     JPanel getContentPane();
 
     /**
      * Displays the game launcher screen.
-     * 
+     *
      * @param controller the launcher controller
      * @throws NullPointerException if controller is null
      */
     void displayLauncher(GameLauncherController controller);
 
-    /*
-     * Sets window main features (deafult close operation, size, location by platform)
+    /**
+     * Sets window main features (deafult close operation, size, location by
+     * platform).
      * To be called before first window display.
      */
     void setWindowMainFeatures();
@@ -41,14 +42,14 @@ public interface View {
     /**
      * Displays the input panel.
      * Used to display MainMenu + NewGameMenu
-     * 
-     * @param panel 
+     *
+     * @param panel
      */
     void displayPanel(JPanel panel);
 
     /**
      * Displays the main game window with specified resolution.
-     * 
+     *
      * @param resolution the window size
      * @throws NullPointerException if resolution is null
      */
@@ -61,7 +62,7 @@ public interface View {
 
     /**
      * Returns the maximum available screen resolution.
-     * 
+     *
      * @return the maximum resolution
      */
     Size getMaxResolution();

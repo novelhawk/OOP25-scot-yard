@@ -1,7 +1,5 @@
 package it.unibo.scotyard.commons.dtos.map;
 
-import java.util.List;
-
 import it.unibo.scotyard.model.map.TransportType;
 
 /**
@@ -24,8 +22,4 @@ public interface Connection {
      */
     TransportType getTransport();
 
-    /**
-     * @return unmodifiable list of intermediate waypoint node ids
-     */
-    List<Integer> getWaypoints();
 }

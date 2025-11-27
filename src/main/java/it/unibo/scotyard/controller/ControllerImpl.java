@@ -24,7 +24,7 @@ public final class ControllerImpl implements Controller {
 
     /**
      * Creates a controller with model and view.
-     * 
+     *
      * @param model the game model
      * @param view  the game view
      * @throws NullPointerException if any parameter is null
@@ -43,26 +43,25 @@ public final class ControllerImpl implements Controller {
     }
 
     @Override
-    public void displayPanel(JPanel panel){
+    public void displayPanel(final JPanel panel) {
         this.view.displayPanel(panel);
     }
 
     @Override
-    public void loadMainMenu(){
+    public void loadMainMenu() {
         final MainMenuController menuController = new MainMenuControllerImpl(this, this.view);
         this.displayPanel(menuController.getMainPanel());
     }
 
-
     @Override
-    public void loadNewGameMenu(){
+    public void loadNewGameMenu() {
         final NewGameMenuController menuController = new NewGameMenuControllerImpl(this, this.view);
         this.displayPanel(menuController.getMainPanel());
     }
 
     @Override
-    public void startGame(String gameMode, String difficultyLevel, String playerName) {
-        // TO DO : usare i parametri passati
+    public void startGame(final String gameMode, final String difficultyLevel, final String playerName) {
+        // TODO: usare i parametri passati
 
         // Load map data from model
         this.model.initialize();

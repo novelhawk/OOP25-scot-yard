@@ -21,21 +21,18 @@ public final class MapData {
     private final List<MapNode> nodes;
     private final List<MapConnection> connections;
     private final List<Integer> revealTurns;
-    private final List<Integer> mrXInitialPositions;
-    private final List<Integer> detectiveInitialPositions;
+    private final List<Integer> initialPositions;
 
     /**
      * Creates a new MapData with the specified configuration.
      * All collection parameters are defensively copied to ensure immutability.
      *
-     * @param name                      the name of the map
-     * @param nodes                     the list of nodes on the map
-     * @param connections               the list of connections between nodes
-     * @param revealTurns               the turns on which Mr. X's position is
-     *                                  revealed
-     * @param mrXInitialPositions       the possible starting positions for Mr. X
-     * @param detectiveInitialPositions the possible starting positions for
-     *                                  detectives
+     * @param name             the name of the map
+     * @param nodes            the list of nodes on the map
+     * @param connections      the list of connections between nodes
+     * @param revealTurns      the turns on which Mr. X's position is revealed
+     * @param initialPositions the pool of possible starting positions for all
+     *                         players
      * @throws NullPointerException if any parameter is null
      */
     public MapData(
@@ -43,16 +40,13 @@ public final class MapData {
             final List<MapNode> nodes,
             final List<MapConnection> connections,
             final List<Integer> revealTurns,
-            final List<Integer> mrXInitialPositions,
-            final List<Integer> detectiveInitialPositions) {
+            final List<Integer> initialPositions) {
         this.name = Objects.requireNonNull(name, "Map name non può essere null");
         this.nodes = List.copyOf(Objects.requireNonNull(nodes, "Nodes non può essere null"));
         this.connections = List.copyOf(Objects.requireNonNull(connections, "Connections non può essere null"));
         this.revealTurns = List.copyOf(Objects.requireNonNull(revealTurns, "Reveal turns non può essere null"));
-        this.mrXInitialPositions = List.copyOf(
-                Objects.requireNonNull(mrXInitialPositions, "Mr. X initial positions non può essere null"));
-        this.detectiveInitialPositions = List.copyOf(
-                Objects.requireNonNull(detectiveInitialPositions, "Detective initial positions non può essere null"));
+        this.initialPositions = List.copyOf(
+                Objects.requireNonNull(initialPositions, "Initial positions non può essere null"));
     }
 
     /**
@@ -92,21 +86,13 @@ public final class MapData {
     }
 
     /**
-     * Returns the possible starting positions for Mr. X.
+     * Returns possible starting positions for all players.
+     * Players should randomly select positions from this list without replacement.
      *
      * @return an unmodifiable list of node IDs
      */
-    public List<Integer> getMrXInitialPositions() {
-        return mrXInitialPositions;
-    }
-
-    /**
-     * Returns the possible starting positions for detectives.
-     *
-     * @return an unmodifiable list of node IDs
-     */
-    public List<Integer> getDetectiveInitialPositions() {
-        return detectiveInitialPositions;
+    public List<Integer> getInitialPositions() {
+        return initialPositions;
     }
 
     /**

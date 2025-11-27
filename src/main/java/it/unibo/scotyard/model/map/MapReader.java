@@ -77,15 +77,11 @@ public class MapReader {
 
             final String name = jsonObject.get("name").getAsString();
             final List<MapNode> nodes = parseNodes(jsonObject.getAsJsonArray("nodes"));
-            final List<MapConnection> connections = parseConnections(jsonObject.getAsJsonArray("connections"));
+            final List<MapConnection> connections = parseConnections(jsonObject);
             final List<Integer> revealTurns = parseIntegerArray(jsonObject.getAsJsonArray("revealTurns"));
+            final List<Integer> initialPositions = parseIntegerArray(jsonObject.getAsJsonArray("initialPositions"));
 
-            final JsonObject initialPositions = jsonObject.getAsJsonObject("initialPositions");
-            final List<Integer> mrXPositions = parseIntegerArray(initialPositions.getAsJsonArray("mrX"));
-            final List<Integer> detectivePositions = parseIntegerArray(
-                    initialPositions.getAsJsonArray("detective"));
-
-            return new MapData(name, nodes, connections, revealTurns, mrXPositions, detectivePositions);
+            return new MapData(name, nodes, connections, revealTurns, initialPositions);
         } catch (Exception e) {
             throw new MapLoadException("Error parsing map data", e);
         }
@@ -94,35 +90,67 @@ public class MapReader {
     private List<MapNode> parseNodes(final JsonArray jsonArray) {
         final List<MapNode> nodes = new ArrayList<>();
 
+        // Nodes are arrays [x, y] with implicit IDs (index + 1)
+        int id = 1;
         for (final JsonElement element : jsonArray) {
-            final JsonObject nodeObj = element.getAsJsonObject();
-            final int id = nodeObj.get("id").getAsInt();
-            final int x = nodeObj.get("x").getAsInt();
-            final int y = nodeObj.get("y").getAsInt();
+            final JsonArray nodeArray = element.getAsJsonArray();
+            final int x = nodeArray.get(0).getAsInt();
+            final int y = nodeArray.get(1).getAsInt();
 
-            nodes.add(new MapNode(id, x, y));
+            nodes.add(new MapNode(id++, x, y));
         }
 
         return nodes;
     }
 
-    private List<MapConnection> parseConnections(final JsonArray jsonArray) {
+    /**
+     * Parses connections from JSON where transports are separated by type.
+     * Has "taxi", "bus", "underground", "black" arrays with [from, to] pairs.
+     *
+     * @param jsonObject the root JSON object containing transport arrays
+     * @return list of all connections combined from all transport types
+     */
+    private List<MapConnection> parseConnections(final JsonObject jsonObject) {
+        final List<MapConnection> connections = new ArrayList<>();
+
+        // Parse each transport type if present
+        if (jsonObject.has("taxi")) {
+            connections.addAll(parseTransportConnections(
+                    jsonObject.getAsJsonArray("taxi"), TransportType.TAXI));
+        }
+        if (jsonObject.has("bus")) {
+            connections.addAll(parseTransportConnections(
+                    jsonObject.getAsJsonArray("bus"), TransportType.BUS));
+        }
+        if (jsonObject.has("underground")) {
+            connections.addAll(parseTransportConnections(
+                    jsonObject.getAsJsonArray("underground"), TransportType.UNDERGROUND));
+        }
+        if (jsonObject.has("black")) {
+            connections.addAll(parseTransportConnections(
+                    jsonObject.getAsJsonArray("black"), TransportType.FERRY));
+        }
+
+        return connections;
+    }
+
+    /**
+     * Parses connections from an array of [from, to] pairs for a specific transport
+     * type.
+     *
+     * @param jsonArray the array of [from, to] pairs
+     * @param transport the transport type for these connections
+     * @return list of connections for this transport type
+     */
+    private List<MapConnection> parseTransportConnections(final JsonArray jsonArray, final TransportType transport) {
         final List<MapConnection> connections = new ArrayList<>();
 
         for (final JsonElement element : jsonArray) {
-            final JsonObject connObj = element.getAsJsonObject();
+            final JsonArray connectionArray = element.getAsJsonArray();
+            final int from = connectionArray.get(0).getAsInt();
+            final int to = connectionArray.get(1).getAsInt();
 
-            final Integer id = connObj.has("id") ? connObj.get("id").getAsInt() : null;
-            final int from = connObj.get("from").getAsInt();
-            final int to = connObj.get("to").getAsInt();
-            final TransportType transport = TransportType.valueOf(connObj.get("transport").getAsString());
-
-            // Parse optional waypoints for visual rendering
-            final List<Integer> waypoints = connObj.has("waypoints")
-                    ? parseIntegerArray(connObj.get("waypoints").getAsJsonArray())
-                    : List.of();
-
-            connections.add(new MapConnection(id, from, to, transport, waypoints));
+            connections.add(new MapConnection(null, from, to, transport));
         }
 
         return connections;
