@@ -11,7 +11,7 @@ public interface Window {
 
     /**
      * Sets the main content panel.
-     * 
+     *
      * @param panel the content panel to display
      * @throws NullPointerException if panel is null
      */
@@ -19,14 +19,14 @@ public interface Window {
 
     /**
      * Returns the window width.
-     * 
+     *
      * @return width in pixels
      */
     int getWindowWidth();
 
     /**
      * Returns the window height.
-     * 
+     *
      * @return height in pixels
      */
     int getWindowHeight();
@@ -43,6 +43,13 @@ public interface Window {
      * Displays the window.
      */
     void display();
+
+    /**
+     * Checks if the window is currently visible.
+     *
+     * @return true if window is visible, false otherwise
+     */
+    boolean isVisible();
 
     /**
      * Hides the window when closing.

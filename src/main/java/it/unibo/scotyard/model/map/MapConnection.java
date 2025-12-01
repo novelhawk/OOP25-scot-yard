@@ -1,22 +1,20 @@
 package it.unibo.scotyard.model.map;
 
-import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
 /**
  * connection between two nodes on the game map.
- * each connection has a transport type and optional waypoints for rendering.
+ * each connection has a transport type.
  */
 public class MapConnection {
     private final Integer id;
     private final int from;
     private final int to;
     private final TransportType transport;
-    private final List<Integer> waypoints;
 
     /**
-     * Creates a connection without an ID or waypoints.
+     * Creates a connection without an ID.
      *
      * @param from      the starting node ID
      * @param to        the destination node ID
@@ -24,11 +22,11 @@ public class MapConnection {
      * @throws NullPointerException if transport is null
      */
     public MapConnection(final int from, final int to, final TransportType transport) {
-        this(null, from, to, transport, List.of());
+        this(null, from, to, transport);
     }
 
     /**
-     * Creates a connection with an ID but no waypoints.
+     * Creates a connection with full details.
      *
      * @param id        the optional connection ID
      * @param from      the starting node ID
@@ -37,26 +35,10 @@ public class MapConnection {
      * @throws NullPointerException if transport is null
      */
     public MapConnection(final Integer id, final int from, final int to, final TransportType transport) {
-        this(id, from, to, transport, List.of());
-    }
-
-    /**
-     * Creates a connection with full details including waypoints.
-     *
-     * @param id        the optional connection ID
-     * @param from      the starting node ID
-     * @param to        the destination node ID
-     * @param transport the transport type for this connection
-     * @param waypoints the list of intermediate waypoint coordinates for rendering
-     * @throws NullPointerException if transport is null
-     */
-    public MapConnection(final Integer id, final int from, final int to,
-            final TransportType transport, final List<Integer> waypoints) {
         this.id = id;
         this.from = from;
         this.to = to;
         this.transport = Objects.requireNonNull(transport, "Transport type cannot be null");
-        this.waypoints = waypoints != null ? List.copyOf(waypoints) : List.of();
     }
 
     /**
@@ -93,15 +75,6 @@ public class MapConnection {
      */
     public TransportType getTransport() {
         return transport;
-    }
-
-    /**
-     * Returns the list of waypoint coordinates for rendering this connection.
-     *
-     * @return an unmodifiable list of waypoint coordinates
-     */
-    public List<Integer> getWaypoints() {
-        return waypoints;
     }
 
     /**

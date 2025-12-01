@@ -20,20 +20,20 @@ import it.unibo.scotyard.view.window.Window;
 import it.unibo.scotyard.view.window.WindowImpl;
 
 /**
- * view implementation coordinating all UI components
+ * view implementation coordinating all UI components.
  */
 public final class ViewImpl implements View {
     private static final String MAIN_WINDOW_TITLE = "Scotland Yard";
 
     private Window window;
-    private JPanel mainContainer;
+    private final JPanel mainContainer;
 
     /**
      * new view instance.
      */
     public ViewImpl() {
         this.mainContainer = new JPanel(new BorderLayout());
-        this.window = new WindowImpl(this.getMaxResolution(), MAIN_WINDOW_TITLE);
+        this.window = new WindowImpl(this.getMaxResolution(), this.mainContainer, MAIN_WINDOW_TITLE);
     }
 
     @Override
@@ -50,21 +50,29 @@ public final class ViewImpl implements View {
     }
 
     @Override
-    public void setWindowMainFeatures(Size resolution){
+    public void setWindowMainFeatures(final Size resolution) {
+        Objects.requireNonNull(this.window, "window cannot be null");
         this.window.setsMainFeatures(resolution);
     }
 
     @Override
-    public GameView createGameView(MapInfo mapInfo) {
+    public GameView createGameView(final MapInfo mapInfo) {
         Objects.requireNonNull(mapInfo, "MapInfo cannot be null");
         return new GameViewImpl(mapInfo);
     }
 
     @Override
-    public void displayPanel(JPanel panel){
-        this.mainContainer = panel;
-        this.window.setBody(this.mainContainer);
-        this.window.display();
+    public void displayPanel(final JPanel panel) {
+        Objects.requireNonNull(panel, "Panel cannot be null");
+
+        this.mainContainer.removeAll();
+        this.mainContainer.add(panel, BorderLayout.CENTER);
+        this.mainContainer.revalidate();
+        this.mainContainer.repaint();
+
+        if (this.window != null && !this.window.isVisible()) {
+            this.window.display();
+        }
     }
 
     @Override
@@ -83,6 +91,4 @@ public final class ViewImpl implements View {
             }
         });
     }
-
-    
 }

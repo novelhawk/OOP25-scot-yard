@@ -45,8 +45,7 @@ public final class MapInfoImpl implements MapInfo {
                 .map(conn -> new ConnectionImpl(
                         conn.getFrom(),
                         conn.getTo(),
-                        conn.getTransport(),
-                        conn.getWaypoints()));
+                        conn.getTransport()));
     }
 
     // extract available transports for a node
