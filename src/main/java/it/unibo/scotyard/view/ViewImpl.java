@@ -33,7 +33,7 @@ public final class ViewImpl implements View {
      */
     public ViewImpl() {
         this.mainContainer = new JPanel(new BorderLayout());
-        this.window = new WindowImpl(this.getMaxResolution(), MAIN_WINDOW_TITLE);
+        this.window = new WindowImpl(this.getMaxResolution(), this.mainContainer, MAIN_WINDOW_TITLE);
     }
 
     @Override
@@ -50,12 +50,13 @@ public final class ViewImpl implements View {
     }
 
     @Override
-    public void setWindowMainFeatures(Size resolution){
+    public void setWindowMainFeatures(final Size resolution) {
+        Objects.requireNonNull(this.window, "window cannot be null");
         this.window.setsMainFeatures(resolution);
     }
 
     @Override
-    public GameView createGameView(MapInfo mapInfo) {
+    public GameView createGameView(final MapInfo mapInfo) {
         Objects.requireNonNull(mapInfo, "MapInfo cannot be null");
         return new GameViewImpl(mapInfo);
     }

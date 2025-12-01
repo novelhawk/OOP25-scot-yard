@@ -48,10 +48,9 @@ public class GameViewImpl implements GameView{
     @Override
     public void displayRulesWindow(JPanel panel){
         final Size smallSize = Size.of(SMALL_WINDOW_WIDTH, SMALL_WINDOW_HEIGHT);
-        Window rulesWindow = new WindowImpl(smallSize, RULES_WINDOW_TITLE);
+        Window rulesWindow = new WindowImpl(smallSize, panel, RULES_WINDOW_TITLE);
         rulesWindow.setsMainFeatures(smallSize);
         rulesWindow.setHideOnClose();
-        rulesWindow.setBody(panel);
         rulesWindow.display();
     }
 }

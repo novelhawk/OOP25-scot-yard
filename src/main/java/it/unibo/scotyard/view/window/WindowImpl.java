@@ -27,11 +27,12 @@ public final class WindowImpl extends JFrame implements Window {
      * @param resolution the window size
      * @throws NullPointerException if resolution is null
      */
-    public WindowImpl(final Size resolution, String windowTitle) {
+    public WindowImpl(final Size resolution, final JPanel containerPanel, String windowTitle) {
         super(windowTitle);
         Objects.requireNonNull(resolution, "Resolution cannot be null");
 
         this.setResoultion(resolution);
+        this.setBody(containerPanel);
     }
 
     @Override
