@@ -17,8 +17,8 @@ import it.unibo.scotyard.controller.menu.MainMenuController;
 public class MainMenuViewImpl  implements MainMenuView{
 
     // Color scheme
-    private static final Color BACKGROUND_COLOR = new Color(62, 39, 35);
-    private static final Color ACCENT_COLOR = new Color(255, 171, 145);
+    private static final Color BACKGROUND_COLOR = new Color(0, 0, 0); // black
+    private static final Color ACCENT_COLOR = new Color(31, 81, 255); // neon blue
 
     // Typography
     private static final Font TITLE_FONT = new Font("Arial", Font.BOLD, 36);

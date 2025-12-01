@@ -13,10 +13,9 @@ import it.unibo.scotyard.commons.engine.Size;
 public final class WindowImpl extends JFrame implements Window {
 
     private static final long serialVersionUID = 1L;
-    private static final String WINDOW_TITLE = "Scotland Yard";
 
-    private final int windowWidth;
-    private final int windowHeight;
+    private int windowWidth;
+    private int windowHeight;
 
     /**
      * Creates a window with specified resolution.
@@ -24,12 +23,11 @@ public final class WindowImpl extends JFrame implements Window {
      * @param resolution the window size
      * @throws NullPointerException if resolution is null
      */
-    public WindowImpl(final Size resolution) {
-        super(WINDOW_TITLE);
+    public WindowImpl(final Size resolution, String windowTitle) {
+        super(windowTitle);
         Objects.requireNonNull(resolution, "Resolution cannot be null");
 
-        this.windowWidth = resolution.getWidth();
-        this.windowHeight = resolution.getHeight();
+        this.setResoultion(resolution);
     }
 
     @Override
@@ -48,9 +46,15 @@ public final class WindowImpl extends JFrame implements Window {
         setContentPane(panel);
     }
 
+    private void setResoultion(Size resolution){
+        this.windowWidth = resolution.getWidth();
+        this.windowHeight = resolution.getHeight();
+    }
+
     @Override
-    public void setsMainFeatures(){
+    public void setsMainFeatures(Size resolution){
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setResoultion(resolution);
         setSize(this.windowWidth, this.windowHeight);
         setLocationByPlatform(true);
     }
@@ -59,4 +63,10 @@ public final class WindowImpl extends JFrame implements Window {
     public void display() {
         setVisible(true);
     }
+
+    @Override
+    public void setHideOnClose(){
+        setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+    }
+    
 }
