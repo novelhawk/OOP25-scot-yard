@@ -18,8 +18,8 @@ public final class WindowImpl extends JFrame implements Window {
     private static final double ASPECT_RATIO = 2570.0 / 1926.0;
     private static final int MIN_WIDTH = 800;
 
-    private final int windowWidth;
-    private final int windowHeight;
+    private int windowWidth;
+    private int windowHeight;
 
     /**
      * Creates a window with specified resolution.
@@ -27,12 +27,11 @@ public final class WindowImpl extends JFrame implements Window {
      * @param resolution the window size
      * @throws NullPointerException if resolution is null
      */
-    public WindowImpl(final Size resolution) {
-        super(WINDOW_TITLE);
+    public WindowImpl(final Size resolution, String windowTitle) {
+        super(windowTitle);
         Objects.requireNonNull(resolution, "Resolution cannot be null");
 
-        this.windowWidth = resolution.getWidth();
-        this.windowHeight = resolution.getHeight();
+        this.setResoultion(resolution);
     }
 
     @Override
@@ -54,9 +53,15 @@ public final class WindowImpl extends JFrame implements Window {
         setMinimumSize(new Dimension(MIN_WIDTH, (int) (MIN_WIDTH / ASPECT_RATIO)));
     }
 
+    private void setResoultion(Size resolution){
+        this.windowWidth = resolution.getWidth();
+        this.windowHeight = resolution.getHeight();
+    }
+
     @Override
-    public void setsMainFeatures() {
+    public void setsMainFeatures(Size resolution) {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setResoultion(resolution);
         setSize(this.windowWidth, this.windowHeight);
         setLocationByPlatform(true);
     }
@@ -69,5 +74,10 @@ public final class WindowImpl extends JFrame implements Window {
     @Override
     public boolean isVisible() {
         return super.isVisible();
+    }
+
+    @Override
+    public void setHideOnClose() {
+        setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
     }
 }

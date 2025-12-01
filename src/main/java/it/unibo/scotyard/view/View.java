@@ -2,20 +2,15 @@ package it.unibo.scotyard.view;
 
 import javax.swing.JPanel;
 
+import it.unibo.scotyard.commons.dtos.map.MapInfo;
 import it.unibo.scotyard.commons.engine.Size;
 import it.unibo.scotyard.controller.gamelauncher.GameLauncherController;
+import it.unibo.scotyard.view.game.GameView;
 
 /**
  * view interface coordinating all UI components.
  */
 public interface View {
-
-    /**
-     * Displays the main view.
-     *
-     * @throws IllegalStateException if view not properly initialized
-     */
-    void display();
 
     /**
      * Returns the main content panel.
@@ -33,32 +28,29 @@ public interface View {
     void displayLauncher(GameLauncherController controller);
 
     /**
-     * Sets window main features (deafult close operation, size, location by
+     * Sets window main features (default close operation, size, location by
      * platform).
      * To be called before first window display.
+     * 
+     * @param resolution the window resolution
      */
-    void setWindowMainFeatures();
+    void setWindowMainFeatures(Size resolution);
+
+    /**
+     * Creates the main game view.
+     * 
+     * @param mapInfo the map info
+     * @return the game view created
+     */
+    GameView createGameView(MapInfo mapInfo);
 
     /**
      * Displays the input panel.
-     * Used to display MainMenu + NewGameMenu
+     * Used to display MainMenu + NewGameMenu + Game
      *
-     * @param panel
+     * @param panel 
      */
     void displayPanel(JPanel panel);
-
-    /**
-     * Displays the main game window with specified resolution.
-     *
-     * @param resolution the window size
-     * @throws NullPointerException if resolution is null
-     */
-    void displayGameWindow(Size resolution);
-
-    /**
-     * Creates the game panel with the map and the sidebar.
-     */
-    void createGamePanel();
 
     /**
      * Returns the maximum available screen resolution.

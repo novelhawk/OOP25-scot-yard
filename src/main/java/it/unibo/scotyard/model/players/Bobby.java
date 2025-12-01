@@ -1,5 +1,33 @@
 package it.unibo.scotyard.model.players;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import it.unibo.scotyard.model.map.MapNode;
+
 public class Bobby extends PlayerImpl{
+
+    public Bobby() {
+        super();
+    }
+
+    @Override
+    public Map<TicketType, Integer> setInitialTickets(){
+        Map<TicketType,Integer> ticketsMap = new HashMap<>();
+        ticketsMap.put(TicketType.TAXI, INFINITE);
+        ticketsMap.put(TicketType.BUS, INFINITE);
+        ticketsMap.put(TicketType.UNDERGROUND, INFINITE);
+        ticketsMap.put(TicketType.BLACK, NONE);
+        ticketsMap.put(TicketType.DOUBLE_MOVE, NONE);
+        return ticketsMap;
+    }
+
+    @Override
+    public void setInitialPosition(List<Integer> initialPositions) {
+        this.currentPosition = this.generateRandomInitialPosition(initialPositions);
+    }
+
+    
     
 }

@@ -29,6 +29,11 @@ public interface Controller {
     void loadNewGameMenu();
 
     /**
+     * Loads the game panel and initializes the view with map data.
+     */
+    void loadGamePanel();
+
+    /**
      * Starts the game with selected configuration.
      * @param gameMode the game mode 
      * @param difficultyLevel the difficulty level
