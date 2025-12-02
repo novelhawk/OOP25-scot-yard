@@ -1,8 +1,6 @@
 package it.unibo.scotyard.commons.engine;
 
-/**
- * Immutable implementation of Size.
- */
+/** Immutable implementation of Size. */
 final class SizeImpl implements Size {
 
     private final int width;

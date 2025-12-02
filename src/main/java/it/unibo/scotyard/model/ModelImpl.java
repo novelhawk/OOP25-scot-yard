@@ -5,19 +5,14 @@ import it.unibo.scotyard.model.game.GameImpl;
 import it.unibo.scotyard.model.map.MapData;
 import it.unibo.scotyard.model.map.MapReader;
 
-/**
- * model.
- * Manages map data loading and game state.
- */
+/** model. Manages map data loading and game state. */
 public final class ModelImpl implements Model {
 
     private MapData mapData;
     private Game game;
     private boolean initialized;
 
-    /**
-     * new model instance.
-     */
+    /** new model instance. */
     public ModelImpl() {
         this.initialized = false;
     }
@@ -44,7 +39,7 @@ public final class ModelImpl implements Model {
     }
 
     @Override
-    public Game getGameData(){
+    public Game getGameData() {
         if (!this.initialized || this.mapData == null) {
             throw new IllegalStateException("Modello non inizializzato. Chiamare initialize() prima.");
         }

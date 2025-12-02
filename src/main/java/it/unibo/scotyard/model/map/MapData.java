@@ -1,19 +1,16 @@
 package it.unibo.scotyard.model.map;
 
+import it.unibo.scotyard.commons.dtos.map.MapInfo;
+import it.unibo.scotyard.commons.dtos.map.MapInfoImpl;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import it.unibo.scotyard.commons.dtos.map.MapInfo;
-import it.unibo.scotyard.commons.dtos.map.MapInfoImpl;
-
 /**
- * complete map data including nodes, connections, and game configuration.
- * This class provides a rich query API for accessing and navigating the map
- * structure.
- * All collections are immutable and defensively copied.
+ * complete map data including nodes, connections, and game configuration. This class provides a rich query API for
+ * accessing and navigating the map structure. All collections are immutable and defensively copied.
  */
 public final class MapData {
 
@@ -24,15 +21,14 @@ public final class MapData {
     private final List<Integer> initialPositions;
 
     /**
-     * Creates a new MapData with the specified configuration.
-     * All collection parameters are defensively copied to ensure immutability.
+     * Creates a new MapData with the specified configuration. All collection parameters are defensively copied to
+     * ensure immutability.
      *
-     * @param name             the name of the map
-     * @param nodes            the list of nodes on the map
-     * @param connections      the list of connections between nodes
-     * @param revealTurns      the turns on which Mr. X's position is revealed
-     * @param initialPositions the pool of possible starting positions for all
-     *                         players
+     * @param name the name of the map
+     * @param nodes the list of nodes on the map
+     * @param connections the list of connections between nodes
+     * @param revealTurns the turns on which Mr. X's position is revealed
+     * @param initialPositions the pool of possible starting positions for all players
      * @throws NullPointerException if any parameter is null
      */
     public MapData(
@@ -45,8 +41,8 @@ public final class MapData {
         this.nodes = List.copyOf(Objects.requireNonNull(nodes, "Nodes non può essere null"));
         this.connections = List.copyOf(Objects.requireNonNull(connections, "Connections non può essere null"));
         this.revealTurns = List.copyOf(Objects.requireNonNull(revealTurns, "Reveal turns non può essere null"));
-        this.initialPositions = List.copyOf(
-                Objects.requireNonNull(initialPositions, "Initial positions non può essere null"));
+        this.initialPositions =
+                List.copyOf(Objects.requireNonNull(initialPositions, "Initial positions non può essere null"));
     }
 
     /**
@@ -86,8 +82,8 @@ public final class MapData {
     }
 
     /**
-     * Returns possible starting positions for all players.
-     * Players should randomly select positions from this list without replacement.
+     * Returns possible starting positions for all players. Players should randomly select positions from this list
+     * without replacement.
      *
      * @return an unmodifiable list of node IDs
      */
@@ -102,9 +98,7 @@ public final class MapData {
      * @return an Optional containing the node if found, empty otherwise
      */
     public Optional<MapNode> getNodeById(final int nodeId) {
-        return nodes.stream()
-                .filter(node -> node.getId() == nodeId)
-                .findFirst();
+        return nodes.stream().filter(node -> node.getId() == nodeId).findFirst();
     }
 
     /**
@@ -114,16 +108,13 @@ public final class MapData {
      * @return a list of connections from this node
      */
     public List<MapConnection> getConnectionsFrom(final int nodeId) {
-        return connections.stream()
-                .filter(conn -> conn.getFrom() == nodeId)
-                .collect(Collectors.toList());
+        return connections.stream().filter(conn -> conn.getFrom() == nodeId).collect(Collectors.toList());
     }
 
     /**
-     * Returns all connections from the specified node using the specified transport
-     * type.
+     * Returns all connections from the specified node using the specified transport type.
      *
-     * @param nodeId    the starting node ID
+     * @param nodeId the starting node ID
      * @param transport the transport type to filter by
      * @return a list of connections from this node with the specified transport
      */

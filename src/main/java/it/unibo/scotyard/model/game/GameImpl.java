@@ -1,13 +1,12 @@
 package it.unibo.scotyard.model.game;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import it.unibo.scotyard.model.players.Bobby;
 import it.unibo.scotyard.model.players.Detective;
 import it.unibo.scotyard.model.players.MisterX;
 import it.unibo.scotyard.model.players.Player;
 import it.unibo.scotyard.model.players.TicketType;
+import java.util.ArrayList;
+import java.util.List;
 
 public class GameImpl implements Game {
 
@@ -20,7 +19,6 @@ public class GameImpl implements Game {
 
     private int round;
 
-
     public GameImpl(String gameMode, String levelOfDifficulty) {
         this.additionalPlayers = new ArrayList<>();
         this.round = 0;
@@ -28,7 +26,7 @@ public class GameImpl implements Game {
     }
 
     @Override
-    public void initialize(String gameMode, String levelDifficulty){
+    public void initialize(String gameMode, String levelDifficulty) {
         this.gameMode = setGameMode(gameMode);
         this.gameDifficulty = setGameDifficulty(levelDifficulty);
         this.setPlayers();
@@ -36,51 +34,51 @@ public class GameImpl implements Game {
         this.round++;
     }
 
-    private GameMode setGameMode(String inputGameMode){
-        switch(inputGameMode) {
-            case "Detective" : 
+    private GameMode setGameMode(String inputGameMode) {
+        switch (inputGameMode) {
+            case "Detective":
                 return GameMode.DETECTIVE;
-            case "Mister X" :
+            case "Mister X":
                 return GameMode.MISTER_X;
-            default : 
-                return GameMode.DETECTIVE; 
+            default:
+                return GameMode.DETECTIVE;
         }
     }
 
-    private GameDifficulty setGameDifficulty(String inputGameDifficulty){
-        switch(inputGameDifficulty){
-            case "Facile" : 
+    private GameDifficulty setGameDifficulty(String inputGameDifficulty) {
+        switch (inputGameDifficulty) {
+            case "Facile":
                 return GameDifficulty.EASY;
-            case "Media" :
+            case "Media":
                 return GameDifficulty.MEDIUM;
-            case "Difficle" : 
+            case "Difficle":
                 return GameDifficulty.DIFFICULT;
-            default :
-                return GameDifficulty.EASY; 
+            default:
+                return GameDifficulty.EASY;
         }
     }
 
-    private void setPlayers(){
-        if((this.gameMode).equals(GameMode.DETECTIVE)){
+    private void setPlayers() {
+        if (GameMode.DETECTIVE.equals((this.gameMode))) {
             this.userPlayer = new Detective();
             this.computerPlayer = new MisterX();
-        } 
-        if((this.gameMode).equals(GameMode.MISTER_X)){
+        }
+        if (GameMode.MISTER_X.equals((this.gameMode))) {
             this.userPlayer = new MisterX();
             this.computerPlayer = new Detective();
         }
-        switch(this.gameDifficulty){
-            case GameDifficulty.MEDIUM :
-            case GameDifficulty.DIFFICULT : 
+        switch (this.gameDifficulty) {
+            case GameDifficulty.MEDIUM:
+            case GameDifficulty.DIFFICULT:
                 this.additionalPlayers.add(new Bobby());
-            case GameDifficulty.EASY : 
+            case GameDifficulty.EASY:
                 this.additionalPlayers.add(new Bobby());
-                this.additionalPlayers.add(new Bobby());        
+                this.additionalPlayers.add(new Bobby());
         }
     }
 
-    private void setIA(){
-        //TODO : set IA according to the level of difficulty.
+    private void setIA() {
+        // TODO : set IA according to the level of difficulty.
         /*
          * EASY : easy IA
          * MEDIUM : easy IA
@@ -89,22 +87,21 @@ public class GameImpl implements Game {
     }
 
     @Override
-    public GameMode getGameMode(){
+    public GameMode getGameMode() {
         return this.gameMode;
     }
 
     @Override
-    public int getNumberTicketsUserPlayer(TicketType ticketType){
-        return this.getNumberTickets(this.userPlayer,ticketType);
+    public int getNumberTicketsUserPlayer(TicketType ticketType) {
+        return this.getNumberTickets(this.userPlayer, ticketType);
     }
 
-    
-    private int getNumberTickets(Player player, TicketType ticketType){
+    private int getNumberTickets(Player player, TicketType ticketType) {
         return player.getNumberTickets(ticketType);
     }
 
     @Override
-    public int getGameRound(){
+    public int getGameRound() {
         return this.round;
     }
 
@@ -117,5 +114,4 @@ public class GameImpl implements Game {
     public void setGameState(GameState state) {
         this.gameState = state;
     }
-
 }

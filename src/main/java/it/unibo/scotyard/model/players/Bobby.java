@@ -4,17 +4,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import it.unibo.scotyard.model.map.MapNode;
-
-public class Bobby extends PlayerImpl{
+public class Bobby extends PlayerImpl {
 
     public Bobby() {
         super();
     }
 
     @Override
-    public Map<TicketType, Integer> setInitialTickets(){
-        Map<TicketType,Integer> ticketsMap = new HashMap<>();
+    public Map<TicketType, Integer> setInitialTickets() {
+        Map<TicketType, Integer> ticketsMap = new HashMap<>();
         ticketsMap.put(TicketType.TAXI, INFINITE);
         ticketsMap.put(TicketType.BUS, INFINITE);
         ticketsMap.put(TicketType.UNDERGROUND, INFINITE);
@@ -27,7 +25,4 @@ public class Bobby extends PlayerImpl{
     public void setInitialPosition(List<Integer> initialPositions) {
         this.currentPosition = this.generateRandomInitialPosition(initialPositions);
     }
-
-    
-    
 }

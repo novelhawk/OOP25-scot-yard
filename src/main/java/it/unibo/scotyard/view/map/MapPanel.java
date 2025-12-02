@@ -1,5 +1,9 @@
 package it.unibo.scotyard.view.map;
 
+import it.unibo.scotyard.commons.dtos.map.MapInfo;
+import it.unibo.scotyard.commons.dtos.map.Node;
+import it.unibo.scotyard.model.map.TransportType;
+import java.awt.*;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Font;
@@ -11,20 +15,13 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
-import java.awt.*;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
-
-import it.unibo.scotyard.commons.dtos.map.MapInfo;
-import it.unibo.scotyard.commons.dtos.map.Node;
-import it.unibo.scotyard.model.map.TransportType;
 
 public final class MapPanel extends JPanel {
 
@@ -185,8 +182,12 @@ public final class MapPanel extends JPanel {
         zoomLevel = Math.min(MAX_ZOOM, zoomLevel + ZOOM_STEP);
 
         if (Math.abs(oldZoom - zoomLevel) > 0.001) {
-            final Point zoomCenter = (centerPoint != null) ? centerPoint
-                    : new Point(getWidth() / 2, getHeight() / 2);
+            Point zoomCenter;
+            if (centerPoint != null) {
+                zoomCenter = centerPoint;
+            } else {
+                zoomCenter = new Point(getWidth() / 2, getHeight() / 2);
+            }
 
             final double mapX = (zoomCenter.x - baseOffsetX - panOffsetX) / oldZoom;
             final double mapY = (zoomCenter.y - baseOffsetY - panOffsetY) / oldZoom;
@@ -199,9 +200,7 @@ public final class MapPanel extends JPanel {
         updateZoom();
     }
 
-    /**
-     * Zooms out towards initial state.
-     */
+    /** Zooms out towards initial state. */
     public void zoomOut() {
         final double oldZoom = zoomLevel;
         zoomLevel = Math.max(MIN_ZOOM, zoomLevel - ZOOM_STEP);
@@ -225,9 +224,7 @@ public final class MapPanel extends JPanel {
         updateZoom();
     }
 
-    /**
-     * Resets zoom to initial state.
-     */
+    /** Resets zoom to initial state. */
     public void resetZoom() {
         zoomLevel = MIN_ZOOM;
         panOffsetX = 0;
@@ -316,8 +313,8 @@ public final class MapPanel extends JPanel {
 
     private void loadBackgroundImage() {
         try {
-            final InputStream imageStream = getClass().getClassLoader()
-                    .getResourceAsStream("it/unibo/scotyard/view/map/background.png");
+            final InputStream imageStream =
+                    getClass().getClassLoader().getResourceAsStream("it/unibo/scotyard/view/map/background.png");
             if (imageStream != null) {
                 backgroundImage = ImageIO.read(imageStream);
             } else {
@@ -408,9 +405,9 @@ public final class MapPanel extends JPanel {
         if (hasFerry) {
             final float dashLength = Math.max(4.0f, 6.0f * (float) nodeZoom);
             final float gapLength = Math.max(3.0f, 4.0f * (float) nodeZoom);
-            final float[] dashPattern = { dashLength, gapLength };
-            g2d.setStroke(new BasicStroke(strokeWidth, BasicStroke.CAP_ROUND,
-                    BasicStroke.JOIN_ROUND, 10.0f, dashPattern, 0.0f));
+            final float[] dashPattern = {dashLength, gapLength};
+            g2d.setStroke(new BasicStroke(
+                    strokeWidth, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 10.0f, dashPattern, 0.0f));
         } else {
             g2d.setStroke(new BasicStroke(strokeWidth));
         }
@@ -427,8 +424,10 @@ public final class MapPanel extends JPanel {
                 g2d.setColor(getTransportColor(displayTransports.get(i)));
                 g2d.setStroke(new BasicStroke(arcThickness, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
                 g2d.drawArc(
-                        x - arcRadius, y - arcRadius,
-                        arcRadius * 2, arcRadius * 2,
+                        x - arcRadius,
+                        y - arcRadius,
+                        arcRadius * 2,
+                        arcRadius * 2,
                         startAngle - (i * anglePerSegment),
                         -anglePerSegment);
             }

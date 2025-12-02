@@ -1,20 +1,18 @@
 package it.unibo.scotyard.view.menu;
 
+import it.unibo.scotyard.commons.engine.Size;
+import it.unibo.scotyard.controller.menu.MainMenuController;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
 import java.util.Objects;
-
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import it.unibo.scotyard.commons.engine.Size;
-import it.unibo.scotyard.controller.menu.MainMenuController;
-
-public class MainMenuViewImpl  implements MainMenuView{
+public class MainMenuViewImpl implements MainMenuView {
 
     // Color scheme
     private static final Color BACKGROUND_COLOR = new Color(0, 0, 0); // black
@@ -40,15 +38,15 @@ public class MainMenuViewImpl  implements MainMenuView{
 
     /**
      * Creates the main menu view.
-     * 
+     *
      * @param controller the main menu controller
      * @param resolution the window size
      * @throws NullPointerException if any parameter is null
      */
     public MainMenuViewImpl(final MainMenuController controller, final Size resolution) {
-        //super(WINDOW_TITLE);
+        // super(WINDOW_TITLE);
         this.controller = Objects.requireNonNull(controller, "Controller cannot be null");
-        //this.resolution = Objects.requireNonNull(resolution, "Resolution cannot be null");
+        // this.resolution = Objects.requireNonNull(resolution, "Resolution cannot be null");
 
         this.mainPanel = createMainPanel();
         buildUI();
@@ -58,7 +56,7 @@ public class MainMenuViewImpl  implements MainMenuView{
     public void close() {
         this.controller.exit();
     }
-    
+
     // UI components
     private void buildUI() {
         mainPanel.add(Box.createVerticalGlue());
@@ -89,7 +87,7 @@ public class MainMenuViewImpl  implements MainMenuView{
     }
 
     // Title label
-    private JLabel createTitleLabel(){
+    private JLabel createTitleLabel() {
         final JLabel label = new JLabel(TITLE_TEXT);
         label.setFont(TITLE_FONT);
         label.setForeground(ACCENT_COLOR);
@@ -98,33 +96,33 @@ public class MainMenuViewImpl  implements MainMenuView{
     }
 
     // New game button
-    private JButton createNewGameButton(){
+    private JButton createNewGameButton() {
         final JButton button = new JButton(NEW_GAME_TEXT);
         button.setFont(BUTTON_FONT);
         button.setBackground(ACCENT_COLOR);
         button.setForeground(BACKGROUND_COLOR);
         button.setAlignmentX(Component.CENTER_ALIGNMENT);
-        button.addActionListener(e ->{
+        button.addActionListener(e -> {
             this.controller.newGameMenu();
         });
         return button;
     }
 
     // Load game button
-    private JButton createLoadGameButton(){
+    private JButton createLoadGameButton() {
         final JButton button = new JButton(LOAD_GAME_TEXT);
         button.setFont(BUTTON_FONT);
         button.setBackground(ACCENT_COLOR);
         button.setForeground(BACKGROUND_COLOR);
         button.setAlignmentX(Component.CENTER_ALIGNMENT);
         button.addActionListener(e -> {
-            // TO DO 
+            // TO DO
         });
         return button;
     }
 
     // Statistics button
-    private JButton createStatisticsButton(){
+    private JButton createStatisticsButton() {
         final JButton button = new JButton(STATISTICS_TEXT);
         button.setFont(BUTTON_FONT);
         button.setBackground(ACCENT_COLOR);
@@ -137,7 +135,7 @@ public class MainMenuViewImpl  implements MainMenuView{
     }
 
     // Exit button
-    private JButton createExitButton(){
+    private JButton createExitButton() {
         final JButton button = new JButton(EXIT_TEXT);
         button.setFont(BUTTON_FONT);
         button.setBackground(ACCENT_COLOR);

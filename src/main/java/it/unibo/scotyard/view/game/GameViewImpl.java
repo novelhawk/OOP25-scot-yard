@@ -1,17 +1,15 @@
 package it.unibo.scotyard.view.game;
 
-import java.awt.BorderLayout;
-
-import javax.swing.JPanel;
-
 import it.unibo.scotyard.commons.dtos.map.MapInfo;
 import it.unibo.scotyard.commons.engine.Size;
 import it.unibo.scotyard.view.map.MapPanel;
 import it.unibo.scotyard.view.sidebar.SidebarPanel;
 import it.unibo.scotyard.view.window.Window;
 import it.unibo.scotyard.view.window.WindowImpl;
+import java.awt.BorderLayout;
+import javax.swing.JPanel;
 
-public class GameViewImpl implements GameView{
+public class GameViewImpl implements GameView {
 
     private static final int SMALL_WINDOW_WIDTH = 700;
     private static final int SMALL_WINDOW_HEIGHT = 270;
@@ -21,7 +19,7 @@ public class GameViewImpl implements GameView{
     private SidebarPanel sidebar;
     private JPanel mainPanel;
 
-    public GameViewImpl(final MapInfo mapInfo){
+    public GameViewImpl(final MapInfo mapInfo) {
         this.mapPanel = new MapPanel(mapInfo);
         this.sidebar = new SidebarPanel(this);
 
@@ -31,7 +29,7 @@ public class GameViewImpl implements GameView{
     }
 
     @Override
-    public JPanel getMainPanel(){
+    public JPanel getMainPanel() {
         return this.mainPanel;
     }
 
@@ -46,7 +44,7 @@ public class GameViewImpl implements GameView{
     }
 
     @Override
-    public void displayRulesWindow(JPanel panel){
+    public void displayRulesWindow(JPanel panel) {
         final Size smallSize = Size.of(SMALL_WINDOW_WIDTH, SMALL_WINDOW_HEIGHT);
         Window rulesWindow = new WindowImpl(smallSize, panel, RULES_WINDOW_TITLE);
         rulesWindow.setsMainFeatures(smallSize);

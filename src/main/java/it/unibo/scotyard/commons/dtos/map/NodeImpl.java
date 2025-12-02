@@ -1,18 +1,11 @@
 package it.unibo.scotyard.commons.dtos.map;
 
-import java.util.Set;
-import java.util.Objects;
-
 import it.unibo.scotyard.model.map.TransportType;
+import java.util.Objects;
+import java.util.Set;
 
-/**
- * immutable implementation of Node
- */
-public record NodeImpl(
-        int id,
-        int x,
-        int y,
-        Set<TransportType> availableTransports) implements Node {
+/** immutable implementation of Node */
+public record NodeImpl(int id, int x, int y, Set<TransportType> availableTransports) implements Node {
 
     // constructor with validation
     public NodeImpl {
