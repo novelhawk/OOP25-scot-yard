@@ -8,6 +8,8 @@
 plugins {
     // Apply the application plugin to add support for building a CLI application in Java.
     application
+
+    id("com.diffplug.spotless") version "8.1.0"
 }
 
 repositories {
@@ -38,6 +40,26 @@ java {
 application {
     // Define the main class for the application.
     mainClass = "it.unibo.scotyard.ScotlandYard"
+}
+
+spotless {
+    java {
+        importOrder()
+
+        removeUnusedImports()
+        forbidModuleImports()
+
+        cleanthat()
+            .addMutator("SafeAndConsensual")
+            .addMutator("SafeButNotConsensual")
+            .includeDraft(true)
+
+        palantirJavaFormat().formatJavadoc(true)
+        formatAnnotations()
+
+        trimTrailingWhitespace()
+        endWithNewline()
+    }
 }
 
 tasks.named<Test>("test") {
