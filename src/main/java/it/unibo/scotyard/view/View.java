@@ -1,15 +1,12 @@
 package it.unibo.scotyard.view;
 
-import javax.swing.JPanel;
-
 import it.unibo.scotyard.commons.dtos.map.MapInfo;
 import it.unibo.scotyard.commons.engine.Size;
 import it.unibo.scotyard.controller.gamelauncher.GameLauncherController;
 import it.unibo.scotyard.view.game.GameView;
+import javax.swing.JPanel;
 
-/**
- * view interface coordinating all UI components.
- */
+/** view interface coordinating all UI components. */
 public interface View {
 
     /**
@@ -28,27 +25,25 @@ public interface View {
     void displayLauncher(GameLauncherController controller);
 
     /**
-     * Sets window main features (default close operation, size, location by
-     * platform).
-     * To be called before first window display.
-     * 
+     * Sets window main features (default close operation, size, location by platform). To be called before first window
+     * display.
+     *
      * @param resolution the window resolution
      */
     void setWindowMainFeatures(Size resolution);
 
     /**
      * Creates the main game view.
-     * 
+     *
      * @param mapInfo the map info
      * @return the game view created
      */
     GameView createGameView(MapInfo mapInfo);
 
     /**
-     * Displays the input panel.
-     * Used to display MainMenu + NewGameMenu + Game
+     * Displays the input panel. Used to display MainMenu + NewGameMenu + Game
      *
-     * @param panel 
+     * @param panel
      */
     void displayPanel(JPanel panel);
 

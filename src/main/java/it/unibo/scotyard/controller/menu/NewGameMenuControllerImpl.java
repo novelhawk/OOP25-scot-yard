@@ -1,17 +1,13 @@
 package it.unibo.scotyard.controller.menu;
 
-import java.util.Objects;
-
-import javax.swing.JPanel;
-
 import it.unibo.scotyard.controller.Controller;
 import it.unibo.scotyard.view.View;
 import it.unibo.scotyard.view.menu.NewGameMenuView;
 import it.unibo.scotyard.view.menu.NewGameMenuViewImpl;
+import java.util.Objects;
+import javax.swing.JPanel;
 
-/**
- * start menu controller.
- */
+/** start menu controller. */
 public final class NewGameMenuControllerImpl implements NewGameMenuController {
 
     private final Controller controller;
@@ -19,9 +15,9 @@ public final class NewGameMenuControllerImpl implements NewGameMenuController {
 
     /**
      * Creates a start menu controller.
-     * 
+     *
      * @param controller the main controller
-     * @param view       the view component
+     * @param view the view component
      * @throws NullPointerException if any parameter is null
      */
     public NewGameMenuControllerImpl(final Controller controller, final View view) {
@@ -46,7 +42,7 @@ public final class NewGameMenuControllerImpl implements NewGameMenuController {
     }
 
     @Override
-    public void mainMenu(){
+    public void mainMenu() {
         this.controller.loadMainMenu();
     }
 }

@@ -1,24 +1,22 @@
 package it.unibo.scotyard.controller.menu;
 
-import java.util.Objects;
-
-import javax.swing.JPanel;
-
 import it.unibo.scotyard.controller.Controller;
 import it.unibo.scotyard.view.View;
 import it.unibo.scotyard.view.menu.MainMenuView;
 import it.unibo.scotyard.view.menu.MainMenuViewImpl;
+import java.util.Objects;
+import javax.swing.JPanel;
 
-public class MainMenuControllerImpl implements MainMenuController{
+public class MainMenuControllerImpl implements MainMenuController {
 
     private final Controller controller;
     private final View view;
 
     /**
      * Creates a start menu controller.
-     * 
+     *
      * @param controller the main controller
-     * @param view       the view component
+     * @param view the view component
      * @throws NullPointerException if any parameter is null
      */
     public MainMenuControllerImpl(final Controller controller, final View view) {

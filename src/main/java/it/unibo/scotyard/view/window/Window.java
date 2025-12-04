@@ -1,12 +1,9 @@
 package it.unibo.scotyard.view.window;
 
+import it.unibo.scotyard.commons.engine.Size;
 import javax.swing.JPanel;
 
-import it.unibo.scotyard.commons.engine.Size;
-
-/**
- * Main application window interface.
- */
+/** Main application window interface. */
 public interface Window {
 
     /**
@@ -32,16 +29,13 @@ public interface Window {
     int getWindowHeight();
 
     /**
-     * Sets : default close operation, size, location by platform, resolution.
-     * Before first display.
-     * 
+     * Sets : default close operation, size, location by platform, resolution. Before first display.
+     *
      * @param resolution the requested resolution
      */
     void setsMainFeatures(Size resolution);
 
-    /**
-     * Displays the window.
-     */
+    /** Displays the window. */
     void display();
 
     /**
@@ -51,8 +45,6 @@ public interface Window {
      */
     boolean isVisible();
 
-    /**
-     * Hides the window when closing.
-     */
+    /** Hides the window when closing. */
     void setHideOnClose();
 }

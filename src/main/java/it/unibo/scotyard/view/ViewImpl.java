@@ -1,13 +1,5 @@
 package it.unibo.scotyard.view;
 
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.Toolkit;
-import java.util.Objects;
-
-import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
-
 import it.unibo.scotyard.commons.dtos.map.MapInfo;
 import it.unibo.scotyard.commons.engine.Size;
 import it.unibo.scotyard.controller.gamelauncher.GameLauncherController;
@@ -18,19 +10,21 @@ import it.unibo.scotyard.view.gamelauncher.GameLauncherViewImpl;
 import it.unibo.scotyard.view.map.MapPanel;
 import it.unibo.scotyard.view.window.Window;
 import it.unibo.scotyard.view.window.WindowImpl;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.Toolkit;
+import java.util.Objects;
+import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
-/**
- * view implementation coordinating all UI components.
- */
+/** view implementation coordinating all UI components. */
 public final class ViewImpl implements View {
     private static final String MAIN_WINDOW_TITLE = "Scotland Yard";
 
     private Window window;
     private final JPanel mainContainer;
 
-    /**
-     * new view instance.
-     */
+    /** new view instance. */
     public ViewImpl() {
         this.mainContainer = new JPanel(new BorderLayout());
         this.window = new WindowImpl(this.getMaxResolution(), this.mainContainer, MAIN_WINDOW_TITLE);

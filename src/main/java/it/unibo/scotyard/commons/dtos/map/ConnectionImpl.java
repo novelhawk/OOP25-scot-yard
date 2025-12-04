@@ -1,16 +1,10 @@
 package it.unibo.scotyard.commons.dtos.map;
 
+import it.unibo.scotyard.model.map.TransportType;
 import java.util.Objects;
 
-import it.unibo.scotyard.model.map.TransportType;
-
-/**
- * Immutable implementation
- */
-public record ConnectionImpl(
-        int from,
-        int to,
-        TransportType transport) implements Connection {
+/** Immutable implementation */
+public record ConnectionImpl(int from, int to, TransportType transport) implements Connection {
 
     // validation and defensive copy
     public ConnectionImpl {

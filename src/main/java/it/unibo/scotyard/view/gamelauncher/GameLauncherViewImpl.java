@@ -1,5 +1,7 @@
 package it.unibo.scotyard.view.gamelauncher;
 
+import it.unibo.scotyard.commons.engine.Size;
+import it.unibo.scotyard.controller.gamelauncher.GameLauncherController;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
@@ -7,7 +9,6 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.util.List;
 import java.util.Objects;
-
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -17,12 +18,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import it.unibo.scotyard.commons.engine.Size;
-import it.unibo.scotyard.controller.gamelauncher.GameLauncherController;
-
-/**
- * Swing implementation of game launcher view.
- */
+/** Swing implementation of game launcher view. */
 public final class GameLauncherViewImpl extends JFrame implements GameLauncherView {
 
     private static final long serialVersionUID = 1L;
@@ -63,7 +59,7 @@ public final class GameLauncherViewImpl extends JFrame implements GameLauncherVi
 
     /**
      * Creates the launcher view.
-     * 
+     *
      * @param controller the launcher controller
      * @throws NullPointerException if controller is null
      */
@@ -146,13 +142,10 @@ public final class GameLauncherViewImpl extends JFrame implements GameLauncherVi
 
     // Create resolution combo box with default selection
     private JComboBox<String> createResolutionComboBox() {
-        final List<String> resolutionStrings = this.controller.getResolutions()
-                .stream()
-                .map(Size::toString)
-                .toList();
+        final List<String> resolutionStrings =
+                this.controller.getResolutions().stream().map(Size::toString).toList();
 
-        final JComboBox<String> comboBox = new JComboBox<>(
-                resolutionStrings.toArray(String[]::new));
+        final JComboBox<String> comboBox = new JComboBox<>(resolutionStrings.toArray(String[]::new));
         comboBox.setFont(LABEL_FONT);
         comboBox.setMaximumSize(new Dimension(COMBO_WIDTH, COMBO_HEIGHT));
 

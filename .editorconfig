@@ -1,0 +1,9 @@
+root = True
+
+[*]
+end_of_line = lf
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+[*.java]
+max_line_length = 120

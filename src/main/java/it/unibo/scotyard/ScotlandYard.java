@@ -6,9 +6,7 @@ import it.unibo.scotyard.model.Model;
 import it.unibo.scotyard.model.ModelImpl;
 import it.unibo.scotyard.view.ViewImpl;
 
-/**
- * Main application entry point for Scotland Yard game.
- */
+/** Main application entry point for Scotland Yard game. */
 public final class ScotlandYard {
 
     private ScotlandYard() {
@@ -17,7 +15,7 @@ public final class ScotlandYard {
 
     /**
      * Application main method.
-     * 
+     *
      * @param args command line arguments (unused)
      */
     public static void main(final String[] args) {

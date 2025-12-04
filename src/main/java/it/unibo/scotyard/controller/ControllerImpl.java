@@ -1,8 +1,5 @@
 package it.unibo.scotyard.controller;
 
-import java.util.Objects;
-import javax.swing.JPanel;
-
 import it.unibo.scotyard.commons.engine.Size;
 import it.unibo.scotyard.controller.game.GameController;
 import it.unibo.scotyard.controller.game.GameControllerImpl;
@@ -15,10 +12,10 @@ import it.unibo.scotyard.controller.menu.NewGameMenuControllerImpl;
 import it.unibo.scotyard.model.Model;
 import it.unibo.scotyard.view.ViewImpl;
 import it.unibo.scotyard.view.game.GameView;
+import java.util.Objects;
+import javax.swing.JPanel;
 
-/**
- * Main controller coordinating the MVC flow.
- */
+/** Main controller coordinating the MVC flow. */
 public final class ControllerImpl implements Controller {
 
     private final Model model;
@@ -29,7 +26,7 @@ public final class ControllerImpl implements Controller {
      * Creates a controller with model and view.
      *
      * @param model the game model
-     * @param view  the game view
+     * @param view the game view
      * @throws NullPointerException if any parameter is null
      */
     public ControllerImpl(final Model model, final ViewImpl view) {
@@ -39,9 +36,7 @@ public final class ControllerImpl implements Controller {
 
     @Override
     public void launch() {
-        final GameLauncherController launcher = new GameLauncherControllerImpl(
-                this.view,
-                this::run);
+        final GameLauncherController launcher = new GameLauncherControllerImpl(this.view, this::run);
         launcher.run();
     }
 
@@ -63,8 +58,9 @@ public final class ControllerImpl implements Controller {
     }
 
     @Override
-    public void loadGamePanel(){
-        final GameView gameView = this.view.createGameView(this.model.getMapData().info());
+    public void loadGamePanel() {
+        final GameView gameView =
+                this.view.createGameView(this.model.getMapData().info());
         final GameController gameController = new GameControllerImpl(this.model.getGameData(), gameView);
         gameController.updateSidebar();
         this.displayPanel(gameController.getMainPanel());

@@ -3,14 +3,12 @@ package it.unibo.scotyard.model;
 import it.unibo.scotyard.model.game.Game;
 import it.unibo.scotyard.model.map.MapData;
 
-/**
- * Main model interface for game data management.
- */
+/** Main model interface for game data management. */
 public interface Model {
 
     /**
      * Initializes the model by loading required data.
-     * 
+     *
      * @throws IllegalStateException if initialization fails
      * @param gameMode the selected game mode
      * @param levelDifficulty the selected level of difficulty
@@ -19,7 +17,7 @@ public interface Model {
 
     /**
      * Returns the loaded map data.
-     * 
+     *
      * @return the map data
      * @throws IllegalStateException if model not initialized
      */
@@ -27,7 +25,7 @@ public interface Model {
 
     /**
      * Return the data of the game created.
-     * 
+     *
      * @return the game data
      * @throwsIllegalStateException if model not initialized
      */

@@ -1,5 +1,10 @@
 package it.unibo.scotyard.model.map;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -9,28 +14,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-
 /**
- * reads and parses Scotland Yard map data from JSON files.
- * The map data includes nodes, connections, reveal turns, and initial
- * positions.
+ * reads and parses Scotland Yard map data from JSON files. The map data includes nodes, connections, reveal turns, and
+ * initial positions.
  */
 public class MapReader {
     private static final String DEFAULT_MAP_PATH = "/it/unibo/scotyard/model/map/ScotlandYardMap.json";
     private final Gson gson;
 
-    /**
-     * Creates a new MapReader with a configured JSON parser.
-     */
+    /** Creates a new MapReader with a configured JSON parser. */
     public MapReader() {
-        this.gson = new GsonBuilder()
-                .setPrettyPrinting()
-                .create();
+        this.gson = new GsonBuilder().setPrettyPrinting().create();
     }
 
     /**
@@ -48,7 +42,7 @@ public class MapReader {
      *
      * @param resourcePath the classpath resource path to the map JSON file
      * @return the loaded map data
-     * @throws MapLoadException     if the map cannot be loaded or parsed
+     * @throws MapLoadException if the map cannot be loaded or parsed
      * @throws NullPointerException if resourcePath is null
      */
     public MapData loadMap(final String resourcePath) throws MapLoadException {
@@ -104,8 +98,8 @@ public class MapReader {
     }
 
     /**
-     * Parses connections from JSON where transports are separated by type.
-     * Has "taxi", "bus", "underground", "black" arrays with [from, to] pairs.
+     * Parses connections from JSON where transports are separated by type. Has "taxi", "bus", "underground", "black"
+     * arrays with [from, to] pairs.
      *
      * @param jsonObject the root JSON object containing transport arrays
      * @return list of all connections combined from all transport types
@@ -115,28 +109,24 @@ public class MapReader {
 
         // Parse each transport type if present
         if (jsonObject.has("taxi")) {
-            connections.addAll(parseTransportConnections(
-                    jsonObject.getAsJsonArray("taxi"), TransportType.TAXI));
+            connections.addAll(parseTransportConnections(jsonObject.getAsJsonArray("taxi"), TransportType.TAXI));
         }
         if (jsonObject.has("bus")) {
-            connections.addAll(parseTransportConnections(
-                    jsonObject.getAsJsonArray("bus"), TransportType.BUS));
+            connections.addAll(parseTransportConnections(jsonObject.getAsJsonArray("bus"), TransportType.BUS));
         }
         if (jsonObject.has("underground")) {
-            connections.addAll(parseTransportConnections(
-                    jsonObject.getAsJsonArray("underground"), TransportType.UNDERGROUND));
+            connections.addAll(
+                    parseTransportConnections(jsonObject.getAsJsonArray("underground"), TransportType.UNDERGROUND));
         }
         if (jsonObject.has("black")) {
-            connections.addAll(parseTransportConnections(
-                    jsonObject.getAsJsonArray("black"), TransportType.FERRY));
+            connections.addAll(parseTransportConnections(jsonObject.getAsJsonArray("black"), TransportType.FERRY));
         }
 
         return connections;
     }
 
     /**
-     * Parses connections from an array of [from, to] pairs for a specific transport
-     * type.
+     * Parses connections from an array of [from, to] pairs for a specific transport type.
      *
      * @param jsonArray the array of [from, to] pairs
      * @param transport the transport type for these connections
@@ -166,9 +156,7 @@ public class MapReader {
         return integers;
     }
 
-    /**
-     * Exception thrown when a map file cannot be loaded or parsed.
-     */
+    /** Exception thrown when a map file cannot be loaded or parsed. */
     public static class MapLoadException extends Exception {
         private static final long serialVersionUID = 1L;
 
@@ -185,11 +173,10 @@ public class MapReader {
          * Creates a new MapLoadException with the specified message and cause.
          *
          * @param message the error message
-         * @param cause   the underlying cause
+         * @param cause the underlying cause
          */
         public MapLoadException(final String message, final Throwable cause) {
             super(message, cause);
         }
     }
-
 }

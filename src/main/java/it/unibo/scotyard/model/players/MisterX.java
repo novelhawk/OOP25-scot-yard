@@ -4,8 +4,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class MisterX extends PlayerImpl{
-    
+public class MisterX extends PlayerImpl {
+
     private static final int NUMBER_TICKETS_BLACK = 5;
     private static final int NUMBER_TICKETS_DOUBLE_MOVE = 2;
     private static final int INFINITE = -1;
@@ -16,7 +16,7 @@ public class MisterX extends PlayerImpl{
 
     @Override
     public Map<TicketType, Integer> setInitialTickets() {
-        Map<TicketType,Integer> ticketsMap = new HashMap<>();
+        Map<TicketType, Integer> ticketsMap = new HashMap<>();
         ticketsMap.put(TicketType.BLACK, NUMBER_TICKETS_BLACK);
         ticketsMap.put(TicketType.DOUBLE_MOVE, NUMBER_TICKETS_DOUBLE_MOVE);
         ticketsMap.put(TicketType.TAXI, INFINITE);
@@ -30,5 +30,4 @@ public class MisterX extends PlayerImpl{
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'setInitialPosition'");
     }
-    
 }

@@ -1,17 +1,13 @@
 package it.unibo.scotyard.controller.gamelauncher;
 
+import it.unibo.scotyard.commons.Constants;
+import it.unibo.scotyard.commons.engine.Size;
+import it.unibo.scotyard.view.View;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Consumer;
 
-import it.unibo.scotyard.commons.Constants;
-import it.unibo.scotyard.commons.engine.Size;
-import it.unibo.scotyard.view.View;
-
-/**
- * game launcher controller.
- * filters available resolutions based on screen size.
- */
+/** game launcher controller. filters available resolutions based on screen size. */
 public final class GameLauncherControllerImpl implements GameLauncherController {
 
     private final View view;
@@ -21,10 +17,9 @@ public final class GameLauncherControllerImpl implements GameLauncherController 
 
     /**
      * Creates a game launcher controller.
-     * 
-     * @param view          the view component
-     * @param startCallback callback invoked when game starts with selected
-     *                      resolution
+     *
+     * @param view the view component
+     * @param startCallback callback invoked when game starts with selected resolution
      * @throws NullPointerException if any parameter is null
      */
     public GameLauncherControllerImpl(final View view, final Consumer<Size> startCallback) {
@@ -49,8 +44,7 @@ public final class GameLauncherControllerImpl implements GameLauncherController 
     public void selectResolution(final int selection) {
         if (selection < 0 || selection >= this.resolutions.size()) {
             throw new IllegalArgumentException(
-                    "Invalid resolution index: " + selection +
-                            ". Valid range: 0-" + (this.resolutions.size() - 1));
+                    "Invalid resolution index: " + selection + ". Valid range: 0-" + (this.resolutions.size() - 1));
         }
         this.selectedResolution = selection;
     }
@@ -66,14 +60,12 @@ public final class GameLauncherControllerImpl implements GameLauncherController 
         final Size maxResolution = this.view.getMaxResolution();
 
         final List<Size> filtered = Constants.RESOLUTIONS.stream()
-                .filter(res -> res.getWidth() <= maxResolution.getWidth()
-                        && res.getHeight() <= maxResolution.getHeight())
+                .filter(res ->
+                        res.getWidth() <= maxResolution.getWidth() && res.getHeight() <= maxResolution.getHeight())
                 .toList();
 
         // fallback to smallest resolution
-        return filtered.isEmpty()
-                ? List.of(Constants.RESOLUTIONS.get(Constants.RESOLUTIONS.size() - 1))
-                : filtered;
+        return filtered.isEmpty() ? List.of(Constants.RESOLUTIONS.get(Constants.RESOLUTIONS.size() - 1)) : filtered;
     }
 
     // middle res as default

@@ -1,16 +1,12 @@
 package it.unibo.scotyard.view.window;
 
+import it.unibo.scotyard.commons.engine.Size;
 import java.awt.Dimension;
 import java.util.Objects;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import it.unibo.scotyard.commons.engine.Size;
-
-/**
- * main game window.
- */
+/** main game window. */
 public final class WindowImpl extends JFrame implements Window {
 
     private static final long serialVersionUID = 1L;
@@ -54,7 +50,7 @@ public final class WindowImpl extends JFrame implements Window {
         setMinimumSize(new Dimension(MIN_WIDTH, (int) (MIN_WIDTH / ASPECT_RATIO)));
     }
 
-    private void setResoultion(Size resolution){
+    private void setResoultion(Size resolution) {
         this.windowWidth = resolution.getWidth();
         this.windowHeight = resolution.getHeight();
     }
