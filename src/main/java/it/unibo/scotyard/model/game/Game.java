@@ -1,5 +1,8 @@
 package it.unibo.scotyard.model.game;
 
+import java.util.List;
+
+import it.unibo.scotyard.model.players.Player;
 import it.unibo.scotyard.model.players.TicketType;
 
 public interface Game {
@@ -9,8 +12,9 @@ public interface Game {
      *
      * @param gameMode the selected game mode
      * @param levelDifficulty the selected level of difficulty
+     * @param initialPositions the list of the possible initial positions of players
      */
-    void initialize(String gameMode, String levelDifficulty);
+    void initialize(String gameMode, String levelDifficulty, List<Integer> initialPositions);
 
     /**
      * Return the current game mode.
@@ -25,6 +29,13 @@ public interface Game {
      * @param ticketType the type of ticket
      */
     int getNumberTicketsUserPlayer(TicketType ticketType);
+
+    /**
+     * Return the current position of the player passed as input.
+     * 
+     * @return the current position of the player passed as input
+     */
+    int getPositionPlayer(Player player);
 
     /**
      * Returns the current round number.

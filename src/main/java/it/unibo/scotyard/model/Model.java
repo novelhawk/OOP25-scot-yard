@@ -1,5 +1,7 @@
 package it.unibo.scotyard.model;
 
+import java.util.List;
+
 import it.unibo.scotyard.model.game.Game;
 import it.unibo.scotyard.model.map.MapData;
 
@@ -12,6 +14,7 @@ public interface Model {
      * @throws IllegalStateException if initialization fails
      * @param gameMode the selected game mode
      * @param levelDifficulty the selected level of difficulty
+     * @param initialPositions the list of the possible initial positions of players
      */
     void initialize(String gameMode, String levelDifficulty);
 
@@ -30,4 +33,11 @@ public interface Model {
      * @throwsIllegalStateException if model not initialized
      */
     Game getGameData();
+
+    /**
+     * Return list of initial positions of players, taken from MapData.
+     * 
+     * @return list of integers representing the possible initial positions of players
+     */
+    List<Integer> getInitialPositions();
 }

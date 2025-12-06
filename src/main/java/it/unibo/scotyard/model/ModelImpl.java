@@ -1,5 +1,7 @@
 package it.unibo.scotyard.model;
 
+import java.util.List;
+
 import it.unibo.scotyard.model.game.Game;
 import it.unibo.scotyard.model.game.GameImpl;
 import it.unibo.scotyard.model.map.MapData;
@@ -22,7 +24,7 @@ public final class ModelImpl implements Model {
         try {
             final MapReader mapReader = new MapReader();
             this.mapData = mapReader.loadDefaultMap();
-            this.game = new GameImpl(gameMode, levelDifficulty);
+            this.game = new GameImpl(gameMode, levelDifficulty, this.getInitialPositions());
             this.initialized = true;
         } catch (final MapReader.MapLoadException e) {
             System.err.println("Errore caricamento mappa: " + e.getMessage());
@@ -44,5 +46,10 @@ public final class ModelImpl implements Model {
             throw new IllegalStateException("Modello non inizializzato. Chiamare initialize() prima.");
         }
         return this.game;
+    }
+
+    @Override 
+    public List<Integer> getInitialPositions(){
+        return this.mapData.getInitialPositions();
     }
 }

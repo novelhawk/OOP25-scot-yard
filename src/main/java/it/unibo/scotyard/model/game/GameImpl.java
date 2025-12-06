@@ -7,6 +7,7 @@ import it.unibo.scotyard.model.players.Player;
 import it.unibo.scotyard.model.players.TicketType;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class GameImpl implements Game {
 
@@ -16,19 +17,21 @@ public class GameImpl implements Game {
     private Player userPlayer;
     private Player computerPlayer;
     private List<Player> additionalPlayers;
+    List<Integer> initialPositions;
 
     private int round;
 
-    public GameImpl(String gameMode, String levelOfDifficulty) {
+    public GameImpl(String gameMode, String levelOfDifficulty, List<Integer> initialPositions) {
         this.additionalPlayers = new ArrayList<>();
         this.round = 0;
-        this.initialize(gameMode, levelOfDifficulty);
+        this.initialize(gameMode, levelOfDifficulty, initialPositions);
     }
 
     @Override
-    public void initialize(String gameMode, String levelDifficulty) {
+    public void initialize(String gameMode, String levelDifficulty, List<Integer> initialPositions) {
         this.gameMode = setGameMode(gameMode);
         this.gameDifficulty = setGameDifficulty(levelDifficulty);
+        this.loadInitialPositions(initialPositions);
         this.setPlayers();
         this.setIA();
         this.round++;
@@ -58,6 +61,17 @@ public class GameImpl implements Game {
         }
     }
 
+    private void loadInitialPositions(List<Integer> inputList){
+        this.initialPositions = new ArrayList<Integer>(inputList);
+    }
+
+    private int getRandomInitialPosition(){
+        Random rand = new Random();
+        int indexList = rand.nextInt(this.initialPositions.size());
+        int result = this.initialPositions.remove(indexList);
+        return result;
+    }
+
     private void setPlayers() {
         if (GameMode.DETECTIVE.equals((this.gameMode))) {
             this.userPlayer = new Detective();
@@ -67,13 +81,22 @@ public class GameImpl implements Game {
             this.userPlayer = new MisterX();
             this.computerPlayer = new Detective();
         }
+        this.userPlayer.setInitialPosition(this.getRandomInitialPosition());
+        this.computerPlayer.setInitialPosition(this.getRandomInitialPosition());
+        int index = 0;
         switch (this.gameDifficulty) {
             case GameDifficulty.MEDIUM:
             case GameDifficulty.DIFFICULT:
                 this.additionalPlayers.add(new Bobby());
+                this.additionalPlayers.get(index).setInitialPosition(this.getRandomInitialPosition());
+                index++;
             case GameDifficulty.EASY:
                 this.additionalPlayers.add(new Bobby());
+                this.additionalPlayers.get(index).setInitialPosition(this.getRandomInitialPosition());
+                index++;
                 this.additionalPlayers.add(new Bobby());
+                this.additionalPlayers.get(index).setInitialPosition(this.getRandomInitialPosition());
+                index++;
         }
     }
 
@@ -84,6 +107,14 @@ public class GameImpl implements Game {
          * MEDIUM : easy IA
          * DIFFICULT : difficult IA
          */
+    }
+
+    public void printTest(){
+        System.out.println("User : " + this.getPositionPlayer(this.userPlayer));
+        System.out.println("IA : " + this.getPositionPlayer(this.computerPlayer));
+        for(Player additional : this.additionalPlayers){
+            System.out.println("Bobby : " + this.getPositionPlayer(additional));
+        }
     }
 
     @Override
@@ -103,6 +134,11 @@ public class GameImpl implements Game {
     @Override
     public int getGameRound() {
         return this.round;
+    }
+
+    @Override
+    public int getPositionPlayer(Player player){
+        return player.getCurrentPositionId();
     }
 
     @Override

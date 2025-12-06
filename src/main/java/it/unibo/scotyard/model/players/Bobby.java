@@ -1,7 +1,6 @@
 package it.unibo.scotyard.model.players;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class Bobby extends PlayerImpl {
@@ -19,10 +18,5 @@ public class Bobby extends PlayerImpl {
         ticketsMap.put(TicketType.BLACK, NONE);
         ticketsMap.put(TicketType.DOUBLE_MOVE, NONE);
         return ticketsMap;
-    }
-
-    @Override
-    public void setInitialPosition(List<Integer> initialPositions) {
-        this.currentPosition = this.generateRandomInitialPosition(initialPositions);
     }
 }

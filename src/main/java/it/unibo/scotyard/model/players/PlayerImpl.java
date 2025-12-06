@@ -1,7 +1,5 @@
 package it.unibo.scotyard.model.players;
 
-import it.unibo.scotyard.model.map.MapNode;
-import java.util.List;
 import java.util.Map;
 
 public abstract class PlayerImpl implements Player {
@@ -9,27 +7,23 @@ public abstract class PlayerImpl implements Player {
     protected static final int NONE = 0;
     protected static final int INFINITE = -1;
 
-    protected MapNode currentPosition;
+    protected int currentPosition;
     protected Map<TicketType, Integer> tickets;
 
     public PlayerImpl() {
         this.tickets = this.setInitialTickets();
-        // this.setInitialPosition(null);
     }
 
     @Override
     public abstract Map<TicketType, Integer> setInitialTickets();
 
-    protected MapNode generateRandomInitialPosition(List<Integer> initialPositions) {
-        MapNode initialMapNode = new MapNode(INFINITE, NONE, INFINITE);
-        return initialMapNode;
+    @Override
+    public void setInitialPosition(int initialPosition){
+        this.currentPosition = initialPosition;
     }
 
     @Override
-    public abstract void setInitialPosition(List<Integer> initialPositions);
-
-    @Override
-    public MapNode getCurrentPosition() {
+    public int getCurrentPositionId() {
         return this.currentPosition;
     }
 
