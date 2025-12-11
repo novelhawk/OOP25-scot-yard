@@ -78,7 +78,7 @@ public final class WindowImpl extends JFrame implements Window {
     }
 
     @Override
-    public void close(){
+    public void close() {
         setVisible(false);
     }
 }

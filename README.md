@@ -149,7 +149,7 @@ business del model. MapInfo espone stream di nodi e connessioni invece di
 liste, permettendo un'elaborazione più efficiente e funzionale dei dati.
 
 //IRE 
-Il controller chiama il metodo loadGamePanel in cui vengono creati la GameView e il 
+Il controller, dopo aver iniziallizato il modello, crea la GameView e il 
 GameController. Per creare la prima viene passato come argomento un'implementazione di 
 MapInfo, ottenuta chiamando il metodo getMapData.info del Model. La GameView si compone 
 di un pannello principale, il MainPanel che è diviso in due parti : il MapPanel, che è 
@@ -216,7 +216,7 @@ taxi. Se un nodo ha accesso a bus e underground, avrà due archi
 semicircolari, uno verde e uno rosso, che circondano il nodo come una
 corona colorata.
 
-//IRE
+//IRE  
 La Sidebar, in particolare, contiene il nome del tipo di giocatore attuale 
 dell'utente (detective o mister X), il numero del round attuale, l'inventario 
 (biglietti) e un button che apre una piccola finestra in cui sono riassunte
@@ -226,15 +226,17 @@ del button : all'interno della SidebarPanel viene chiamato il metodo displayRule
 della GameView, che prende come argomento il panel da inserire all'interno della 
 finestra con le regole e che viene creato nel metodo createRulesPanel della 
 SidebarPanel.
-//TODO : Aggiungere -> bottoni per giocare + bottone per tornare al MainMenu?
+//TODO : Aggiungere -> bottoni per giocare 
 
-// IRE
+// IRE  
 Una volta che la GameView è stata completamente inizializzata con il MapPanel e 
 la Sidebar, viene creato il GameController, che prende in ingresso il model del 
 Game, attraverso il metodo getGameData del model, e la GameView. Dopdoiché viene 
-subito aggiornata la sidebar, tramite il metodo updateSidebar del GameController, 
-che aggiorna correttamente il nome del tipo di giocatore dell'utente (a seconda 
-della modalità di gioco), il numero del round e l'inventario. //TODO : aggiunte alla sidebar
+impostato l'observer della GameView, che è il GameController e viene chiamato il metodo 
+loadGamePanel nel ControllerImpl. Viene subito aggiornata la sidebar, tramite il 
+metodo updateSidebar del GameController, che aggiorna correttamente il nome del tipo 
+di giocatore dell'utente (a seconda della modalità di gioco), il numero del round e 
+l'inventario. (//TODO : aggiunte alla sidebar) 
 Tutti questi dati vengono presi dal GameController attraverso dei getter che 
 richiamano il model Game. Una volta fatto ciò, viene mostrato il MainPanel della 
 GameView tramite il metodo displayPanel della view principale e viene poi chiamato 
@@ -242,3 +244,19 @@ il metodo forceLayoutUpdate della view, che prende come parametri il MainPanel e
 MapPanel della GameView. In questo metodo la view forza un aggiornamento del layout 
 utilizzando SwingUtilities.invokeLater per garantire che tutte le operazioni di layout 
 e repaint avvengano correttamente sul thread di gestione degli eventi di Swing.
+Una volta fatto ciò, si ritorna nel metodo startGame(), in cui era stata effattuata 
+la chiamata al metodo loadGamePanel(). 
+//TODO : gestione flusso gioco
+
+
+// IRE  
+Per quanto riguarda la gestione della fine partita, in GameImpl è presente il metodo 
+isGameOver(), che controlla se la partita è giunta a suo termine, restituendo un valore 
+booleano. Questo è vero se è stato raggiunto il numero massimo di round, oppure se 
+il detective e Mister X si trovano nella stessa posizione oppure se uno dei bobby e 
+Mister X si trovano nella stessa posizione. Nel Controller princiapale, durante lo svolgimento 
+della partita, viene controllato se il gioco è finito con il richiamo del metodo isGameOver() 
+del GameController, che, a sua volta, richiama l'omonimo metodo di GameImpl. Se è così, allora 
+viene chiamato il metodo loadGameOverWindow del GameController, che visualizza una finestra  
+in cui c'è scritto "GAME OVER!" e che contiene un bottone che, una volta premuto, riporta al 
+main menu; se, invece, viene chiusa tale finestra, allora l'applicazione si chiude.

@@ -16,10 +16,10 @@ public interface Game {
     void initialize(String gameMode, String levelDifficulty, List<Integer> initialPositions);
 
     /**
-     * Returns a boolean that indicates if the game is over. In particular, the game is over
-     * if the detective or one of the bobbies has captured Mister X (they're in the same position
-     * of the map) or if the maximum number of rounds had been reached.
-     * 
+     * Returns a boolean that indicates if the game is over. In particular, the game is over if the detective or one of
+     * the bobbies has captured Mister X (they're in the same position of the map) or if the maximum number of rounds
+     * had been reached.
+     *
      * @return a boolean which indicates whether the game is over (true) or not
      */
     boolean isGameOver();

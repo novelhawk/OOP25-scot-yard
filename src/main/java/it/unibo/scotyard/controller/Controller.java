@@ -1,8 +1,7 @@
 package it.unibo.scotyard.controller;
 
-import javax.swing.JPanel;
-
 import it.unibo.scotyard.controller.game.GameController;
+import javax.swing.JPanel;
 
 /** Main controller interface for the application flow. */
 public interface Controller {
@@ -23,10 +22,11 @@ public interface Controller {
     /** Loads the new game menu. */
     void loadNewGameMenu();
 
-    /** Loads the game panel and initializes the view with map data. 
-     * 
+    /**
+     * Loads the game panel and initializes the view with map data.
+     *
      * @param gameController the Controller relative to the game
-    */
+     */
     void loadGamePanel(GameController gameController);
 
     /**

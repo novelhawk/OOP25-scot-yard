@@ -78,12 +78,11 @@ public final class ControllerImpl implements Controller {
         // Load the game panel
         this.loadGamePanel(gameController);
 
-        while(!gameController.isGameOver()){
+        while (!gameController.isGameOver()) {
             gameController.manageGameRound();
             gameController.updateSidebar();
         }
         gameController.loadGameOverWindow();
-
     }
 
     @Override

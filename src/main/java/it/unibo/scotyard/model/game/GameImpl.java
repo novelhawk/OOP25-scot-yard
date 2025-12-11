@@ -125,12 +125,13 @@ public class GameImpl implements Game {
     }
 
     @Override
-    public boolean isGameOver(){
-        if(this.userPlayer.getCurrentPositionId()==this.computerPlayer.getCurrentPositionId() || this.round>FINAL_ROUND_NUMBER){
+    public boolean isGameOver() {
+        if (this.userPlayer.getCurrentPositionId() == this.computerPlayer.getCurrentPositionId()
+                || this.round > FINAL_ROUND_NUMBER) {
             return true;
-        } 
-        for(Player bobby : this.additionalPlayers){
-            if(this.computerPlayer.getCurrentPositionId()==(bobby.getCurrentPositionId())){
+        }
+        for (Player bobby : this.additionalPlayers) {
+            if (this.computerPlayer.getCurrentPositionId() == (bobby.getCurrentPositionId())) {
                 return true;
             }
         }
@@ -138,7 +139,7 @@ public class GameImpl implements Game {
     }
 
     @Override
-    public void continueGame(){
+    public void continueGame() {
         this.round++;
     }
 

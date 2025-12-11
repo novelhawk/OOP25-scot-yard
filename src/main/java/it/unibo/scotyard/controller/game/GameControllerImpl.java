@@ -66,26 +66,26 @@ public class GameControllerImpl implements GameController {
     }
 
     @Override
-    public boolean isGameOver(){
+    public boolean isGameOver() {
         return this.game.isGameOver();
     }
 
     @Override
-    public void loadGameOverWindow(){
+    public void loadGameOverWindow() {
         this.view.displayGameOverWindow();
     }
 
     @Override
-    public void loadMainMenu(){
+    public void loadMainMenu() {
         this.mainController.loadMainMenu();
     }
 
     @Override
-    public void manageGameRound(){
-        if(this.isGameOver()){
+    public void manageGameRound() {
+        if (this.isGameOver()) {
             this.view.displayGameOverWindow();
-        } else{
-            //TODO
+        } else {
+            // TODO
             this.game.continueGame();
         }
     }

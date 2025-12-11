@@ -7,10 +7,11 @@ import javax.swing.JPanel;
 
 public interface GameView {
 
-    /** Set the observer, that is the GameController 
-     * 
+    /**
+     * Set the observer, that is the GameController
+     *
      * @param gameController the observer
-    */
+     */
     void setObserver(GameController gameController);
 
     /** @return the game panel (with the map panel and the sidebar) */
@@ -30,8 +31,6 @@ public interface GameView {
      */
     void displayRulesWindow(JPanel panel);
 
-    /**
-     * Displays the game over window, which contains a button that takes the user back to the main menu.
-     */
+    /** Displays the game over window, which contains a button that takes the user back to the main menu. */
     void displayGameOverWindow();
 }

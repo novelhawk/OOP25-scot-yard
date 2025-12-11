@@ -7,14 +7,12 @@ import it.unibo.scotyard.view.map.MapPanel;
 import it.unibo.scotyard.view.sidebar.SidebarPanel;
 import it.unibo.scotyard.view.window.Window;
 import it.unibo.scotyard.view.window.WindowImpl;
-
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -46,14 +44,14 @@ public class GameViewImpl implements GameView {
         this.mapPanel = new MapPanel(mapInfo);
         this.sidebar = new SidebarPanel(this);
         this.createGameOverWindow();
-        
+
         this.mainPanel = new JPanel(new BorderLayout());
         this.mainPanel.add(this.sidebar, BorderLayout.EAST);
         this.mainPanel.add(this.mapPanel, BorderLayout.CENTER);
     }
 
     @Override
-    public void setObserver(GameController gameController){
+    public void setObserver(GameController gameController) {
         this.observer = gameController;
     }
 
@@ -81,7 +79,7 @@ public class GameViewImpl implements GameView {
         rulesWindow.display();
     }
 
-    public void createGameOverWindow(){
+    public void createGameOverWindow() {
         final Size smallSize = Size.of(SMALL_WINDOW_WIDTH, SMALL_WINDOW_HEIGHT);
         final JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
@@ -106,8 +104,8 @@ public class GameViewImpl implements GameView {
         this.gameOverWindow.setsMainFeatures(smallSize);
         this.gameOverWindow.display();
 
-        button.addActionListener(new ActionListener(){
-            public void actionPerformed(ActionEvent e){
+        button.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
                 observer.loadMainMenu();
                 gameOverWindow.close();
             }
@@ -115,7 +113,7 @@ public class GameViewImpl implements GameView {
     }
 
     @Override
-    public void displayGameOverWindow(){
+    public void displayGameOverWindow() {
         this.gameOverWindow.display();
     }
 }
