@@ -41,4 +41,26 @@ public interface GameController {
 
     /** Updates the sidebar, whenever a new round starts. */
     void updateSidebar();
+
+    /**
+     * @return a boolean value which indicates whether the game is over or not
+     */
+    boolean isGameOver();
+
+    /**
+     * Load the game over window.
+     */
+    void loadGameOverWindow();
+
+    /** 
+     * Load the main menu.
+     */
+    void loadMainMenu();
+
+    /**
+     * Manages a round of a game. 
+     * If the game is over, it calls a method of the GameView, which opens a the game over
+     * window, which takes back the user to the main menu.
+     */
+    void manageGameRound();
 }

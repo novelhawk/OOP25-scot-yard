@@ -10,7 +10,6 @@ import javax.swing.JPanel;
 public final class WindowImpl extends JFrame implements Window {
 
     private static final long serialVersionUID = 1L;
-    private static final String WINDOW_TITLE = "Scotland Yard";
     private static final double ASPECT_RATIO = 2570.0 / 1926.0;
     private static final int MIN_WIDTH = 800;
 
@@ -76,5 +75,10 @@ public final class WindowImpl extends JFrame implements Window {
     @Override
     public void setHideOnClose() {
         setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+    }
+
+    @Override
+    public void close(){
+        setVisible(false);
     }
 }

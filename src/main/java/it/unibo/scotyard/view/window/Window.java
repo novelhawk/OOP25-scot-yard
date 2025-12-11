@@ -47,4 +47,7 @@ public interface Window {
 
     /** Hides the window when closing. */
     void setHideOnClose();
+
+    /** Hides the window. */
+    void close();
 }

@@ -58,10 +58,7 @@ public final class ControllerImpl implements Controller {
     }
 
     @Override
-    public void loadGamePanel() {
-        final GameView gameView =
-                this.view.createGameView(this.model.getMapData().info());
-        final GameController gameController = new GameControllerImpl(this.model.getGameData(), gameView);
+    public void loadGamePanel(GameController gameController) {
         gameController.updateSidebar();
         this.displayPanel(gameController.getMainPanel());
         this.view.forceLayoutUpdate(gameController.getMainPanel(), gameController.getMapPanel());
@@ -72,8 +69,21 @@ public final class ControllerImpl implements Controller {
         // Initialize the game and load map data from model
         this.model.initialize(gameMode, difficultyLevel);
 
+        // Create the GameView and the GameController
+        final GameView gameView =
+                this.view.createGameView(this.model.getMapData().info());
+        final GameController gameController = new GameControllerImpl(this.model.getGameData(), gameView, this);
+        gameView.setObserver(gameController);
+
         // Load the game panel
-        this.loadGamePanel();
+        this.loadGamePanel(gameController);
+
+        while(!gameController.isGameOver()){
+            gameController.manageGameRound();
+            gameController.updateSidebar();
+        }
+        gameController.loadGameOverWindow();
+
     }
 
     @Override

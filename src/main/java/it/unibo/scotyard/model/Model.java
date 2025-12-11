@@ -1,9 +1,8 @@
 package it.unibo.scotyard.model;
 
-import java.util.List;
-
 import it.unibo.scotyard.model.game.Game;
 import it.unibo.scotyard.model.map.MapData;
+import java.util.List;
 
 /** Main model interface for game data management. */
 public interface Model {
@@ -36,7 +35,7 @@ public interface Model {
 
     /**
      * Return list of initial positions of players, taken from MapData.
-     * 
+     *
      * @return list of integers representing the possible initial positions of players
      */
     List<Integer> getInitialPositions();

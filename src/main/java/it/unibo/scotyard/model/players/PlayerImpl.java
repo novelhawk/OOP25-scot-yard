@@ -18,7 +18,7 @@ public abstract class PlayerImpl implements Player {
     public abstract Map<TicketType, Integer> setInitialTickets();
 
     @Override
-    public void setInitialPosition(int initialPosition){
+    public void setInitialPosition(int initialPosition) {
         this.currentPosition = initialPosition;
     }
 

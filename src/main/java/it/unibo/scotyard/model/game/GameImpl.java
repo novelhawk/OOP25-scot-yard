@@ -11,6 +11,8 @@ import java.util.Random;
 
 public class GameImpl implements Game {
 
+    private static final int FINAL_ROUND_NUMBER = 32;
+
     private GameState gameState;
     private GameMode gameMode;
     private GameDifficulty gameDifficulty;
@@ -35,6 +37,8 @@ public class GameImpl implements Game {
         this.setPlayers();
         this.setIA();
         this.round++;
+
+        this.printTest();
     }
 
     private GameMode setGameMode(String inputGameMode) {
@@ -61,11 +65,11 @@ public class GameImpl implements Game {
         }
     }
 
-    private void loadInitialPositions(List<Integer> inputList){
+    private void loadInitialPositions(List<Integer> inputList) {
         this.initialPositions = new ArrayList<Integer>(inputList);
     }
 
-    private int getRandomInitialPosition(){
+    private int getRandomInitialPosition() {
         Random rand = new Random();
         int indexList = rand.nextInt(this.initialPositions.size());
         int result = this.initialPositions.remove(indexList);
@@ -109,12 +113,33 @@ public class GameImpl implements Game {
          */
     }
 
-    public void printTest(){
+    public void printTest() {
         System.out.println("User : " + this.getPositionPlayer(this.userPlayer));
         System.out.println("IA : " + this.getPositionPlayer(this.computerPlayer));
-        for(Player additional : this.additionalPlayers){
+        for (Player additional : this.additionalPlayers) {
             System.out.println("Bobby : " + this.getPositionPlayer(additional));
         }
+
+        System.out.println("GAMEOVER?");
+        System.out.println(this.isGameOver());
+    }
+
+    @Override
+    public boolean isGameOver(){
+        if(this.userPlayer.getCurrentPositionId()==this.computerPlayer.getCurrentPositionId() || this.round>FINAL_ROUND_NUMBER){
+            return true;
+        } 
+        for(Player bobby : this.additionalPlayers){
+            if(this.computerPlayer.getCurrentPositionId()==(bobby.getCurrentPositionId())){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public void continueGame(){
+        this.round++;
     }
 
     @Override
@@ -137,7 +162,7 @@ public class GameImpl implements Game {
     }
 
     @Override
-    public int getPositionPlayer(Player player){
+    public int getPositionPlayer(Player player) {
         return player.getCurrentPositionId();
     }
 

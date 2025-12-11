@@ -1,5 +1,6 @@
 package it.unibo.scotyard.controller.game;
 
+import it.unibo.scotyard.controller.Controller;
 import it.unibo.scotyard.model.game.Game;
 import it.unibo.scotyard.model.game.GameMode;
 import it.unibo.scotyard.model.players.TicketType;
@@ -13,9 +14,13 @@ public class GameControllerImpl implements GameController {
     private Game game;
     private GameView view;
 
-    public GameControllerImpl(Game gameData, GameView view) {
+    private Controller mainController;
+
+    public GameControllerImpl(Game gameData, GameView view, Controller mainController) {
         this.game = gameData;
         this.view = view;
+
+        this.mainController = mainController;
     }
 
     @Override
@@ -58,5 +63,30 @@ public class GameControllerImpl implements GameController {
         sidebar.updateUndergroundTicketsLabel(this.getNumberTicketsUserPlayer(TicketType.UNDERGROUND));
         sidebar.updateBlackTicketsLabel(this.getNumberTicketsUserPlayer(TicketType.BLACK));
         sidebar.updateDoubleMoveTicketsLabel(this.getNumberTicketsUserPlayer(TicketType.DOUBLE_MOVE));
+    }
+
+    @Override
+    public boolean isGameOver(){
+        return this.game.isGameOver();
+    }
+
+    @Override
+    public void loadGameOverWindow(){
+        this.view.displayGameOverWindow();
+    }
+
+    @Override
+    public void loadMainMenu(){
+        this.mainController.loadMainMenu();
+    }
+
+    @Override
+    public void manageGameRound(){
+        if(this.isGameOver()){
+            this.view.displayGameOverWindow();
+        } else{
+            //TODO
+            this.game.continueGame();
+        }
     }
 }
