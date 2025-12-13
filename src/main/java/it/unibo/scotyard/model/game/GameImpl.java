@@ -7,9 +7,11 @@ import it.unibo.scotyard.model.players.Player;
 import it.unibo.scotyard.model.players.TicketType;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class GameImpl implements Game {
 
+    private final Random random;
     private GameState gameState;
     private GameMode gameMode;
     private GameDifficulty gameDifficulty;
@@ -20,6 +22,8 @@ public class GameImpl implements Game {
     private int round;
 
     public GameImpl(String gameMode, String levelOfDifficulty) {
+        // TODO: seed
+        this.random = new Random(0);
         this.additionalPlayers = new ArrayList<>();
         this.round = 0;
         this.initialize(gameMode, levelOfDifficulty);
@@ -32,6 +36,11 @@ public class GameImpl implements Game {
         this.setPlayers();
         this.setIA();
         this.round++;
+    }
+
+    @Override
+    public Random getSeededRandom() {
+        return this.random;
     }
 
     private GameMode setGameMode(String inputGameMode) {

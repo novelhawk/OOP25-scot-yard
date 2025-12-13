@@ -1,6 +1,7 @@
 package it.unibo.scotyard.model.game;
 
 import it.unibo.scotyard.model.players.TicketType;
+import java.util.Random;
 
 public interface Game {
 
@@ -11,6 +12,9 @@ public interface Game {
      * @param levelDifficulty the selected level of difficulty
      */
     void initialize(String gameMode, String levelDifficulty);
+
+    /** @return the seeded shared random instance used by all game logic */
+    Random getSeededRandom();
 
     /**
      * Return the current game mode.
