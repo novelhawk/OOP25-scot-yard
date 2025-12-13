@@ -1,6 +1,7 @@
 package it.unibo.scotyard.model;
 
 import it.unibo.scotyard.model.game.Game;
+import it.unibo.scotyard.model.handlers.CommandDispatcher;
 import it.unibo.scotyard.model.map.MapData;
 
 /** Main model interface for game data management. */
@@ -30,4 +31,6 @@ public interface Model {
      * @throwsIllegalStateException if model not initialized
      */
     Game getGameData();
+
+    CommandDispatcher getDispatcher();
 }

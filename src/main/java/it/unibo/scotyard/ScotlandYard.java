@@ -20,7 +20,7 @@ public final class ScotlandYard {
      */
     public static void main(final String[] args) {
         // Initialize MVC components
-        final Model model = new ModelImpl();
+        final Model model = ModelImpl.createDefault();
         final ViewImpl view = new ViewImpl();
         final Controller controller = new ControllerImpl(model, view);
 
