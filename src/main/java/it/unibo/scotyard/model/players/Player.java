@@ -1,6 +1,6 @@
 package it.unibo.scotyard.model.players;
 
-import it.unibo.scotyard.model.map.MapNode;
+import it.unibo.scotyard.model.map.NodeId;
 import java.util.List;
 import java.util.Map;
 
@@ -21,7 +21,7 @@ public interface Player {
     Map<TicketType, Integer> setInitialTickets();
 
     /** @return the current position of the player on the map */
-    MapNode getCurrentPosition();
+    NodeId getPosition();
 
     /** @return the number of tickets possessed by the player of the type passed as a paremeter. */
     int getNumberTickets(TicketType ticketType);

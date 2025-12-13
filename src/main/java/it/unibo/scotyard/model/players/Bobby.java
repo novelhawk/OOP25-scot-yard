@@ -23,6 +23,6 @@ public class Bobby extends PlayerImpl {
 
     @Override
     public void setInitialPosition(List<Integer> initialPositions) {
-        this.currentPosition = this.generateRandomInitialPosition(initialPositions);
+        this.position = this.generateRandomInitialPosition(initialPositions);
     }
 }

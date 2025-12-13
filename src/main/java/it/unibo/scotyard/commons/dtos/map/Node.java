@@ -1,5 +1,6 @@
 package it.unibo.scotyard.commons.dtos.map;
 
+import it.unibo.scotyard.model.map.NodeId;
 import it.unibo.scotyard.model.map.TransportType;
 import java.util.Set;
 
@@ -7,7 +8,7 @@ import java.util.Set;
 public interface Node {
 
     /** @return unique node identifier */
-    int getId();
+    NodeId getId();
 
     /** @return x coordinate */
     int getX();

@@ -1,11 +1,12 @@
 package it.unibo.scotyard.commons.dtos.map;
 
+import it.unibo.scotyard.model.map.NodeId;
 import it.unibo.scotyard.model.map.TransportType;
 import java.util.Objects;
 import java.util.Set;
 
 /** immutable implementation of Node */
-public record NodeImpl(int id, int x, int y, Set<TransportType> availableTransports) implements Node {
+public record NodeImpl(NodeId id, int x, int y, Set<TransportType> availableTransports) implements Node {
 
     // constructor with validation
     public NodeImpl {
@@ -14,7 +15,7 @@ public record NodeImpl(int id, int x, int y, Set<TransportType> availableTranspo
     }
 
     @Override
-    public int getId() {
+    public NodeId getId() {
         return this.id;
     }
 

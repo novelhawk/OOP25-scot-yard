@@ -1,10 +1,11 @@
 package it.unibo.scotyard.commons.dtos.map;
 
+import it.unibo.scotyard.model.map.NodeId;
 import it.unibo.scotyard.model.map.TransportType;
 import java.util.Objects;
 
 /** Immutable implementation */
-public record ConnectionImpl(int from, int to, TransportType transport) implements Connection {
+public record ConnectionImpl(NodeId from, NodeId to, TransportType transport) implements Connection {
 
     // validation and defensive copy
     public ConnectionImpl {
@@ -12,12 +13,12 @@ public record ConnectionImpl(int from, int to, TransportType transport) implemen
     }
 
     @Override
-    public int getFrom() {
+    public NodeId getFrom() {
         return this.from;
     }
 
     @Override
-    public int getTo() {
+    public NodeId getTo() {
         return this.to;
     }
 

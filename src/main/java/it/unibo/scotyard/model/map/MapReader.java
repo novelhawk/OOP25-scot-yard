@@ -91,7 +91,8 @@ public class MapReader {
             final int x = nodeArray.get(0).getAsInt();
             final int y = nodeArray.get(1).getAsInt();
 
-            nodes.add(new MapNode(id++, x, y));
+            nodes.add(new MapNode(new NodeId(id), x, y));
+            id++;
         }
 
         return nodes;
@@ -137,8 +138,8 @@ public class MapReader {
 
         for (final JsonElement element : jsonArray) {
             final JsonArray connectionArray = element.getAsJsonArray();
-            final int from = connectionArray.get(0).getAsInt();
-            final int to = connectionArray.get(1).getAsInt();
+            final NodeId from = new NodeId(connectionArray.get(0).getAsInt());
+            final NodeId to = new NodeId(connectionArray.get(1).getAsInt());
 
             connections.add(new MapConnection(null, from, to, transport));
         }

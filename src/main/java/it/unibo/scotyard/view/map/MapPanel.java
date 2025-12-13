@@ -2,6 +2,7 @@ package it.unibo.scotyard.view.map;
 
 import it.unibo.scotyard.commons.dtos.map.MapInfo;
 import it.unibo.scotyard.commons.dtos.map.Node;
+import it.unibo.scotyard.model.map.NodeId;
 import it.unibo.scotyard.model.map.TransportType;
 import java.awt.*;
 import java.awt.Color;
@@ -67,7 +68,7 @@ public final class MapPanel extends JPanel {
     private int scaledBackgroundHeight = 0;
     private boolean scaleCalculated = false;
 
-    private final Map<Integer, Point2D> scaledNodePositions = new HashMap<>();
+    private final Map<NodeId, Point2D> scaledNodePositions = new HashMap<>();
 
     // Pan dragging
     private Point dragStartPoint;
@@ -435,7 +436,7 @@ public final class MapPanel extends JPanel {
 
         // ID nodo
         g2d.setColor(NODE_TEXT_COLOR);
-        final String label = String.valueOf(node.getId());
+        final String label = String.valueOf(node.getId().id());
         final FontMetrics fm = g2d.getFontMetrics();
         final int textWidth = fm.stringWidth(label);
         final int textHeight = fm.getAscent();
