@@ -39,4 +39,12 @@ public interface Model {
      * @return list of integers representing the possible initial positions of players
      */
     List<Integer> getInitialPositions();
+
+    /**
+     * Return list of ids of possible destinations, given the id of the starting position.
+     * 
+     * @param idStartPosition the id of the starting position
+     * @return list of possible destinations as ids
+     */
+    List<Integer> getPossibleDestinations(int idStartPosition);
 }

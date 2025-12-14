@@ -7,6 +7,9 @@ import it.unibo.scotyard.model.players.TicketType;
 import it.unibo.scotyard.view.game.GameView;
 import it.unibo.scotyard.view.map.MapPanel;
 import it.unibo.scotyard.view.sidebar.SidebarPanel;
+
+import java.util.List;
+
 import javax.swing.JPanel;
 
 public class GameControllerImpl implements GameController {
@@ -82,11 +85,11 @@ public class GameControllerImpl implements GameController {
 
     @Override
     public void manageGameRound() {
-        if (this.isGameOver()) {
-            this.view.displayGameOverWindow();
-        } else {
-            // TODO
+        System.out.println("Round : " + this.game.getGameRound());
+        for(int i=0; i<this.game.getNumberOfPlayers(); i++){
+            this.game.loadPossibleDestinations(this.mainController.getPossibleDestinations(this.game.getPositionPlayer(this.game.getCurrentPlayer())));
             this.game.continueGame();
         }
+        this.game.nextRound();
     }
 }

@@ -2,8 +2,11 @@ package it.unibo.scotyard.model;
 
 import it.unibo.scotyard.model.game.Game;
 import it.unibo.scotyard.model.game.GameImpl;
+import it.unibo.scotyard.model.map.MapConnection;
 import it.unibo.scotyard.model.map.MapData;
 import it.unibo.scotyard.model.map.MapReader;
+
+import java.util.ArrayList;
 import java.util.List;
 
 /** model. Manages map data loading and game state. */
@@ -50,5 +53,20 @@ public final class ModelImpl implements Model {
     @Override
     public List<Integer> getInitialPositions() {
         return this.mapData.getInitialPositions();
+    }
+
+    @Override
+    public List<Integer> getPossibleDestinations(int idStartPosition){
+        List<Integer> resultList = new ArrayList<Integer>();
+        List<MapConnection> connections = this.getMapData().getConnections();
+        for(MapConnection connection : connections){
+            if(connection.getFrom()==idStartPosition && !resultList.contains(connection.getTo())){
+                resultList.add(connection.getTo());
+            }
+            if(connection.getTo()==idStartPosition && !resultList.contains(connection.getFrom())){
+                resultList.add(connection.getFrom());
+            }
+        }
+        return resultList;
     }
 }

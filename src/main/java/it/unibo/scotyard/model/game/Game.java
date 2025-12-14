@@ -24,8 +24,18 @@ public interface Game {
      */
     boolean isGameOver();
 
-    /** Goes to next round (increments the round number). */
+    /**
+     * Loads into a specific variable the possible destinations
+     * 
+     * @param inputPossibleDestinations the possible destinations loaded from Model
+     */
+    void loadPossibleDestinations(List<Integer> inputPossibleDestinations);
+
+    /** Manages the current player. */
     void continueGame();
+
+    /** Goes to next round (increments the round number). */
+    void nextRound();
 
     /**
      * Return the current game mode.
@@ -42,12 +52,19 @@ public interface Game {
      */
     int getNumberTicketsUserPlayer(TicketType ticketType);
 
+
+    /** Return the current player. */
+    Player getCurrentPlayer();
+
     /**
      * Return the current position of the player passed as input.
      *
      * @return the current position of the player passed as input
      */
     int getPositionPlayer(Player player);
+
+    /** Return the number of players */
+    int getNumberOfPlayers();
 
     /**
      * Returns the current round number.

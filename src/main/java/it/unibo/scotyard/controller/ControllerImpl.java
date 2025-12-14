@@ -12,6 +12,8 @@ import it.unibo.scotyard.controller.menu.NewGameMenuControllerImpl;
 import it.unibo.scotyard.model.Model;
 import it.unibo.scotyard.view.ViewImpl;
 import it.unibo.scotyard.view.game.GameView;
+
+import java.util.List;
 import java.util.Objects;
 import javax.swing.JPanel;
 
@@ -83,6 +85,11 @@ public final class ControllerImpl implements Controller {
             gameController.updateSidebar();
         }
         gameController.loadGameOverWindow();
+    }
+
+    @Override
+    public List<Integer> getPossibleDestinations(int initialPosition){
+        return this.model.getPossibleDestinations(initialPosition);
     }
 
     @Override
