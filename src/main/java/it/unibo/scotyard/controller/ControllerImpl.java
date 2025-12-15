@@ -10,9 +10,10 @@ import it.unibo.scotyard.controller.menu.MainMenuControllerImpl;
 import it.unibo.scotyard.controller.menu.NewGameMenuController;
 import it.unibo.scotyard.controller.menu.NewGameMenuControllerImpl;
 import it.unibo.scotyard.model.Model;
+import it.unibo.scotyard.model.Pair;
+import it.unibo.scotyard.model.map.TransportType;
 import it.unibo.scotyard.view.ViewImpl;
 import it.unibo.scotyard.view.game.GameView;
-
 import java.util.List;
 import java.util.Objects;
 import javax.swing.JPanel;
@@ -88,7 +89,7 @@ public final class ControllerImpl implements Controller {
     }
 
     @Override
-    public List<Integer> getPossibleDestinations(int initialPosition){
+    public List<Pair<Integer,TransportType>> getPossibleDestinations(int initialPosition) {
         return this.model.getPossibleDestinations(initialPosition);
     }
 

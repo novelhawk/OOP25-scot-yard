@@ -1,5 +1,7 @@
 package it.unibo.scotyard.model.game;
 
+import it.unibo.scotyard.model.Pair;
+import it.unibo.scotyard.model.map.TransportType;
 import it.unibo.scotyard.model.players.Bobby;
 import it.unibo.scotyard.model.players.Detective;
 import it.unibo.scotyard.model.players.MisterX;
@@ -24,7 +26,7 @@ public class GameImpl implements Game {
     private List<Player> additionalPlayers;
     private int playersNumber;
     private List<Integer> initialPositions;
-    private List<Integer> possibleDestinations;
+    private List<Pair<Integer,TransportType>> possibleDestinations;
     private int indexCurrentPlayer; // It is used to keep track of the current player
     private int round;
 
@@ -153,39 +155,62 @@ public class GameImpl implements Game {
     }
 
     @Override
-    public void loadPossibleDestinations(List<Integer> inputPossibleDestinations){
+    public void loadPossibleDestinations(List<Pair<Integer,TransportType>> inputPossibleDestinations) {
         this.possibleDestinations = inputPossibleDestinations;
 
-        System.out.println(this.possibleDestinations);
+        System.out.println(this.currentPlayer);
+        for(Pair<Integer,TransportType> item : this.possibleDestinations){
+            System.out.print(item.getX());
+            switch (item.getY()) {
+                case TransportType.UNDERGROUND:
+                    System.out.print(" U, ");
+                    break;
+                case TransportType.TAXI:
+                    System.out.print(" T, ");
+                    break;
+                case TransportType.BUS:
+                    System.out.print(" B, ");
+                    break;
+                case TransportType.FERRY:
+                    System.out.print(" F, ");
+                    break;
+            }
+        }
+        System.out.println("Fine");
+    }
+
+    @Override
+    public List<Pair<Integer,TransportType>> getPossibleDestinations(){
+        return this.possibleDestinations;
     }
 
     @Override
     public void continueGame() {
         this.indexCurrentPlayer++;
-        if(this.indexCurrentPlayer<this.additionalPlayers.size()){
-            if(this.indexCurrentPlayer>=0){
+        if (this.indexCurrentPlayer < this.additionalPlayers.size()) {
+            if (this.indexCurrentPlayer >= 0) {
                 this.currentPlayer = additionalPlayers.get(this.indexCurrentPlayer);
-            } else{
-                if(this.indexCurrentPlayer==DETECTIVE_ROUND_INDEX){
-                    if(this.gameMode.equals(GameMode.DETECTIVE)){
-                            this.currentPlayer = this.userPlayer;
-                        } else{
-                            this.currentPlayer = this.computerPlayer;
-                        }
+            } else {
+                if (this.indexCurrentPlayer == DETECTIVE_ROUND_INDEX) {
+                    if (GameMode.DETECTIVE.equals(this.gameMode)) {
+                        this.currentPlayer = this.userPlayer;
+                    } else {
+                        this.currentPlayer = this.computerPlayer;
+                    }
                 }
             }
         } else {
             this.indexCurrentPlayer = MISTER_X_ROUND_INDEX;
-            if(this.gameMode.equals(GameMode.DETECTIVE)){
+            if (GameMode.DETECTIVE.equals(this.gameMode)) {
                 this.currentPlayer = this.computerPlayer;
-            } else{
+            } else {
                 this.currentPlayer = this.userPlayer;
             }
         }
     }
 
     @Override
-    public void nextRound(){
+    public void nextRound() {
         this.round++;
     }
 
@@ -209,7 +234,7 @@ public class GameImpl implements Game {
     }
 
     @Override
-    public Player getCurrentPlayer(){
+    public Player getCurrentPlayer() {
         return this.currentPlayer;
     }
 
@@ -219,7 +244,7 @@ public class GameImpl implements Game {
     }
 
     @Override
-    public int getNumberOfPlayers(){
+    public int getNumberOfPlayers() {
         return this.playersNumber;
     }
 

@@ -1,5 +1,7 @@
 package it.unibo.scotyard.model.game;
 
+import it.unibo.scotyard.model.Pair;
+import it.unibo.scotyard.model.map.TransportType;
 import it.unibo.scotyard.model.players.Player;
 import it.unibo.scotyard.model.players.TicketType;
 import java.util.List;
@@ -26,10 +28,13 @@ public interface Game {
 
     /**
      * Loads into a specific variable the possible destinations
-     * 
+     *
      * @param inputPossibleDestinations the possible destinations loaded from Model
      */
-    void loadPossibleDestinations(List<Integer> inputPossibleDestinations);
+    void loadPossibleDestinations(List<Pair<Integer,TransportType>> inputPossibleDestinations);
+
+    /** @return the list of possible destinations as pairs of integer and transport type */
+    List<Pair<Integer,TransportType>> getPossibleDestinations();
 
     /** Manages the current player. */
     void continueGame();
@@ -51,7 +56,6 @@ public interface Game {
      * @return the number of tickets of a specific tyep of the user player
      */
     int getNumberTicketsUserPlayer(TicketType ticketType);
-
 
     /** Return the current player. */
     Player getCurrentPlayer();
