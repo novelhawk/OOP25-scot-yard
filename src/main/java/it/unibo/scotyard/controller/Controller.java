@@ -3,7 +3,6 @@ package it.unibo.scotyard.controller;
 import it.unibo.scotyard.controller.game.GameController;
 import it.unibo.scotyard.model.Pair;
 import it.unibo.scotyard.model.map.TransportType;
-
 import java.util.List;
 import javax.swing.JPanel;
 
@@ -43,13 +42,13 @@ public interface Controller {
     void startGame(String gameMode, String difficultyLevel, String playerName);
 
     /**
-     * Return a list of integers representing the pairs of integer and TransportType of the possible destinations 
+     * Return a list of integers representing the pairs of integer and TransportType of the possible destinations
      * (loaded from the Model) for a player in a certain initial position.
      *
      * @param initialPosition the id of the starting position of the player
      * @return a list of possible destinations as pairs of integer and TransportType
      */
-    List<Pair<Integer,TransportType>> getPossibleDestinations(int initialPosition);
+    List<Pair<Integer, TransportType>> getPossibleDestinations(int initialPosition);
 
     /** Exits the application. */
     void exit();

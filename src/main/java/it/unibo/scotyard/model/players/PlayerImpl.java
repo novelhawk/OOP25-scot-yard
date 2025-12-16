@@ -7,7 +7,7 @@ public abstract class PlayerImpl implements Player {
     protected static final int NONE = 0;
     protected static final int INFINITE = -1;
 
-    protected int currentPosition;
+    protected int currentPositionId;
     protected Map<TicketType, Integer> tickets;
 
     public PlayerImpl() {
@@ -18,13 +18,13 @@ public abstract class PlayerImpl implements Player {
     public abstract Map<TicketType, Integer> setInitialTickets();
 
     @Override
-    public void setInitialPosition(int initialPosition) {
-        this.currentPosition = initialPosition;
+    public void setPosition(int newPosition) {
+        this.currentPositionId = newPosition;
     }
 
     @Override
     public int getCurrentPositionId() {
-        return this.currentPosition;
+        return this.currentPositionId;
     }
 
     @Override
@@ -42,4 +42,5 @@ public abstract class PlayerImpl implements Player {
         }
         return false;
     }
+
 }

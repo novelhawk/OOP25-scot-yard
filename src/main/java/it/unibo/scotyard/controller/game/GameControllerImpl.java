@@ -3,6 +3,7 @@ package it.unibo.scotyard.controller.game;
 import it.unibo.scotyard.controller.Controller;
 import it.unibo.scotyard.model.game.Game;
 import it.unibo.scotyard.model.game.GameMode;
+import it.unibo.scotyard.model.map.TransportType;
 import it.unibo.scotyard.model.players.TicketType;
 import it.unibo.scotyard.view.game.GameView;
 import it.unibo.scotyard.view.map.MapPanel;
@@ -10,6 +11,8 @@ import it.unibo.scotyard.view.sidebar.SidebarPanel;
 import javax.swing.JPanel;
 
 public class GameControllerImpl implements GameController {
+
+    private boolean hasPlayerMoved;
 
     private Game game;
     private GameView view;
@@ -21,6 +24,8 @@ public class GameControllerImpl implements GameController {
         this.view = view;
 
         this.mainController = mainController;
+
+        this.hasPlayerMoved = false;
     }
 
     @Override
@@ -80,13 +85,26 @@ public class GameControllerImpl implements GameController {
         this.mainController.loadMainMenu();
     }
 
+    private boolean hasPlayerMoved(){
+        return this.hasPlayerMoved;
+    }
+
+    //TODO : this method gets called by View
+    @Override
+    public void movePlayer(int newPositionId, TransportType transport){
+        this.hasPlayerMoved = this.game.moveCurrentPlayer(newPositionId, transport);
+    }
+
     @Override
     public void manageGameRound() {
         System.out.println("Round : " + this.game.getGameRound());
         for (int i = 0; i < this.game.getNumberOfPlayers(); i++) {
             this.game.loadPossibleDestinations(this.mainController.getPossibleDestinations(
                     this.game.getPositionPlayer(this.game.getCurrentPlayer())));
-            this.game.continueGame();
+            //while(!this.hasPlayerMoved()){};
+            //TODO : update view
+            this.game.changeCurrentPlayer();
+            this.hasPlayerMoved = false;
         }
         this.game.nextRound();
     }

@@ -8,12 +8,11 @@ import java.util.Map;
 public interface Player {
 
     /**
-     * Sets the initial position for the player.
+     * Sets the position for the player.
      *
-     * @param initialPosition the initial position (taken randomly from the json of the map)
-     * @return the initial position of the player
+     * @param position the input position
      */
-    void setInitialPosition(int initialPosition);
+    void setPosition(int newPosition);
 
     /** @return the map containing the number of tickets possessed by the player for each ticket type */
     Map<TicketType, Integer> setInitialTickets();

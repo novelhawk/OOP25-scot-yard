@@ -6,7 +6,6 @@ import it.unibo.scotyard.model.map.MapConnection;
 import it.unibo.scotyard.model.map.MapData;
 import it.unibo.scotyard.model.map.MapReader;
 import it.unibo.scotyard.model.map.TransportType;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -56,7 +55,7 @@ public final class ModelImpl implements Model {
         return this.mapData.getInitialPositions();
     }
 
-    /* 
+    /*
     @Override
     public List<Integer> getPossibleDestinations(int idStartPosition) {
         List<Integer> resultList = new ArrayList<Integer>();
@@ -73,15 +72,15 @@ public final class ModelImpl implements Model {
     }*/
 
     @Override
-    public List<Pair<Integer,TransportType>> getPossibleDestinations(int idStartPosition){
-        List<Pair<Integer,TransportType>> resultList = new ArrayList<Pair<Integer,TransportType>>();
+    public List<Pair<Integer, TransportType>> getPossibleDestinations(int idStartPosition) {
+        List<Pair<Integer, TransportType>> resultList = new ArrayList<Pair<Integer, TransportType>>();
         List<MapConnection> connections = this.getMapData().getConnections();
         for (MapConnection connection : connections) {
             if (connection.getFrom() == idStartPosition) {
                 resultList.add(new Pair<>(connection.getTo(), connection.getTransport()));
             }
             if (connection.getTo() == idStartPosition) {
-                resultList.add(new Pair<> (connection.getFrom(), connection.getTransport()));
+                resultList.add(new Pair<>(connection.getFrom(), connection.getTransport()));
             }
         }
         return resultList;

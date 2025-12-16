@@ -31,13 +31,23 @@ public interface Game {
      *
      * @param inputPossibleDestinations the possible destinations loaded from Model
      */
-    void loadPossibleDestinations(List<Pair<Integer,TransportType>> inputPossibleDestinations);
+    void loadPossibleDestinations(List<Pair<Integer, TransportType>> inputPossibleDestinations);
 
     /** @return the list of possible destinations as pairs of integer and transport type */
-    List<Pair<Integer,TransportType>> getPossibleDestinations();
+    List<Pair<Integer, TransportType>> getPossibleDestinations();
 
     /** Manages the current player. */
-    void continueGame();
+    void changeCurrentPlayer();
+
+    /**
+     * Return a boolean value which indicates whether the current player can be moved or not;
+     * if it's possible, its position id gets changed.
+     * 
+     * @param newPositionId
+     * @param transport
+     * @return a boolean value which indicates whether the current player can be moved or not
+     */
+    boolean moveCurrentPlayer(int newPositionId, TransportType transport);
 
     /** Goes to next round (increments the round number). */
     void nextRound();

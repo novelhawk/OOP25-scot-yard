@@ -20,14 +20,17 @@ public class GameImpl implements Game {
     private GameState gameState;
     private GameMode gameMode;
     private GameDifficulty gameDifficulty;
+
     private Player userPlayer;
     private Player computerPlayer;
     private Player currentPlayer;
     private List<Player> additionalPlayers;
     private int playersNumber;
+
     private List<Integer> initialPositions;
-    private List<Pair<Integer,TransportType>> possibleDestinations;
+    private List<Pair<Integer, TransportType>> possibleDestinations; // They refer to the current player
     private int indexCurrentPlayer; // It is used to keep track of the current player
+
     private int round;
 
     public GameImpl(String gameMode, String levelOfDifficulty, List<Integer> initialPositions) {
@@ -98,23 +101,23 @@ public class GameImpl implements Game {
         }
         this.playersNumber++;
         this.playersNumber++;
-        this.userPlayer.setInitialPosition(this.getRandomInitialPosition());
-        this.computerPlayer.setInitialPosition(this.getRandomInitialPosition());
+        this.userPlayer.setPosition(this.getRandomInitialPosition());
+        this.computerPlayer.setPosition(this.getRandomInitialPosition());
         int index = 0;
         switch (this.gameDifficulty) {
             case GameDifficulty.MEDIUM:
             case GameDifficulty.DIFFICULT:
                 this.additionalPlayers.add(new Bobby());
-                this.additionalPlayers.get(index).setInitialPosition(this.getRandomInitialPosition());
+                this.additionalPlayers.get(index).setPosition(this.getRandomInitialPosition());
                 this.playersNumber++;
                 index++;
             case GameDifficulty.EASY:
                 this.additionalPlayers.add(new Bobby());
-                this.additionalPlayers.get(index).setInitialPosition(this.getRandomInitialPosition());
+                this.additionalPlayers.get(index).setPosition(this.getRandomInitialPosition());
                 index++;
                 this.playersNumber++;
                 this.additionalPlayers.add(new Bobby());
-                this.additionalPlayers.get(index).setInitialPosition(this.getRandomInitialPosition());
+                this.additionalPlayers.get(index).setPosition(this.getRandomInitialPosition());
                 index++;
                 this.playersNumber++;
         }
@@ -155,11 +158,17 @@ public class GameImpl implements Game {
     }
 
     @Override
-    public void loadPossibleDestinations(List<Pair<Integer,TransportType>> inputPossibleDestinations) {
+    public void loadPossibleDestinations(List<Pair<Integer, TransportType>> inputPossibleDestinations) {
         this.possibleDestinations = inputPossibleDestinations;
 
+        // Removal of destinations that can be reached by ferry, if player is not Mister X
+        if((this.gameMode.equals(GameMode.DETECTIVE) && this.currentPlayer!=this.computerPlayer) || (this.gameMode.equals(GameMode.MISTER_X) 
+            && this.currentPlayer!=this.userPlayer)){
+            this.possibleDestinations.removeIf(item->item.getY().equals(TransportType.FERRY));
+        }
+
         System.out.println(this.currentPlayer);
-        for(Pair<Integer,TransportType> item : this.possibleDestinations){
+        for (Pair<Integer, TransportType> item : this.possibleDestinations) {
             System.out.print(item.getX());
             switch (item.getY()) {
                 case TransportType.UNDERGROUND:
@@ -180,12 +189,12 @@ public class GameImpl implements Game {
     }
 
     @Override
-    public List<Pair<Integer,TransportType>> getPossibleDestinations(){
+    public List<Pair<Integer, TransportType>> getPossibleDestinations() {
         return this.possibleDestinations;
     }
 
     @Override
-    public void continueGame() {
+    public void changeCurrentPlayer() {
         this.indexCurrentPlayer++;
         if (this.indexCurrentPlayer < this.additionalPlayers.size()) {
             if (this.indexCurrentPlayer >= 0) {
@@ -206,6 +215,20 @@ public class GameImpl implements Game {
             } else {
                 this.currentPlayer = this.userPlayer;
             }
+        }
+    }
+
+    private void setPositionPlayer(Player player, int newPositionId){
+        player.setPosition(newPositionId);
+    }
+
+    @Override
+    public boolean moveCurrentPlayer(int newPositionId, TransportType transport){
+        if(this.possibleDestinations.contains(new Pair<>(newPositionId, transport))){
+            this.setPositionPlayer(this.currentPlayer, newPositionId);
+            return true;
+        } else{
+            return false;
         }
     }
 

@@ -89,7 +89,7 @@ public final class ControllerImpl implements Controller {
     }
 
     @Override
-    public List<Pair<Integer,TransportType>> getPossibleDestinations(int initialPosition) {
+    public List<Pair<Integer, TransportType>> getPossibleDestinations(int initialPosition) {
         return this.model.getPossibleDestinations(initialPosition);
     }
 

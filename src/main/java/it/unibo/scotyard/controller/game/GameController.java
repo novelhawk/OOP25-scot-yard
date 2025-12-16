@@ -1,6 +1,7 @@
 package it.unibo.scotyard.controller.game;
 
 import it.unibo.scotyard.model.game.GameMode;
+import it.unibo.scotyard.model.map.TransportType;
 import it.unibo.scotyard.model.players.TicketType;
 import it.unibo.scotyard.view.map.MapPanel;
 import it.unibo.scotyard.view.sidebar.SidebarPanel;
@@ -50,6 +51,13 @@ public interface GameController {
 
     /** Load the main menu. */
     void loadMainMenu();
+
+    /** Moves the player (if possible).
+     * 
+     * @param newPositionId the id of the destination
+     * @param transport the type of transport of this move 
+    */
+    void movePlayer(int newPositionId, TransportType transport);
 
     /**
      * Manages a round of a game. If the game is over, it calls a method of the GameView, which opens a the game over

@@ -3,7 +3,6 @@ package it.unibo.scotyard.model;
 import it.unibo.scotyard.model.game.Game;
 import it.unibo.scotyard.model.map.MapData;
 import it.unibo.scotyard.model.map.TransportType;
-
 import java.util.List;
 
 /** Main model interface for game data management. */
@@ -43,11 +42,11 @@ public interface Model {
     List<Integer> getInitialPositions();
 
     /**
-     * Return list of pairs of integer (representing the id) and TransportType of possible destinations, 
-     * given the id of the starting position.
+     * Return list of pairs of integer (representing the id) and TransportType of possible destinations, given the id of
+     * the starting position.
      *
      * @param idStartPosition the id of the starting position
      * @return list of possible destinations as pairs of integer and TransportType
      */
-    List<Pair<Integer,TransportType>> getPossibleDestinations(int idStartPosition);
+    List<Pair<Integer, TransportType>> getPossibleDestinations(int idStartPosition);
 }
