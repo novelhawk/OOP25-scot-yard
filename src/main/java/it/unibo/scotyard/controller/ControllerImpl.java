@@ -61,7 +61,7 @@ public final class ControllerImpl implements Controller {
     public void loadGamePanel() {
         final GameView gameView =
                 this.view.createGameView(this.model.getMapData().info());
-        final GameController gameController = new GameControllerImpl(this.model.getGameData(), gameView);
+        final GameController gameController = new GameControllerImpl(this.model.getGameState(), gameView);
         gameController.updateSidebar();
         this.displayPanel(gameController.getMainPanel());
         this.view.forceLayoutUpdate(gameController.getMainPanel(), gameController.getMapPanel());

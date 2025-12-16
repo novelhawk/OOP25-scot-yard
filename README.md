@@ -53,7 +53,7 @@ callback passata durante l'inizializzazione, chiudendo poi la finestra
 del launcher.
 
 // IRE
-Quando la callback viene eseguita, il ControllerImpl memorizza la 
+Quando la callback viene eseguita, il ControllerImpl memorizza la
 risoluzione selezionata e crea una nuova finestra, che sarà poi la
 finestra principale, in cui verrà mostrato il menù e anche il gioco
 vero e proprio. Una volta creata questa, viene caricato il menù principale,
@@ -61,27 +61,27 @@ attraverso la creazione di un controller intermedio : MainMenuController.
 Questo controller ha il compito di gestire il menu principale del
 gioco. Al suo interno viene creata la MainMenuView nel metodo getMainPanel
 del relativo controller, che restituisce il JPanel creato dalla view e che viene
-restituito dal metodo getMainPanel della MainMenuView. In questo JPanel sono 
-presenti 4 JButton : "Nuova partita" permette di iniziare una nuova partita, 
-"Carica partita" permette di caricare una delle partite salvate (//TODO), 
-"Statistiche" permette di visualizzare la partita più lunga e il numero di vittorie 
-e sconfitte nelle varie partite (//TODO), "Esci" che chiude l'applicazione. 
+restituito dal metodo getMainPanel della MainMenuView. In questo JPanel sono
+presenti 4 JButton : "Nuova partita" permette di iniziare una nuova partita,
+"Carica partita" permette di caricare una delle partite salvate (//TODO),
+"Statistiche" permette di visualizzare la partita più lunga e il numero di vittorie
+e sconfitte nelle varie partite (//TODO), "Esci" che chiude l'applicazione.
 Il controller principale usa questo JPanel, tramite il metodo getMainPanel del
-MainMenuController, come argomento per il metodo displayPanel che, al suo interno, 
-richiama il metodo displayPanel della view principale, prendendo sempre come 
-argomento un JPanel. 
+MainMenuController, come argomento per il metodo displayPanel che, al suo interno,
+richiama il metodo displayPanel della view principale, prendendo sempre come
+argomento un JPanel.
 
 //IRE
 Con la pressione del JButton "Nuova partita" viene chiamato il metodo
 newGameMenu del MainMenuController, in cui viene chiamato il metodo
-loadNewGameMenu del contoller principale. In questo viene creato un nuovo 
-controller intermedio, ovvero il NewGameMenuController, che si occupa della 
+loadNewGameMenu del contoller principale. In questo viene creato un nuovo
+controller intermedio, ovvero il NewGameMenuController, che si occupa della
 gestione del menù per creare una nuova partita. Analogamente al main menu, viene
-creata la NewGameMenuView nel relativo controller nel metodo getMainPanel, che 
+creata la NewGameMenuView nel relativo controller nel metodo getMainPanel, che
 restituisce il JPanel creato dalla view e che viene restituito dal metodo getMainPanel
 della view. In questo JPanel l'utente inserisce il proprio nome e poi seleziona : la
-modalità di gioco (Mister X o Detective) e il livello di difficoltà (facile, medio, 
-difficile). Sono presenti due JButton : "Torna indietro" invoca il metodo loadMainMenu 
+modalità di gioco (Mister X o Detective) e il livello di difficoltà (facile, medio,
+difficile). Sono presenti due JButton : "Torna indietro" invoca il metodo loadMainMenu
 del controller princiaple, riportando al main menu; "Avvia gioco" invoca il metodo
 startGame del controller principale, passando tre argomenti ovvero la modalità di gioco
 selezionata, il livello di difficoltà selezionato e il nome del giocatore.
@@ -148,12 +148,12 @@ necessari per il rendering senza dare accesso a tutta la logica di
 business del model. MapInfo espone stream di nodi e connessioni invece di
 liste, permettendo un'elaborazione più efficiente e funzionale dei dati.
 
-//IRE 
-Il controller chiama il metodo loadGamePanel in cui vengono creati la GameView e il 
-GameController. Per creare la prima viene passato come argomento un'implementazione di 
-MapInfo, ottenuta chiamando il metodo getMapData.info del Model. La GameView si compone 
-di un pannello principale, il MainPanel che è diviso in due parti : il MapPanel, che è 
-il cuore della rappresentazione grafica della mappa; e la Sidebar, che permette all'utente 
+//IRE
+Il controller chiama il metodo loadGamePanel in cui vengono creati la GameView e il
+GameController. Per creare la prima viene passato come argomento un'implementazione di
+MapInfo, ottenuta chiamando il metodo getMapData.info del Model. La GameView si compone
+di un pannello principale, il MainPanel che è diviso in due parti : il MapPanel, che è
+il cuore della rappresentazione grafica della mappa; e la Sidebar, che permette all'utente
 di tenere traccia di info importanti durante lo svoglimento della partita.
 
 Il MapPanel separa lo spazio logico della mappa dallo spazio fisico dello schermo.
@@ -217,28 +217,28 @@ semicircolari, uno verde e uno rosso, che circondano il nodo come una
 corona colorata.
 
 //IRE
-La Sidebar, in particolare, contiene il nome del tipo di giocatore attuale 
-dell'utente (detective o mister X), il numero del round attuale, l'inventario 
+La Sidebar, in particolare, contiene il nome del tipo di giocatore attuale
+dell'utente (detective o mister X), il numero del round attuale, l'inventario
 (biglietti) e un button che apre una piccola finestra in cui sono riassunte
 le regole principali del gioco (che variano leggermente a seconda dell'attuale
 modalità di gioco). In particolare, questa finestra viene aperta dopo la pressione
 del button : all'interno della SidebarPanel viene chiamato il metodo displayRulesWindow
-della GameView, che prende come argomento il panel da inserire all'interno della 
-finestra con le regole e che viene creato nel metodo createRulesPanel della 
+della GameView, che prende come argomento il panel da inserire all'interno della
+finestra con le regole e che viene creato nel metodo createRulesPanel della
 SidebarPanel.
 //TODO : Aggiungere -> bottoni per giocare + bottone per tornare al MainMenu?
 
 // IRE
-Una volta che la GameView è stata completamente inizializzata con il MapPanel e 
-la Sidebar, viene creato il GameController, che prende in ingresso il model del 
-Game, attraverso il metodo getGameData del model, e la GameView. Dopdoiché viene 
-subito aggiornata la sidebar, tramite il metodo updateSidebar del GameController, 
-che aggiorna correttamente il nome del tipo di giocatore dell'utente (a seconda 
+Una volta che la GameView è stata completamente inizializzata con il MapPanel e
+la Sidebar, viene creato il GameController, che prende in ingresso il model del
+Game, attraverso il metodo getGameState del model, e la GameView. Dopdoiché viene
+subito aggiornata la sidebar, tramite il metodo updateSidebar del GameController,
+che aggiorna correttamente il nome del tipo di giocatore dell'utente (a seconda
 della modalità di gioco), il numero del round e l'inventario. //TODO : aggiunte alla sidebar
-Tutti questi dati vengono presi dal GameController attraverso dei getter che 
-richiamano il model Game. Una volta fatto ciò, viene mostrato il MainPanel della 
-GameView tramite il metodo displayPanel della view principale e viene poi chiamato 
-il metodo forceLayoutUpdate della view, che prende come parametri il MainPanel e la 
-MapPanel della GameView. In questo metodo la view forza un aggiornamento del layout 
-utilizzando SwingUtilities.invokeLater per garantire che tutte le operazioni di layout 
+Tutti questi dati vengono presi dal GameController attraverso dei getter che
+richiamano il model Game. Una volta fatto ciò, viene mostrato il MainPanel della
+GameView tramite il metodo displayPanel della view principale e viene poi chiamato
+il metodo forceLayoutUpdate della view, che prende come parametri il MainPanel e la
+MapPanel della GameView. In questo metodo la view forza un aggiornamento del layout
+utilizzando SwingUtilities.invokeLater per garantire che tutte le operazioni di layout
 e repaint avvengano correttamente sul thread di gestione degli eventi di Swing.

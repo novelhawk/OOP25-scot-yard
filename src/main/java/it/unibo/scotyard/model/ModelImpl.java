@@ -1,7 +1,7 @@
 package it.unibo.scotyard.model;
 
-import it.unibo.scotyard.model.game.Game;
-import it.unibo.scotyard.model.game.GameImpl;
+import it.unibo.scotyard.model.game.GameState;
+import it.unibo.scotyard.model.game.GameStateImpl;
 import it.unibo.scotyard.model.handlers.CommandDispatcher;
 import it.unibo.scotyard.model.handlers.CommandRouter;
 import it.unibo.scotyard.model.map.MapData;
@@ -14,7 +14,7 @@ public final class ModelImpl implements Model {
 
     private final CommandDispatcher dispatcher;
     private MapData mapData;
-    private Game game;
+    private GameState gameState;
     private boolean initialized;
 
     /** new model instance. */
@@ -27,7 +27,7 @@ public final class ModelImpl implements Model {
         try {
             final MapReader mapReader = new MapReader();
             this.mapData = mapReader.loadDefaultMap();
-            this.game = new GameImpl(gameMode, levelDifficulty);
+            this.gameState = new GameStateImpl(gameMode, levelDifficulty);
             this.initialized = true;
         } catch (final MapReader.MapLoadException e) {
             System.err.println("Errore caricamento mappa: " + e.getMessage());
@@ -44,11 +44,11 @@ public final class ModelImpl implements Model {
     }
 
     @Override
-    public Game getGameData() {
+    public GameState getGameState() {
         if (!this.initialized || this.mapData == null) {
             throw new IllegalStateException("Modello non inizializzato. Chiamare initialize() prima.");
         }
-        return this.game;
+        return this.gameState;
     }
 
     @Override

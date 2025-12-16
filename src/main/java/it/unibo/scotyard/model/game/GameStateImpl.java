@@ -9,10 +9,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class GameImpl implements Game {
+public class GameStateImpl implements GameState {
 
     private final Random random;
-    private GameState gameState;
+    private GameStatus gameStatus;
     private GameMode gameMode;
     private GameDifficulty gameDifficulty;
     private Player userPlayer;
@@ -21,7 +21,7 @@ public class GameImpl implements Game {
 
     private int round;
 
-    public GameImpl(String gameMode, String levelOfDifficulty) {
+    public GameStateImpl(String gameMode, String levelOfDifficulty) {
         // TODO: seed
         this.random = new Random(0);
         this.additionalPlayers = new ArrayList<>();
@@ -115,12 +115,12 @@ public class GameImpl implements Game {
     }
 
     @Override
-    public GameState getGameState() {
-        return this.gameState;
+    public GameStatus getGameStatus() {
+        return this.gameStatus;
     }
 
     @Override
-    public void setGameState(GameState state) {
-        this.gameState = state;
+    public void setGameStatus(GameStatus state) {
+        this.gameStatus = state;
     }
 }

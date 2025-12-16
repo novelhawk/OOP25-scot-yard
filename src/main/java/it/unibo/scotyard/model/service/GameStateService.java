@@ -13,7 +13,7 @@ public class GameStateService {
 
     public void handleInitialize(InitializeGameCommand command) {
         var initialPositions = model.getMapData().getInitialPositions();
-        var playerPositions = model.getGameData()
+        var playerPositions = model.getGameState()
                 .getSeededRandom()
                 .ints(0, initialPositions.size())
                 .distinct()

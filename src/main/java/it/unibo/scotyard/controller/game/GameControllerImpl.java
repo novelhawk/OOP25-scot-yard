@@ -1,7 +1,7 @@
 package it.unibo.scotyard.controller.game;
 
-import it.unibo.scotyard.model.game.Game;
 import it.unibo.scotyard.model.game.GameMode;
+import it.unibo.scotyard.model.game.GameState;
 import it.unibo.scotyard.model.players.TicketType;
 import it.unibo.scotyard.view.game.GameView;
 import it.unibo.scotyard.view.map.MapPanel;
@@ -10,11 +10,11 @@ import javax.swing.JPanel;
 
 public class GameControllerImpl implements GameController {
 
-    private Game game;
+    private GameState gameState;
     private GameView view;
 
-    public GameControllerImpl(Game gameData, GameView view) {
-        this.game = gameData;
+    public GameControllerImpl(GameState gameState, GameView view) {
+        this.gameState = gameState;
         this.view = view;
     }
 
@@ -35,17 +35,17 @@ public class GameControllerImpl implements GameController {
 
     @Override
     public GameMode getGameMode() {
-        return this.game.getGameMode();
+        return this.gameState.getGameMode();
     }
 
     @Override
     public int getNumberRound() {
-        return this.game.getGameRound();
+        return this.gameState.getGameRound();
     }
 
     @Override
     public int getNumberTicketsUserPlayer(TicketType ticketType) {
-        return this.game.getNumberTicketsUserPlayer(ticketType);
+        return this.gameState.getNumberTicketsUserPlayer(ticketType);
     }
 
     @Override
