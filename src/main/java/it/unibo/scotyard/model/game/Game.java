@@ -26,6 +26,14 @@ public interface Game {
      */
     boolean isGameOver();
 
+    /** This method gets called when the game is over, to get the winner (Detective or Mister X).
+     * If detective or bobbies caught Mister X (they're in the same position), then the winner is the detective;
+     * else it's Mister X. 
+     * 
+     * @return GameMode, which indicates whether the winner is Detective or Mister X
+     */
+    GameMode winner();
+
     /**
      * Loads into a specific variable the possible destinations
      *
@@ -40,14 +48,14 @@ public interface Game {
     void changeCurrentPlayer();
 
     /**
-     * Return a boolean value which indicates whether the current player can be moved or not;
-     * if it's possible, its position id gets changed.
-     * 
-     * @param newPositionId
-     * @param transport
+     * Return a boolean value which indicates whether the current player can be moved or not; if it's possible, 
+     * their position id gets changed and their tickets decrement (according to the type of transport used).
+     *
+     * @param destinationId the destination id
+     * @param transport the transport type to use to reach the destination
      * @return a boolean value which indicates whether the current player can be moved or not
      */
-    boolean moveCurrentPlayer(int newPositionId, TransportType transport);
+    boolean moveCurrentPlayer(int destinationId, TransportType transport);
 
     /** Goes to next round (increments the round number). */
     void nextRound();

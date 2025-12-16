@@ -77,7 +77,7 @@ public class GameControllerImpl implements GameController {
 
     @Override
     public void loadGameOverWindow() {
-        this.view.displayGameOverWindow();
+        this.view.displayGameOverWindow(this.game.winner());
     }
 
     @Override
@@ -85,13 +85,13 @@ public class GameControllerImpl implements GameController {
         this.mainController.loadMainMenu();
     }
 
-    private boolean hasPlayerMoved(){
+    private boolean hasPlayerMoved() {
         return this.hasPlayerMoved;
     }
 
-    //TODO : this method gets called by View
+    // TODO : this method gets called by View
     @Override
-    public void movePlayer(int newPositionId, TransportType transport){
+    public void movePlayer(int newPositionId, TransportType transport) {
         this.hasPlayerMoved = this.game.moveCurrentPlayer(newPositionId, transport);
     }
 
@@ -101,8 +101,8 @@ public class GameControllerImpl implements GameController {
         for (int i = 0; i < this.game.getNumberOfPlayers(); i++) {
             this.game.loadPossibleDestinations(this.mainController.getPossibleDestinations(
                     this.game.getPositionPlayer(this.game.getCurrentPlayer())));
-            //while(!this.hasPlayerMoved()){};
-            //TODO : update view
+            // while(!this.hasPlayerMoved()){};
+            // TODO : update view
             this.game.changeCurrentPlayer();
             this.hasPlayerMoved = false;
         }

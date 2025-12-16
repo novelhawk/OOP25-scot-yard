@@ -3,6 +3,7 @@ package it.unibo.scotyard.view.game;
 import it.unibo.scotyard.commons.dtos.map.MapInfo;
 import it.unibo.scotyard.commons.engine.Size;
 import it.unibo.scotyard.controller.game.GameController;
+import it.unibo.scotyard.model.game.GameMode;
 import it.unibo.scotyard.view.map.MapPanel;
 import it.unibo.scotyard.view.sidebar.SidebarPanel;
 import it.unibo.scotyard.view.window.Window;
@@ -25,18 +26,23 @@ public class GameViewImpl implements GameView {
     private static final int SMALL_WINDOW_HEIGHT = 70;
     private static final String RULES_WINDOW_TITLE = "Regole";
     private static final String GAME_OVER_WINDOW_TITLE = "Game Over";
-    private static final int SPACING = 15;
+
+    private static final int SPACING = 50;
+    private static final int SMALL_SPACING = 10;
 
     private static final Color BACKGROUND_COLOR = new Color(0, 0, 0); // black
     private static final Color ACCENT_COLOR = new Color(31, 81, 255); // neon blue
+    private static final Color RED_COLOR = new Color(255, 0,0 ); // red
 
     private static final Font TITLE_FONT = new Font("Arial", Font.BOLD, 36);
     private static final Font TEXT_FONT = new Font("Arial", Font.BOLD, 20);
+    private static final Font WINNER_FONT = new Font("Arial", Font.BOLD, 28);
 
     private MapPanel mapPanel;
     private SidebarPanel sidebar;
     private JPanel mainPanel;
     private Window gameOverWindow;
+    private JLabel winnerLabel;
 
     private GameController observer;
 
@@ -86,18 +92,24 @@ public class GameViewImpl implements GameView {
         panel.setBackground(BACKGROUND_COLOR);
         panel.add(Box.createVerticalGlue());
         JLabel titleLabel = new JLabel("GAME OVER!");
-        titleLabel.setForeground(ACCENT_COLOR);
+        titleLabel.setForeground(RED_COLOR);
         titleLabel.setFont(TITLE_FONT);
         titleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         panel.add(titleLabel);
-        panel.add(Box.createHorizontalStrut(SPACING));
+        panel.add(Box.createVerticalStrut(SMALL_SPACING));
+        this.winnerLabel = new JLabel();
+        this.winnerLabel.setForeground(ACCENT_COLOR);
+        this.winnerLabel.setFont(WINNER_FONT);
+        this.winnerLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        panel.add(this.winnerLabel);
+        panel.add(Box.createVerticalStrut(SPACING));
         JButton button = new JButton("Ritorna al menù principale");
         button.setFont(TEXT_FONT);
         button.setBackground(ACCENT_COLOR);
         button.setForeground(BACKGROUND_COLOR);
         button.setAlignmentX(Component.CENTER_ALIGNMENT);
         panel.add(button);
-        panel.add(Box.createHorizontalStrut(SPACING));
+        panel.add(Box.createVerticalStrut(SPACING));
         panel.add(Box.createVerticalGlue());
 
         this.gameOverWindow = new WindowImpl(smallSize, panel, GAME_OVER_WINDOW_TITLE);
@@ -112,8 +124,17 @@ public class GameViewImpl implements GameView {
         });
     }
 
+    private void setWinner(GameMode winner){
+        if(winner.equals(GameMode.DETECTIVE)){
+            this.winnerLabel.setText("Vittoria del detective");
+        } else{
+            this.winnerLabel.setText("Vittoria di Mister X");
+        }
+    }
+
     @Override
-    public void displayGameOverWindow() {
+    public void displayGameOverWindow(GameMode winner) {
+        this.setWinner(winner);
         this.gameOverWindow.display();
     }
 }

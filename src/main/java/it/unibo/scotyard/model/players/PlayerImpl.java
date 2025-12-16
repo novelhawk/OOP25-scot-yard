@@ -42,5 +42,4 @@ public abstract class PlayerImpl implements Player {
         }
         return false;
     }
-
 }

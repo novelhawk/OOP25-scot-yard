@@ -52,11 +52,12 @@ public interface GameController {
     /** Load the main menu. */
     void loadMainMenu();
 
-    /** Moves the player (if possible).
-     * 
+    /**
+     * Moves the player (if possible).
+     *
      * @param newPositionId the id of the destination
-     * @param transport the type of transport of this move 
-    */
+     * @param transport the type of transport of this move
+     */
     void movePlayer(int newPositionId, TransportType transport);
 
     /**

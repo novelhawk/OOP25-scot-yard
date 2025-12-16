@@ -1,6 +1,7 @@
 package it.unibo.scotyard.view.game;
 
 import it.unibo.scotyard.controller.game.GameController;
+import it.unibo.scotyard.model.game.GameMode;
 import it.unibo.scotyard.view.map.MapPanel;
 import it.unibo.scotyard.view.sidebar.SidebarPanel;
 import javax.swing.JPanel;
@@ -31,6 +32,10 @@ public interface GameView {
      */
     void displayRulesWindow(JPanel panel);
 
-    /** Displays the game over window, which contains a button that takes the user back to the main menu. */
-    void displayGameOverWindow();
+    /** Displays the game over window, which contains a label inidicating the winner and a button that takes the user 
+     * back to the main menu. 
+     * 
+     * @param winner the game mode representing the winner (Detective or Mister X)
+    */
+    void displayGameOverWindow(GameMode winner);
 }
