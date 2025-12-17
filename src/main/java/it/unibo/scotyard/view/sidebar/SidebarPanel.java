@@ -1,6 +1,8 @@
 package it.unibo.scotyard.view.sidebar;
 
 import it.unibo.scotyard.model.game.GameMode;
+import it.unibo.scotyard.model.players.Detective;
+import it.unibo.scotyard.model.players.Player;
 import it.unibo.scotyard.view.game.GameView;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -52,10 +54,12 @@ public final class SidebarPanel extends JPanel {
     private static final String BLACK_TICKETS_TEXT = "Biglietti neri";
     private static final String DOUBLE_MOVE_TICKETS_TEXT = "Biglietti doppia mossa";
     private static final String LOAD_RULES_TEXT = "Regole";
+    private static final String CURRENT_PLAYER_TEXT = "Turno di : ";
 
     // Components
     JLabel currentGameModeLabel;
     JLabel roundLabel;
+    JLabel currentPlayerLabel;
     JLabel taxiTicketsLabel;
     JLabel busTicketsLabel;
     JLabel undergroundTicketsLabel;
@@ -89,6 +93,10 @@ public final class SidebarPanel extends JPanel {
 
         this.roundLabel = createCountRoundLabel();
         this.add(roundLabel);
+        this.add(Box.createVerticalStrut(SPACING));
+
+        this.currentPlayerLabel = createCurrentPlayerLabel();
+        this.add(currentPlayerLabel);
         this.add(Box.createVerticalStrut(SPACING));
 
         this.add(createInventoryLabel());
@@ -167,6 +175,15 @@ public final class SidebarPanel extends JPanel {
                 label.setForeground(ACCENT_COLOR);
         }
         label.setAlignmentY(Component.TOP_ALIGNMENT);
+        label.setAlignmentX(Component.CENTER_ALIGNMENT);
+        return label;
+    }
+
+    private JLabel createCurrentPlayerLabel(){
+        final JLabel label = new JLabel(CURRENT_PLAYER_TEXT);
+        label.setFont(TEXT_FONT);
+        label.setForeground(ACCENT_COLOR);
+        label.setAlignmentY(Component.CENTER_ALIGNMENT);
         label.setAlignmentX(Component.CENTER_ALIGNMENT);
         return label;
     }
@@ -258,6 +275,14 @@ public final class SidebarPanel extends JPanel {
      */
     public void updateRoundLabel(int roundNumber) {
         this.roundLabel.setText("Round " + Integer.toString(roundNumber));
+    }
+
+    /**
+     * Method which is called by the GameController when updating the sidebar displaying. 
+     * Updates the text of the currentPlayerLabel according to the current player.
+     */
+    public void updateCurrentPlayerLabel(Player player){
+        this.currentPlayerLabel.setText(CURRENT_PLAYER_TEXT + player.getName());
     }
 
     /**

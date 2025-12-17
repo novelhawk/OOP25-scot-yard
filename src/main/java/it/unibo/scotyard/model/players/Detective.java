@@ -11,6 +11,7 @@ public class Detective extends PlayerImpl {
 
     public Detective() {
         super();
+        this.name = "Detective";
     }
 
     @Override
@@ -23,4 +24,5 @@ public class Detective extends PlayerImpl {
         ticketsMap.put(TicketType.DOUBLE_MOVE, NONE);
         return ticketsMap;
     }
+
 }

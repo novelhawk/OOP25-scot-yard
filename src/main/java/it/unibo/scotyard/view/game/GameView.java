@@ -2,8 +2,12 @@ package it.unibo.scotyard.view.game;
 
 import it.unibo.scotyard.controller.game.GameController;
 import it.unibo.scotyard.model.game.GameMode;
+import it.unibo.scotyard.model.map.TransportType;
 import it.unibo.scotyard.view.map.MapPanel;
 import it.unibo.scotyard.view.sidebar.SidebarPanel;
+
+import java.util.Set;
+
 import javax.swing.JPanel;
 
 public interface GameView {
@@ -32,10 +36,34 @@ public interface GameView {
      */
     void displayRulesWindow(JPanel panel);
 
-    /** Displays the game over window, which contains a label inidicating the winner and a button that takes the user 
-     * back to the main menu. 
-     * 
+    /**
+     * Displays the game over window, which contains a label inidicating the winner and a button that takes the user
+     * back to the main menu.
+     *
      * @param winner the game mode representing the winner (Detective or Mister X)
-    */
+     */
     void displayGameOverWindow(GameMode winner);
+
+    /**
+     * Load a window to make the user select the preferred transport type to reach the destination.
+     * This method gets called only if there are multiple transport types available to reach the destination.
+     * 
+     * @param availableTransportTypes a set of available transport types
+     */
+    void loadTransportSelectionWindow(Set<TransportType> availableTransportTypes);
+
+    /**
+     * Return a boolean value which indicats whether the transport type has been selected or not.
+     * 
+     * @return a boolean value which indicats whether the transport type has been selected or not.
+     */
+    boolean isTransportTypeSelected();
+
+    /**
+     * Return the transport type selected ine the transport selection window.
+     * When this method gets called, the boolean value isTransportTypeSelected switches to false;
+     * 
+     * @return the selected transport type
+     */
+    TransportType getSelectedTransportType();
 }

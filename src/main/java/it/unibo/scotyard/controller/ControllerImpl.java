@@ -62,7 +62,6 @@ public final class ControllerImpl implements Controller {
 
     @Override
     public void loadGamePanel(GameController gameController) {
-        gameController.updateSidebar();
         this.displayPanel(gameController.getMainPanel());
         this.view.forceLayoutUpdate(gameController.getMainPanel(), gameController.getMapPanel());
     }
@@ -81,11 +80,7 @@ public final class ControllerImpl implements Controller {
         // Load the game panel
         this.loadGamePanel(gameController);
 
-        while (!gameController.isGameOver()) {
-            gameController.manageGameRound();
-            gameController.updateSidebar();
-        }
-        gameController.loadGameOverWindow();
+        gameController.manageGameRound();
     }
 
     @Override

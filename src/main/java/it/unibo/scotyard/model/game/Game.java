@@ -5,6 +5,7 @@ import it.unibo.scotyard.model.map.TransportType;
 import it.unibo.scotyard.model.players.Player;
 import it.unibo.scotyard.model.players.TicketType;
 import java.util.List;
+import java.util.Set;
 
 public interface Game {
 
@@ -26,30 +27,48 @@ public interface Game {
      */
     boolean isGameOver();
 
-    /** This method gets called when the game is over, to get the winner (Detective or Mister X).
-     * If detective or bobbies caught Mister X (they're in the same position), then the winner is the detective;
-     * else it's Mister X. 
-     * 
+    /**
+     * This method gets called when the game is over, to get the winner (Detective or Mister X). If detective or bobbies
+     * caught Mister X (they're in the same position), then the winner is the detective; else it's Mister X.
+     *
      * @return GameMode, which indicates whether the winner is Detective or Mister X
      */
     GameMode winner();
 
     /**
-     * Loads into a specific variable the possible destinations
+     * Loads into a specific variable the possible destinations.
      *
      * @param inputPossibleDestinations the possible destinations loaded from Model
      */
-    void loadPossibleDestinations(List<Pair<Integer, TransportType>> inputPossibleDestinations);
+    void loadPossibleDestinations(Set<Pair<Integer, TransportType>> inputPossibleDestinations);
 
-    /** @return the list of possible destinations as pairs of integer and transport type */
-    List<Pair<Integer, TransportType>> getPossibleDestinations();
+    /** @return the set of possible destinations as pairs of integer and transport type */
+    Set<Pair<Integer, TransportType>> getPossibleDestinations();
 
     /** Manages the current player. */
     void changeCurrentPlayer();
 
     /**
-     * Return a boolean value which indicates whether the current player can be moved or not; if it's possible, 
-     * their position id gets changed and their tickets decrement (according to the type of transport used).
+     * Return a boolean value which indicates whether there are multiple transports available for the 
+     * destination id given or not.
+     * 
+     * @param destinationId the id of the destination
+     * @return a boolean value which indicates whether there are multiple transports available for the 
+     * destination given or not
+     */
+    boolean areMultipleTransportsAvailable(int destinationId);
+
+    /**
+     * Return a list of the transport types that can be used to reach the destination given.
+     * 
+     * @param destinationId the id of the destination
+     * @return a list of transport types that can be used to reach destination
+     */
+    List<TransportType> getAvailableTransports(int destinationId);
+
+    /**
+     * Return a boolean value which indicates whether the current player can be moved or not; if it's possible, their
+     * position id gets changed and their tickets decrement (according to the type of transport used).
      *
      * @param destinationId the destination id
      * @param transport the transport type to use to reach the destination

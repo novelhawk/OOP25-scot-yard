@@ -7,6 +7,7 @@ public class Bobby extends PlayerImpl {
 
     public Bobby() {
         super();
+        this.name = "Bobby";
     }
 
     @Override
@@ -19,4 +20,5 @@ public class Bobby extends PlayerImpl {
         ticketsMap.put(TicketType.DOUBLE_MOVE, NONE);
         return ticketsMap;
     }
+
 }

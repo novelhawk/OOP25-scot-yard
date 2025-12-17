@@ -1,7 +1,7 @@
 package it.unibo.scotyard.controller.game;
 
 import it.unibo.scotyard.model.game.GameMode;
-import it.unibo.scotyard.model.map.TransportType;
+import it.unibo.scotyard.model.players.Player;
 import it.unibo.scotyard.model.players.TicketType;
 import it.unibo.scotyard.view.map.MapPanel;
 import it.unibo.scotyard.view.sidebar.SidebarPanel;
@@ -40,8 +40,12 @@ public interface GameController {
      */
     int getNumberTicketsUserPlayer(TicketType ticketType);
 
-    /** Updates the sidebar, whenever a new round starts. */
-    void updateSidebar();
+    /** Updates the sidebar, whenever a new round for a player starts. This function takes as an argument
+     * the current player.
+     * 
+     * @param currentPlayer
+     */
+    void updateSidebar(Player currentPlayer);
 
     /** @return a boolean value which indicates whether the game is over or not */
     boolean isGameOver();
@@ -56,9 +60,8 @@ public interface GameController {
      * Moves the player (if possible).
      *
      * @param newPositionId the id of the destination
-     * @param transport the type of transport of this move
      */
-    void movePlayer(int newPositionId, TransportType transport);
+    void movePlayer(int newPositionId);
 
     /**
      * Manages a round of a game. If the game is over, it calls a method of the GameView, which opens a the game over

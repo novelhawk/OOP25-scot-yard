@@ -11,6 +11,7 @@ public class MisterX extends PlayerImpl {
 
     public MisterX() {
         super();
+        this.name = "Mister X";
     }
 
     @Override
@@ -23,4 +24,5 @@ public class MisterX extends PlayerImpl {
         ticketsMap.put(TicketType.UNDERGROUND, INFINITE);
         return ticketsMap;
     }
+
 }

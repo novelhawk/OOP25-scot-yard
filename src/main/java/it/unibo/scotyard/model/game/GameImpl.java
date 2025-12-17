@@ -10,7 +10,7 @@ import it.unibo.scotyard.model.players.TicketType;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-
+import java.util.Set;
 public class GameImpl implements Game {
 
     private static final int FINAL_ROUND_NUMBER = 32;
@@ -28,7 +28,8 @@ public class GameImpl implements Game {
     private int playersNumber;
 
     private List<Integer> initialPositions;
-    private List<Pair<Integer, TransportType>> possibleDestinations; // They refer to the current player
+    private Set<Pair<Integer, TransportType>> possibleDestinations; // They refer to the current player
+    private List<TransportType> availableTransports;
     private int indexCurrentPlayer; // It is used to keep track of the current player
 
     private int round;
@@ -37,6 +38,7 @@ public class GameImpl implements Game {
         this.additionalPlayers = new ArrayList<>();
         this.round = 0;
         this.playersNumber = 0;
+        this.availableTransports = new ArrayList<TransportType>();
         this.initialize(gameMode, levelOfDifficulty, initialPositions);
     }
 
@@ -101,7 +103,7 @@ public class GameImpl implements Game {
         }
         this.playersNumber++;
         this.playersNumber++;
-        this.userPlayer.setPosition(this.getRandomInitialPosition());
+        this.userPlayer.setPosition(89);
         this.computerPlayer.setPosition(this.getRandomInitialPosition());
         int index = 0;
         switch (this.gameDifficulty) {
@@ -111,14 +113,17 @@ public class GameImpl implements Game {
                 this.additionalPlayers.get(index).setPosition(this.getRandomInitialPosition());
                 this.playersNumber++;
                 index++;
+                this.additionalPlayers.get(index-1).setName("Bobby" + index);
             case GameDifficulty.EASY:
                 this.additionalPlayers.add(new Bobby());
                 this.additionalPlayers.get(index).setPosition(this.getRandomInitialPosition());
                 index++;
+                this.additionalPlayers.get(index-1).setName("Bobby" + index);
                 this.playersNumber++;
                 this.additionalPlayers.add(new Bobby());
                 this.additionalPlayers.get(index).setPosition(this.getRandomInitialPosition());
                 index++;
+                this.additionalPlayers.get(index-1).setName("Bobby" + index);
                 this.playersNumber++;
         }
     }
@@ -150,7 +155,8 @@ public class GameImpl implements Game {
             return true;
         }
         for (Player bobby : this.additionalPlayers) {
-            if (this.computerPlayer.getCurrentPositionId() == (bobby.getCurrentPositionId()) && this.gameMode.equals(GameMode.MISTER_X)) {
+            if (this.computerPlayer.getCurrentPositionId() == (bobby.getCurrentPositionId())
+                    && GameMode.MISTER_X.equals(this.gameMode)) {
                 return true;
             }
         }
@@ -158,25 +164,26 @@ public class GameImpl implements Game {
     }
 
     @Override
-    public GameMode winner(){
+    public GameMode winner() {
         boolean misterXCaught = false;
         for (Player bobby : this.additionalPlayers) {
-            if (this.computerPlayer.getCurrentPositionId() == (bobby.getCurrentPositionId())  && this.gameMode.equals(GameMode.MISTER_X)) {
+            if (this.computerPlayer.getCurrentPositionId() == (bobby.getCurrentPositionId())
+                    && GameMode.MISTER_X.equals(this.gameMode)) {
                 misterXCaught = true;
             }
         }
-        if(this.userPlayer.getCurrentPositionId() == this.computerPlayer.getCurrentPositionId()){
+        if (this.userPlayer.getCurrentPositionId() == this.computerPlayer.getCurrentPositionId()) {
             misterXCaught = true;
         }
-        if(misterXCaught){
+        if (misterXCaught) {
             return GameMode.DETECTIVE;
-        } else{
+        } else {
             return GameMode.MISTER_X;
         }
     }
 
     @Override
-    public void loadPossibleDestinations(List<Pair<Integer, TransportType>> inputPossibleDestinations) {
+    public void loadPossibleDestinations(Set<Pair<Integer, TransportType>> inputPossibleDestinations) {
         this.possibleDestinations = inputPossibleDestinations;
 
         // Removal of destinations that can be reached by ferry, if player is not Mister X
@@ -207,7 +214,7 @@ public class GameImpl implements Game {
     }
 
     @Override
-    public List<Pair<Integer, TransportType>> getPossibleDestinations() {
+    public Set<Pair<Integer, TransportType>> getPossibleDestinations() {
         return this.possibleDestinations;
     }
 
@@ -236,12 +243,36 @@ public class GameImpl implements Game {
         }
     }
 
+    private void loadAvailableTransports(int destinationId){
+        this.availableTransports.clear();
+        for(Pair<Integer,TransportType> item : this.possibleDestinations){
+            if(item.getX()==destinationId){
+                this.availableTransports.add(item.getY());
+            }
+        }
+    }
+
+    @Override
+    public boolean areMultipleTransportsAvailable(int destinationId){
+        this.loadAvailableTransports(destinationId);
+        if(this.availableTransports.size()>1){
+            return true;
+        } else{
+            return false;
+        }
+    }
+
+    @Override
+    public List<TransportType> getAvailableTransports(int destinationId){
+        return this.availableTransports;
+    }
+
     private void setPositionPlayer(Player player, int newPositionId) {
         player.setPosition(newPositionId);
     }
 
-    private TicketType getTicketType(TransportType transport){
-        switch(transport){
+    private TicketType getTicketType(TransportType transport) {
+        switch (transport) {
             case TAXI:
                 return TicketType.TAXI;
             case BUS:
@@ -251,7 +282,7 @@ public class GameImpl implements Game {
             case FERRY:
                 return TicketType.BLACK;
         }
-        return null; //TODEFINE
+        return null; // TODEFINE
     }
 
     @Override

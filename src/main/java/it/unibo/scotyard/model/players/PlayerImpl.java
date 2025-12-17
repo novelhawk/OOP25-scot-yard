@@ -9,6 +9,7 @@ public abstract class PlayerImpl implements Player {
 
     protected int currentPositionId;
     protected Map<TicketType, Integer> tickets;
+    protected String name;
 
     public PlayerImpl() {
         this.tickets = this.setInitialTickets();
@@ -41,5 +42,15 @@ public abstract class PlayerImpl implements Player {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public void setName(String newName){
+        this.name = newName;
+    }
+
+    @Override
+    public String getName(){
+        return this.name;
     }
 }
