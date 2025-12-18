@@ -57,13 +57,6 @@ public interface GameController {
     /** Load the main menu. */
     void loadMainMenu();
 
-    /**
-     * Moves the player (if possible).
-     *
-     * @param newPositionId the id of the destination
-     */
-    void movePlayer(int newPositionId);
-
     /** Initializes the positions of player in GameView (in MapPanel). */
     void initializePlayersPositionsView();
 
@@ -72,4 +65,11 @@ public interface GameController {
      * window, which takes back the user to the main menu.
      */
     void manageGameRound();
+
+    /**
+     * Moves the player (if possible).
+     *
+     * @param newPositionId the id of the destination
+     */
+    void movePlayer(int newPositionId);
 }

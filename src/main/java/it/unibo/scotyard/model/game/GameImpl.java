@@ -52,8 +52,6 @@ public class GameImpl implements Game {
         this.setIA();
         this.round++;
         this.indexCurrentPlayer = MISTER_X_ROUND_INDEX;
-
-        this.printTest();
     }
 
     private GameMode setGameMode(String inputGameMode) {
@@ -138,17 +136,6 @@ public class GameImpl implements Game {
          */
     }
 
-    private void printTest() {
-        System.out.println("User : " + this.getPositionPlayer(this.userPlayer));
-        System.out.println("IA : " + this.getPositionPlayer(this.computerPlayer));
-        for (Player additional : this.additionalPlayers) {
-            System.out.println("Bobby : " + this.getPositionPlayer(additional));
-        }
-
-        System.out.println("GAMEOVER?");
-        System.out.println(this.isGameOver());
-    }
-
     @Override
     public boolean isGameOver() {
         if (this.userPlayer.getCurrentPositionId() == this.computerPlayer.getCurrentPositionId()
@@ -193,6 +180,8 @@ public class GameImpl implements Game {
             this.possibleDestinations.removeIf(item -> TransportType.FERRY.equals(item.getY()));
         }
 
+        // Test
+        // TODO: eliminare (una volta finita gestione turni)
         System.out.println(this.currentPlayer);
         for (Pair<Integer, TransportType> item : this.possibleDestinations) {
             System.out.print(item.getX());

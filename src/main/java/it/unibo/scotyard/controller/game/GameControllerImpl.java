@@ -12,7 +12,6 @@ import it.unibo.scotyard.view.map.MapPanel;
 import it.unibo.scotyard.view.sidebar.SidebarPanel;
 import java.util.HashSet;
 import java.util.Set;
-
 import javax.swing.JPanel;
 
 public class GameControllerImpl implements GameController {
@@ -87,6 +86,50 @@ public class GameControllerImpl implements GameController {
         this.mainController.loadMainMenu();
     }
 
+    private void updatePlayerPositionView(Player currentPlayer) {
+        switch (currentPlayer.getName()) {
+            case "Detective":
+                this.view.getMapPanel().setDetectivePosition(currentPlayer.getCurrentPositionId());
+                break;
+            case "Mister X":
+                this.view.getMapPanel().setMisterXPosition(currentPlayer.getCurrentPositionId());
+                break;
+            default:
+                int index = Integer.valueOf(currentPlayer.getName().substring(5, 6)) - 1;
+                this.view.getMapPanel().setBobbyPosition(currentPlayer.getCurrentPositionId(), index);
+        }
+        this.view.getMapPanel().repaint();
+    }
+
+    @Override
+    public void initializePlayersPositionsView() {
+        for (int i = 0; i < this.game.getNumberOfPlayers(); i++) {
+            this.updatePlayerPositionView(this.game.getCurrentPlayer());
+            this.game.changeCurrentPlayer();
+        }
+    }
+
+    @Override
+    public void manageGameRound() {
+        if (this.game.isGameOver()) {
+            this.loadGameOverWindow();
+        } else {
+            System.out.println("Round : " + this.game.getGameRound());
+            this.updateSidebar(this.game.getCurrentPlayer());
+            this.updatePlayerPositionView(this.game.getCurrentPlayer());
+            Set<Pair<Integer, TransportType>> possibleDestinations =
+                    new HashSet<>(this.mainController.getPossibleDestinations(
+                            this.game.getPositionPlayer(this.game.getCurrentPlayer())));
+            this.game.loadPossibleDestinations(possibleDestinations);
+            Set<Integer> possibleDestinationsIDs = new HashSet<>();
+            for (Pair<Integer, TransportType> pair : possibleDestinations) {
+                possibleDestinationsIDs.add(pair.getX());
+            }
+            this.view.getMapPanel().loadPossibleDestinations(possibleDestinationsIDs);
+            this.view.getMapPanel().repaint();
+        }
+    }
+
     // TODO : this method gets called by View
     @Override
     public void movePlayer(int newPositionId) {
@@ -104,51 +147,10 @@ public class GameControllerImpl implements GameController {
             transport = this.game.getAvailableTransports(newPositionId).getFirst();
         }
         if (this.game.moveCurrentPlayer(newPositionId, transport)) {
-            // TODO : update view
+            this.updatePlayerPositionView(this.game.getCurrentPlayer());
             this.game.changeCurrentPlayer();
             this.game.nextRound();
             this.manageGameRound();
-        }
-    }
-
-    private void updatePlayerPositionView(Player currentPlayer){
-        switch(currentPlayer.getName()){
-            case "Detective":
-                this.view.getMapPanel().setDetectivePosition(currentPlayer.getCurrentPositionId());
-                break;
-            case "Mister X":
-                this.view.getMapPanel().setMisterXPosition(currentPlayer.getCurrentPositionId());
-                break;
-            default:
-                int index = Integer.valueOf(currentPlayer.getName().substring(5,6))-1;
-                this.view.getMapPanel().setBobbyPosition(currentPlayer.getCurrentPositionId(), index);
-        }
-    }
-
-    @Override
-    public void initializePlayersPositionsView(){
-        for(int i=0; i<this.game.getNumberOfPlayers(); i++){
-            this.updatePlayerPositionView(this.game.getCurrentPlayer());
-            this.game.changeCurrentPlayer();
-        }
-    }
-
-    @Override
-    public void manageGameRound() {
-        if (this.game.isGameOver()) {
-            this.loadGameOverWindow();
-        } else {
-            System.out.println("Round : " + this.game.getGameRound());
-            this.updateSidebar(this.game.getCurrentPlayer());
-            this.updatePlayerPositionView(this.game.getCurrentPlayer());
-            Set<Pair<Integer,TransportType>> possibleDestinations = new HashSet<>(this.mainController.getPossibleDestinations(
-                    this.game.getPositionPlayer(this.game.getCurrentPlayer())));
-            this.game.loadPossibleDestinations(possibleDestinations);
-            Set<Integer> possibleDestinationsIDs = new HashSet<>();
-            for(Pair<Integer,TransportType> pair : possibleDestinations){
-                possibleDestinationsIDs.add(pair.getX());
-            }
-            this.view.getMapPanel().loadPossibleDestinations(possibleDestinationsIDs);
         }
     }
 }
