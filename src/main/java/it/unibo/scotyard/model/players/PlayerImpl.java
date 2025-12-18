@@ -45,12 +45,12 @@ public abstract class PlayerImpl implements Player {
     }
 
     @Override
-    public void setName(String newName){
+    public void setName(String newName) {
         this.name = newName;
     }
 
     @Override
-    public String getName(){
+    public String getName() {
         return this.name;
     }
 }

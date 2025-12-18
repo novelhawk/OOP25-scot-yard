@@ -1,7 +1,6 @@
 package it.unibo.scotyard.commons;
 
 import it.unibo.scotyard.commons.engine.Size;
-
 import java.awt.Color;
 import java.util.List;
 
@@ -16,7 +15,7 @@ public final class Constants {
     public static final Color TAXI_COLOR = new Color(255, 255, 85);
     public static final Color BUS_COLOR = new Color(58, 132, 36);
     public static final Color UNDERGROUND_COLOR = new Color(200, 43, 29);
-    public static final Color FERRY_COLOR = new Color(0,0,0);
+    public static final Color FERRY_COLOR = new Color(0, 0, 0);
 
     private Constants() {
         throw new AssertionError("non istanziabili le costanti");

@@ -33,14 +33,14 @@ public interface Player {
 
     /**
      * Sets a new name for the player.
-     * 
+     *
      * @param newName the new name to assign to player
      */
-    public void setName(String newName);
+    void setName(String newName);
 
     /**
      * Return a String representing the name of the kind of player (detective, bobby, mister X).
-     * 
+     *
      * @return the name of the player (their kind : detective, etc.)
      */
     String getName();

@@ -4,10 +4,6 @@ import it.unibo.scotyard.commons.dtos.map.MapInfo;
 import it.unibo.scotyard.commons.dtos.map.Node;
 import it.unibo.scotyard.model.map.TransportType;
 import java.awt.*;
-import java.awt.Color;
-import java.awt.Cursor;
-import java.awt.Font;
-import java.awt.Point;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.MouseAdapter;
@@ -17,9 +13,14 @@ import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
+import java.util.List;
+
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
@@ -30,6 +31,7 @@ public final class MapPanel extends JPanel {
     private static final int NODE_RADIUS = 14;
     private static final int NODE_LABEL_SIZE = 10;
     private static final Font NODE_FONT = new Font("Arial", Font.BOLD, NODE_LABEL_SIZE);
+    private static final Font PLAYERS_FONT = new Font("Arial", Font.BOLD, 10 );
 
     // Dimensioni originali del background
     private static final int ORIGINAL_BACKGROUND_WIDTH = 2570;
@@ -39,6 +41,11 @@ public final class MapPanel extends JPanel {
     private static final Color NODE_FILL_COLOR = new Color(255, 255, 255);
     private static final Color NODE_TEXT_COLOR = new Color(33, 33, 33);
     private static final Color SHADOW_COLOR = new Color(0, 0, 0, 30);
+    private static final Color MISTER_X_COLOR = new Color(0,0,0); // black
+    private static final Color DETECTIVE_COLOR = new Color(0,0,128); // navy blue
+    private static final Color BOBBIES_COLOR = new Color(255,95,31); // neon orange
+    private static final Color POSSIBLE_DESTINATIONS_COLOR = new Color(0,255,0, 20); // faded green
+    private static final Color SELECTED_DESTINATION_COLOR = new Color(0,255,0,90); // less faded green 
 
     // Zoom settings
     private static final double MIN_ZOOM = 1.0;
@@ -48,6 +55,9 @@ public final class MapPanel extends JPanel {
     // Scaling factors per i nodi durante lo zoom
     // I nodi scalano meno del background per rimanere leggibili
     private static final double NODE_SCALE_FACTOR = 0.5; // I nodi scalano al 50% rispetto allo zoom
+
+    // Game State (Detective Mode)
+    private static final int POSITION_NOT_SET = -1;
 
     private final MapInfo mapInfo;
     private BufferedImage backgroundImage;
@@ -74,6 +84,13 @@ public final class MapPanel extends JPanel {
     private int dragStartPanX;
     private int dragStartPanY;
 
+    // Game State (Detective mode)
+    private int misterXPosition;
+    private int detectivePosition;
+    private List<Integer> bobbiesPositions;
+    private Set<Integer> possibleDestinations;
+    private int selectedDestination;
+
     /**
      * Creates a new MapPanel with the given map info DTO.
      *
@@ -82,6 +99,10 @@ public final class MapPanel extends JPanel {
      */
     public MapPanel(final MapInfo mapInfo) {
         this.mapInfo = Objects.requireNonNull(mapInfo, "Map info cannot be null");
+        this.detectivePosition = POSITION_NOT_SET;
+        this.bobbiesPositions = new ArrayList<>();
+        this.possibleDestinations = new HashSet<Integer>();
+        this.selectedDestination = POSITION_NOT_SET;
         setupPanel();
     }
 
@@ -343,6 +364,7 @@ public final class MapPanel extends JPanel {
 
         drawBackground(g2d);
         drawNodes(g2d);
+        drawGameState(g2d);
     }
 
     private void drawBackground(final Graphics2D g2d) {
@@ -463,5 +485,87 @@ public final class MapPanel extends JPanel {
      */
     public MapInfo getMapInfo() {
         return this.mapInfo;
+    }
+
+
+    // Detective Game Mode
+
+    /** Sets the detective position. */
+    public void setDetectivePosition(int position){
+        this.detectivePosition = position;
+    }
+
+    /** Sets Mister X position. */
+    public void setMisterXPosition(int position){
+        this.misterXPosition = position;
+    }
+
+    /** Sets bobby position. */
+    public void setBobbyPosition(int position, int indexBobby){
+        this.bobbiesPositions.add(indexBobby, position);
+    }
+
+    /** Loads the possible destinations for current player. */
+    public void loadPossibleDestinations(Set<Integer> destinations){
+        this.possibleDestinations = destinations;
+    }
+
+    /** Draw the player given as input on the map. */
+    private void drawPlayer(Graphics2D g2d, String playerString, int position, int scaledRadius){
+        if(position>0){
+            final Point2D pos = scaledNodePositions.get(position);
+            if (pos != null) {
+                final int x = (int) pos.getX();
+                final int y = (int) pos.getY();
+
+                // Player circle
+                if(playerString.equals("D")){
+                    g2d.setColor(DETECTIVE_COLOR);
+                }
+                if(playerString.equals("X")){
+                    g2d.setColor(MISTER_X_COLOR);
+                }
+                if(playerString.startsWith("B")){
+                    g2d.setColor(BOBBIES_COLOR);
+                }
+                g2d.fillOval(x - scaledRadius, y - scaledRadius, scaledRadius * 2, scaledRadius * 2);
+
+                // Player text (white)
+                g2d.setColor(Color.WHITE);
+                g2d.setFont(PLAYERS_FONT);
+                final FontMetrics fontMetrics = g2d.getFontMetrics();
+                final String label = playerString;
+                final int textWidth = fontMetrics.stringWidth(label);
+                final int textHeight = fontMetrics.getAscent();
+                g2d.drawString(label, x - textWidth / 2, y + textHeight / 2 - 2);
+            }
+        }
+    }
+
+    /**  Draw the possible destinations. */
+    private void drawDestinations(Graphics2D g2d, int scaledRadius){
+        for(Integer dest : this.possibleDestinations){
+            final Point2D pos = scaledNodePositions.get(dest);
+            if(pos!=null){
+                final int x = (int) pos.getX();
+                final int y = (int) pos.getY();
+                g2d.setColor(POSSIBLE_DESTINATIONS_COLOR);
+                g2d.fillOval(x - scaledRadius, y - scaledRadius, scaledRadius * 2, scaledRadius * 2);
+            }
+        }
+    }
+
+
+    private void drawGameState(final Graphics2D g2d){
+        final double nodeZoom = 1.0 + (zoomLevel - 1.0) * NODE_SCALE_FACTOR;
+        final int scaledRadius = (int) (NODE_RADIUS * nodeZoom);
+
+        this.drawDestinations(g2d, scaledRadius);
+        this.drawPlayer(g2d, "D", this.detectivePosition, scaledRadius);
+        this.drawPlayer(g2d, "X", this.misterXPosition, scaledRadius);
+        for(int i=0; i<this.bobbiesPositions.size(); i++){
+            int bobbyIndex = i+1;
+            this.drawPlayer(g2d, "B" + bobbyIndex, this.bobbiesPositions.get(i), scaledRadius);
+        }
     }
 }

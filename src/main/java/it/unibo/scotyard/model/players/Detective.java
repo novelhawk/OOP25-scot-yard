@@ -10,7 +10,6 @@ public class Detective extends PlayerImpl {
     private static final int NUMBER_TIKCETS_UNDERGROUND = 4;
 
     public Detective() {
-        super();
         this.name = "Detective";
     }
 
@@ -24,5 +23,4 @@ public class Detective extends PlayerImpl {
         ticketsMap.put(TicketType.DOUBLE_MOVE, NONE);
         return ticketsMap;
     }
-
 }

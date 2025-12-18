@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
+
 public class GameImpl implements Game {
 
     private static final int FINAL_ROUND_NUMBER = 32;
@@ -23,9 +24,9 @@ public class GameImpl implements Game {
 
     private Player userPlayer;
     private Player computerPlayer;
-    private Player currentPlayer;
-    private List<Player> additionalPlayers;
+    private List<Player> additionalPlayers; // bobbies
     private int playersNumber;
+    private Player currentPlayer;
 
     private List<Integer> initialPositions;
     private Set<Pair<Integer, TransportType>> possibleDestinations; // They refer to the current player
@@ -113,17 +114,17 @@ public class GameImpl implements Game {
                 this.additionalPlayers.get(index).setPosition(this.getRandomInitialPosition());
                 this.playersNumber++;
                 index++;
-                this.additionalPlayers.get(index-1).setName("Bobby" + index);
+                this.additionalPlayers.get(index - 1).setName("Bobby" + index);
             case GameDifficulty.EASY:
                 this.additionalPlayers.add(new Bobby());
                 this.additionalPlayers.get(index).setPosition(this.getRandomInitialPosition());
                 index++;
-                this.additionalPlayers.get(index-1).setName("Bobby" + index);
+                this.additionalPlayers.get(index - 1).setName("Bobby" + index);
                 this.playersNumber++;
                 this.additionalPlayers.add(new Bobby());
                 this.additionalPlayers.get(index).setPosition(this.getRandomInitialPosition());
                 index++;
-                this.additionalPlayers.get(index-1).setName("Bobby" + index);
+                this.additionalPlayers.get(index - 1).setName("Bobby" + index);
                 this.playersNumber++;
         }
     }
@@ -243,27 +244,27 @@ public class GameImpl implements Game {
         }
     }
 
-    private void loadAvailableTransports(int destinationId){
+    private void loadAvailableTransports(int destinationId) {
         this.availableTransports.clear();
-        for(Pair<Integer,TransportType> item : this.possibleDestinations){
-            if(item.getX()==destinationId){
+        for (Pair<Integer, TransportType> item : this.possibleDestinations) {
+            if (item.getX() == destinationId) {
                 this.availableTransports.add(item.getY());
             }
         }
     }
 
     @Override
-    public boolean areMultipleTransportsAvailable(int destinationId){
+    public boolean areMultipleTransportsAvailable(int destinationId) {
         this.loadAvailableTransports(destinationId);
-        if(this.availableTransports.size()>1){
+        if (this.availableTransports.size() > 1) {
             return true;
-        } else{
+        } else {
             return false;
         }
     }
 
     @Override
-    public List<TransportType> getAvailableTransports(int destinationId){
+    public List<TransportType> getAvailableTransports(int destinationId) {
         return this.availableTransports;
     }
 

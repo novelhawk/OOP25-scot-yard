@@ -80,6 +80,7 @@ public final class ControllerImpl implements Controller {
         // Load the game panel
         this.loadGamePanel(gameController);
 
+        gameController.initializePlayersPositionsView();
         gameController.manageGameRound();
     }
 

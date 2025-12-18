@@ -1,6 +1,7 @@
 package it.unibo.scotyard.controller.game;
 
 import it.unibo.scotyard.controller.Controller;
+import it.unibo.scotyard.model.Pair;
 import it.unibo.scotyard.model.game.Game;
 import it.unibo.scotyard.model.game.GameMode;
 import it.unibo.scotyard.model.map.TransportType;
@@ -9,8 +10,8 @@ import it.unibo.scotyard.model.players.TicketType;
 import it.unibo.scotyard.view.game.GameView;
 import it.unibo.scotyard.view.map.MapPanel;
 import it.unibo.scotyard.view.sidebar.SidebarPanel;
-
 import java.util.HashSet;
+import java.util.Set;
 
 import javax.swing.JPanel;
 
@@ -90,34 +91,64 @@ public class GameControllerImpl implements GameController {
     @Override
     public void movePlayer(int newPositionId) {
         TransportType transport;
-        if(this.game.areMultipleTransportsAvailable(newPositionId)){
+        if (this.game.areMultipleTransportsAvailable(newPositionId)) {
             System.out.println(this.game.getAvailableTransports(newPositionId));
-            this.view.loadTransportSelectionWindow(new HashSet<>(this.game.getAvailableTransports(newPositionId)));
-            while(!this.view.isTransportTypeSelected()){transport = TransportType.TAXI;}
+            this.view.loadTransportSelectionDialog(new HashSet<>(this.game.getAvailableTransports(newPositionId)));
+            while (!this.view.isTransportTypeSelected()) {
+                transport = TransportType.TAXI;
+            }
             transport = this.view.getSelectedTransportType();
 
-        } else{
+        } else {
             System.out.println(this.game.getAvailableTransports(newPositionId));
             transport = this.game.getAvailableTransports(newPositionId).getFirst();
         }
-        if(this.game.moveCurrentPlayer(newPositionId, transport)){
+        if (this.game.moveCurrentPlayer(newPositionId, transport)) {
             // TODO : update view
             this.game.changeCurrentPlayer();
             this.game.nextRound();
             this.manageGameRound();
-        } 
-        
+        }
+    }
+
+    private void updatePlayerPositionView(Player currentPlayer){
+        switch(currentPlayer.getName()){
+            case "Detective":
+                this.view.getMapPanel().setDetectivePosition(currentPlayer.getCurrentPositionId());
+                break;
+            case "Mister X":
+                this.view.getMapPanel().setMisterXPosition(currentPlayer.getCurrentPositionId());
+                break;
+            default:
+                int index = Integer.valueOf(currentPlayer.getName().substring(5,6))-1;
+                this.view.getMapPanel().setBobbyPosition(currentPlayer.getCurrentPositionId(), index);
+        }
+    }
+
+    @Override
+    public void initializePlayersPositionsView(){
+        for(int i=0; i<this.game.getNumberOfPlayers(); i++){
+            this.updatePlayerPositionView(this.game.getCurrentPlayer());
+            this.game.changeCurrentPlayer();
+        }
     }
 
     @Override
     public void manageGameRound() {
-        if(this.game.isGameOver()){
+        if (this.game.isGameOver()) {
             this.loadGameOverWindow();
-        } else{
+        } else {
             System.out.println("Round : " + this.game.getGameRound());
             this.updateSidebar(this.game.getCurrentPlayer());
-            this.game.loadPossibleDestinations(new HashSet<>(this.mainController.getPossibleDestinations(
-                this.game.getPositionPlayer(this.game.getCurrentPlayer()))));
-        }        
+            this.updatePlayerPositionView(this.game.getCurrentPlayer());
+            Set<Pair<Integer,TransportType>> possibleDestinations = new HashSet<>(this.mainController.getPossibleDestinations(
+                    this.game.getPositionPlayer(this.game.getCurrentPlayer())));
+            this.game.loadPossibleDestinations(possibleDestinations);
+            Set<Integer> possibleDestinationsIDs = new HashSet<>();
+            for(Pair<Integer,TransportType> pair : possibleDestinations){
+                possibleDestinationsIDs.add(pair.getX());
+            }
+            this.view.getMapPanel().loadPossibleDestinations(possibleDestinationsIDs);
+        }
     }
 }

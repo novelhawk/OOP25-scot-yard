@@ -19,7 +19,6 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Set;
-
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -32,7 +31,7 @@ public class GameViewImpl implements GameView {
     private static final int SMALL_WINDOW_WIDTH = 300;
     private static final int SMALL_WINDOW_HEIGHT = 100;
 
-     private static final int SPACING = 50;
+    private static final int SPACING = 50;
     private static final int SMALL_SPACING = 10;
 
     private static final String RULES_WINDOW_TITLE = "Regole";
@@ -45,7 +44,7 @@ public class GameViewImpl implements GameView {
 
     private static final Color BACKGROUND_COLOR = new Color(0, 0, 0); // black
     private static final Color ACCENT_COLOR = new Color(31, 81, 255); // neon blue
-    private static final Color WHITE_COLOR = new Color(255,255,255);
+    private static final Color WHITE_COLOR = new Color(255, 255, 255);
     private static final Color RED_COLOR = new Color(255, 0, 0); // red
 
     private static final Font TITLE_FONT = new Font("Arial", Font.BOLD, 36);
@@ -158,7 +157,7 @@ public class GameViewImpl implements GameView {
     }
 
     @Override
-    public void loadTransportSelectionWindow(Set<TransportType> availableTransportTypes){
+    public void loadTransportSelectionDialog(Set<TransportType> availableTransportTypes) {
         JDialog selectionWindow = new JDialog();
         selectionWindow.setBackground(WHITE_COLOR);
         selectionWindow.setTitle(SELECTION_JDIALOG_TITLE);
@@ -172,11 +171,11 @@ public class GameViewImpl implements GameView {
         selectionWindow.add(textLabel, BorderLayout.NORTH);
 
         JPanel buttonsPanel = new JPanel(new FlowLayout());
-        for(TransportType transport : availableTransportTypes){
+        for (TransportType transport : availableTransportTypes) {
             JButton button = new JButton();
             button.setForeground(BACKGROUND_COLOR);
             button.setFont(SMALL_TEXT_FONT);
-            switch(transport){
+            switch (transport) {
                 case TAXI:
                     button.setText(TAXI_TEXT);
                     button.setBackground(Constants.TAXI_COLOR);
@@ -212,12 +211,12 @@ public class GameViewImpl implements GameView {
     }
 
     @Override
-    public boolean isTransportTypeSelected(){
+    public boolean isTransportTypeSelected() {
         return this.isTransportTypeSelected;
     }
 
     @Override
-    public TransportType getSelectedTransportType(){
+    public TransportType getSelectedTransportType() {
         this.isTransportTypeSelected = false;
         return this.selectedTransportType;
     }

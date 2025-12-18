@@ -49,18 +49,18 @@ public interface Game {
     void changeCurrentPlayer();
 
     /**
-     * Return a boolean value which indicates whether there are multiple transports available for the 
-     * destination id given or not.
-     * 
+     * Return a boolean value which indicates whether there are multiple transports available for the destination id
+     * given or not.
+     *
      * @param destinationId the id of the destination
-     * @return a boolean value which indicates whether there are multiple transports available for the 
-     * destination given or not
+     * @return a boolean value which indicates whether there are multiple transports available for the destination given
+     *     or not
      */
     boolean areMultipleTransportsAvailable(int destinationId);
 
     /**
      * Return a list of the transport types that can be used to reach the destination given.
-     * 
+     *
      * @param destinationId the id of the destination
      * @return a list of transport types that can be used to reach destination
      */

@@ -40,9 +40,10 @@ public interface GameController {
      */
     int getNumberTicketsUserPlayer(TicketType ticketType);
 
-    /** Updates the sidebar, whenever a new round for a player starts. This function takes as an argument
-     * the current player.
-     * 
+    /**
+     * Updates the sidebar, whenever a new round for a player starts. This function takes as an argument the current
+     * player.
+     *
      * @param currentPlayer
      */
     void updateSidebar(Player currentPlayer);
@@ -62,6 +63,9 @@ public interface GameController {
      * @param newPositionId the id of the destination
      */
     void movePlayer(int newPositionId);
+
+    /** Initializes the positions of player in GameView (in MapPanel). */
+    void initializePlayersPositionsView();
 
     /**
      * Manages a round of a game. If the game is over, it calls a method of the GameView, which opens a the game over

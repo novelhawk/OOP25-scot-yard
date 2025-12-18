@@ -1,7 +1,6 @@
 package it.unibo.scotyard.view.sidebar;
 
 import it.unibo.scotyard.model.game.GameMode;
-import it.unibo.scotyard.model.players.Detective;
 import it.unibo.scotyard.model.players.Player;
 import it.unibo.scotyard.view.game.GameView;
 import java.awt.BorderLayout;
@@ -179,7 +178,7 @@ public final class SidebarPanel extends JPanel {
         return label;
     }
 
-    private JLabel createCurrentPlayerLabel(){
+    private JLabel createCurrentPlayerLabel() {
         final JLabel label = new JLabel(CURRENT_PLAYER_TEXT);
         label.setFont(TEXT_FONT);
         label.setForeground(ACCENT_COLOR);
@@ -278,10 +277,10 @@ public final class SidebarPanel extends JPanel {
     }
 
     /**
-     * Method which is called by the GameController when updating the sidebar displaying. 
-     * Updates the text of the currentPlayerLabel according to the current player.
+     * Method which is called by the GameController when updating the sidebar displaying. Updates the text of the
+     * currentPlayerLabel according to the current player.
      */
-    public void updateCurrentPlayerLabel(Player player){
+    public void updateCurrentPlayerLabel(Player player) {
         this.currentPlayerLabel.setText(CURRENT_PLAYER_TEXT + player.getName());
     }
 
