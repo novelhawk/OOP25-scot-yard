@@ -3,6 +3,8 @@ package it.unibo.scotyard.view.map;
 import it.unibo.scotyard.commons.dtos.map.MapInfo;
 import it.unibo.scotyard.commons.dtos.map.Node;
 import it.unibo.scotyard.model.map.TransportType;
+import it.unibo.scotyard.view.game.GameView;
+
 import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
@@ -44,7 +46,7 @@ public final class MapPanel extends JPanel {
     private static final Color DETECTIVE_COLOR = new Color(0, 0, 128); // navy blue
     private static final Color BOBBIES_COLOR = new Color(255, 95, 31); // neon orange
     private static final Color POSSIBLE_DESTINATIONS_COLOR = new Color(152, 251, 152); // mint green
-    private static final Color POSSIBLE_DESTINATIONS_TEXT_COLOR = new Color (34,139,34); // forest green
+    private static final Color POSSIBLE_DESTINATIONS_TEXT_COLOR = new Color(34, 139, 34); // forest green
     private static final Color SELECTED_DESTINATION_COLOR = new Color(15, 255, 8); // neon green
 
     // Zoom settings
@@ -91,14 +93,17 @@ public final class MapPanel extends JPanel {
     private Set<Integer> possibleDestinations;
     private int selectedDestination;
 
+    GameView gameView;
+
     /**
      * Creates a new MapPanel with the given map info DTO.
      *
      * @param mapInfo the map info DTO to render
      * @throws NullPointerException if mapInfo is null
      */
-    public MapPanel(final MapInfo mapInfo) {
+    public MapPanel(final MapInfo mapInfo, final GameView view) {
         this.mapInfo = Objects.requireNonNull(mapInfo, "Map info cannot be null");
+        this.gameView = view;
         this.detectivePosition = POSITION_NOT_SET;
         this.bobbiesPositions = new ArrayList<>();
         this.possibleDestinations = new HashSet<Integer>();
@@ -186,6 +191,11 @@ public final class MapPanel extends JPanel {
             @Override
             public void mouseExited(final MouseEvent e) {
                 setCursor(Cursor.getDefaultCursor());
+            }
+
+            @Override
+            public void mouseClicked(final MouseEvent e) {
+                handleNodeClick(e.getX(), e.getY());
             }
         };
 
@@ -499,14 +509,58 @@ public final class MapPanel extends JPanel {
         this.misterXPosition = position;
     }
 
+    /** Initializes bobbies list of positions. */
+    public void initializeBobbies(int numberOfBobbies){
+        for(int i=0; i<numberOfBobbies; i++){
+            this.bobbiesPositions.add(i, -1);
+        }
+    }
+
     /** Sets bobby position. */
     public void setBobbyPosition(int position, int indexBobby) {
-        this.bobbiesPositions.add(indexBobby, position);
+        this.bobbiesPositions.set(indexBobby, position);
     }
 
     /** Loads the possible destinations for current player. */
     public void loadPossibleDestinations(Set<Integer> destinations) {
         this.possibleDestinations = destinations;
+    }
+
+    /** Sets the selected destination. */
+    private void setSelectedDestination(int destination){
+        this.selectedDestination = destination;
+    }
+
+    /**
+     * Handles node click detection. Finds which node (if any) was clicked based on mouse coordinates.
+     *
+     * @param mouseX the mouse X coordinate
+     * @param mouseY the mouse Y coordinate
+     */
+    private void handleNodeClick(final int mouseX, final int mouseY) {
+        final double nodeZoom = 1.0 + (zoomLevel - 1.0) * NODE_SCALE_FACTOR;
+        final int scaledRadius = (int) (NODE_RADIUS * nodeZoom);
+
+        // Check if click is within node radius
+        for (final Node node : mapInfo.getNodes().toList()) {
+            final Point2D pos = scaledNodePositions.get(node.getId());
+            if (pos != null) {
+                final int nodeX = (int) pos.getX();
+                final int nodeY = (int) pos.getY();
+
+                // Distance of click from node centre
+                final double distance = Math.sqrt(Math.pow(mouseX - nodeX, 2) + Math.pow(mouseY - nodeY, 2));
+
+                if (distance <= scaledRadius) {
+                    for(Integer nodeIdPossibleDest : this.possibleDestinations){
+                        if(nodeIdPossibleDest==node.getId()){
+                            this.setSelectedDestination(node.getId());
+                            this.gameView.movePlayer(node.getId());
+                        }
+                    }
+                }
+            }
+        }
     }
 
     /** Draw the player given as input on the map. */
@@ -560,6 +614,24 @@ public final class MapPanel extends JPanel {
         }
     }
 
+    /** Draw selected destination (the clicked one) */
+    private void drawSelectedDestination(Graphics g2d, int scaledRadius, double nodeZoom){
+        int dest = this.selectedDestination;
+        final Point2D pos = scaledNodePositions.get(dest);
+        if (pos != null) {
+            final int x = (int) pos.getX();
+            final int y = (int) pos.getY();
+            g2d.setColor(SELECTED_DESTINATION_COLOR);
+            g2d.fillOval(x - scaledRadius, y - scaledRadius, scaledRadius * 2, scaledRadius * 2);
+            g2d.setColor(POSSIBLE_DESTINATIONS_TEXT_COLOR);
+            final String label = String.valueOf(dest);
+            final FontMetrics fm = g2d.getFontMetrics();
+            final int textWidth = fm.stringWidth(label);
+            final int textHeight = fm.getAscent();
+            g2d.drawString(label, x - textWidth / 2, y + textHeight / 2 - Math.max(2, (int) (2 * nodeZoom)));
+        }
+    }
+
     private void drawGameStatus(final Graphics2D g2d) {
         final double nodeZoom = 1.0 + (zoomLevel - 1.0) * NODE_SCALE_FACTOR;
         final int scaledRadius = (int) (NODE_RADIUS * nodeZoom);
@@ -571,5 +643,6 @@ public final class MapPanel extends JPanel {
             int bobbyIndex = i + 1;
             this.drawPlayer(g2d, "B" + bobbyIndex, this.bobbiesPositions.get(i), scaledRadius);
         }
+        this.drawSelectedDestination(g2d, scaledRadius, nodeZoom);
     }
 }

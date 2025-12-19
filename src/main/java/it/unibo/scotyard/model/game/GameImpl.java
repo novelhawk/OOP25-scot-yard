@@ -180,6 +180,24 @@ public class GameImpl implements Game {
             this.possibleDestinations.removeIf(item -> TransportType.FERRY.equals(item.getY()));
         }
 
+        /*  Removal of destinations in which other players are present :
+        * - Mister X can't go where the detective and bobbies are
+        * - Detective can't go where other bobbies are
+        * - Bobbies can't go where detective is
+        */
+        for(Pair<Integer,TransportType> destination : this.possibleDestinations){
+            int pos = destination.getX();
+            if(this.gameMode.equals(GameMode.MISTER_X) && pos==this.computerPlayer.getCurrentPositionId()){
+                this.possibleDestinations.remove(destination);
+            }
+            for(Player bobby : this.additionalPlayers){
+                if(bobby.getCurrentPositionId()==pos || (this.gameMode.equals(GameMode.DETECTIVE) && 
+                    this.currentPlayer.equals(bobby) && pos==this.userPlayer.getCurrentPositionId())){
+                    this.possibleDestinations.remove(destination);
+                }
+            }
+        }
+
         // Test
         // TODO: eliminare (una volta finita gestione turni)
         System.out.println(this.currentPlayer);
@@ -286,9 +304,21 @@ public class GameImpl implements Game {
         }
     }
 
+    private void incrementsRound(){
+        this.round++;
+    }
+
     @Override
     public void nextRound() {
-        this.round++;
+        if(this.gameMode.equals(GameMode.DETECTIVE)){
+            if(this.currentPlayer.equals(this.computerPlayer)){
+                this.incrementsRound();
+            }
+        } else{
+            if(this.currentPlayer.equals(this.userPlayer)){
+                this.incrementsRound();
+            }
+        }
     }
 
     @Override

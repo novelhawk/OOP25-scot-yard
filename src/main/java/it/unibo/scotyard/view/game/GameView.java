@@ -64,4 +64,11 @@ public interface GameView {
      * @return the selected transport type
      */
     TransportType getSelectedTransportType();
+
+    /** 
+     * Calls the method movePlayer of the GameController by passing the destinationId
+     * 
+     * @param destinationId the id of the selected destination
+    */
+    void movePlayer(int destinationId);
 }

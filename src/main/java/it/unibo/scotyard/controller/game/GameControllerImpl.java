@@ -103,6 +103,7 @@ public class GameControllerImpl implements GameController {
 
     @Override
     public void initializePlayersPositionsView() {
+        this.view.getMapPanel().initializeBobbies(this.game.getNumberOfPlayers());
         for (int i = 0; i < this.game.getNumberOfPlayers(); i++) {
             this.updatePlayerPositionView(this.game.getCurrentPlayer());
             this.game.changeCurrentPlayer();
@@ -146,6 +147,7 @@ public class GameControllerImpl implements GameController {
             System.out.println(this.game.getAvailableTransports(newPositionId));
             transport = this.game.getAvailableTransports(newPositionId).getFirst();
         }
+        this.view.getMapPanel().repaint();
         if (this.game.moveCurrentPlayer(newPositionId, transport)) {
             this.updatePlayerPositionView(this.game.getCurrentPlayer());
             this.game.changeCurrentPlayer();

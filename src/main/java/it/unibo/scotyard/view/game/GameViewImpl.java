@@ -64,7 +64,7 @@ public class GameViewImpl implements GameView {
     private boolean isTransportTypeSelected;
 
     public GameViewImpl(final MapInfo mapInfo) {
-        this.mapPanel = new MapPanel(mapInfo);
+        this.mapPanel = new MapPanel(mapInfo, this);
         this.sidebar = new SidebarPanel(this);
         this.createGameOverWindow();
 
@@ -219,5 +219,11 @@ public class GameViewImpl implements GameView {
     public TransportType getSelectedTransportType() {
         this.isTransportTypeSelected = false;
         return this.selectedTransportType;
+    }
+
+    @Override
+    public void movePlayer(int destinationId){
+        this.getMapPanel().repaint();
+        this.observer.movePlayer(destinationId);
     }
 }

@@ -76,7 +76,7 @@ public interface Game {
      */
     boolean moveCurrentPlayer(int destinationId, TransportType transport);
 
-    /** Goes to next round (increments the round number). */
+    /** Goes to next round by incrementing the round number, if the current player is the last bobby. */
     void nextRound();
 
     /**
