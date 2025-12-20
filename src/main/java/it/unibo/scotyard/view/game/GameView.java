@@ -51,24 +51,10 @@ public interface GameView {
     void loadTransportSelectionDialog(Set<TransportType> availableTransportTypes);
 
     /**
-     * Return a boolean value which indicats whether the transport type has been selected or not.
+     * Calls the method destinationChosen of the GameController by passing the destinationId, 
+     * when the user has clicked on one destination in the map panel.
      *
-     * @return a boolean value which indicats whether the transport type has been selected or not.
-     */
-    boolean isTransportTypeSelected();
-
-    /**
-     * Return the transport type selected ine the transport selection window. When this method gets called, the boolean
-     * value isTransportTypeSelected switches to false;
-     *
-     * @return the selected transport type
-     */
-    TransportType getSelectedTransportType();
-
-    /** 
-     * Calls the method movePlayer of the GameController by passing the destinationId
-     * 
      * @param destinationId the id of the selected destination
-    */
-    void movePlayer(int destinationId);
+     */
+    void destinationChosen(int destinationId);
 }

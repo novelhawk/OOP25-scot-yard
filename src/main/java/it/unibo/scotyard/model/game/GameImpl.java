@@ -52,6 +52,7 @@ public class GameImpl implements Game {
         this.setIA();
         this.round++;
         this.indexCurrentPlayer = MISTER_X_ROUND_INDEX;
+        this.setGameState(GameState.PLAYING);
     }
 
     private GameMode setGameMode(String inputGameMode) {
@@ -102,7 +103,7 @@ public class GameImpl implements Game {
         }
         this.playersNumber++;
         this.playersNumber++;
-        this.userPlayer.setPosition(89);
+        this.userPlayer.setPosition(this.getRandomInitialPosition());
         this.computerPlayer.setPosition(this.getRandomInitialPosition());
         int index = 0;
         switch (this.gameDifficulty) {
@@ -140,11 +141,13 @@ public class GameImpl implements Game {
     public boolean isGameOver() {
         if (this.userPlayer.getCurrentPositionId() == this.computerPlayer.getCurrentPositionId()
                 || this.round > FINAL_ROUND_NUMBER) {
+            this.setGameState(GameState.PAUSE);
             return true;
         }
         for (Player bobby : this.additionalPlayers) {
             if (this.computerPlayer.getCurrentPositionId() == (bobby.getCurrentPositionId())
                     && GameMode.MISTER_X.equals(this.gameMode)) {
+                this.setGameState(GameState.PAUSE);
                 return true;
             }
         }
@@ -181,18 +184,20 @@ public class GameImpl implements Game {
         }
 
         /*  Removal of destinations in which other players are present :
-        * - Mister X can't go where the detective and bobbies are
-        * - Detective can't go where other bobbies are
-        * - Bobbies can't go where detective is
-        */
-        for(Pair<Integer,TransportType> destination : this.possibleDestinations){
+         * - Mister X can't go where the detective and bobbies are
+         * - Detective can't go where other bobbies are
+         * - Bobbies can't go where detective is
+         */
+        for (Pair<Integer, TransportType> destination : this.possibleDestinations) {
             int pos = destination.getX();
-            if(this.gameMode.equals(GameMode.MISTER_X) && pos==this.computerPlayer.getCurrentPositionId()){
+            if (GameMode.MISTER_X.equals(this.gameMode) && pos == this.computerPlayer.getCurrentPositionId()) {
                 this.possibleDestinations.remove(destination);
             }
-            for(Player bobby : this.additionalPlayers){
-                if(bobby.getCurrentPositionId()==pos || (this.gameMode.equals(GameMode.DETECTIVE) && 
-                    this.currentPlayer.equals(bobby) && pos==this.userPlayer.getCurrentPositionId())){
+            for (Player bobby : this.additionalPlayers) {
+                if (bobby.getCurrentPositionId() == pos
+                        || (GameMode.DETECTIVE.equals(this.gameMode)
+                                && this.currentPlayer.equals(bobby)
+                                && pos == this.userPlayer.getCurrentPositionId())) {
                     this.possibleDestinations.remove(destination);
                 }
             }
@@ -304,18 +309,18 @@ public class GameImpl implements Game {
         }
     }
 
-    private void incrementsRound(){
+    private void incrementsRound() {
         this.round++;
     }
 
     @Override
     public void nextRound() {
-        if(this.gameMode.equals(GameMode.DETECTIVE)){
-            if(this.currentPlayer.equals(this.computerPlayer)){
+        if (GameMode.DETECTIVE.equals(this.gameMode)) {
+            if (this.currentPlayer.equals(this.computerPlayer)) {
                 this.incrementsRound();
             }
-        } else{
-            if(this.currentPlayer.equals(this.userPlayer)){
+        } else {
+            if (this.currentPlayer.equals(this.userPlayer)) {
                 this.incrementsRound();
             }
         }

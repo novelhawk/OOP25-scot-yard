@@ -64,6 +64,7 @@ public final class SidebarPanel extends JPanel {
     JLabel undergroundTicketsLabel;
     JLabel blackTicketsLabel;
     JLabel doubleMoveTicketsLabel;
+    JButton endTurnButton;
     JButton loadRulesButton;
 
     GameView gameView;
@@ -117,6 +118,10 @@ public final class SidebarPanel extends JPanel {
         this.add(Box.createVerticalStrut(SPACING));
 
         // TODO : aggiungere pannello per tracciamento posizioni e mezzi usati da Mister X
+
+        this.endTurnButton = createActionButton("Fine Turno");
+        this.add(endTurnButton);
+        this.add(Box.createVerticalStrut(SPACING));
 
         this.loadRulesButton = createLoadRulesButton(LOAD_RULES_TEXT);
         this.add(loadRulesButton);
@@ -185,6 +190,17 @@ public final class SidebarPanel extends JPanel {
         label.setAlignmentY(Component.CENTER_ALIGNMENT);
         label.setAlignmentX(Component.CENTER_ALIGNMENT);
         return label;
+    }
+
+    private JButton createActionButton(String text) {
+        final JButton button = new JButton(text);
+        button.setFont(BUTTON_FONT);
+        button.setBackground(ACCENT_COLOR);
+        button.setForeground(BACKGROUND_COLOR);
+        button.setAlignmentY(Component.CENTER_ALIGNMENT);
+        button.setAlignmentX(Component.CENTER_ALIGNMENT);
+        button.setMaximumSize(new Dimension(SIDEBAR_WIDTH - 2 * PADDING, 40));
+        return button;
     }
 
     /*
@@ -344,5 +360,27 @@ public final class SidebarPanel extends JPanel {
      */
     public void updateDoubleMoveTicketsLabel(int tickets) {
         this.doubleMoveTicketsLabel.setText(DOUBLE_MOVE_TICKETS_TEXT + " : " + Integer.toString(tickets));
+    }
+
+    /**
+     * Sets the listener for the end turn button.
+     *
+     * @param listener the action listener
+     */
+    public void setEndTurnListener(ActionListener listener) {
+        // Deletes all listeners
+        for (ActionListener al : endTurnButton.getActionListeners()) {
+            endTurnButton.removeActionListener(al);
+        }
+        endTurnButton.addActionListener(listener);
+    }
+
+    /**
+     * Updates the end turn button state.
+     *
+     * @param enabled true to enable button
+     */
+    public void updateEndTurnButton(boolean enabled) {
+        endTurnButton.setEnabled(enabled);
     }
 }

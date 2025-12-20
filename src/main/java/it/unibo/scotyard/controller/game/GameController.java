@@ -67,9 +67,14 @@ public interface GameController {
     void manageGameRound();
 
     /**
-     * Moves the player (if possible).
+     * Checks if there are multiple transport types to reach destination or not.
      *
      * @param newPositionId the id of the destination
      */
-    void movePlayer(int newPositionId);
+    void destinationChosen(int newPositionId);
+
+    /** 
+     * Action listener for the EndTurn button.
+    */
+    void onEndTurn();
 }

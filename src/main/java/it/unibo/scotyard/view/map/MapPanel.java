@@ -4,7 +4,6 @@ import it.unibo.scotyard.commons.dtos.map.MapInfo;
 import it.unibo.scotyard.commons.dtos.map.Node;
 import it.unibo.scotyard.model.map.TransportType;
 import it.unibo.scotyard.view.game.GameView;
-
 import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
@@ -510,8 +509,8 @@ public final class MapPanel extends JPanel {
     }
 
     /** Initializes bobbies list of positions. */
-    public void initializeBobbies(int numberOfBobbies){
-        for(int i=0; i<numberOfBobbies; i++){
+    public void initializeBobbies(int numberOfBobbies) {
+        for (int i = 0; i < numberOfBobbies; i++) {
             this.bobbiesPositions.add(i, -1);
         }
     }
@@ -527,7 +526,7 @@ public final class MapPanel extends JPanel {
     }
 
     /** Sets the selected destination. */
-    private void setSelectedDestination(int destination){
+    public void setSelectedDestination(int destination) {
         this.selectedDestination = destination;
     }
 
@@ -552,10 +551,10 @@ public final class MapPanel extends JPanel {
                 final double distance = Math.sqrt(Math.pow(mouseX - nodeX, 2) + Math.pow(mouseY - nodeY, 2));
 
                 if (distance <= scaledRadius) {
-                    for(Integer nodeIdPossibleDest : this.possibleDestinations){
-                        if(nodeIdPossibleDest==node.getId()){
+                    for (Integer nodeIdPossibleDest : this.possibleDestinations) {
+                        if (nodeIdPossibleDest == node.getId()) {
                             this.setSelectedDestination(node.getId());
-                            this.gameView.movePlayer(node.getId());
+                            this.gameView.destinationChosen(node.getId());
                         }
                     }
                 }
@@ -615,7 +614,7 @@ public final class MapPanel extends JPanel {
     }
 
     /** Draw selected destination (the clicked one) */
-    private void drawSelectedDestination(Graphics g2d, int scaledRadius, double nodeZoom){
+    private void drawSelectedDestination(Graphics g2d, int scaledRadius, double nodeZoom) {
         int dest = this.selectedDestination;
         final Point2D pos = scaledNodePositions.get(dest);
         if (pos != null) {

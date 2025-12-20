@@ -61,7 +61,6 @@ public class GameViewImpl implements GameView {
     private GameController observer;
 
     private TransportType selectedTransportType;
-    private boolean isTransportTypeSelected;
 
     public GameViewImpl(final MapInfo mapInfo) {
         this.mapPanel = new MapPanel(mapInfo, this);
@@ -71,8 +70,6 @@ public class GameViewImpl implements GameView {
         this.mainPanel = new JPanel(new BorderLayout());
         this.mainPanel.add(this.sidebar, BorderLayout.EAST);
         this.mainPanel.add(this.mapPanel, BorderLayout.CENTER);
-
-        this.isTransportTypeSelected = false;
     }
 
     @Override
@@ -200,7 +197,6 @@ public class GameViewImpl implements GameView {
             button.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    isTransportTypeSelected = true;
                     selectionWindow.dispose();
                 }
             });
@@ -211,19 +207,8 @@ public class GameViewImpl implements GameView {
     }
 
     @Override
-    public boolean isTransportTypeSelected() {
-        return this.isTransportTypeSelected;
-    }
-
-    @Override
-    public TransportType getSelectedTransportType() {
-        this.isTransportTypeSelected = false;
-        return this.selectedTransportType;
-    }
-
-    @Override
-    public void movePlayer(int destinationId){
+    public void destinationChosen(int destinationId) {
+        this.observer.destinationChosen(destinationId);
         this.getMapPanel().repaint();
-        this.observer.movePlayer(destinationId);
     }
 }

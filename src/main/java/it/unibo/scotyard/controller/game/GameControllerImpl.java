@@ -16,6 +16,9 @@ import javax.swing.JPanel;
 
 public class GameControllerImpl implements GameController {
 
+    private int selectedDestination;
+    private TransportType selectedTransportType;
+
     private Game game;
     private GameView view;
 
@@ -26,6 +29,8 @@ public class GameControllerImpl implements GameController {
         this.view = view;
 
         this.mainController = mainController;
+
+        this.view.getSidebar().setEndTurnListener(e -> onEndTurn());
     }
 
     @Override
@@ -115,7 +120,6 @@ public class GameControllerImpl implements GameController {
         if (this.game.isGameOver()) {
             this.loadGameOverWindow();
         } else {
-            System.out.println("Round : " + this.game.getGameRound());
             this.updateSidebar(this.game.getCurrentPlayer());
             this.updatePlayerPositionView(this.game.getCurrentPlayer());
             Set<Pair<Integer, TransportType>> possibleDestinations =
@@ -131,24 +135,26 @@ public class GameControllerImpl implements GameController {
         }
     }
 
-    // TODO : this method gets called by View
     @Override
-    public void movePlayer(int newPositionId) {
-        TransportType transport;
+    public void destinationChosen(int newPositionId) {
         if (this.game.areMultipleTransportsAvailable(newPositionId)) {
             System.out.println(this.game.getAvailableTransports(newPositionId));
             this.view.loadTransportSelectionDialog(new HashSet<>(this.game.getAvailableTransports(newPositionId)));
-            while (!this.view.isTransportTypeSelected()) {
-                transport = TransportType.TAXI;
-            }
-            transport = this.view.getSelectedTransportType();
-
-        } else {
-            System.out.println(this.game.getAvailableTransports(newPositionId));
-            transport = this.game.getAvailableTransports(newPositionId).getFirst();
+        } else{
+            this.selectedTransportType = this.game.getAvailableTransports(newPositionId).getFirst();
         }
+        this.selectedDestination = newPositionId;
         this.view.getMapPanel().repaint();
-        if (this.game.moveCurrentPlayer(newPositionId, transport)) {
+    }
+
+    @Override
+    public void onEndTurn(){
+        this.movePlayer();
+    }
+
+    private void movePlayer(){
+        if (this.game.moveCurrentPlayer(this.selectedDestination, this.selectedTransportType)) {
+            this.view.getMapPanel().setSelectedDestination(-1);
             this.updatePlayerPositionView(this.game.getCurrentPlayer());
             this.game.changeCurrentPlayer();
             this.game.nextRound();
