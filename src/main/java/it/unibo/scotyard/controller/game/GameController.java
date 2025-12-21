@@ -74,15 +74,13 @@ public interface GameController {
      */
     void destinationChosen(int newPositionId);
 
-    /** Action listener for the EndTurn button. 
-     * It moves the player.
-    */
+    /** Action listener for the EndTurn button. It moves the player. */
     void onEndTurn();
 
     /**
      * Sets the selcted transport type to reach destination.
-     * 
-     * @param transportType the type of transport selected 
+     *
+     * @param transportType the type of transport selected
      */
     void selectTransport(TransportType transportType);
 }

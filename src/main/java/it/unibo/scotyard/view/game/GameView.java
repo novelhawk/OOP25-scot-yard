@@ -35,12 +35,12 @@ public interface GameView {
     void displayRulesWindow(JPanel panel);
 
     /**
-     * Displays the game over window, which contains a label inidicating the winner and a button that takes the user
+     * Displays the game over window, which contains a label inidicating the result of user player and a button that takes the user
      * back to the main menu.
      *
-     * @param winner the game mode representing the winner (Detective or Mister X)
+     * @param result the strind inidicating the result (win or loss)
      */
-    void displayGameOverWindow(GameMode winner);
+    void displayGameOverWindow(String result);
 
     /**
      * Load a window to make the user select the preferred transport type to reach the destination. This method gets

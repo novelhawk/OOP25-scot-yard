@@ -63,7 +63,7 @@ public final class ModelImpl implements Model {
             if (connection.getFrom() == idStartPosition) {
                 resultList.add(new Pair<>(connection.getTo(), connection.getTransport()));
             }
-            if (connection.getTo() == idStartPosition) {
+            if(connection.getTo()==idStartPosition){
                 resultList.add(new Pair<>(connection.getFrom(), connection.getTransport()));
             }
         }

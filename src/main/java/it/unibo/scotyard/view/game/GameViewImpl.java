@@ -4,7 +4,6 @@ import it.unibo.scotyard.commons.Constants;
 import it.unibo.scotyard.commons.dtos.map.MapInfo;
 import it.unibo.scotyard.commons.engine.Size;
 import it.unibo.scotyard.controller.game.GameController;
-import it.unibo.scotyard.model.game.GameMode;
 import it.unibo.scotyard.model.map.TransportType;
 import it.unibo.scotyard.view.map.MapPanel;
 import it.unibo.scotyard.view.sidebar.SidebarPanel;
@@ -139,17 +138,13 @@ public class GameViewImpl implements GameView {
         });
     }
 
-    private void setWinner(GameMode winner) {
-        if (GameMode.DETECTIVE.equals(winner)) {
-            this.winnerLabel.setText("Vittoria del detective");
-        } else {
-            this.winnerLabel.setText("Vittoria di Mister X");
-        }
+    private void setResult(String result) {
+        this.winnerLabel.setText(result);
     }
 
     @Override
-    public void displayGameOverWindow(GameMode winner) {
-        this.setWinner(winner);
+    public void displayGameOverWindow(String result) {
+        this.setResult(result);
         this.gameOverWindow.display();
     }
 
@@ -209,6 +204,7 @@ public class GameViewImpl implements GameView {
                     }
                     selectionWindow.dispose();
                     observer.selectTransport(selectedTransportType);
+                    getSidebar().enableEndTurnButton(true);
                 }
             });
             buttonsPanel.add(button);

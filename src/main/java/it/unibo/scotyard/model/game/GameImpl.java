@@ -8,6 +8,7 @@ import it.unibo.scotyard.model.players.MisterX;
 import it.unibo.scotyard.model.players.Player;
 import it.unibo.scotyard.model.players.TicketType;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
@@ -17,7 +18,6 @@ public class GameImpl implements Game {
     private static final int FINAL_ROUND_NUMBER = 32;
     private static final int MISTER_X_ROUND_INDEX = -2;
     private static final int DETECTIVE_ROUND_INDEX = -1;
-    
 
     private GameState gameState;
     private GameMode gameMode;
@@ -41,6 +41,7 @@ public class GameImpl implements Game {
         this.round = 0;
         this.playersNumber = 0;
         this.availableTransports = new ArrayList<TransportType>();
+        this.possibleDestinations = new HashSet<Pair<Integer,TransportType>>();
         this.initialize(gameMode, levelOfDifficulty, initialPositions);
     }
 
@@ -152,26 +153,24 @@ public class GameImpl implements Game {
                 return true;
             }
         }
+        if(this.possibleDestinations.isEmpty() && this.getGameRound()>1){
+            return true;
+        }
         return false;
     }
 
     @Override
-    public GameMode winner() {
-        boolean misterXCaught = false;
+    public String resultGame() {
         for (Player bobby : this.additionalPlayers) {
             if (this.computerPlayer.getCurrentPositionId() == (bobby.getCurrentPositionId())
                     && GameMode.MISTER_X.equals(this.gameMode)) {
-                misterXCaught = true;
+                return new String("Sconfitta");
             }
         }
         if (this.userPlayer.getCurrentPositionId() == this.computerPlayer.getCurrentPositionId()) {
-            misterXCaught = true;
+            return new String("Sconfitta");
         }
-        if (misterXCaught) {
-            return GameMode.DETECTIVE;
-        } else {
-            return GameMode.MISTER_X;
-        }
+        return new String("Vittoria");
     }
 
     @Override
@@ -201,6 +200,10 @@ public class GameImpl implements Game {
                                 && pos == this.userPlayer.getCurrentPositionId())) {
                     this.possibleDestinations.remove(destination);
                 }
+            }
+            // Removal of destinations for which current player has 0 tickets
+            if(this.getCurrentPlayer().getNumberTickets(this.getTicketType(destination.getY()))==0){
+                this.possibleDestinations.remove(destination);
             }
         }
 

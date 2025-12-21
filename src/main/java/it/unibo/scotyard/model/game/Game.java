@@ -28,12 +28,11 @@ public interface Game {
     boolean isGameOver();
 
     /**
-     * This method gets called when the game is over, to get the winner (Detective or Mister X). If detective or bobbies
-     * caught Mister X (they're in the same position), then the winner is the detective; else it's Mister X.
+     * This method gets called when the game is over, to get the result : the user player has won or not.
      *
-     * @return GameMode, which indicates whether the winner is Detective or Mister X
+     * @return String, which indicates whether the user player has won or not
      */
-    GameMode winner();
+    String resultGame();
 
     /**
      * Loads into a specific variable the possible destinations.

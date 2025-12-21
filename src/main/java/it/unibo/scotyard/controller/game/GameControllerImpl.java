@@ -83,7 +83,7 @@ public class GameControllerImpl implements GameController {
 
     @Override
     public void loadGameOverWindow() {
-        this.view.displayGameOverWindow(this.game.winner());
+        this.view.displayGameOverWindow(this.game.resultGame());
     }
 
     @Override
@@ -140,6 +140,7 @@ public class GameControllerImpl implements GameController {
         if (this.game.areMultipleTransportsAvailable(newPositionId)) {
             System.out.println(this.game.getAvailableTransports(newPositionId));
             this.view.loadTransportSelectionDialog(new HashSet<>(this.game.getAvailableTransports(newPositionId)));
+            this.view.getSidebar().enableEndTurnButton(false);
         } else {
             this.selectTransport(this.game.getAvailableTransports(newPositionId).getFirst());
         }
@@ -153,7 +154,7 @@ public class GameControllerImpl implements GameController {
     }
 
     @Override
-    public void selectTransport(TransportType transportType){
+    public void selectTransport(TransportType transportType) {
         this.selectedTransportType = transportType;
     }
 

@@ -383,4 +383,8 @@ public final class SidebarPanel extends JPanel {
     public void updateEndTurnButton(boolean enabled) {
         endTurnButton.setEnabled(enabled);
     }
+
+    public void enableEndTurnButton(boolean value){
+        this.endTurnButton.setEnabled(value);
+    }
 }

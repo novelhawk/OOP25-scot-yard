@@ -565,31 +565,33 @@ public final class MapPanel extends JPanel {
     /** Draw the player given as input on the map. */
     private void drawPlayer(Graphics2D g2d, String playerString, int position, int scaledRadius) {
         if (position > 0) {
-            final Point2D pos = scaledNodePositions.get(position);
-            if (pos != null) {
-                final int x = (int) pos.getX();
-                final int y = (int) pos.getY();
+            if(!this.possibleDestinations.contains(position)){
+                final Point2D pos = scaledNodePositions.get(position);
+                if (pos != null) {
+                    final int x = (int) pos.getX();
+                    final int y = (int) pos.getY();
 
-                // Player circle
-                if ("D".equals(playerString)) {
-                    g2d.setColor(DETECTIVE_COLOR);
-                }
-                if ("X".equals(playerString)) {
-                    g2d.setColor(MISTER_X_COLOR);
-                }
-                if (playerString.startsWith("B")) {
-                    g2d.setColor(BOBBIES_COLOR);
-                }
-                g2d.fillOval(x - scaledRadius, y - scaledRadius, scaledRadius * 2, scaledRadius * 2);
+                    // Player circle
+                    if ("D".equals(playerString)) {
+                        g2d.setColor(DETECTIVE_COLOR);
+                    }
+                    if ("X".equals(playerString)) {
+                        g2d.setColor(MISTER_X_COLOR);
+                    }
+                    if (playerString.startsWith("B")) {
+                        g2d.setColor(BOBBIES_COLOR);
+                    }
+                    g2d.fillOval(x - scaledRadius, y - scaledRadius, scaledRadius * 2, scaledRadius * 2);
 
-                // Player text (white)
-                g2d.setColor(Color.WHITE);
-                g2d.setFont(PLAYERS_FONT);
-                final FontMetrics fontMetrics = g2d.getFontMetrics();
-                final String label = playerString;
-                final int textWidth = fontMetrics.stringWidth(label);
-                final int textHeight = fontMetrics.getAscent();
-                g2d.drawString(label, x - textWidth / 2, y + textHeight / 2 - 2);
+                    // Player text (white)
+                    g2d.setColor(Color.WHITE);
+                    g2d.setFont(PLAYERS_FONT);
+                    final FontMetrics fontMetrics = g2d.getFontMetrics();
+                    final String label = playerString;
+                    final int textWidth = fontMetrics.stringWidth(label);
+                    final int textHeight = fontMetrics.getAscent();
+                    g2d.drawString(label, x - textWidth / 2, y + textHeight / 2 - 2);
+                }
             }
         }
     }
