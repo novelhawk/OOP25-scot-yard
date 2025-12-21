@@ -17,6 +17,7 @@ public class GameImpl implements Game {
     private static final int FINAL_ROUND_NUMBER = 32;
     private static final int MISTER_X_ROUND_INDEX = -2;
     private static final int DETECTIVE_ROUND_INDEX = -1;
+    
 
     private GameState gameState;
     private GameMode gameMode;

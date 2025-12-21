@@ -1,6 +1,7 @@
 package it.unibo.scotyard.controller.game;
 
 import it.unibo.scotyard.model.game.GameMode;
+import it.unibo.scotyard.model.map.TransportType;
 import it.unibo.scotyard.model.players.Player;
 import it.unibo.scotyard.model.players.TicketType;
 import it.unibo.scotyard.view.map.MapPanel;
@@ -73,8 +74,15 @@ public interface GameController {
      */
     void destinationChosen(int newPositionId);
 
-    /** 
-     * Action listener for the EndTurn button.
+    /** Action listener for the EndTurn button. 
+     * It moves the player.
     */
     void onEndTurn();
+
+    /**
+     * Sets the selcted transport type to reach destination.
+     * 
+     * @param transportType the type of transport selected 
+     */
+    void selectTransport(TransportType transportType);
 }

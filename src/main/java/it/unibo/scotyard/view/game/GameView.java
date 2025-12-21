@@ -51,8 +51,8 @@ public interface GameView {
     void loadTransportSelectionDialog(Set<TransportType> availableTransportTypes);
 
     /**
-     * Calls the method destinationChosen of the GameController by passing the destinationId, 
-     * when the user has clicked on one destination in the map panel.
+     * Calls the method destinationChosen of the GameController by passing the destinationId, when the user has clicked
+     * on one destination in the map panel.
      *
      * @param destinationId the id of the selected destination
      */

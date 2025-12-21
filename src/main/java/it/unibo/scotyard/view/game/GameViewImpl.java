@@ -176,28 +176,39 @@ public class GameViewImpl implements GameView {
                 case TAXI:
                     button.setText(TAXI_TEXT);
                     button.setBackground(Constants.TAXI_COLOR);
-                    this.selectedTransportType = TransportType.TAXI;
                     break;
                 case BUS:
                     button.setText(BUS_TEXT);
                     button.setBackground(Constants.BUS_COLOR);
-                    this.selectedTransportType = TransportType.BUS;
                     break;
                 case UNDERGROUND:
                     button.setText(UNDERGROUND_TEXT);
                     button.setBackground(Constants.UNDERGROUND_COLOR);
-                    this.selectedTransportType = TransportType.UNDERGROUND;
                     break;
                 case FERRY:
                     button.setText(FERRY_TEXT);
                     button.setBackground(Constants.FERRY_COLOR);
-                    this.selectedTransportType = TransportType.FERRY;
                     break;
             }
             button.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
+                    switch (transport) {
+                        case TAXI:
+                            selectedTransportType = TransportType.TAXI;
+                            break;
+                        case BUS:
+                            selectedTransportType = TransportType.BUS;
+                            break;
+                        case UNDERGROUND:
+                            selectedTransportType = TransportType.UNDERGROUND;
+                            break;
+                        case FERRY:
+                            selectedTransportType = TransportType.FERRY;
+                            break;
+                    }
                     selectionWindow.dispose();
+                    observer.selectTransport(selectedTransportType);
                 }
             });
             buttonsPanel.add(button);

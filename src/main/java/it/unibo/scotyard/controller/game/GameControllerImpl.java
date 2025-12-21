@@ -140,19 +140,24 @@ public class GameControllerImpl implements GameController {
         if (this.game.areMultipleTransportsAvailable(newPositionId)) {
             System.out.println(this.game.getAvailableTransports(newPositionId));
             this.view.loadTransportSelectionDialog(new HashSet<>(this.game.getAvailableTransports(newPositionId)));
-        } else{
-            this.selectedTransportType = this.game.getAvailableTransports(newPositionId).getFirst();
+        } else {
+            this.selectTransport(this.game.getAvailableTransports(newPositionId).getFirst());
         }
         this.selectedDestination = newPositionId;
         this.view.getMapPanel().repaint();
     }
 
     @Override
-    public void onEndTurn(){
+    public void onEndTurn() {
         this.movePlayer();
     }
 
-    private void movePlayer(){
+    @Override
+    public void selectTransport(TransportType transportType){
+        this.selectedTransportType = transportType;
+    }
+
+    private void movePlayer() {
         if (this.game.moveCurrentPlayer(this.selectedDestination, this.selectedTransportType)) {
             this.view.getMapPanel().setSelectedDestination(-1);
             this.updatePlayerPositionView(this.game.getCurrentPlayer());
