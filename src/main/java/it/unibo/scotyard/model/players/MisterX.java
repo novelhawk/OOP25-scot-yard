@@ -15,7 +15,6 @@ public class MisterX extends PlayerImpl {
     private static final int INFINITE = -1;
 
     public MisterX() {
-        super();
         this.name = "Mister X";
     }
 

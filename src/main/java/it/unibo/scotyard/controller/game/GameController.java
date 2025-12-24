@@ -10,9 +10,7 @@ import javax.swing.JPanel;
 
 public interface GameController {
 
-    /**
-     * Initializes game.
-     */
+    /** Initializes game. */
     void initializeGame();
 
     /** @return the main game panel */
@@ -64,18 +62,17 @@ public interface GameController {
     void loadMainMenu();
 
     /**
-     * Checks if there are multiple transport types to reach destination or not.
-     * Used only in DetectiveGameControllerImpl.
+     * Checks if there are multiple transport types to reach destination or not. Used only in
+     * DetectiveGameControllerImpl.
      *
      * @param newPositionId the id of the destination
      */
-    public void destinationChosen(int newPositionId);
+    void destinationChosen(int newPositionId);
 
     /**
-     * Sets the selcted transport type to reach destination.
-     * Used only in DetectiveGameControllerImpl.
+     * Sets the selcted transport type to reach destination. Used only in DetectiveGameControllerImpl.
      *
      * @param transportType the type of transport selected
      */
-    public void selectTransport(TransportType transportType);
+    void selectTransport(TransportType transportType);
 }

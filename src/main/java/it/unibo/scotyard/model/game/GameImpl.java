@@ -15,7 +15,7 @@ import java.util.Set;
 
 public class GameImpl implements Game {
 
-    private static final int FINAL_ROUND_NUMBER = 32;
+    private static final int FINAL_ROUND_NUMBER = 3;
     private static final int MISTER_X_ROUND_INDEX = -2;
     private static final int DETECTIVE_ROUND_INDEX = -1;
 
@@ -148,8 +148,9 @@ public class GameImpl implements Game {
         }
         for (Player bobby : this.additionalPlayers) {
             if ((this.userPlayer.getCurrentPositionId() == (bobby.getCurrentPositionId())
-                    && GameMode.MISTER_X.equals(this.gameMode)) || (this.computerPlayer.getCurrentPositionId()==(bobby.getCurrentPositionId()) 
-                    && GameMode.DETECTIVE.equals(this.gameMode))) {
+                            && GameMode.MISTER_X.equals(this.gameMode))
+                    || (this.computerPlayer.getCurrentPositionId() == (bobby.getCurrentPositionId())
+                            && GameMode.DETECTIVE.equals(this.gameMode))) {
                 this.setGameState(GameState.PAUSE);
                 return true;
             }
@@ -162,17 +163,33 @@ public class GameImpl implements Game {
 
     @Override
     public String resultGame() {
+        String victoryString = new String("Vittoria");
+        String lossString = new String("Sconfitta");
         for (Player bobby : this.additionalPlayers) {
             if (this.userPlayer.getCurrentPositionId() == (bobby.getCurrentPositionId())) {
-                if(GameMode.MISTER_X.equals(this.gameMode)){
-                    return new String("Sconfitta");
+                if (GameMode.MISTER_X.equals(this.gameMode)) {
+                    return lossString;
+                } else{
+                    return victoryString;
+                }
+            } else{
+                if(GameMode.DETECTIVE.equals(this.gameMode) && this.computerPlayer.getCurrentPositionId()==bobby.getCurrentPositionId()){
+                    return victoryString;
                 }
             }
         }
-        if (this.userPlayer.getCurrentPositionId() == this.computerPlayer.getCurrentPositionId() && this.gameMode.equals(GameMode.MISTER_X)) {
-            return new String("Sconfitta");
+        if (this.userPlayer.getCurrentPositionId() == this.computerPlayer.getCurrentPositionId()){
+            if( GameMode.MISTER_X.equals(this.gameMode)){
+                return lossString;
+            } else{
+                return victoryString;
+            }
         } else{
-            return new String("Vittoria");
+            if( GameMode.DETECTIVE.equals(this.gameMode)){
+                return lossString;
+            } else{
+                return victoryString;
+            }
         }
     }
 

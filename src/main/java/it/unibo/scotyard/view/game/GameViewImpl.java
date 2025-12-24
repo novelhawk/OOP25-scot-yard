@@ -45,7 +45,7 @@ public class GameViewImpl implements GameView {
     private static final Color ACCENT_COLOR = new Color(31, 81, 255); // neon blue
     private static final Color WHITE_COLOR = new Color(255, 255, 255);
     private static final Color RED_COLOR = new Color(255, 0, 0); // red
-    private static final Color GREEN_COLOR = new Color(0,255,0);
+    private static final Color GREEN_COLOR = new Color(0, 255, 0);
 
     private static final Font TITLE_FONT = new Font("Arial", Font.BOLD, 36);
     private static final Font TEXT_FONT = new Font("Arial", Font.BOLD, 20);
@@ -141,9 +141,9 @@ public class GameViewImpl implements GameView {
 
     private void setResult(String result) {
         this.winnerLabel.setText(result);
-        if(result.equals(new String("Vittoria"))){
+        if (new String("Vittoria").equals(result)) {
             this.winnerLabel.setForeground(GREEN_COLOR);
-        } else{
+        } else {
             this.winnerLabel.setForeground(RED_COLOR);
         }
     }

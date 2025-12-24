@@ -91,8 +91,7 @@ public final class MapPanel extends JPanel {
     private List<Integer> bobbiesPositions;
     private Set<Integer> possibleDestinations;
     private int selectedDestination;
-    private java.util.Set<it.unibo.scotyard.model.game.turn.TurnManagerImpl.MoveOption> validMoves =
-            new java.util.HashSet<>();
+    private Set<it.unibo.scotyard.model.game.turn.TurnManagerImpl.MoveOption> validMoves = new HashSet<>();
     private java.util.function.Consumer<Integer> nodeClickListener = null;
 
     GameView gameView;
@@ -538,8 +537,8 @@ public final class MapPanel extends JPanel {
      *
      * @param moves the set of valid move options
      */
-    public void setValidMoves(final java.util.Set<it.unibo.scotyard.model.game.turn.TurnManagerImpl.MoveOption> moves) {
-        this.validMoves = moves != null ? new java.util.HashSet<>(moves) : new java.util.HashSet<>();
+    public void setValidMoves(final Set<it.unibo.scotyard.model.game.turn.TurnManagerImpl.MoveOption> moves) {
+        this.validMoves = moves != null ? new HashSet<>(moves) : new HashSet<>();
     }
 
     /**

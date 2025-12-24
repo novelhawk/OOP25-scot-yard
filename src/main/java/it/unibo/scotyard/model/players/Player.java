@@ -1,9 +1,8 @@
 package it.unibo.scotyard.model.players;
 
-import java.util.Map;
-
 import it.unibo.scotyard.model.map.MapNode;
 import it.unibo.scotyard.model.map.TransportType;
+import java.util.Map;
 
 /*
  * Player interface
@@ -31,11 +30,11 @@ public interface Player {
 
     /**
      * Given a transport type, returns the corresponding TicketType.
-     * 
+     *
      * @param transport
      * @return the corresponding TicketType to the given TransportType
      */
-    public static TicketType getTicketTypeForTransport(final TransportType transport){
+    static TicketType getTicketTypeForTransport(final TransportType transport) {
         switch (transport) {
             case TAXI:
                 return TicketType.TAXI;
@@ -71,7 +70,7 @@ public interface Player {
      * @return the name of the player (their kind : detective, etc.)
      */
     String getName();
-    
+
     /**
      * Sets the current position of the player.
      *

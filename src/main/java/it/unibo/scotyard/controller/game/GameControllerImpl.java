@@ -9,9 +9,7 @@ import it.unibo.scotyard.model.players.TicketType;
 import it.unibo.scotyard.view.game.GameView;
 import it.unibo.scotyard.view.map.MapPanel;
 import it.unibo.scotyard.view.sidebar.SidebarPanel;
-
 import java.util.Objects;
-
 import javax.swing.JPanel;
 
 public abstract class GameControllerImpl implements GameController {
@@ -88,19 +86,17 @@ public abstract class GameControllerImpl implements GameController {
     }
 
     /**
-     * Checks if there are multiple transport types to reach destination or not.
-     * Used only in DetectiveGameControllerImpl.
+     * Checks if there are multiple transport types to reach destination or not. Used only in
+     * DetectiveGameControllerImpl.
      *
      * @param newPositionId the id of the destination
      */
-    abstract public void destinationChosen(int newPositionId);
+    public abstract void destinationChosen(int newPositionId);
 
     /**
-     * Sets the selcted transport type to reach destination.
-     * Used only in DetectiveGameControllerImpl.
+     * Sets the selcted transport type to reach destination. Used only in DetectiveGameControllerImpl.
      *
      * @param transportType the type of transport selected
      */
-    abstract public void selectTransport(TransportType transportType);
-
+    public abstract void selectTransport(TransportType transportType);
 }

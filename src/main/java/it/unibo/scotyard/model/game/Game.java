@@ -105,15 +105,15 @@ public interface Game {
 
     /**
      * Return user player.
-     * 
+     *
      * @return user player
      */
     Player getUserPlayer();
 
     /**
      * Return computer player (controlled by IA).
-     *  
-     * @return computer player 
+     *
+     * @return computer player
      */
     Player getComputerPlayer();
 

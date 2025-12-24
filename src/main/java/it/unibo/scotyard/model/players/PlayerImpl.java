@@ -35,7 +35,7 @@ public abstract class PlayerImpl implements Player {
     }
 
     @Override
-    public MapNode getCurrentPosition(){
+    public MapNode getCurrentPosition() {
         return this.currentPosition;
     }
 

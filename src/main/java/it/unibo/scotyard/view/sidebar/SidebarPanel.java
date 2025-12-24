@@ -429,5 +429,4 @@ public final class SidebarPanel extends JPanel {
         doubleMoveButton.setEnabled(enabled);
         doubleMoveButton.setText(text);
     }
-
 }

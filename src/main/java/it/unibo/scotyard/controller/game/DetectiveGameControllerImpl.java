@@ -1,14 +1,13 @@
 package it.unibo.scotyard.controller.game;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import it.unibo.scotyard.controller.Controller;
 import it.unibo.scotyard.model.Pair;
 import it.unibo.scotyard.model.game.Game;
 import it.unibo.scotyard.model.map.TransportType;
 import it.unibo.scotyard.model.players.Player;
 import it.unibo.scotyard.view.game.GameView;
+import java.util.HashSet;
+import java.util.Set;
 
 public final class DetectiveGameControllerImpl extends GameControllerImpl {
 
@@ -22,7 +21,7 @@ public final class DetectiveGameControllerImpl extends GameControllerImpl {
     }
 
     @Override
-    public void initializeGame(){
+    public void initializeGame() {
         this.initializePlayersPositionsView();
         this.manageGameRound();
         this.view.getSidebar().enableEndTurnButton(false);
@@ -106,7 +105,7 @@ public final class DetectiveGameControllerImpl extends GameControllerImpl {
             this.game.nextRound();
             this.manageGameRound();
             this.view.getMapPanel().repaint();
-        } else{
+        } else {
             System.out.println("ERRORE");
         }
     }

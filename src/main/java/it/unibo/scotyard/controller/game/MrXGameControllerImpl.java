@@ -7,7 +7,6 @@ import it.unibo.scotyard.model.game.turn.TurnManagerImpl.MoveOption;
 import it.unibo.scotyard.model.map.MapData;
 import it.unibo.scotyard.model.map.TransportType;
 import it.unibo.scotyard.model.players.MisterX;
-import it.unibo.scotyard.model.players.Player;
 import it.unibo.scotyard.view.dialogs.TransportSelectionDialog;
 import it.unibo.scotyard.view.game.GameView;
 import it.unibo.scotyard.view.sidebar.SidebarPanel;
@@ -15,7 +14,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Random;
 import java.util.Set;
-
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
@@ -48,19 +46,22 @@ public final class MrXGameControllerImpl extends GameControllerImpl {
      * @param gameView the game view
      * @throws NullPointerException if any parameter is null
      */
-    public MrXGameControllerImpl(final Game game, final MapData mapData, final GameView gameView, final Controller controller) {
+    public MrXGameControllerImpl(
+            final Game game, final MapData mapData, final GameView gameView, final Controller controller) {
         super(game, gameView, controller);
         this.mapData = Objects.requireNonNull(mapData, "MapData cannot be null");
         this.doubleMoveState = DoubleMoveState.AVAILABLE;
     }
 
     @Override
-    public void initializeGame(){
+    public void initializeGame() {
         initializeMrX();
 
         setupListeners();
 
         updateUI();
+
+        super.updateSidebar(this.game.getCurrentPlayer());
     }
 
     /** Initializes Mr. X with random starting position. */
@@ -171,7 +172,7 @@ public final class MrXGameControllerImpl extends GameControllerImpl {
             }
 
             // Check victory
-            if(super.isGameOver()){
+            if (super.isGameOver()) {
                 super.loadGameOverWindow();
             }
 
@@ -184,7 +185,7 @@ public final class MrXGameControllerImpl extends GameControllerImpl {
             this.game.nextRound();
 
             // Check if game is over after AI's turn
-            if(super.isGameOver()){
+            if (super.isGameOver()) {
                 super.loadGameOverWindow();
             }
 
@@ -362,18 +363,13 @@ public final class MrXGameControllerImpl extends GameControllerImpl {
 
     // --- GameController ---
 
-    @Override
-     public void updateSidebar(Player currentPlayer){
-        updateUI();
-    }
-
     // It doesn't do anything
-    public void destinationChosen(int newPositionId){
+    public void destinationChosen(int newPositionId) {
         // TODO : Usare questo metodo (cambiando gestione turno)?
     }
 
     // It doesn't do anything
-    public void selectTransport(TransportType transportType){
+    public void selectTransport(TransportType transportType) {
         // TODO : Usare questo metodo (cambiando gestione turno)?
     }
 }
