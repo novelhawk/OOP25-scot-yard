@@ -1,7 +1,6 @@
 package it.unibo.scotyard.controller.game;
 
 import it.unibo.scotyard.controller.Controller;
-import it.unibo.scotyard.model.Pair;
 import it.unibo.scotyard.model.game.Game;
 import it.unibo.scotyard.model.game.GameMode;
 import it.unibo.scotyard.model.map.TransportType;
@@ -10,28 +9,25 @@ import it.unibo.scotyard.model.players.TicketType;
 import it.unibo.scotyard.view.game.GameView;
 import it.unibo.scotyard.view.map.MapPanel;
 import it.unibo.scotyard.view.sidebar.SidebarPanel;
-import java.util.HashSet;
-import java.util.Set;
+
+import java.util.Objects;
+
 import javax.swing.JPanel;
 
-public class GameControllerImpl implements GameController {
+public abstract class GameControllerImpl implements GameController {
 
-    private int selectedDestination;
-    private TransportType selectedTransportType;
+    protected final Game game;
+    protected final GameView view;
+    protected final Controller mainController;
 
-    private Game game;
-    private GameView view;
-
-    private Controller mainController;
-
-    public GameControllerImpl(Game gameData, GameView view, Controller mainController) {
-        this.game = gameData;
-        this.view = view;
-
-        this.mainController = mainController;
-
-        this.view.getSidebar().setEndTurnListener(e -> onEndTurn());
+    public GameControllerImpl(final Game gameData, final GameView view, final Controller controller) {
+        this.game = Objects.requireNonNull(gameData, "Game cannot be null");
+        this.view = Objects.requireNonNull(view, "GameView cannot be null");
+        this.mainController = Objects.requireNonNull(controller, "mainController cannot be null");
     }
+
+    @Override
+    public abstract void initializeGame();
 
     @Override
     public JPanel getMainPanel() {
@@ -91,80 +87,20 @@ public class GameControllerImpl implements GameController {
         this.mainController.loadMainMenu();
     }
 
-    private void updatePlayerPositionView(Player currentPlayer) {
-        switch (currentPlayer.getName()) {
-            case "Detective":
-                this.view.getMapPanel().setDetectivePosition(currentPlayer.getCurrentPositionId());
-                break;
-            case "Mister X":
-                this.view.getMapPanel().setMisterXPosition(currentPlayer.getCurrentPositionId());
-                break;
-            default:
-                int index = Integer.valueOf(currentPlayer.getName().substring(5, 6)) - 1;
-                this.view.getMapPanel().setBobbyPosition(currentPlayer.getCurrentPositionId(), index);
-        }
-        this.view.getMapPanel().repaint();
-    }
+    /**
+     * Checks if there are multiple transport types to reach destination or not.
+     * Used only in DetectiveGameControllerImpl.
+     *
+     * @param newPositionId the id of the destination
+     */
+    abstract public void destinationChosen(int newPositionId);
 
-    @Override
-    public void initializePlayersPositionsView() {
-        this.view.getMapPanel().initializeBobbies(this.game.getNumberOfPlayers());
-        for (int i = 0; i < this.game.getNumberOfPlayers(); i++) {
-            this.updatePlayerPositionView(this.game.getCurrentPlayer());
-            this.game.changeCurrentPlayer();
-        }
-    }
+    /**
+     * Sets the selcted transport type to reach destination.
+     * Used only in DetectiveGameControllerImpl.
+     *
+     * @param transportType the type of transport selected
+     */
+    abstract public void selectTransport(TransportType transportType);
 
-    @Override
-    public void manageGameRound() {
-        if (this.game.isGameOver()) {
-            this.loadGameOverWindow();
-        } else {
-            this.updateSidebar(this.game.getCurrentPlayer());
-            this.updatePlayerPositionView(this.game.getCurrentPlayer());
-            Set<Pair<Integer, TransportType>> possibleDestinations =
-                    new HashSet<>(this.mainController.getPossibleDestinations(
-                            this.game.getPositionPlayer(this.game.getCurrentPlayer())));
-            this.game.loadPossibleDestinations(possibleDestinations);
-            Set<Integer> possibleDestinationsIDs = new HashSet<>();
-            for (Pair<Integer, TransportType> pair : possibleDestinations) {
-                possibleDestinationsIDs.add(pair.getX());
-            }
-            this.view.getMapPanel().loadPossibleDestinations(possibleDestinationsIDs);
-            this.view.getMapPanel().repaint();
-        }
-    }
-
-    @Override
-    public void destinationChosen(int newPositionId) {
-        if (this.game.areMultipleTransportsAvailable(newPositionId)) {
-            System.out.println(this.game.getAvailableTransports(newPositionId));
-            this.view.loadTransportSelectionDialog(new HashSet<>(this.game.getAvailableTransports(newPositionId)));
-            this.view.getSidebar().enableEndTurnButton(false);
-        } else {
-            this.selectTransport(this.game.getAvailableTransports(newPositionId).getFirst());
-        }
-        this.selectedDestination = newPositionId;
-        this.view.getMapPanel().repaint();
-    }
-
-    @Override
-    public void onEndTurn() {
-        this.movePlayer();
-    }
-
-    @Override
-    public void selectTransport(TransportType transportType) {
-        this.selectedTransportType = transportType;
-    }
-
-    private void movePlayer() {
-        if (this.game.moveCurrentPlayer(this.selectedDestination, this.selectedTransportType)) {
-            this.view.getMapPanel().setSelectedDestination(-1);
-            this.updatePlayerPositionView(this.game.getCurrentPlayer());
-            this.game.changeCurrentPlayer();
-            this.game.nextRound();
-            this.manageGameRound();
-        }
-    }
 }

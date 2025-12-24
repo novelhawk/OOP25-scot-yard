@@ -1,7 +1,6 @@
 package it.unibo.scotyard.view.game;
 
 import it.unibo.scotyard.controller.game.GameController;
-import it.unibo.scotyard.model.game.GameMode;
 import it.unibo.scotyard.model.map.TransportType;
 import it.unibo.scotyard.view.map.MapPanel;
 import it.unibo.scotyard.view.sidebar.SidebarPanel;
@@ -35,8 +34,8 @@ public interface GameView {
     void displayRulesWindow(JPanel panel);
 
     /**
-     * Displays the game over window, which contains a label inidicating the result of user player and a button that takes the user
-     * back to the main menu.
+     * Displays the game over window, which contains a label inidicating the result of user player and a button that
+     * takes the user back to the main menu.
      *
      * @param result the strind inidicating the result (win or loss)
      */

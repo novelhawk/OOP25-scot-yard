@@ -66,6 +66,7 @@ public final class SidebarPanel extends JPanel {
     JLabel doubleMoveTicketsLabel;
     JButton endTurnButton;
     JButton loadRulesButton;
+    JButton doubleMoveButton;
 
     GameView gameView;
     GameMode currentGameMode;
@@ -119,9 +120,16 @@ public final class SidebarPanel extends JPanel {
 
         // TODO : aggiungere pannello per tracciamento posizioni e mezzi usati da Mister X
 
+        this.doubleMoveButton = createActionButton("Doppia Mossa");
+        this.add(doubleMoveButton);
+        this.add(Box.createVerticalStrut(SMALL_SPACING));
+
         this.endTurnButton = createActionButton("Fine Turno");
         this.add(endTurnButton);
         this.add(Box.createVerticalStrut(SPACING));
+
+        // Nasconde i bottony by default (da capire)
+        this.doubleMoveButton.setVisible(false);
 
         this.loadRulesButton = createLoadRulesButton(LOAD_RULES_TEXT);
         this.add(loadRulesButton);
@@ -368,7 +376,7 @@ public final class SidebarPanel extends JPanel {
      * @param listener the action listener
      */
     public void setEndTurnListener(ActionListener listener) {
-        // Deletes all listeners
+        // rimuove tutti i listener
         for (ActionListener al : endTurnButton.getActionListeners()) {
             endTurnButton.removeActionListener(al);
         }
@@ -384,7 +392,42 @@ public final class SidebarPanel extends JPanel {
         endTurnButton.setEnabled(enabled);
     }
 
-    public void enableEndTurnButton(boolean value){
+    public void enableEndTurnButton(boolean value) {
         this.endTurnButton.setEnabled(value);
     }
+
+    /**
+     * Sets the listener for the double move button.
+     *
+     * @param listener the action listener
+     */
+    public void setDoubleMoveListener(ActionListener listener) {
+        // rimuove tutti i listener
+        for (ActionListener al : doubleMoveButton.getActionListeners()) {
+            doubleMoveButton.removeActionListener(al);
+        }
+        doubleMoveButton.addActionListener(listener);
+    }
+
+    /**
+     * Shows or hides the game action buttons (for MrX mode).
+     *
+     * @param visible true to show buttons, false to hide
+     */
+    public void setActionButtonsVisible(boolean visible) {
+        endTurnButton.setVisible(visible);
+        doubleMoveButton.setVisible(visible);
+    }
+
+    /**
+     * Updates the double move button state and text.
+     *
+     * @param enabled true to enable button
+     * @param text the button text
+     */
+    public void updateDoubleMoveButton(boolean enabled, String text) {
+        doubleMoveButton.setEnabled(enabled);
+        doubleMoveButton.setText(text);
+    }
+
 }

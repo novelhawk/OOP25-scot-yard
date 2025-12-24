@@ -41,7 +41,7 @@ public class GameImpl implements Game {
         this.round = 0;
         this.playersNumber = 0;
         this.availableTransports = new ArrayList<TransportType>();
-        this.possibleDestinations = new HashSet<Pair<Integer,TransportType>>();
+        this.possibleDestinations = new HashSet<Pair<Integer, TransportType>>();
         this.initialize(gameMode, levelOfDifficulty, initialPositions);
     }
 
@@ -147,13 +147,14 @@ public class GameImpl implements Game {
             return true;
         }
         for (Player bobby : this.additionalPlayers) {
-            if (this.computerPlayer.getCurrentPositionId() == (bobby.getCurrentPositionId())
-                    && GameMode.MISTER_X.equals(this.gameMode)) {
+            if ((this.userPlayer.getCurrentPositionId() == (bobby.getCurrentPositionId())
+                    && GameMode.MISTER_X.equals(this.gameMode)) || (this.computerPlayer.getCurrentPositionId()==(bobby.getCurrentPositionId()) 
+                    && GameMode.DETECTIVE.equals(this.gameMode))) {
                 this.setGameState(GameState.PAUSE);
                 return true;
             }
         }
-        if(this.possibleDestinations.isEmpty() && this.getGameRound()>1){
+        if (this.possibleDestinations.isEmpty() && this.getGameRound() > 1) {
             return true;
         }
         return false;
@@ -162,15 +163,17 @@ public class GameImpl implements Game {
     @Override
     public String resultGame() {
         for (Player bobby : this.additionalPlayers) {
-            if (this.computerPlayer.getCurrentPositionId() == (bobby.getCurrentPositionId())
-                    && GameMode.MISTER_X.equals(this.gameMode)) {
-                return new String("Sconfitta");
+            if (this.userPlayer.getCurrentPositionId() == (bobby.getCurrentPositionId())) {
+                if(GameMode.MISTER_X.equals(this.gameMode)){
+                    return new String("Sconfitta");
+                }
             }
         }
-        if (this.userPlayer.getCurrentPositionId() == this.computerPlayer.getCurrentPositionId()) {
+        if (this.userPlayer.getCurrentPositionId() == this.computerPlayer.getCurrentPositionId() && this.gameMode.equals(GameMode.MISTER_X)) {
             return new String("Sconfitta");
+        } else{
+            return new String("Vittoria");
         }
-        return new String("Vittoria");
     }
 
     @Override
@@ -188,7 +191,7 @@ public class GameImpl implements Game {
          * - Detective can't go where other bobbies are
          * - Bobbies can't go where detective is
          */
-        for (Pair<Integer, TransportType> destination : this.possibleDestinations) {
+        for (Pair<Integer, TransportType> destination : inputPossibleDestinations) {
             int pos = destination.getX();
             if (GameMode.MISTER_X.equals(this.gameMode) && pos == this.computerPlayer.getCurrentPositionId()) {
                 this.possibleDestinations.remove(destination);
@@ -202,7 +205,7 @@ public class GameImpl implements Game {
                 }
             }
             // Removal of destinations for which current player has 0 tickets
-            if(this.getCurrentPlayer().getNumberTickets(this.getTicketType(destination.getY()))==0){
+            if (this.getCurrentPlayer().getNumberTickets(Player.getTicketTypeForTransport(destination.getY())) == 0) {
                 this.possibleDestinations.remove(destination);
             }
         }
@@ -288,25 +291,11 @@ public class GameImpl implements Game {
         player.setPosition(newPositionId);
     }
 
-    private TicketType getTicketType(TransportType transport) {
-        switch (transport) {
-            case TAXI:
-                return TicketType.TAXI;
-            case BUS:
-                return TicketType.BUS;
-            case UNDERGROUND:
-                return TicketType.UNDERGROUND;
-            case FERRY:
-                return TicketType.BLACK;
-        }
-        return null; // TODEFINE
-    }
-
     @Override
     public boolean moveCurrentPlayer(int destinationId, TransportType transport) {
         if (this.possibleDestinations.contains(new Pair<>(destinationId, transport))) {
             this.setPositionPlayer(this.currentPlayer, destinationId);
-            this.currentPlayer.useTicket(this.getTicketType(transport));
+            this.currentPlayer.useTicket(Player.getTicketTypeForTransport(transport));
             return true;
         } else {
             return false;
@@ -357,6 +346,16 @@ public class GameImpl implements Game {
     @Override
     public int getPositionPlayer(Player player) {
         return player.getCurrentPositionId();
+    }
+
+    @Override
+    public Player getUserPlayer() {
+        return this.userPlayer;
+    }
+
+    @Override
+    public Player getComputerPlayer() {
+        return this.computerPlayer;
     }
 
     @Override

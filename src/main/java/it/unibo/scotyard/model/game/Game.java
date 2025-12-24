@@ -103,6 +103,20 @@ public interface Game {
      */
     int getPositionPlayer(Player player);
 
+    /**
+     * Return user player.
+     * 
+     * @return user player
+     */
+    Player getUserPlayer();
+
+    /**
+     * Return computer player (controlled by IA).
+     *  
+     * @return computer player 
+     */
+    Player getComputerPlayer();
+
     /** Return the number of players */
     int getNumberOfPlayers();
 

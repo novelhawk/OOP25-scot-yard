@@ -10,6 +10,7 @@ public class Detective extends PlayerImpl {
     private static final int NUMBER_TIKCETS_UNDERGROUND = 4;
 
     public Detective() {
+        super();
         this.name = "Detective";
     }
 

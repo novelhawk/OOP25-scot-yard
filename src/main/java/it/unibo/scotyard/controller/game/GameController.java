@@ -10,6 +10,11 @@ import javax.swing.JPanel;
 
 public interface GameController {
 
+    /**
+     * Initializes game.
+     */
+    void initializeGame();
+
     /** @return the main game panel */
     JPanel getMainPanel();
 
@@ -58,29 +63,19 @@ public interface GameController {
     /** Load the main menu. */
     void loadMainMenu();
 
-    /** Initializes the positions of player in GameView (in MapPanel). */
-    void initializePlayersPositionsView();
-
-    /**
-     * Manages a round of a game. If the game is over, it calls a method of the GameView, which opens a the game over
-     * window, which takes back the user to the main menu.
-     */
-    void manageGameRound();
-
     /**
      * Checks if there are multiple transport types to reach destination or not.
+     * Used only in DetectiveGameControllerImpl.
      *
      * @param newPositionId the id of the destination
      */
-    void destinationChosen(int newPositionId);
-
-    /** Action listener for the EndTurn button. It moves the player. */
-    void onEndTurn();
+    public void destinationChosen(int newPositionId);
 
     /**
      * Sets the selcted transport type to reach destination.
+     * Used only in DetectiveGameControllerImpl.
      *
      * @param transportType the type of transport selected
      */
-    void selectTransport(TransportType transportType);
+    public void selectTransport(TransportType transportType);
 }

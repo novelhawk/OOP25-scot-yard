@@ -6,6 +6,7 @@ import java.util.Map;
 public class Bobby extends PlayerImpl {
 
     public Bobby() {
+        super();
         this.name = "Bobby";
     }
 

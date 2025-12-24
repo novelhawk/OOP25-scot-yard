@@ -1,8 +1,9 @@
 package it.unibo.scotyard.controller;
 
 import it.unibo.scotyard.commons.engine.Size;
+import it.unibo.scotyard.controller.game.DetectiveGameControllerImpl;
 import it.unibo.scotyard.controller.game.GameController;
-import it.unibo.scotyard.controller.game.GameControllerImpl;
+import it.unibo.scotyard.controller.game.MrXGameControllerImpl;
 import it.unibo.scotyard.controller.gamelauncher.GameLauncherController;
 import it.unibo.scotyard.controller.gamelauncher.GameLauncherControllerImpl;
 import it.unibo.scotyard.controller.menu.MainMenuController;
@@ -11,6 +12,7 @@ import it.unibo.scotyard.controller.menu.NewGameMenuController;
 import it.unibo.scotyard.controller.menu.NewGameMenuControllerImpl;
 import it.unibo.scotyard.model.Model;
 import it.unibo.scotyard.model.Pair;
+import it.unibo.scotyard.model.game.GameMode;
 import it.unibo.scotyard.model.map.TransportType;
 import it.unibo.scotyard.view.ViewImpl;
 import it.unibo.scotyard.view.game.GameView;
@@ -74,14 +76,21 @@ public final class ControllerImpl implements Controller {
         // Create the GameView and the GameController
         final GameView gameView =
                 this.view.createGameView(this.model.getMapData().info());
-        final GameController gameController = new GameControllerImpl(this.model.getGameData(), gameView, this);
+
+        final GameController gameController;
+        if (this.model.getGameData().getGameMode() == GameMode.MISTER_X) {
+            // Modalità Mister X
+            gameController = new MrXGameControllerImpl(this.model.getGameData(), this.model.getMapData(), gameView, this);
+        } else {
+            // Modalità Detective
+            gameController = new DetectiveGameControllerImpl(this.model.getGameData(), gameView, this);
+
+        }
+        gameController.initializeGame();
         gameView.setObserver(gameController);
 
         // Load the game panel
         this.loadGamePanel(gameController);
-
-        gameController.initializePlayersPositionsView();
-        gameController.manageGameRound();
     }
 
     @Override

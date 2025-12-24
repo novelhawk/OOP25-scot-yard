@@ -85,12 +85,15 @@ public final class MapPanel extends JPanel {
     private int dragStartPanX;
     private int dragStartPanY;
 
-    // Game State (Detective mode)
+    // Game Status
     private int misterXPosition;
     private int detectivePosition;
     private List<Integer> bobbiesPositions;
     private Set<Integer> possibleDestinations;
     private int selectedDestination;
+    private java.util.Set<it.unibo.scotyard.model.game.turn.TurnManagerImpl.MoveOption> validMoves =
+            new java.util.HashSet<>();
+    private java.util.function.Consumer<Integer> nodeClickListener = null;
 
     GameView gameView;
 
@@ -531,6 +534,15 @@ public final class MapPanel extends JPanel {
     }
 
     /**
+     * Sets the valid moves for highlighting.
+     *
+     * @param moves the set of valid move options
+     */
+    public void setValidMoves(final java.util.Set<it.unibo.scotyard.model.game.turn.TurnManagerImpl.MoveOption> moves) {
+        this.validMoves = moves != null ? new java.util.HashSet<>(moves) : new java.util.HashSet<>();
+    }
+
+    /**
      * Handles node click detection. Finds which node (if any) was clicked based on mouse coordinates.
      *
      * @param mouseX the mouse X coordinate
@@ -565,7 +577,7 @@ public final class MapPanel extends JPanel {
     /** Draw the player given as input on the map. */
     private void drawPlayer(Graphics2D g2d, String playerString, int position, int scaledRadius) {
         if (position > 0) {
-            if(!this.possibleDestinations.contains(position)){
+            if (!this.possibleDestinations.contains(position)) {
                 final Point2D pos = scaledNodePositions.get(position);
                 if (pos != null) {
                     final int x = (int) pos.getX();
@@ -633,17 +645,26 @@ public final class MapPanel extends JPanel {
         }
     }
 
+    /**
+     * Sets the node click listener for interactive gameplay.
+     *
+     * @param listener the listener to call when a node is clicked (null to disable)
+     */
+    public void setNodeClickListener(final java.util.function.Consumer<Integer> listener) {
+        this.nodeClickListener = listener;
+    }
+
     private void drawGameStatus(final Graphics2D g2d) {
         final double nodeZoom = 1.0 + (zoomLevel - 1.0) * NODE_SCALE_FACTOR;
         final int scaledRadius = (int) (NODE_RADIUS * nodeZoom);
 
-        this.drawDestinations(g2d, scaledRadius, nodeZoom);
         this.drawPlayer(g2d, "D", this.detectivePosition, scaledRadius);
         this.drawPlayer(g2d, "X", this.misterXPosition, scaledRadius);
         for (int i = 0; i < this.bobbiesPositions.size(); i++) {
             int bobbyIndex = i + 1;
             this.drawPlayer(g2d, "B" + bobbyIndex, this.bobbiesPositions.get(i), scaledRadius);
         }
+        this.drawDestinations(g2d, scaledRadius, nodeZoom);
         this.drawSelectedDestination(g2d, scaledRadius, nodeZoom);
     }
 }

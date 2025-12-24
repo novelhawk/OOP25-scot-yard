@@ -1,5 +1,7 @@
 package it.unibo.scotyard.model.players;
 
+import it.unibo.scotyard.model.game.turn.TurnManager;
+import it.unibo.scotyard.model.map.MapNode;
 import java.util.Map;
 
 public abstract class PlayerImpl implements Player {
@@ -8,8 +10,12 @@ public abstract class PlayerImpl implements Player {
     protected static final int INFINITE = -1;
 
     protected int currentPositionId;
+    protected MapNode currentPosition;
     protected Map<TicketType, Integer> tickets;
     protected String name;
+
+    // For Mr.X game mode turn managament
+    protected TurnManager<?> turnManager;
 
     public PlayerImpl() {
         this.tickets = this.setInitialTickets();
@@ -26,6 +32,11 @@ public abstract class PlayerImpl implements Player {
     @Override
     public int getCurrentPositionId() {
         return this.currentPositionId;
+    }
+
+    @Override
+    public MapNode getCurrentPosition(){
+        return this.currentPosition;
     }
 
     @Override
@@ -52,5 +63,22 @@ public abstract class PlayerImpl implements Player {
     @Override
     public String getName() {
         return this.name;
+    }
+
+    @Override
+    public void setCurrentPosition(final int nodeId) {
+        // Create a MapNode with the given ID
+        this.currentPosition = new MapNode(nodeId, 0, 0);
+    }
+
+    /**
+     * Ensures turn manager has been initialized.
+     *
+     * @throws IllegalStateException if not initialized
+     */
+    protected void ensureInitialized() {
+        if (turnManager == null) {
+            throw new IllegalStateException("Player not initialized. Call initialize(mapData) first.");
+        }
     }
 }
