@@ -1,6 +1,6 @@
 package it.unibo.scotyard.model.players;
 
-import java.util.HashMap;
+import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 
@@ -12,7 +12,7 @@ public class Bobby extends PlayerImpl {
 
     @Override
     public Map<TicketType, Integer> setInitialTickets() {
-        Map<TicketType, Integer> ticketsMap = new HashMap<>();
+        final Map<TicketType, Integer> ticketsMap = new EnumMap<>(TicketType.class);
         ticketsMap.put(TicketType.TAXI, INFINITE);
         ticketsMap.put(TicketType.BUS, INFINITE);
         ticketsMap.put(TicketType.UNDERGROUND, INFINITE);
@@ -22,7 +22,7 @@ public class Bobby extends PlayerImpl {
     }
 
     @Override
-    public void setInitialPosition(List<Integer> initialPositions) {
+    public void setInitialPosition(final List<Integer> initialPositions) {
         this.position = this.generateRandomInitialPosition(initialPositions);
     }
 }

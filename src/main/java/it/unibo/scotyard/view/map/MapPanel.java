@@ -59,14 +59,14 @@ public final class MapPanel extends JPanel {
     private double currentScaleX = 1.0;
     private double currentScaleY = 1.0;
 
-    private int baseOffsetX = 0;
-    private int baseOffsetY = 0;
-    private int panOffsetX = 0;
-    private int panOffsetY = 0;
+    private int baseOffsetX;
+    private int baseOffsetY;
+    private int panOffsetX;
+    private int panOffsetY;
 
-    private int scaledBackgroundWidth = 0;
-    private int scaledBackgroundHeight = 0;
-    private boolean scaleCalculated = false;
+    private int scaledBackgroundWidth;
+    private int scaledBackgroundHeight;
+    private boolean scaleCalculated;
 
     private final Map<NodeId, Point2D> scaledNodePositions = new HashMap<>();
 
@@ -183,7 +183,7 @@ public final class MapPanel extends JPanel {
         zoomLevel = Math.min(MAX_ZOOM, zoomLevel + ZOOM_STEP);
 
         if (Math.abs(oldZoom - zoomLevel) > 0.001) {
-            Point zoomCenter;
+            final Point zoomCenter;
             if (centerPoint != null) {
                 zoomCenter = centerPoint;
             } else {

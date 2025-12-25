@@ -12,7 +12,7 @@ public class RoundCommandService {
 
     public void handleReset(ResetCommand command) {}
 
-    public void register(CommandHandlerStore store) {
+    public void register(final CommandHandlerStore store) {
         store.register(MoveCommand.class, this::handleMove);
         store.register(PassCommand.class, this::handlePass);
         store.register(ResetCommand.class, this::handleReset);

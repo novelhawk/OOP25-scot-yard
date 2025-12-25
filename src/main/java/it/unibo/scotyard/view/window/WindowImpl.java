@@ -10,7 +10,6 @@ import javax.swing.JPanel;
 public final class WindowImpl extends JFrame implements Window {
 
     private static final long serialVersionUID = 1L;
-    private static final String WINDOW_TITLE = "Scotland Yard";
     private static final double ASPECT_RATIO = 2570.0 / 1926.0;
     private static final int MIN_WIDTH = 800;
 
@@ -23,7 +22,7 @@ public final class WindowImpl extends JFrame implements Window {
      * @param resolution the window size
      * @throws NullPointerException if resolution is null
      */
-    public WindowImpl(final Size resolution, final JPanel containerPanel, String windowTitle) {
+    public WindowImpl(final Size resolution, final JPanel containerPanel, final String windowTitle) {
         super(windowTitle);
         Objects.requireNonNull(resolution, "Resolution cannot be null");
 
@@ -50,14 +49,14 @@ public final class WindowImpl extends JFrame implements Window {
         setMinimumSize(new Dimension(MIN_WIDTH, (int) (MIN_WIDTH / ASPECT_RATIO)));
     }
 
-    private void setResoultion(Size resolution) {
+    private void setResoultion(final Size resolution) {
         this.windowWidth = resolution.getWidth();
         this.windowHeight = resolution.getHeight();
     }
 
     @Override
-    public void setsMainFeatures(Size resolution) {
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    public void setsMainFeatures(final Size resolution) {
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.setResoultion(resolution);
         setSize(this.windowWidth, this.windowHeight);
         setLocationByPlatform(true);
@@ -69,12 +68,7 @@ public final class WindowImpl extends JFrame implements Window {
     }
 
     @Override
-    public boolean isVisible() {
-        return super.isVisible();
-    }
-
-    @Override
     public void setHideOnClose() {
-        setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+        setDefaultCloseOperation(HIDE_ON_CLOSE);
     }
 }

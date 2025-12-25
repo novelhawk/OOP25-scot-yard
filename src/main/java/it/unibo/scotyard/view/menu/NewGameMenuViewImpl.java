@@ -144,7 +144,7 @@ public final class NewGameMenuViewImpl implements NewGameMenuView {
     }
 
     // Seleceted game mode String
-    private String getSelectedGameMode(JComboBox<?> comboBox) {
+    private String getSelectedGameMode(final JComboBox<?> comboBox) {
         return comboBox.getSelectedItem().toString();
     }
 
@@ -167,18 +167,20 @@ public final class NewGameMenuViewImpl implements NewGameMenuView {
     }
 
     // Seleceted difficulty level String
-    private String getSelectedDifficultyLevel(JComboBox<?> comboBox) {
+    private String getSelectedDifficultyLevel(final JComboBox<?> comboBox) {
         return comboBox.getSelectedItem().toString();
     }
 
     // Player name String
-    private String getPlayerName(JTextField textField) {
+    private String getPlayerName(final JTextField textField) {
         return textField.getText();
     }
 
     // Start game button
     private JButton createStartGameButton(
-            JComboBox<?> gameModeComboBox, JComboBox<?> difficultyLevelComboBox, JTextField playerTextField) {
+            final JComboBox<?> gameModeComboBox,
+            final JComboBox<?> difficultyLevelComboBox,
+            final JTextField playerTextField) {
         final JButton button = new JButton(START_BUTTON_TEXT);
         button.setFont(BUTTON_FONT);
         button.setForeground(BACKGROUND_COLOR);

@@ -32,7 +32,7 @@ public final class NewGameMenuControllerImpl implements NewGameMenuController {
     }
 
     @Override
-    public void play(String gameMode, String difficultyLevel, String playerName) {
+    public void play(final String gameMode, final String difficultyLevel, final String playerName) {
         this.controller.startGame(gameMode, difficultyLevel, playerName);
     }
 

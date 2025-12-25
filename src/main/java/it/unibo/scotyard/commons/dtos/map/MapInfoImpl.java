@@ -1,5 +1,6 @@
 package it.unibo.scotyard.commons.dtos.map;
 
+import it.unibo.scotyard.model.map.MapConnection;
 import it.unibo.scotyard.model.map.MapData;
 import it.unibo.scotyard.model.map.MapNode;
 import it.unibo.scotyard.model.map.TransportType;
@@ -43,7 +44,7 @@ public final class MapInfoImpl implements MapInfo {
     private Node createNodeInfo(final MapNode node) {
         final Set<TransportType> transports = this.mapData.getConnections().stream()
                 .filter(c -> c.getFrom() == node.getId() || c.getTo() == node.getId())
-                .map(c -> c.getTransport())
+                .map(MapConnection::getTransport)
                 .collect(Collectors.toSet());
 
         return new NodeImpl(node.getId(), node.getX(), node.getY(), transports);

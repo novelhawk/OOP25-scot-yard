@@ -82,7 +82,7 @@ public final class GameLauncherViewImpl extends JFrame implements GameLauncherVi
 
     // Configure window properties
     private void setupWindow() {
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
         setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
         setResizable(false);
         setLocationRelativeTo(null);

@@ -33,12 +33,12 @@ public abstract class PlayerImpl implements Player {
     }
 
     @Override
-    public int getNumberTickets(TicketType ticketType) {
+    public int getNumberTickets(final TicketType ticketType) {
         return this.tickets.get(ticketType);
     }
 
     @Override
-    public boolean useTicket(TicketType ticket) {
+    public boolean useTicket(final TicketType ticket) {
         if (this.tickets.containsKey(ticket) && this.tickets.get(ticket) > NONE) {
             if (this.tickets.get(ticket) != INFINITE) {
                 this.tickets.put(ticket, this.tickets.get(ticket) - 1);

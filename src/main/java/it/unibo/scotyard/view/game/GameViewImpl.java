@@ -15,9 +15,9 @@ public class GameViewImpl implements GameView {
     private static final int SMALL_WINDOW_HEIGHT = 270;
     private static final String RULES_WINDOW_TITLE = "Regole";
 
-    private MapPanel mapPanel;
-    private SidebarPanel sidebar;
-    private JPanel mainPanel;
+    private final MapPanel mapPanel;
+    private final SidebarPanel sidebar;
+    private final JPanel mainPanel;
 
     public GameViewImpl(final MapInfo mapInfo) {
         this.mapPanel = new MapPanel(mapInfo);
@@ -44,9 +44,9 @@ public class GameViewImpl implements GameView {
     }
 
     @Override
-    public void displayRulesWindow(JPanel panel) {
+    public void displayRulesWindow(final JPanel panel) {
         final Size smallSize = Size.of(SMALL_WINDOW_WIDTH, SMALL_WINDOW_HEIGHT);
-        Window rulesWindow = new WindowImpl(smallSize, panel, RULES_WINDOW_TITLE);
+        final Window rulesWindow = new WindowImpl(smallSize, panel, RULES_WINDOW_TITLE);
         rulesWindow.setsMainFeatures(smallSize);
         rulesWindow.setHideOnClose();
         rulesWindow.display();

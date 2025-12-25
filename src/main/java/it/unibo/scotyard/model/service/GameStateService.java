@@ -7,13 +7,13 @@ import it.unibo.scotyard.model.handlers.CommandHandlerStore;
 public class GameStateService {
     private final Model model;
 
-    public GameStateService(Model model) {
+    public GameStateService(final Model model) {
         this.model = model;
     }
 
     public void handleInitialize(InitializeGameCommand command) {
-        var initialPositions = model.getMapData().getInitialPositions();
-        var playerPositions = model.getGameState()
+        final var initialPositions = model.getMapData().getInitialPositions();
+        final var playerPositions = model.getGameState()
                 .getSeededRandom()
                 .ints(0, initialPositions.size())
                 .distinct()
@@ -24,7 +24,7 @@ public class GameStateService {
         // TODO: Create GameState instance here, based on number of players
     }
 
-    public void register(CommandHandlerStore store) {
+    public void register(final CommandHandlerStore store) {
         store.register(InitializeGameCommand.class, this::handleInitialize);
     }
 }

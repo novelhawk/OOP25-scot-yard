@@ -10,10 +10,10 @@ import javax.swing.JPanel;
 
 public class GameControllerImpl implements GameController {
 
-    private GameState gameState;
-    private GameView view;
+    private final GameState gameState;
+    private final GameView view;
 
-    public GameControllerImpl(GameState gameState, GameView view) {
+    public GameControllerImpl(final GameState gameState, final GameView view) {
         this.gameState = gameState;
         this.view = view;
     }
@@ -44,13 +44,13 @@ public class GameControllerImpl implements GameController {
     }
 
     @Override
-    public int getNumberTicketsUserPlayer(TicketType ticketType) {
+    public int getNumberTicketsUserPlayer(final TicketType ticketType) {
         return this.gameState.getNumberTicketsUserPlayer(ticketType);
     }
 
     @Override
     public void updateSidebar() {
-        SidebarPanel sidebar = this.getSidebarPanel();
+        final SidebarPanel sidebar = this.getSidebarPanel();
         sidebar.setGameModeLabel(this.getGameMode());
         sidebar.updateRoundLabel(this.getNumberRound());
         sidebar.updateTaxiTicketsLabel(this.getNumberTicketsUserPlayer(TicketType.TAXI));

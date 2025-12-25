@@ -1,6 +1,6 @@
 package it.unibo.scotyard.model.players;
 
-import java.util.HashMap;
+import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 
@@ -16,7 +16,7 @@ public class MisterX extends PlayerImpl {
 
     @Override
     public Map<TicketType, Integer> setInitialTickets() {
-        Map<TicketType, Integer> ticketsMap = new HashMap<>();
+        final Map<TicketType, Integer> ticketsMap = new EnumMap<>(TicketType.class);
         ticketsMap.put(TicketType.BLACK, NUMBER_TICKETS_BLACK);
         ticketsMap.put(TicketType.DOUBLE_MOVE, NUMBER_TICKETS_DOUBLE_MOVE);
         ticketsMap.put(TicketType.TAXI, INFINITE);

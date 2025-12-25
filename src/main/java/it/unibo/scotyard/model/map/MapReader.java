@@ -62,13 +62,13 @@ public class MapReader {
     }
 
     private MapData parseMapData(final Reader reader) throws MapLoadException {
+        final JsonObject jsonObject = gson.fromJson(reader, JsonObject.class);
+
+        if (jsonObject == null) {
+            throw new MapLoadException("Invalid JSON: root object is null");
+        }
+
         try {
-            final JsonObject jsonObject = gson.fromJson(reader, JsonObject.class);
-
-            if (jsonObject == null) {
-                throw new MapLoadException("Invalid JSON: root object is null");
-            }
-
             final String name = jsonObject.get("name").getAsString();
             final List<MapNode> nodes = parseNodes(jsonObject.getAsJsonArray("nodes"));
             final List<MapConnection> connections = parseConnections(jsonObject);

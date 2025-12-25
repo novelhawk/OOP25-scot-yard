@@ -17,11 +17,11 @@ public class GameStateImpl implements GameState {
     private GameDifficulty gameDifficulty;
     private Player userPlayer;
     private Player computerPlayer;
-    private List<Player> additionalPlayers;
+    private final List<Player> additionalPlayers;
 
     private int round;
 
-    public GameStateImpl(String gameMode, String levelOfDifficulty) {
+    public GameStateImpl(final String gameMode, final String levelOfDifficulty) {
         // TODO: seed
         this.random = new Random(0);
         this.additionalPlayers = new ArrayList<>();
@@ -30,7 +30,7 @@ public class GameStateImpl implements GameState {
     }
 
     @Override
-    public void initialize(String gameMode, String levelDifficulty) {
+    public void initialize(final String gameMode, final String levelDifficulty) {
         this.gameMode = setGameMode(gameMode);
         this.gameDifficulty = setGameDifficulty(levelDifficulty);
         this.setPlayers();
@@ -43,7 +43,7 @@ public class GameStateImpl implements GameState {
         return this.random;
     }
 
-    private GameMode setGameMode(String inputGameMode) {
+    private GameMode setGameMode(final String inputGameMode) {
         switch (inputGameMode) {
             case "Detective":
                 return GameMode.DETECTIVE;
@@ -54,7 +54,7 @@ public class GameStateImpl implements GameState {
         }
     }
 
-    private GameDifficulty setGameDifficulty(String inputGameDifficulty) {
+    private GameDifficulty setGameDifficulty(final String inputGameDifficulty) {
         switch (inputGameDifficulty) {
             case "Facile":
                 return GameDifficulty.EASY;
@@ -68,11 +68,11 @@ public class GameStateImpl implements GameState {
     }
 
     private void setPlayers() {
-        if (GameMode.DETECTIVE.equals((this.gameMode))) {
+        if (this.gameMode == GameMode.DETECTIVE) {
             this.userPlayer = new Detective();
             this.computerPlayer = new MisterX();
         }
-        if (GameMode.MISTER_X.equals((this.gameMode))) {
+        if (this.gameMode == GameMode.MISTER_X) {
             this.userPlayer = new MisterX();
             this.computerPlayer = new Detective();
         }
@@ -101,11 +101,11 @@ public class GameStateImpl implements GameState {
     }
 
     @Override
-    public int getNumberTicketsUserPlayer(TicketType ticketType) {
+    public int getNumberTicketsUserPlayer(final TicketType ticketType) {
         return this.getNumberTickets(this.userPlayer, ticketType);
     }
 
-    private int getNumberTickets(Player player, TicketType ticketType) {
+    private int getNumberTickets(final Player player, final TicketType ticketType) {
         return player.getNumberTickets(ticketType);
     }
 
@@ -120,7 +120,7 @@ public class GameStateImpl implements GameState {
     }
 
     @Override
-    public void setGameStatus(GameStatus state) {
+    public void setGameStatus(final GameStatus state) {
         this.gameStatus = state;
     }
 }

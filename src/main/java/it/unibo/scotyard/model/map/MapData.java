@@ -98,7 +98,7 @@ public final class MapData {
      * @return an Optional containing the node if found, empty otherwise
      */
     public Optional<MapNode> getNodeById(final NodeId nodeId) {
-        return nodes.stream().filter(node -> node.getId() == nodeId).findFirst();
+        return nodes.stream().filter(node -> node.getId().equals(nodeId)).findFirst();
     }
 
     /**
@@ -108,7 +108,9 @@ public final class MapData {
      * @return a list of connections from this node
      */
     public List<MapConnection> getConnectionsFrom(final NodeId nodeId) {
-        return connections.stream().filter(conn -> conn.getFrom() == nodeId).collect(Collectors.toList());
+        return connections.stream()
+                .filter(conn -> conn.getFrom().equals(nodeId))
+                .collect(Collectors.toList());
     }
 
     /**
@@ -120,7 +122,7 @@ public final class MapData {
      */
     public List<MapConnection> getConnectionsFrom(final NodeId nodeId, final TransportType transport) {
         return connections.stream()
-                .filter(conn -> conn.getFrom() == nodeId && conn.supportsTransport(transport))
+                .filter(conn -> conn.getFrom().equals(nodeId) && conn.supportsTransport(transport))
                 .collect(Collectors.toList());
     }
 
@@ -132,7 +134,7 @@ public final class MapData {
      */
     public Set<NodeId> getNeighbors(final NodeId nodeId) {
         return connections.stream()
-                .filter(conn -> conn.getFrom() == nodeId)
+                .filter(conn -> conn.getFrom().equals(nodeId))
                 .map(MapConnection::getTo)
                 .collect(Collectors.toSet());
     }

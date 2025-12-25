@@ -23,7 +23,7 @@ public final class ModelImpl implements Model {
     }
 
     @Override
-    public void initialize(String gameMode, String levelDifficulty) {
+    public void initialize(final String gameMode, final String levelDifficulty) {
         try {
             final MapReader mapReader = new MapReader();
             this.mapData = mapReader.loadDefaultMap();

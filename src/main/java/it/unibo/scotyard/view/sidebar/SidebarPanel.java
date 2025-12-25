@@ -4,7 +4,6 @@ import it.unibo.scotyard.model.game.GameMode;
 import it.unibo.scotyard.view.game.GameView;
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -35,10 +34,11 @@ public final class SidebarPanel extends JPanel {
     private static final Color DOUBLE_MOVE_COLOR = new Color(255, 255, 255); // white
 
     // Typography
-    private static final Font TITLE_FONT = new Font("Arial", Font.BOLD, 24);
-    private static final Font SUBTITLE_FONT = new Font("Arial", Font.BOLD, 18);
-    private static final Font TEXT_FONT = new Font("Arial", Font.PLAIN, 14);
-    private static final Font BUTTON_FONT = new Font("Arial", Font.BOLD, 14);
+    private static final String BASE_FONT_FAMILY = "Arial";
+    private static final Font TITLE_FONT = new Font(BASE_FONT_FAMILY, Font.BOLD, 24);
+    private static final Font SUBTITLE_FONT = new Font(BASE_FONT_FAMILY, Font.BOLD, 18);
+    private static final Font TEXT_FONT = new Font(BASE_FONT_FAMILY, Font.PLAIN, 14);
+    private static final Font BUTTON_FONT = new Font(BASE_FONT_FAMILY, Font.BOLD, 14);
 
     // Layout spacing
     private static final int SPACING = 10;
@@ -67,7 +67,7 @@ public final class SidebarPanel extends JPanel {
     GameMode currentGameMode;
 
     /** Creates a sidebar panel. */
-    public SidebarPanel(GameView gameView) {
+    public SidebarPanel(final GameView gameView) {
         setupSidebar();
         buildContent();
         this.gameView = gameView;
@@ -121,8 +121,8 @@ public final class SidebarPanel extends JPanel {
         final JLabel label = new JLabel("Player");
         label.setFont(TITLE_FONT);
         label.setForeground(ACCENT_COLOR);
-        label.setAlignmentY(Component.TOP_ALIGNMENT);
-        label.setAlignmentX(Component.CENTER_ALIGNMENT);
+        label.setAlignmentY(TOP_ALIGNMENT);
+        label.setAlignmentX(CENTER_ALIGNMENT);
         return label;
     }
 
@@ -130,8 +130,8 @@ public final class SidebarPanel extends JPanel {
         final JLabel label = new JLabel("Round : ");
         label.setFont(SUBTITLE_FONT);
         label.setForeground(ACCENT_COLOR);
-        label.setAlignmentY(Component.TOP_ALIGNMENT);
-        label.setAlignmentX(Component.CENTER_ALIGNMENT);
+        label.setAlignmentY(TOP_ALIGNMENT);
+        label.setAlignmentX(CENTER_ALIGNMENT);
         return label;
     }
 
@@ -139,12 +139,12 @@ public final class SidebarPanel extends JPanel {
         final JLabel label = new JLabel(INVENTORY_TEXT);
         label.setFont(SUBTITLE_FONT);
         label.setForeground(ACCENT_COLOR);
-        label.setAlignmentY(Component.TOP_ALIGNMENT);
-        label.setAlignmentX(Component.CENTER_ALIGNMENT);
+        label.setAlignmentY(TOP_ALIGNMENT);
+        label.setAlignmentX(CENTER_ALIGNMENT);
         return label;
     }
 
-    private JLabel createTicketLabel(String text) {
+    private JLabel createTicketLabel(final String text) {
         final JLabel label = new JLabel(text);
         label.setFont(TEXT_FONT);
         switch (text) {
@@ -166,8 +166,8 @@ public final class SidebarPanel extends JPanel {
             default:
                 label.setForeground(ACCENT_COLOR);
         }
-        label.setAlignmentY(Component.TOP_ALIGNMENT);
-        label.setAlignmentX(Component.CENTER_ALIGNMENT);
+        label.setAlignmentY(TOP_ALIGNMENT);
+        label.setAlignmentX(CENTER_ALIGNMENT);
         return label;
     }
 
@@ -180,9 +180,9 @@ public final class SidebarPanel extends JPanel {
         final JPanel panel = new JPanel(new BorderLayout());
         panel.setBorder(BorderFactory.createEmptyBorder(PADDING, PADDING, PADDING, PADDING));
         panel.setBackground(BACKGROUND_COLOR);
-        JTextArea textArea = new JTextArea();
+        final JTextArea textArea = new JTextArea();
         textArea.setFont(TEXT_FONT);
-        if (GameMode.DETECTIVE.equals(this.currentGameMode)) {
+        if (this.currentGameMode == GameMode.DETECTIVE) {
             textArea.append(
                     "Nel gioco sono presenti : 1 detective, 1 fuggitivo (Mister X) e 2 o 3 bobby (aiutanti del detective).\n"
                             + "L'obiettivo del detective è catturare Mister X il prima possibile. Il gioco si compone di 23 round.\n"
@@ -197,7 +197,7 @@ public final class SidebarPanel extends JPanel {
                             + "fine dell'ultimo round, oppure se il detective non può più muoversi (in un qualsiasi turno) a causa \n"
                             + "dell'esaurimento dei suoi biglietti.");
         }
-        if (GameMode.MISTER_X.equals(this.currentGameMode)) {
+        if (this.currentGameMode == GameMode.MISTER_X) {
             textArea.setText(
                     "Nel gioco sono presenti : 1 detective, 1 fuggitivo (Mister X) e 2 o 3 bobby (aiutanti del detective).\n"
                             + "L'obiettivo di Mister X è non farsi catturare dal detective e dai bobby. Il gioco si compone di 23 round.\n"
@@ -218,13 +218,13 @@ public final class SidebarPanel extends JPanel {
         return panel;
     }
 
-    private JButton createLoadRulesButton(String text) {
+    private JButton createLoadRulesButton(final String text) {
         final JButton button = new JButton(text);
         button.setFont(BUTTON_FONT);
         button.setBackground(ACCENT_COLOR);
         button.setForeground(BACKGROUND_COLOR);
-        button.setAlignmentY(Component.BOTTOM_ALIGNMENT);
-        button.setAlignmentX(Component.CENTER_ALIGNMENT);
+        button.setAlignmentY(BOTTOM_ALIGNMENT);
+        button.setAlignmentX(CENTER_ALIGNMENT);
         button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -239,14 +239,12 @@ public final class SidebarPanel extends JPanel {
      *
      * @param gameMode the game mode chosen by the user
      */
-    public void setGameModeLabel(GameMode gameMode) {
+    public void setGameModeLabel(final GameMode gameMode) {
         this.currentGameMode = gameMode;
-        if (GameMode.DETECTIVE.equals(this.currentGameMode)) {
+        if (this.currentGameMode == GameMode.DETECTIVE) {
             this.currentGameModeLabel.setText("Detective");
-        } else {
-            if (GameMode.MISTER_X.equals(this.currentGameMode)) {
-                this.currentGameModeLabel.setText("Mister X");
-            }
+        } else if (this.currentGameMode == GameMode.MISTER_X) {
+            this.currentGameModeLabel.setText("Mister X");
         }
     }
 
@@ -256,7 +254,7 @@ public final class SidebarPanel extends JPanel {
      *
      * @param roundNumber the current round number
      */
-    public void updateRoundLabel(int roundNumber) {
+    public void updateRoundLabel(final int roundNumber) {
         this.roundLabel.setText("Round " + Integer.toString(roundNumber));
     }
 
@@ -266,12 +264,8 @@ public final class SidebarPanel extends JPanel {
      *
      * @param tickets the number of tickets
      */
-    public void updateTaxiTicketsLabel(int tickets) {
-        if (tickets == -1) {
-            this.taxiTicketsLabel.setText(TAXI_TICKETS_TEXT + " : infiniti");
-        } else {
-            this.taxiTicketsLabel.setText(TAXI_TICKETS_TEXT + " : " + Integer.toString(tickets));
-        }
+    public void updateTaxiTicketsLabel(final int tickets) {
+        this.taxiTicketsLabel.setText(getTicketCountLabel(TAXI_TICKETS_TEXT, tickets));
     }
 
     /**
@@ -280,12 +274,8 @@ public final class SidebarPanel extends JPanel {
      *
      * @param tickets the number of tickets
      */
-    public void updateBusTicketsLabel(int tickets) {
-        if (tickets == -1) {
-            this.busTicketsLabel.setText(BUS_TICKETS_TEXT + " : infiniti");
-        } else {
-            this.busTicketsLabel.setText(BUS_TICKETS_TEXT + " : " + Integer.toString(tickets));
-        }
+    public void updateBusTicketsLabel(final int tickets) {
+        this.busTicketsLabel.setText(getTicketCountLabel(BUS_TICKETS_TEXT, tickets));
     }
 
     /**
@@ -294,12 +284,8 @@ public final class SidebarPanel extends JPanel {
      *
      * @param tickets the number of tickets
      */
-    public void updateUndergroundTicketsLabel(int tickets) {
-        if (tickets == -1) {
-            this.undergroundTicketsLabel.setText(UNDERGROUND_TICKETS_TEXT + " : infiniti");
-        } else {
-            this.undergroundTicketsLabel.setText(UNDERGROUND_TICKETS_TEXT + " : " + Integer.toString(tickets));
-        }
+    public void updateUndergroundTicketsLabel(final int tickets) {
+        this.undergroundTicketsLabel.setText(getTicketCountLabel(UNDERGROUND_TICKETS_TEXT, tickets));
     }
 
     /**
@@ -308,8 +294,8 @@ public final class SidebarPanel extends JPanel {
      *
      * @param tickets the number of tickets
      */
-    public void updateBlackTicketsLabel(int tickets) {
-        this.blackTicketsLabel.setText(BLACK_TICKETS_TEXT + " : " + Integer.toString(tickets));
+    public void updateBlackTicketsLabel(final int tickets) {
+        this.blackTicketsLabel.setText(getTicketCountLabel(BLACK_TICKETS_TEXT, tickets));
     }
 
     /**
@@ -318,7 +304,24 @@ public final class SidebarPanel extends JPanel {
      *
      * @param tickets the number of tickets
      */
-    public void updateDoubleMoveTicketsLabel(int tickets) {
-        this.doubleMoveTicketsLabel.setText(DOUBLE_MOVE_TICKETS_TEXT + " : " + Integer.toString(tickets));
+    public void updateDoubleMoveTicketsLabel(final int tickets) {
+        this.doubleMoveTicketsLabel.setText(getTicketCountLabel(DOUBLE_MOVE_TICKETS_TEXT, tickets));
+    }
+
+    /**
+     * Generates the label to display the number of tickets available with special handling of the infinite amount
+     *
+     * @param ticketType the description of the type of ticket
+     * @param tickets the number of tickets
+     */
+    private String getTicketCountLabel(final String ticketType, final int tickets) {
+        final String label;
+        if (tickets == -1) {
+            label = "%s : infiniti".formatted(ticketType);
+        } else {
+            label = "%s : %d".formatted(ticketType, tickets);
+        }
+
+        return label;
     }
 }
