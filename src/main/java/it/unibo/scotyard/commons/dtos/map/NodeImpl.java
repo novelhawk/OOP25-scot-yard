@@ -5,10 +5,19 @@ import it.unibo.scotyard.model.map.TransportType;
 import java.util.Objects;
 import java.util.Set;
 
-/** immutable implementation of Node */
+/**
+ * Immutable implementation of Node.
+ *
+ * @param id the node id
+ * @param x the node x coordinate
+ * @param y the node y coordinate
+ * @param availableTransports the available transports
+ */
 public record NodeImpl(NodeId id, int x, int y, Set<TransportType> availableTransports) implements Node {
 
-    // constructor with validation
+    /**
+     * Constructor with validation.
+     */
     public NodeImpl {
         Objects.requireNonNull(availableTransports, "Available transports cannot be null");
         availableTransports = Set.copyOf(availableTransports); // Defensive copy

@@ -9,7 +9,11 @@ import it.unibo.scotyard.view.window.WindowImpl;
 import java.awt.BorderLayout;
 import javax.swing.JPanel;
 
-public class GameViewImpl implements GameView {
+/**
+ * The game view
+ *
+ */
+public final class GameViewImpl implements GameView {
 
     private static final int SMALL_WINDOW_WIDTH = 700;
     private static final int SMALL_WINDOW_HEIGHT = 270;
@@ -19,6 +23,11 @@ public class GameViewImpl implements GameView {
     private final SidebarPanel sidebar;
     private final JPanel mainPanel;
 
+    /**
+     * Creates a new game view
+     *
+     * @param mapInfo the game map
+     */
     public GameViewImpl(final MapInfo mapInfo) {
         this.mapPanel = new MapPanel(mapInfo);
         this.sidebar = new SidebarPanel(this);

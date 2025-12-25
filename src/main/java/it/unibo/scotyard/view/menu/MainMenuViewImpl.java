@@ -12,7 +12,11 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-public class MainMenuViewImpl implements MainMenuView {
+/**
+ * The main menu view
+ *
+ */
+public final class MainMenuViewImpl implements MainMenuView {
 
     // Color scheme
     private static final Color BACKGROUND_COLOR = new Color(0, 0, 0); // black
@@ -34,7 +38,7 @@ public class MainMenuViewImpl implements MainMenuView {
     private static final int BUTTONS_SPACING = 20;
 
     private final MainMenuController controller;
-    final JPanel mainPanel;
+    private final JPanel mainPanel;
 
     /**
      * Creates the main menu view.

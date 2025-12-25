@@ -75,7 +75,12 @@ public final class ViewImpl implements View {
         return Size.of((int) screenSize.getWidth(), (int) screenSize.getHeight());
     }
 
-    // Force UI layout update on EDT
+    /**
+     * Force UI layout update on EDT
+     *
+     * @param mainPanel the main panel
+     * @param mapPanel the map panel
+     */
     public void forceLayoutUpdate(final JPanel mainPanel, final MapPanel mapPanel) {
         SwingUtilities.invokeLater(() -> {
             mainPanel.revalidate();

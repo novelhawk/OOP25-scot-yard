@@ -3,6 +3,10 @@ package it.unibo.scotyard.model.game;
 import it.unibo.scotyard.model.players.TicketType;
 import java.util.Random;
 
+/**
+ * The game state.
+ *
+ */
 public interface GameState {
 
     /**
@@ -29,8 +33,9 @@ public interface GameState {
      * Return the number of tickets of a specific type possessed by the user player.
      *
      * @param ticketType the type of ticket
+     * @return the number of tickets of type {@code ticketType}
      */
-    int getNumberTicketsUserPlayer(TicketType ticketType);
+    int getNumberTicketsUserPlayer(final TicketType ticketType);
 
     /**
      * Returns the current round number.
@@ -39,7 +44,15 @@ public interface GameState {
      */
     int getGameRound();
 
+    /**
+     * Gets the current game status.
+     */
     GameStatus getGameStatus();
 
+    /**
+     * Sets the current game status.
+     *
+     * @param state the updated game status
+     */
     void setGameStatus(GameStatus state);
 }

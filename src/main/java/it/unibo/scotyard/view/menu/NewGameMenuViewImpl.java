@@ -15,7 +15,10 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-/** start menu view */
+/**
+ * Start menu view
+ *
+ */
 public final class NewGameMenuViewImpl implements NewGameMenuView {
 
     // Component sizes
@@ -27,9 +30,10 @@ public final class NewGameMenuViewImpl implements NewGameMenuView {
     private static final Color ACCENT_COLOR = new Color(31, 81, 255); // neon blue
 
     // Typography
-    private static final Font LABEL_FONT = new Font("Arial", Font.PLAIN, 20);
-    private static final Font BUTTON_FONT = new Font("Arial", Font.BOLD, 20);
-    private static final Font USER_FONT = new Font("Arial", Font.PLAIN, 16);
+    private static final String MAIN_FONT_FAMILY = "Arial";
+    private static final Font LABEL_FONT = new Font(MAIN_FONT_FAMILY, Font.PLAIN, 20);
+    private static final Font BUTTON_FONT = new Font(MAIN_FONT_FAMILY, Font.BOLD, 20);
+    private static final Font USER_FONT = new Font(MAIN_FONT_FAMILY, Font.PLAIN, 16);
 
     // UI text
     private static final String PLAYER_NAME_TEXT = "Inserire nome";

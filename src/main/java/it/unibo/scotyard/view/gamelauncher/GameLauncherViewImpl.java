@@ -46,9 +46,10 @@ public final class GameLauncherViewImpl extends JFrame implements GameLauncherVi
     private static final Color BUTTON_TEXT_COLOR = BACKGROUND_COLOR;
 
     // Typography
-    private static final Font TITLE_FONT = new Font("Arial", Font.BOLD, 24);
-    private static final Font LABEL_FONT = new Font("Arial", Font.PLAIN, 14);
-    private static final Font BUTTON_FONT = new Font("Arial", Font.BOLD, 16);
+    private static final String MAIN_FONT_FAMILY = "Arial";
+    private static final Font TITLE_FONT = new Font(MAIN_FONT_FAMILY, Font.BOLD, 24);
+    private static final Font LABEL_FONT = new Font(MAIN_FONT_FAMILY, Font.PLAIN, 14);
+    private static final Font BUTTON_FONT = new Font(MAIN_FONT_FAMILY, Font.BOLD, 16);
 
     // UI text
     private static final String TITLE_TEXT = "Scotland Yard";

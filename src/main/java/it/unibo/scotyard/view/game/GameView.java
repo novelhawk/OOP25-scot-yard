@@ -4,6 +4,10 @@ import it.unibo.scotyard.view.map.MapPanel;
 import it.unibo.scotyard.view.sidebar.SidebarPanel;
 import javax.swing.JPanel;
 
+/**
+ * The game view
+ *
+ */
 public interface GameView {
 
     /**

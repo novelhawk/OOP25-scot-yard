@@ -54,19 +54,23 @@ public final class SidebarPanel extends JPanel {
     private static final String LOAD_RULES_TEXT = "Regole";
 
     // Components
-    JLabel currentGameModeLabel;
-    JLabel roundLabel;
-    JLabel taxiTicketsLabel;
-    JLabel busTicketsLabel;
-    JLabel undergroundTicketsLabel;
-    JLabel blackTicketsLabel;
-    JLabel doubleMoveTicketsLabel;
-    JButton loadRulesButton;
+    private JLabel currentGameModeLabel;
+    private JLabel roundLabel;
+    private JLabel taxiTicketsLabel;
+    private JLabel busTicketsLabel;
+    private JLabel undergroundTicketsLabel;
+    private JLabel blackTicketsLabel;
+    private JLabel doubleMoveTicketsLabel;
+    private JButton loadRulesButton;
 
-    GameView gameView;
-    GameMode currentGameMode;
+    private GameView gameView;
+    private GameMode currentGameMode;
 
-    /** Creates a sidebar panel. */
+    /**
+     * Creates a sidebar panel.
+     *
+     * @param gameView the game view
+     */
     public SidebarPanel(final GameView gameView) {
         setupSidebar();
         buildContent();
@@ -171,10 +175,12 @@ public final class SidebarPanel extends JPanel {
         return label;
     }
 
-    /*
+    /**
      * This method is called by the GameController. It creates the main JPanel
      * of a small window which displays the summary of the rules.
      * The window will be created by the GameController.
+     *
+     * @return the panel containing the rules
      */
     public JPanel createRulesPanel() {
         final JPanel panel = new JPanel(new BorderLayout());
@@ -183,34 +189,56 @@ public final class SidebarPanel extends JPanel {
         final JTextArea textArea = new JTextArea();
         textArea.setFont(TEXT_FONT);
         if (this.currentGameMode == GameMode.DETECTIVE) {
-            textArea.append(
-                    "Nel gioco sono presenti : 1 detective, 1 fuggitivo (Mister X) e 2 o 3 bobby (aiutanti del detective).\n"
-                            + "L'obiettivo del detective è catturare Mister X il prima possibile. Il gioco si compone di 23 round.\n"
-                            + "La posizione di Mister X è nascosta, ma è possibile vedere quali mezzi usa nei suoi spostamenti (tranne \n"
-                            + "se utilizza un biglietto nero) e la sua posizione viene rivelata dopo i turni : 3, 8, 13.\n"
-                            + "Il detective e i bobby possono muoversi su tre mezzi di trasporto : taxi, bus, metropolitana.\n"
-                            + "Il traghetto può essere usato solo da Mister X, con i biglietti neri. Il detective ha un numero limitato \n"
-                            + "di biglietti per ciascun mezzo; mentre i bobby no. I vari giocatori non possono trovarsi in contemporanea \n"
-                            + "su una stessa posizione della mappa. Se questo accade con un detective e Mister X, o con un bobby e \n"
-                            + "Mister X, allora il gioco termina, con la vittoria del detective. \n"
-                            + "Il gioco, invece, termina con la vittoria di Mister X se il detective e i bobby non lo hanno preso alla \n"
-                            + "fine dell'ultimo round, oppure se il detective non può più muoversi (in un qualsiasi turno) a causa \n"
-                            + "dell'esaurimento dei suoi biglietti.");
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.append(
+                    "Nel gioco sono presenti : 1 detective, 1 fuggitivo (Mister X) e 2 o 3 bobby (aiutanti del detective).\n");
+            stringBuilder.append(
+                    "L'obiettivo del detective è catturare Mister X il prima possibile. Il gioco si compone di 23 round.\n");
+            stringBuilder.append(
+                    "La posizione di Mister X è nascosta, ma è possibile vedere quali mezzi usa nei suoi spostamenti (tranne \n");
+            stringBuilder.append(
+                    "se utilizza un biglietto nero) e la sua posizione viene rivelata dopo i turni : 3, 8, 13.\n");
+            stringBuilder.append(
+                    "Il detective e i bobby possono muoversi su tre mezzi di trasporto : taxi, bus, metropolitana.\n");
+            stringBuilder.append(
+                    "Il traghetto può essere usato solo da Mister X, con i biglietti neri. Il detective ha un numero limitato \n");
+            stringBuilder.append(
+                    "di biglietti per ciascun mezzo; mentre i bobby no. I vari giocatori non possono trovarsi in contemporanea \n");
+            stringBuilder.append(
+                    "su una stessa posizione della mappa. Se questo accade con un detective e Mister X, o con un bobby e \n");
+            stringBuilder.append("Mister X, allora il gioco termina, con la vittoria del detective. \n");
+            stringBuilder.append(
+                    "Il gioco, invece, termina con la vittoria di Mister X se il detective e i bobby non lo hanno preso alla \n");
+            stringBuilder.append(
+                    "fine dell'ultimo round, oppure se il detective non può più muoversi (in un qualsiasi turno) a causa \n");
+            stringBuilder.append("dell'esaurimento dei suoi biglietti.");
+            textArea.append(stringBuilder.toString());
         }
         if (this.currentGameMode == GameMode.MISTER_X) {
-            textArea.setText(
-                    "Nel gioco sono presenti : 1 detective, 1 fuggitivo (Mister X) e 2 o 3 bobby (aiutanti del detective).\n"
-                            + "L'obiettivo di Mister X è non farsi catturare dal detective e dai bobby. Il gioco si compone di 23 round.\n"
-                            + "La posizione di Mister X è nascosta ma l'avversario può vedere quali mezzi usa nei suoi spostamenti e la \n"
-                            + "sua posizione viene rivelata dopo i turni : 3, 8, 13.\n"
-                            + "Mister X può utilizzare i tre mezzi di trasporto principali (taxi, bus, metropolitana) senza limiti, dato \n "
-                            + "che non ha dei biglietti infiniti per questi mezzi. Mister X possiede, però, dei biglietti speciali : \n"
-                            + "- biglietto doppia mossa, che gli consente di fare due spostamenti (con mezzi diversi) in un unico turno\n"
-                            + "- biglietto nero, che nasconde il mezzo utilizzato e che consente l'uso del traghetto\n"
-                            + "  (non usaebile in altro modo).\n"
-                            + "Il gioco termina con la vittoria del detective se Mister X viene catturato entro la fine dell'ultimo round.\n"
-                            + "Altrimenti, il gioco termina con la vittoria di Mister X se non viene catturato entro la fine dell'ultimo \n"
-                            + "round, oppure se, in un qualsiasi turno il detective non può più effettuare spostamenti.");
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.append(
+                    "Nel gioco sono presenti : 1 detective, 1 fuggitivo (Mister X) e 2 o 3 bobby (aiutanti del detective).\n");
+            stringBuilder.append(
+                    "L'obiettivo di Mister X è non farsi catturare dal detective e dai bobby. Il gioco si compone di 23 round.\n");
+            stringBuilder.append(
+                    "La posizione di Mister X è nascosta ma l'avversario può vedere quali mezzi usa nei suoi spostamenti e la \n");
+            stringBuilder.append("sua posizione viene rivelata dopo i turni : 3, 8, 13.\n");
+            stringBuilder.append(
+                    "Mister X può utilizzare i tre mezzi di trasporto principali (taxi, bus, metropolitana) senza limiti, dato \n ");
+            stringBuilder.append(
+                    "che non ha dei biglietti infiniti per questi mezzi. Mister X possiede, però, dei biglietti speciali : \n");
+            stringBuilder.append(
+                    "- biglietto doppia mossa, che gli consente di fare due spostamenti (con mezzi diversi) in un unico turno\n");
+            stringBuilder.append(
+                    "- biglietto nero, che nasconde il mezzo utilizzato e che consente l'uso del traghetto\n");
+            stringBuilder.append("  (non usaebile in altro modo).\n");
+            stringBuilder.append(
+                    "Il gioco termina con la vittoria del detective se Mister X viene catturato entro la fine dell'ultimo round.\n");
+            stringBuilder.append(
+                    "Altrimenti, il gioco termina con la vittoria di Mister X se non viene catturato entro la fine dell'ultimo \n");
+            stringBuilder.append(
+                    "round, oppure se, in un qualsiasi turno il detective non può più effettuare spostamenti.");
+            textArea.setText(stringBuilder.toString());
         }
         textArea.setBackground(BACKGROUND_COLOR);
         textArea.setForeground(ACCENT_COLOR);
@@ -227,7 +255,7 @@ public final class SidebarPanel extends JPanel {
         button.setAlignmentX(CENTER_ALIGNMENT);
         button.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void actionPerformed(final ActionEvent e) {
                 gameView.displayRulesWindow(createRulesPanel());
             }
         });
@@ -315,10 +343,11 @@ public final class SidebarPanel extends JPanel {
 
     /**
      * Generates the label to display the number of tickets available with special handling of the
-     * infinite amount
+     * infinite amount.
      *
      * @param ticketType the description of the type of ticket
      * @param tickets the number of tickets
+     * @return the ticket label
      */
     private String getTicketCountLabel(final String ticketType, final int tickets) {
         final String label;

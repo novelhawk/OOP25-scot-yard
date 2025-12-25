@@ -4,6 +4,10 @@ import it.unibo.scotyard.model.map.NodeId;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * The default player entity implementation.
+ *
+ */
 public abstract class PlayerImpl implements Player {
 
     protected static final int NONE = 0;

@@ -43,7 +43,7 @@ public interface View {
     /**
      * Displays the input panel. Used to display MainMenu + NewGameMenu + Game
      *
-     * @param panel
+     * @param panel the panel to display
      */
     void displayPanel(JPanel panel);
 

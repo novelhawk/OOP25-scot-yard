@@ -8,11 +8,21 @@ import it.unibo.scotyard.view.map.MapPanel;
 import it.unibo.scotyard.view.sidebar.SidebarPanel;
 import javax.swing.JPanel;
 
-public class GameControllerImpl implements GameController {
+/**
+ * The controller for all game related actions
+ *
+ */
+public final class GameControllerImpl implements GameController {
 
     private final GameState gameState;
     private final GameView view;
 
+    /**
+     * Creates the controller
+     *
+     * @param gameState the game state
+     * @param view the view
+     */
     public GameControllerImpl(final GameState gameState, final GameView view) {
         this.gameState = gameState;
         this.view = view;

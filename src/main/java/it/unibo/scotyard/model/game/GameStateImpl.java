@@ -9,7 +9,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class GameStateImpl implements GameState {
+/**
+ * The game state.
+ *
+ */
+public final class GameStateImpl implements GameState {
 
     private final Random random;
     private GameStatus gameStatus;
@@ -21,18 +25,24 @@ public class GameStateImpl implements GameState {
 
     private int round;
 
-    public GameStateImpl(final String gameMode, final String levelOfDifficulty) {
+    /**
+     * Creates a new game state.
+     *
+     * @param gameMode the game mode
+     * @param difficultyLevel the difficulty level
+     */
+    public GameStateImpl(final String gameMode, final String difficultyLevel) {
         // TODO: seed
         this.random = new Random(0);
         this.additionalPlayers = new ArrayList<>();
         this.round = 0;
-        this.initialize(gameMode, levelOfDifficulty);
+        this.initialize(gameMode, difficultyLevel);
     }
 
     @Override
-    public void initialize(final String gameMode, final String levelDifficulty) {
+    public void initialize(final String gameMode, final String difficultyLevel) {
         this.gameMode = setGameMode(gameMode);
-        this.gameDifficulty = setGameDifficulty(levelDifficulty);
+        this.gameDifficulty = setDifficultyLevel(difficultyLevel);
         this.setPlayers();
         this.setIA();
         this.round++;
@@ -54,8 +64,8 @@ public class GameStateImpl implements GameState {
         }
     }
 
-    private GameDifficulty setGameDifficulty(final String inputGameDifficulty) {
-        switch (inputGameDifficulty) {
+    private GameDifficulty setDifficultyLevel(final String difficultyLevel) {
+        switch (difficultyLevel) {
             case "Facile":
                 return GameDifficulty.EASY;
             case "Media":

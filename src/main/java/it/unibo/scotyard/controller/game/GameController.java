@@ -6,6 +6,10 @@ import it.unibo.scotyard.view.map.MapPanel;
 import it.unibo.scotyard.view.sidebar.SidebarPanel;
 import javax.swing.JPanel;
 
+/**
+ * The controller for all game related actions
+ *
+ */
 public interface GameController {
 
     /**

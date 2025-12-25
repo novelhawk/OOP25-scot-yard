@@ -24,6 +24,10 @@ import java.util.Objects;
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
+/**
+ * The map panel
+ *
+ */
 public final class MapPanel extends JPanel {
 
     private static final long serialVersionUID = 1L;
@@ -321,7 +325,7 @@ public final class MapPanel extends JPanel {
             } else {
                 System.err.println("Background image not found");
             }
-        } catch (IOException e) {
+        } catch (final IOException e) {
             System.err.println("Error loading background image: " + e.getMessage());
             backgroundImage = null;
         }

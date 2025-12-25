@@ -20,6 +20,8 @@ public final class WindowImpl extends JFrame implements Window {
      * Creates a window with specified resolution.
      *
      * @param resolution the window size
+     * @param containerPanel the container panel
+     * @param windowTitle the window title
      * @throws NullPointerException if resolution is null
      */
     public WindowImpl(final Size resolution, final JPanel containerPanel, final String windowTitle) {

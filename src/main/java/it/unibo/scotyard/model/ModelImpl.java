@@ -17,7 +17,11 @@ public final class ModelImpl implements Model {
     private GameState gameState;
     private boolean initialized;
 
-    /** new model instance. */
+    /**
+     * The model layer state.
+     *
+     * @param dispatcher the command dispatcher
+     */
     public ModelImpl(final CommandDispatcher dispatcher) {
         this.dispatcher = dispatcher;
     }
@@ -56,6 +60,11 @@ public final class ModelImpl implements Model {
         return dispatcher;
     }
 
+    /**
+     * Creates the {@code Model} with the default command listeners.
+     *
+     * @return the model instance
+     */
     public static Model createDefault() {
         final CommandRouter store = new CommandRouter();
         final Model model = new ModelImpl(store);

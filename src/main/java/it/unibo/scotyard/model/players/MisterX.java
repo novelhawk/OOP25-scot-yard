@@ -4,12 +4,19 @@ import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 
-public class MisterX extends PlayerImpl {
+/**
+ * The mister X player entity.
+ *
+ */
+public final class MisterX extends PlayerImpl {
 
     private static final int NUMBER_TICKETS_BLACK = 5;
     private static final int NUMBER_TICKETS_DOUBLE_MOVE = 2;
     private static final int INFINITE = -1;
 
+    /**
+     * Creates a new mister X player entity.
+     */
     public MisterX() {
         super();
     }
@@ -26,7 +33,7 @@ public class MisterX extends PlayerImpl {
     }
 
     @Override
-    public void setInitialPosition(List<Integer> initialPositions) {
+    public void setInitialPosition(final List<Integer> initialPositions) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'setInitialPosition'");
     }
