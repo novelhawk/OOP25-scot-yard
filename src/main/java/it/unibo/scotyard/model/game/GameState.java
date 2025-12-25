@@ -13,7 +13,9 @@ public interface GameState {
      */
     void initialize(String gameMode, String levelDifficulty);
 
-    /** @return the seeded shared random instance used by all game logic */
+    /**
+     * @return the seeded shared random instance used by all game logic
+     */
     Random getSeededRandom();
 
     /**

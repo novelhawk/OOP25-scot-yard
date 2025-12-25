@@ -249,8 +249,8 @@ public final class SidebarPanel extends JPanel {
     }
 
     /**
-     * Method which is called by the GameController when updating the sideabar displaying. Updates the text of the
-     * roundLabel according to current roundNumber.
+     * Method which is called by the GameController when updating the sideabar displaying. Updates the
+     * text of the roundLabel according to current roundNumber.
      *
      * @param roundNumber the current round number
      */
@@ -259,8 +259,9 @@ public final class SidebarPanel extends JPanel {
     }
 
     /**
-     * Method which is called by the GameController when updating the sideabar displaying. Updates the text of the
-     * taxiTicketsLabel according to current number of taxi tickets possessed by the user player.
+     * Method which is called by the GameController when updating the sideabar displaying. Updates the
+     * text of the taxiTicketsLabel according to current number of taxi tickets possessed by the user
+     * player.
      *
      * @param tickets the number of tickets
      */
@@ -269,8 +270,9 @@ public final class SidebarPanel extends JPanel {
     }
 
     /**
-     * Method which is called by the GameController when updating the sideabar displaying. Updates the text of the
-     * busTicketsLabel according to current number of bus tickets possessed by the user player.
+     * Method which is called by the GameController when updating the sideabar displaying. Updates the
+     * text of the busTicketsLabel according to current number of bus tickets possessed by the user
+     * player.
      *
      * @param tickets the number of tickets
      */
@@ -279,8 +281,9 @@ public final class SidebarPanel extends JPanel {
     }
 
     /**
-     * Method which is called by the GameController when updating the sideabar displaying. Updates the text of the
-     * undergroundTicketsLabel according to current number of underground tickets possessed by the user player.
+     * Method which is called by the GameController when updating the sideabar displaying. Updates the
+     * text of the undergroundTicketsLabel according to current number of underground tickets
+     * possessed by the user player.
      *
      * @param tickets the number of tickets
      */
@@ -289,8 +292,9 @@ public final class SidebarPanel extends JPanel {
     }
 
     /**
-     * Method which is called by the GameController when updating the sideabar displaying. Updates the text of the
-     * blackTicketsLabel according to current number of black tickets possessed by the user player.
+     * Method which is called by the GameController when updating the sideabar displaying. Updates the
+     * text of the blackTicketsLabel according to current number of black tickets possessed by the
+     * user player.
      *
      * @param tickets the number of tickets
      */
@@ -299,8 +303,9 @@ public final class SidebarPanel extends JPanel {
     }
 
     /**
-     * Method which is called by the GameController when updating the sideabar displaying. Updates the text of the
-     * doubleMoveTicketsLabel according to current number of double move tickets possessed by the user player.
+     * Method which is called by the GameController when updating the sideabar displaying. Updates the
+     * text of the doubleMoveTicketsLabel according to current number of double move tickets possessed
+     * by the user player.
      *
      * @param tickets the number of tickets
      */
@@ -309,7 +314,8 @@ public final class SidebarPanel extends JPanel {
     }
 
     /**
-     * Generates the label to display the number of tickets available with special handling of the infinite amount
+     * Generates the label to display the number of tickets available with special handling of the
+     * infinite amount
      *
      * @param ticketType the description of the type of ticket
      * @param tickets the number of tickets

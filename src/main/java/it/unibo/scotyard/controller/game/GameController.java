@@ -8,13 +8,19 @@ import javax.swing.JPanel;
 
 public interface GameController {
 
-    /** @return the main game panel */
+    /**
+     * @return the main game panel
+     */
     JPanel getMainPanel();
 
-    /** @return the map panel */
+    /**
+     * @return the map panel
+     */
     MapPanel getMapPanel();
 
-    /** @return the sidebar panel */
+    /**
+     * @return the sidebar panel
+     */
     SidebarPanel getSidebarPanel();
 
     /**

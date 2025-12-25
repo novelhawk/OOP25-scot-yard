@@ -7,15 +7,23 @@ import java.util.Set;
 /** Represents a map node with position and available transports. */
 public interface Node {
 
-    /** @return unique node identifier */
+    /**
+     * @return unique node identifier
+     */
     NodeId getId();
 
-    /** @return x coordinate */
+    /**
+     * @return x coordinate
+     */
     int getX();
 
-    /** @return y coordinate */
+    /**
+     * @return y coordinate
+     */
     int getY();
 
-    /** @return unmodifiable set of available transport types */
+    /**
+     * @return unmodifiable set of available transport types
+     */
     Set<TransportType> getAvailableTransports();
 }

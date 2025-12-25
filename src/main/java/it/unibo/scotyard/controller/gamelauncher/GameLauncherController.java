@@ -9,7 +9,9 @@ public interface GameLauncherController {
     /** Displays the launcher screen. */
     void run();
 
-    /** @return unmodifiable list of available resolutions */
+    /**
+     * @return unmodifiable list of available resolutions
+     */
     List<Size> getResolutions();
 
     /**

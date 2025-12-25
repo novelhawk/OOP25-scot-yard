@@ -9,8 +9,9 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
- * complete map data including nodes, connections, and game configuration. This class provides a rich query API for
- * accessing and navigating the map structure. All collections are immutable and defensively copied.
+ * complete map data including nodes, connections, and game configuration. This class provides a
+ * rich query API for accessing and navigating the map structure. All collections are immutable and
+ * defensively copied.
  */
 public final class MapData {
 
@@ -21,8 +22,8 @@ public final class MapData {
     private final List<Integer> initialPositions;
 
     /**
-     * Creates a new MapData with the specified configuration. All collection parameters are defensively copied to
-     * ensure immutability.
+     * Creates a new MapData with the specified configuration. All collection parameters are
+     * defensively copied to ensure immutability.
      *
      * @param name the name of the map
      * @param nodes the list of nodes on the map
@@ -82,8 +83,8 @@ public final class MapData {
     }
 
     /**
-     * Returns possible starting positions for all players. Players should randomly select positions from this list
-     * without replacement.
+     * Returns possible starting positions for all players. Players should randomly select positions
+     * from this list without replacement.
      *
      * @return an unmodifiable list of node IDs
      */
@@ -179,10 +180,15 @@ public final class MapData {
     @Override
     public String toString() {
         return "MapData{"
-                + "name='" + name + '\''
-                + ", nodes=" + nodes.size()
-                + ", connections=" + connections.size()
-                + ", revealTurns=" + revealTurns
+                + "name='"
+                + name
+                + '\''
+                + ", nodes="
+                + nodes.size()
+                + ", connections="
+                + connections.size()
+                + ", revealTurns="
+                + revealTurns
                 + '}';
     }
 }

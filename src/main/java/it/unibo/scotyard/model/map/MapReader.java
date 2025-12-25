@@ -15,8 +15,8 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * reads and parses Scotland Yard map data from JSON files. The map data includes nodes, connections, reveal turns, and
- * initial positions.
+ * reads and parses Scotland Yard map data from JSON files. The map data includes nodes,
+ * connections, reveal turns, and initial positions.
  */
 public class MapReader {
     private static final String DEFAULT_MAP_PATH = "/it/unibo/scotyard/model/map/ScotlandYardMap.json";
@@ -99,8 +99,8 @@ public class MapReader {
     }
 
     /**
-     * Parses connections from JSON where transports are separated by type. Has "taxi", "bus", "underground", "black"
-     * arrays with [from, to] pairs.
+     * Parses connections from JSON where transports are separated by type. Has "taxi", "bus",
+     * "underground", "black" arrays with [from, to] pairs.
      *
      * @param jsonObject the root JSON object containing transport arrays
      * @return list of all connections combined from all transport types
