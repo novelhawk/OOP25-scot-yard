@@ -18,12 +18,9 @@ import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
 /**
- * Controller implementation for Mr. X gameplay. Manages game initialization,
- * turn logic, and UI updates.
+ * Controller implementation for Mr. X gameplay. Manages game initialization, turn logic, and UI updates.
  *
- * <p>
- * Double move state machine Node click handling Transport selection when
- * multiple options available UI
+ * <p>Double move state machine Node click handling Transport selection when multiple options available UI
  * synchronization
  */
 public final class MrXGameControllerImpl extends GameControllerImpl {
@@ -44,8 +41,8 @@ public final class MrXGameControllerImpl extends GameControllerImpl {
     /**
      * Creates a new Mr. X game controller.
      *
-     * @param game     the game instance
-     * @param mapData  the map data
+     * @param game the game instance
+     * @param mapData the map data
      * @param gameView the game view
      * @throws NullPointerException if any parameter is null
      */
@@ -303,13 +300,14 @@ public final class MrXGameControllerImpl extends GameControllerImpl {
     /**
      * Shows transport selection dialog when multiple options available.
      *
-     * @param moves  the list of possible moves to the same destination
+     * @param moves the list of possible moves to the same destination
      * @param nodeId the destination node ID
      * @return the selected move option, or null if cancelled
      */
     private MoveOption chooseTransport(final List<MoveOption> moves, final int nodeId) {
 
-        final List<TransportType> transportTypes = moves.stream().map(MoveOption::getTransport).toList();
+        final List<TransportType> transportTypes =
+                moves.stream().map(MoveOption::getTransport).toList();
 
         // dialog
         final TransportSelectionDialog dialog = new TransportSelectionDialog(null, nodeId, transportTypes);

@@ -148,7 +148,7 @@ public class GameStateImpl implements GameState {
         }
         for (Player bobby : this.additionalPlayers) {
             if ((this.userPlayer.getCurrentPositionId() == (bobby.getCurrentPositionId())
-                    && GameMode.MISTER_X.equals(this.gameMode))
+                            && GameMode.MISTER_X.equals(this.gameMode))
                     || (this.computerPlayer.getCurrentPositionId() == (bobby.getCurrentPositionId())
                             && GameMode.DETECTIVE.equals(this.gameMode))) {
                 this.setGameState(GameStatus.PAUSE);

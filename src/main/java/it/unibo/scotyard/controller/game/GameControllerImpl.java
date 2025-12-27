@@ -1,8 +1,8 @@
 package it.unibo.scotyard.controller.game;
 
 import it.unibo.scotyard.controller.Controller;
-import it.unibo.scotyard.model.game.GameState;
 import it.unibo.scotyard.model.game.GameMode;
+import it.unibo.scotyard.model.game.GameState;
 import it.unibo.scotyard.model.map.TransportType;
 import it.unibo.scotyard.model.players.Player;
 import it.unibo.scotyard.model.players.TicketType;
@@ -86,8 +86,7 @@ public abstract class GameControllerImpl implements GameController {
     }
 
     /**
-     * Checks if there are multiple transport types to reach destination or not.
-     * Used only in
+     * Checks if there are multiple transport types to reach destination or not. Used only in
      * DetectiveGameControllerImpl.
      *
      * @param newPositionId the id of the destination
@@ -95,8 +94,7 @@ public abstract class GameControllerImpl implements GameController {
     public abstract void destinationChosen(int newPositionId);
 
     /**
-     * Sets the selcted transport type to reach destination. Used only in
-     * DetectiveGameControllerImpl.
+     * Sets the selcted transport type to reach destination. Used only in DetectiveGameControllerImpl.
      *
      * @param transportType the type of transport selected
      */

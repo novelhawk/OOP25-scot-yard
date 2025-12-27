@@ -52,8 +52,7 @@ public final class DetectiveGameControllerImpl extends GameControllerImpl {
     }
 
     /**
-     * Manages a round of a game. If the game is over, it calls a method of the
-     * GameView, which opens a the game over
+     * Manages a round of a game. If the game is over, it calls a method of the GameView, which opens a the game over
      * window, which takes back the user to the main menu.
      */
     public void manageGameRound() {
@@ -62,8 +61,8 @@ public final class DetectiveGameControllerImpl extends GameControllerImpl {
         } else {
             this.updateSidebar(this.game.getCurrentPlayer());
             this.updatePlayerPositionView(this.game.getCurrentPlayer());
-            Set<Pair<Integer, TransportType>> possibleDestinations = new HashSet<>(
-                    this.mainController.getPossibleDestinations(
+            Set<Pair<Integer, TransportType>> possibleDestinations =
+                    new HashSet<>(this.mainController.getPossibleDestinations(
                             this.game.getPositionPlayer(this.game.getCurrentPlayer())));
             this.game.loadPossibleDestinations(possibleDestinations);
             Set<Integer> possibleDestinationsIDs = new HashSet<>();

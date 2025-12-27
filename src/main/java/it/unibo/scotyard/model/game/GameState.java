@@ -10,20 +10,17 @@ import java.util.Set;
 public interface GameState {
 
     /**
-     * Initialises the game according to the game mode and the level of difficulty
-     * chosen.
+     * Initialises the game according to the game mode and the level of difficulty chosen.
      *
-     * @param gameMode         the selected game mode
-     * @param levelDifficulty  the selected level of difficulty
+     * @param gameMode the selected game mode
+     * @param levelDifficulty the selected level of difficulty
      * @param initialPositions the list of the possible initial positions of players
      */
     void initialize(String gameMode, String levelDifficulty, List<Integer> initialPositions);
 
     /**
-     * Returns a boolean that indicates if the game is over. In particular, the game
-     * is over if the detective or one of
-     * the bobbies has captured Mister X (they're in the same position of the map)
-     * or if the maximum number of rounds
+     * Returns a boolean that indicates if the game is over. In particular, the game is over if the detective or one of
+     * the bobbies has captured Mister X (they're in the same position of the map) or if the maximum number of rounds
      * had been reached.
      *
      * @return a boolean which indicates whether the game is over (true) or not
@@ -31,8 +28,7 @@ public interface GameState {
     boolean isGameOver();
 
     /**
-     * This method gets called when the game is over, to get the result : the user
-     * player has won or not.
+     * This method gets called when the game is over, to get the result : the user player has won or not.
      *
      * @return String, which indicates whether the user player has won or not
      */
@@ -45,30 +41,24 @@ public interface GameState {
      */
     void loadPossibleDestinations(Set<Pair<Integer, TransportType>> inputPossibleDestinations);
 
-    /**
-     * @return the set of possible destinations as pairs of integer and transport
-     *         type
-     */
+    /** @return the set of possible destinations as pairs of integer and transport type */
     Set<Pair<Integer, TransportType>> getPossibleDestinations();
 
     /** Manages the current player. */
     void changeCurrentPlayer();
 
     /**
-     * Return a boolean value which indicates whether there are multiple transports
-     * available for the destination id
+     * Return a boolean value which indicates whether there are multiple transports available for the destination id
      * given or not.
      *
      * @param destinationId the id of the destination
-     * @return a boolean value which indicates whether there are multiple transports
-     *         available for the destination given
-     *         or not
+     * @return a boolean value which indicates whether there are multiple transports available for the destination given
+     *     or not
      */
     boolean areMultipleTransportsAvailable(int destinationId);
 
     /**
-     * Return a list of the transport types that can be used to reach the
-     * destination given.
+     * Return a list of the transport types that can be used to reach the destination given.
      *
      * @param destinationId the id of the destination
      * @return a list of transport types that can be used to reach destination
@@ -76,22 +66,16 @@ public interface GameState {
     List<TransportType> getAvailableTransports(int destinationId);
 
     /**
-     * Return a boolean value which indicates whether the current player can be
-     * moved or not; if it's possible, their
-     * position id gets changed and their tickets decrement (according to the type
-     * of transport used).
+     * Return a boolean value which indicates whether the current player can be moved or not; if it's possible, their
+     * position id gets changed and their tickets decrement (according to the type of transport used).
      *
      * @param destinationId the destination id
-     * @param transport     the transport type to use to reach the destination
-     * @return a boolean value which indicates whether the current player can be
-     *         moved or not
+     * @param transport the transport type to use to reach the destination
+     * @return a boolean value which indicates whether the current player can be moved or not
      */
     boolean moveCurrentPlayer(int destinationId, TransportType transport);
 
-    /**
-     * Goes to next round by incrementing the round number, if the current player is
-     * the last bobby.
-     */
+    /** Goes to next round by incrementing the round number, if the current player is the last bobby. */
     void nextRound();
 
     /**
