@@ -13,13 +13,13 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
-public class GameImpl implements Game {
+public class GameStateImpl implements GameState {
 
     private static final int FINAL_ROUND_NUMBER = 3;
     private static final int MISTER_X_ROUND_INDEX = -2;
     private static final int DETECTIVE_ROUND_INDEX = -1;
 
-    private GameState gameState;
+    private GameStatus gameState;
     private GameMode gameMode;
     private GameDifficulty gameDifficulty;
 
@@ -36,7 +36,7 @@ public class GameImpl implements Game {
 
     private int round;
 
-    public GameImpl(String gameMode, String levelOfDifficulty, List<Integer> initialPositions) {
+    public GameStateImpl(String gameMode, String levelOfDifficulty, List<Integer> initialPositions) {
         this.additionalPlayers = new ArrayList<>();
         this.round = 0;
         this.playersNumber = 0;
@@ -54,7 +54,7 @@ public class GameImpl implements Game {
         this.setIA();
         this.round++;
         this.indexCurrentPlayer = MISTER_X_ROUND_INDEX;
-        this.setGameState(GameState.PLAYING);
+        this.setGameState(GameStatus.PLAYING);
     }
 
     private GameMode setGameMode(String inputGameMode) {
@@ -109,14 +109,14 @@ public class GameImpl implements Game {
         this.computerPlayer.setPosition(this.getRandomInitialPosition());
         int index = 0;
         switch (this.gameDifficulty) {
-            case GameDifficulty.MEDIUM:
-            case GameDifficulty.DIFFICULT:
+            case MEDIUM:
+            case DIFFICULT:
                 this.additionalPlayers.add(new Bobby());
                 this.additionalPlayers.get(index).setPosition(this.getRandomInitialPosition());
                 this.playersNumber++;
                 index++;
                 this.additionalPlayers.get(index - 1).setName("Bobby" + index);
-            case GameDifficulty.EASY:
+            case EASY:
                 this.additionalPlayers.add(new Bobby());
                 this.additionalPlayers.get(index).setPosition(this.getRandomInitialPosition());
                 index++;
@@ -143,15 +143,15 @@ public class GameImpl implements Game {
     public boolean isGameOver() {
         if (this.userPlayer.getCurrentPositionId() == this.computerPlayer.getCurrentPositionId()
                 || this.round > FINAL_ROUND_NUMBER) {
-            this.setGameState(GameState.PAUSE);
+            this.setGameState(GameStatus.PAUSE);
             return true;
         }
         for (Player bobby : this.additionalPlayers) {
             if ((this.userPlayer.getCurrentPositionId() == (bobby.getCurrentPositionId())
-                            && GameMode.MISTER_X.equals(this.gameMode))
+                    && GameMode.MISTER_X.equals(this.gameMode))
                     || (this.computerPlayer.getCurrentPositionId() == (bobby.getCurrentPositionId())
                             && GameMode.DETECTIVE.equals(this.gameMode))) {
-                this.setGameState(GameState.PAUSE);
+                this.setGameState(GameStatus.PAUSE);
                 return true;
             }
         }
@@ -169,25 +169,26 @@ public class GameImpl implements Game {
             if (this.userPlayer.getCurrentPositionId() == (bobby.getCurrentPositionId())) {
                 if (GameMode.MISTER_X.equals(this.gameMode)) {
                     return lossString;
-                } else{
+                } else {
                     return victoryString;
                 }
-            } else{
-                if(GameMode.DETECTIVE.equals(this.gameMode) && this.computerPlayer.getCurrentPositionId()==bobby.getCurrentPositionId()){
+            } else {
+                if (GameMode.DETECTIVE.equals(this.gameMode)
+                        && this.computerPlayer.getCurrentPositionId() == bobby.getCurrentPositionId()) {
                     return victoryString;
                 }
             }
         }
-        if (this.userPlayer.getCurrentPositionId() == this.computerPlayer.getCurrentPositionId()){
-            if( GameMode.MISTER_X.equals(this.gameMode)){
+        if (this.userPlayer.getCurrentPositionId() == this.computerPlayer.getCurrentPositionId()) {
+            if (GameMode.MISTER_X.equals(this.gameMode)) {
                 return lossString;
-            } else{
+            } else {
                 return victoryString;
             }
-        } else{
-            if( GameMode.DETECTIVE.equals(this.gameMode)){
+        } else {
+            if (GameMode.DETECTIVE.equals(this.gameMode)) {
                 return lossString;
-            } else{
+            } else {
                 return victoryString;
             }
         }
@@ -197,13 +198,15 @@ public class GameImpl implements Game {
     public void loadPossibleDestinations(Set<Pair<Integer, TransportType>> inputPossibleDestinations) {
         this.possibleDestinations = inputPossibleDestinations;
 
-        // Removal of destinations that can be reached by ferry, if player is not Mister X
+        // Removal of destinations that can be reached by ferry, if player is not Mister
+        // X
         if ((GameMode.DETECTIVE.equals(this.gameMode) && this.currentPlayer != this.computerPlayer)
                 || (GameMode.MISTER_X.equals(this.gameMode) && this.currentPlayer != this.userPlayer)) {
             this.possibleDestinations.removeIf(item -> TransportType.FERRY.equals(item.getY()));
         }
 
-        /*  Removal of destinations in which other players are present :
+        /*
+         * Removal of destinations in which other players are present :
          * - Mister X can't go where the detective and bobbies are
          * - Detective can't go where other bobbies are
          * - Bobbies can't go where detective is
@@ -381,12 +384,28 @@ public class GameImpl implements Game {
     }
 
     @Override
-    public GameState getGameState() {
+    public GameStatus getGameState() {
         return this.gameState;
     }
 
     @Override
-    public void setGameState(GameState state) {
+    public void setGameState(GameStatus state) {
         this.gameState = state;
+    }
+
+    @Override
+    public List<Player> getBobbies() {
+        return new ArrayList<>(additionalPlayers);
+    }
+
+    @Override
+    public Player getDetective() {
+        // In MISTER_X mode, Detective is the computer player
+        // In DETECTIVE mode, Detective is the user player
+        if (gameMode == GameMode.MISTER_X) {
+            return computerPlayer;
+        } else {
+            return userPlayer;
+        }
     }
 }

@@ -1,8 +1,8 @@
 package it.unibo.scotyard.controller.game;
 
 import it.unibo.scotyard.controller.Controller;
-import it.unibo.scotyard.model.game.Game;
 import it.unibo.scotyard.model.game.GameState;
+import it.unibo.scotyard.model.game.GameStatus;
 import it.unibo.scotyard.model.game.turn.TurnManagerImpl.MoveOption;
 import it.unibo.scotyard.model.map.MapData;
 import it.unibo.scotyard.model.map.TransportType;
@@ -18,9 +18,12 @@ import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
 /**
- * Controller implementation for Mr. X gameplay. Manages game initialization, turn logic, and UI updates.
+ * Controller implementation for Mr. X gameplay. Manages game initialization,
+ * turn logic, and UI updates.
  *
- * <p>Double move state machine Node click handling Transport selection when multiple options available UI
+ * <p>
+ * Double move state machine Node click handling Transport selection when
+ * multiple options available UI
  * synchronization
  */
 public final class MrXGameControllerImpl extends GameControllerImpl {
@@ -41,13 +44,13 @@ public final class MrXGameControllerImpl extends GameControllerImpl {
     /**
      * Creates a new Mr. X game controller.
      *
-     * @param game the game instance
-     * @param mapData the map data
+     * @param game     the game instance
+     * @param mapData  the map data
      * @param gameView the game view
      * @throws NullPointerException if any parameter is null
      */
     public MrXGameControllerImpl(
-            final Game game, final MapData mapData, final GameView gameView, final Controller controller) {
+            final GameState game, final MapData mapData, final GameView gameView, final Controller controller) {
         super(game, gameView, controller);
         this.mapData = Objects.requireNonNull(mapData, "MapData cannot be null");
         this.doubleMoveState = DoubleMoveState.AVAILABLE;
@@ -71,11 +74,10 @@ public final class MrXGameControllerImpl extends GameControllerImpl {
         // poizione Random
         final List<Integer> initialPositions = this.mapData.getInitialPositions();
         final int startPos = initialPositions.get(new Random().nextInt(initialPositions.size()));
-        mrX.setCurrentPosition(startPos);
         mrX.initialize(this.mapData);
 
         // Set game state
-        this.game.setGameState(GameState.PLAYING);
+        this.game.setGameState(GameStatus.PLAYING);
     }
 
     /** Sets up UI event listeners. */
@@ -96,7 +98,7 @@ public final class MrXGameControllerImpl extends GameControllerImpl {
      * @param nodeId the clicked node ID
      */
     private void onNodeClicked(final int nodeId) {
-        if (this.game.getGameState() != GameState.PLAYING) {
+        if (this.game.getGameState() != GameStatus.PLAYING) {
             return;
         }
 
@@ -138,7 +140,7 @@ public final class MrXGameControllerImpl extends GameControllerImpl {
 
     /** Handles end turn button click. */
     private void onEndTurn() {
-        if (this.game.getGameState() != GameState.PLAYING) {
+        if (this.game.getGameState() != GameStatus.PLAYING) {
             return;
         }
 
@@ -200,7 +202,7 @@ public final class MrXGameControllerImpl extends GameControllerImpl {
 
     /** Handles double move button click. */
     private void onDoubleMoveButtonClicked() {
-        if (this.game.getGameState() != GameState.PLAYING) {
+        if (this.game.getGameState() != GameStatus.PLAYING) {
             return;
         }
 
@@ -301,14 +303,13 @@ public final class MrXGameControllerImpl extends GameControllerImpl {
     /**
      * Shows transport selection dialog when multiple options available.
      *
-     * @param moves the list of possible moves to the same destination
+     * @param moves  the list of possible moves to the same destination
      * @param nodeId the destination node ID
      * @return the selected move option, or null if cancelled
      */
     private MoveOption chooseTransport(final List<MoveOption> moves, final int nodeId) {
 
-        final List<TransportType> transportTypes =
-                moves.stream().map(MoveOption::getTransport).toList();
+        final List<TransportType> transportTypes = moves.stream().map(MoveOption::getTransport).toList();
 
         // dialog
         final TransportSelectionDialog dialog = new TransportSelectionDialog(null, nodeId, transportTypes);

@@ -1,7 +1,7 @@
 package it.unibo.scotyard.controller.game;
 
 import it.unibo.scotyard.controller.Controller;
-import it.unibo.scotyard.model.game.Game;
+import it.unibo.scotyard.model.game.GameState;
 import it.unibo.scotyard.model.game.GameMode;
 import it.unibo.scotyard.model.map.TransportType;
 import it.unibo.scotyard.model.players.Player;
@@ -14,11 +14,11 @@ import javax.swing.JPanel;
 
 public abstract class GameControllerImpl implements GameController {
 
-    protected final Game game;
+    protected final GameState game;
     protected final GameView view;
     protected final Controller mainController;
 
-    public GameControllerImpl(final Game gameData, final GameView view, final Controller controller) {
+    public GameControllerImpl(final GameState gameData, final GameView view, final Controller controller) {
         this.game = Objects.requireNonNull(gameData, "Game cannot be null");
         this.view = Objects.requireNonNull(view, "GameView cannot be null");
         this.mainController = Objects.requireNonNull(controller, "mainController cannot be null");
@@ -86,7 +86,8 @@ public abstract class GameControllerImpl implements GameController {
     }
 
     /**
-     * Checks if there are multiple transport types to reach destination or not. Used only in
+     * Checks if there are multiple transport types to reach destination or not.
+     * Used only in
      * DetectiveGameControllerImpl.
      *
      * @param newPositionId the id of the destination
@@ -94,7 +95,8 @@ public abstract class GameControllerImpl implements GameController {
     public abstract void destinationChosen(int newPositionId);
 
     /**
-     * Sets the selcted transport type to reach destination. Used only in DetectiveGameControllerImpl.
+     * Sets the selcted transport type to reach destination. Used only in
+     * DetectiveGameControllerImpl.
      *
      * @param transportType the type of transport selected
      */

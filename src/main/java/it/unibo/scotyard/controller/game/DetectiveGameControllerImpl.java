@@ -2,7 +2,7 @@ package it.unibo.scotyard.controller.game;
 
 import it.unibo.scotyard.controller.Controller;
 import it.unibo.scotyard.model.Pair;
-import it.unibo.scotyard.model.game.Game;
+import it.unibo.scotyard.model.game.GameState;
 import it.unibo.scotyard.model.map.TransportType;
 import it.unibo.scotyard.model.players.Player;
 import it.unibo.scotyard.view.game.GameView;
@@ -14,7 +14,7 @@ public final class DetectiveGameControllerImpl extends GameControllerImpl {
     private int selectedDestination;
     private TransportType selectedTransportType;
 
-    public DetectiveGameControllerImpl(final Game gameData, final GameView view, final Controller mainController) {
+    public DetectiveGameControllerImpl(final GameState gameData, final GameView view, final Controller mainController) {
         super(gameData, view, mainController);
 
         this.view.getSidebar().setEndTurnListener(e -> onEndTurn());
@@ -52,7 +52,8 @@ public final class DetectiveGameControllerImpl extends GameControllerImpl {
     }
 
     /**
-     * Manages a round of a game. If the game is over, it calls a method of the GameView, which opens a the game over
+     * Manages a round of a game. If the game is over, it calls a method of the
+     * GameView, which opens a the game over
      * window, which takes back the user to the main menu.
      */
     public void manageGameRound() {
@@ -61,8 +62,8 @@ public final class DetectiveGameControllerImpl extends GameControllerImpl {
         } else {
             this.updateSidebar(this.game.getCurrentPlayer());
             this.updatePlayerPositionView(this.game.getCurrentPlayer());
-            Set<Pair<Integer, TransportType>> possibleDestinations =
-                    new HashSet<>(this.mainController.getPossibleDestinations(
+            Set<Pair<Integer, TransportType>> possibleDestinations = new HashSet<>(
+                    this.mainController.getPossibleDestinations(
                             this.game.getPositionPlayer(this.game.getCurrentPlayer())));
             this.game.loadPossibleDestinations(possibleDestinations);
             Set<Integer> possibleDestinationsIDs = new HashSet<>();

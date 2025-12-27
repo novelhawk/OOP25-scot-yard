@@ -15,7 +15,8 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * reads and parses Scotland Yard map data from JSON files. The map data includes nodes, connections, reveal turns, and
+ * reads and parses Scotland Yard map data from JSON files. The map data
+ * includes nodes, connections, reveal turns, and
  * initial positions.
  */
 public class MapReader {
@@ -42,7 +43,7 @@ public class MapReader {
      *
      * @param resourcePath the classpath resource path to the map JSON file
      * @return the loaded map data
-     * @throws MapLoadException if the map cannot be loaded or parsed
+     * @throws MapLoadException     if the map cannot be loaded or parsed
      * @throws NullPointerException if resourcePath is null
      */
     public MapData loadMap(final String resourcePath) throws MapLoadException {
@@ -98,7 +99,8 @@ public class MapReader {
     }
 
     /**
-     * Parses connections from JSON where transports are separated by type. Has "taxi", "bus", "underground", "black"
+     * Parses connections from JSON where transports are separated by type. Has
+     * "taxi", "bus", "underground", "black"
      * arrays with [from, to] pairs.
      *
      * @param jsonObject the root JSON object containing transport arrays
@@ -126,7 +128,8 @@ public class MapReader {
     }
 
     /**
-     * Parses connections from an array of [from, to] pairs for a specific transport type.
+     * Parses connections from an array of [from, to] pairs for a specific transport
+     * type.
      *
      * @param jsonArray the array of [from, to] pairs
      * @param transport the transport type for these connections
@@ -141,6 +144,7 @@ public class MapReader {
             final int to = connectionArray.get(1).getAsInt();
 
             connections.add(new MapConnection(null, from, to, transport));
+            connections.add(new MapConnection(null, to, from, transport));
         }
 
         return connections;
@@ -173,7 +177,7 @@ public class MapReader {
          * Creates a new MapLoadException with the specified message and cause.
          *
          * @param message the error message
-         * @param cause the underlying cause
+         * @param cause   the underlying cause
          */
         public MapLoadException(final String message, final Throwable cause) {
             super(message, cause);

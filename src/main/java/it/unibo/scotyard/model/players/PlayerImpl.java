@@ -68,6 +68,7 @@ public abstract class PlayerImpl implements Player {
     @Override
     public void setCurrentPosition(final int nodeId) {
         // Create a MapNode with the given ID
+        this.currentPositionId = nodeId;
         this.currentPosition = new MapNode(nodeId, 0, 0);
     }
 
