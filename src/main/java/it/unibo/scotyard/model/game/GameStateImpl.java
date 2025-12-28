@@ -148,7 +148,7 @@ public class GameStateImpl implements GameState {
         }
         for (Player bobby : this.additionalPlayers) {
             if ((this.userPlayer.getCurrentPositionId() == (bobby.getCurrentPositionId())
-                    && GameMode.MISTER_X.equals(this.gameMode))
+                            && GameMode.MISTER_X.equals(this.gameMode))
                     || (this.computerPlayer.getCurrentPositionId() == (bobby.getCurrentPositionId())
                             && GameMode.DETECTIVE.equals(this.gameMode))) {
                 this.setGameState(GameStatus.PAUSE);
@@ -211,12 +211,14 @@ public class GameStateImpl implements GameState {
             int pos = destination.getX();
             this.possibleDestinations.add(destination);
             /* Mister X can't go where detective is. */
-            if (GameMode.MISTER_X.equals(this.gameMode) && this.currentPlayer.equals(this.userPlayer)
+            if (GameMode.MISTER_X.equals(this.gameMode)
+                    && this.currentPlayer.equals(this.userPlayer)
                     && pos == this.computerPlayer.getCurrentPositionId()) {
                 this.possibleDestinations.remove(destination);
             }
             /* Mister X can't go where detective is. */
-            if (GameMode.DETECTIVE.equals(this.gameMode) && this.currentPlayer.equals(this.computerPlayer)
+            if (GameMode.DETECTIVE.equals(this.gameMode)
+                    && this.currentPlayer.equals(this.computerPlayer)
                     && pos == this.userPlayer.getCurrentPositionId()) {
                 this.possibleDestinations.remove(destination);
             }

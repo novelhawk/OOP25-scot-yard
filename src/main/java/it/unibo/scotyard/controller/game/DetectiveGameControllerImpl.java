@@ -63,8 +63,7 @@ public final class DetectiveGameControllerImpl extends GameControllerImpl {
     }
 
     /**
-     * Manages a round of a game. If the game is over, it calls a method of the
-     * GameView, which opens a the game over
+     * Manages a round of a game. If the game is over, it calls a method of the GameView, which opens a the game over
      * window, which takes back the user to the main menu.
      */
     public void manageGameRound() {
@@ -76,15 +75,15 @@ public final class DetectiveGameControllerImpl extends GameControllerImpl {
                 hideMisterXPosition();
             }
             this.updatePlayerPositionView(this.game.getCurrentPlayer());
-            Set<Pair<Integer, TransportType>> possibleDestinations = new HashSet<>(
-                    this.mainController.getPossibleDestinations(
+            Set<Pair<Integer, TransportType>> possibleDestinations =
+                    new HashSet<>(this.mainController.getPossibleDestinations(
                             this.game.getPositionPlayer(this.game.getCurrentPlayer())));
             possibleDestinations = this.game.loadPossibleDestinations(possibleDestinations);
             Set<Integer> possibleDestinationsIDs = new HashSet<>();
             for (Pair<Integer, TransportType> pair : possibleDestinations) {
                 possibleDestinationsIDs.add(pair.getX());
             }
-            if (this.game.getCurrentPlayer().getName().equals("Mister X")) {
+            if ("Mister X".equals(this.game.getCurrentPlayer().getName())) {
                 // TODO : executeIA(), per turno di Mister X
             } else {
                 this.view.getMapPanel().loadPossibleDestinations(possibleDestinationsIDs);
