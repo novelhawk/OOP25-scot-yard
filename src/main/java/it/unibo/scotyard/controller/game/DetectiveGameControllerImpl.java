@@ -11,6 +11,8 @@ import java.util.Set;
 
 public final class DetectiveGameControllerImpl extends GameControllerImpl {
 
+    private static final int NOT_VISIBLE_ON_MAP = -1;
+
     private int selectedDestination;
     private TransportType selectedTransportType;
 
@@ -36,13 +38,22 @@ public final class DetectiveGameControllerImpl extends GameControllerImpl {
         }
     }
 
+    /** Hides Mister X position on the map */
+    private void hideMisterXPosition() {
+        this.view.getMapPanel().setMisterXPosition(NOT_VISIBLE_ON_MAP);
+    }
+
     private void updatePlayerPositionView(Player currentPlayer) {
         switch (currentPlayer.getName()) {
             case "Detective":
                 this.view.getMapPanel().setDetectivePosition(currentPlayer.getCurrentPositionId());
                 break;
             case "Mister X":
-                this.view.getMapPanel().setMisterXPosition(currentPlayer.getCurrentPositionId());
+                if (this.game.hideMisterX()) {
+                    hideMisterXPosition();
+                } else {
+                    this.view.getMapPanel().setMisterXPosition(currentPlayer.getCurrentPositionId());
+                }
                 break;
             default:
                 int index = Integer.valueOf(currentPlayer.getName().substring(5, 6)) - 1;
@@ -52,7 +63,8 @@ public final class DetectiveGameControllerImpl extends GameControllerImpl {
     }
 
     /**
-     * Manages a round of a game. If the game is over, it calls a method of the GameView, which opens a the game over
+     * Manages a round of a game. If the game is over, it calls a method of the
+     * GameView, which opens a the game over
      * window, which takes back the user to the main menu.
      */
     public void manageGameRound() {
@@ -60,16 +72,23 @@ public final class DetectiveGameControllerImpl extends GameControllerImpl {
             this.loadGameOverWindow();
         } else {
             this.updateSidebar(this.game.getCurrentPlayer());
+            if (this.game.hideMisterX()) {
+                hideMisterXPosition();
+            }
             this.updatePlayerPositionView(this.game.getCurrentPlayer());
-            Set<Pair<Integer, TransportType>> possibleDestinations =
-                    new HashSet<>(this.mainController.getPossibleDestinations(
+            Set<Pair<Integer, TransportType>> possibleDestinations = new HashSet<>(
+                    this.mainController.getPossibleDestinations(
                             this.game.getPositionPlayer(this.game.getCurrentPlayer())));
-            this.game.loadPossibleDestinations(possibleDestinations);
+            possibleDestinations = this.game.loadPossibleDestinations(possibleDestinations);
             Set<Integer> possibleDestinationsIDs = new HashSet<>();
             for (Pair<Integer, TransportType> pair : possibleDestinations) {
                 possibleDestinationsIDs.add(pair.getX());
             }
-            this.view.getMapPanel().loadPossibleDestinations(possibleDestinationsIDs);
+            if (this.game.getCurrentPlayer().getName().equals("Mister X")) {
+                // TODO : executeIA(), per turno di Mister X
+            } else {
+                this.view.getMapPanel().loadPossibleDestinations(possibleDestinationsIDs);
+            }
             this.view.getMapPanel().repaint();
         }
     }
@@ -99,14 +118,12 @@ public final class DetectiveGameControllerImpl extends GameControllerImpl {
 
     private void movePlayer() {
         if (this.game.moveCurrentPlayer(this.selectedDestination, this.selectedTransportType)) {
-            this.view.getMapPanel().setSelectedDestination(-1);
+            this.view.getMapPanel().setSelectedDestination(NOT_VISIBLE_ON_MAP);
             this.updatePlayerPositionView(this.game.getCurrentPlayer());
             this.game.changeCurrentPlayer();
             this.game.nextRound();
             this.manageGameRound();
             this.view.getMapPanel().repaint();
-        } else {
-            System.out.println("ERRORE");
         }
     }
 }

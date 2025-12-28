@@ -17,6 +17,12 @@ public final class Constants {
     public static final Color UNDERGROUND_COLOR = new Color(200, 43, 29);
     public static final Color FERRY_COLOR = new Color(0, 0, 0);
 
+    // Reveal turns for Mister X
+    public static final List<Integer> REVEAL_TURNS_MISTER_X = List.of(3, 8, 13, 18);
+
+    // Final round number
+    public static final int FINAL_ROUND_NUMBER = 32;
+
     private Constants() {
         throw new AssertionError("non istanziabili le costanti");
     }

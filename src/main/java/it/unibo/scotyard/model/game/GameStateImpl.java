@@ -1,5 +1,6 @@
 package it.unibo.scotyard.model.game;
 
+import it.unibo.scotyard.commons.Constants;
 import it.unibo.scotyard.model.Pair;
 import it.unibo.scotyard.model.map.TransportType;
 import it.unibo.scotyard.model.players.Bobby;
@@ -15,7 +16,6 @@ import java.util.Set;
 
 public class GameStateImpl implements GameState {
 
-    private static final int FINAL_ROUND_NUMBER = 3;
     private static final int MISTER_X_ROUND_INDEX = -2;
     private static final int DETECTIVE_ROUND_INDEX = -1;
 
@@ -113,9 +113,9 @@ public class GameStateImpl implements GameState {
             case DIFFICULT:
                 this.additionalPlayers.add(new Bobby());
                 this.additionalPlayers.get(index).setPosition(this.getRandomInitialPosition());
-                this.playersNumber++;
                 index++;
                 this.additionalPlayers.get(index - 1).setName("Bobby" + index);
+                this.playersNumber++;
             case EASY:
                 this.additionalPlayers.add(new Bobby());
                 this.additionalPlayers.get(index).setPosition(this.getRandomInitialPosition());
@@ -142,13 +142,13 @@ public class GameStateImpl implements GameState {
     @Override
     public boolean isGameOver() {
         if (this.userPlayer.getCurrentPositionId() == this.computerPlayer.getCurrentPositionId()
-                || this.round > FINAL_ROUND_NUMBER) {
+                || this.round > Constants.FINAL_ROUND_NUMBER) {
             this.setGameState(GameStatus.PAUSE);
             return true;
         }
         for (Player bobby : this.additionalPlayers) {
             if ((this.userPlayer.getCurrentPositionId() == (bobby.getCurrentPositionId())
-                            && GameMode.MISTER_X.equals(this.gameMode))
+                    && GameMode.MISTER_X.equals(this.gameMode))
                     || (this.computerPlayer.getCurrentPositionId() == (bobby.getCurrentPositionId())
                             && GameMode.DETECTIVE.equals(this.gameMode))) {
                 this.setGameState(GameStatus.PAUSE);
@@ -195,27 +195,35 @@ public class GameStateImpl implements GameState {
     }
 
     @Override
-    public void loadPossibleDestinations(Set<Pair<Integer, TransportType>> inputPossibleDestinations) {
-        this.possibleDestinations = inputPossibleDestinations;
-
-        // Removal of destinations that can be reached by ferry, if player is not Mister
-        // X
-        if ((GameMode.DETECTIVE.equals(this.gameMode) && this.currentPlayer != this.computerPlayer)
-                || (GameMode.MISTER_X.equals(this.gameMode) && this.currentPlayer != this.userPlayer)) {
-            this.possibleDestinations.removeIf(item -> TransportType.FERRY.equals(item.getY()));
-        }
+    public Set<Pair<Integer, TransportType>> loadPossibleDestinations(
+            Set<Pair<Integer, TransportType>> inputPossibleDestinations) {
+        this.possibleDestinations.clear();
 
         /*
-         * Removal of destinations in which other players are present :
+         * Updating the variable possibleDestinations with the possible destinations
+         * given as input,
+         * with the removal of destinations in which other players are present :
          * - Mister X can't go where the detective and bobbies are
          * - Detective can't go where other bobbies are
          * - Bobbies can't go where detective is
          */
         for (Pair<Integer, TransportType> destination : inputPossibleDestinations) {
             int pos = destination.getX();
-            if (GameMode.MISTER_X.equals(this.gameMode) && pos == this.computerPlayer.getCurrentPositionId()) {
+            this.possibleDestinations.add(destination);
+            /* Mister X can't go where detective is. */
+            if (GameMode.MISTER_X.equals(this.gameMode) && this.currentPlayer.equals(this.userPlayer)
+                    && pos == this.computerPlayer.getCurrentPositionId()) {
                 this.possibleDestinations.remove(destination);
             }
+            /* Mister X can't go where detective is. */
+            if (GameMode.DETECTIVE.equals(this.gameMode) && this.currentPlayer.equals(this.computerPlayer)
+                    && pos == this.userPlayer.getCurrentPositionId()) {
+                this.possibleDestinations.remove(destination);
+            }
+            /*
+             * No player can go where other bobbies are.
+             * Bobbies can't go where detective is.
+             */
             for (Player bobby : this.additionalPlayers) {
                 if (bobby.getCurrentPositionId() == pos
                         || (GameMode.DETECTIVE.equals(this.gameMode)
@@ -224,33 +232,15 @@ public class GameStateImpl implements GameState {
                     this.possibleDestinations.remove(destination);
                 }
             }
-            // Removal of destinations for which current player has 0 tickets
-            if (this.getCurrentPlayer().getNumberTickets(Player.getTicketTypeForTransport(destination.getY())) == 0) {
-                this.possibleDestinations.remove(destination);
+            // Removal of destinations that can be reached by ferry, if player is not Mister
+            // X
+            if ((GameMode.DETECTIVE.equals(this.gameMode) && this.currentPlayer != this.computerPlayer)
+                    || (GameMode.MISTER_X.equals(this.gameMode) && this.currentPlayer != this.userPlayer)) {
+                this.possibleDestinations.removeIf(item -> TransportType.FERRY.equals(item.getY()));
             }
         }
 
-        // Test
-        // TODO: eliminare (una volta finita gestione turni)
-        System.out.println(this.currentPlayer);
-        for (Pair<Integer, TransportType> item : this.possibleDestinations) {
-            System.out.print(item.getX());
-            switch (item.getY()) {
-                case TransportType.UNDERGROUND:
-                    System.out.print(" U, ");
-                    break;
-                case TransportType.TAXI:
-                    System.out.print(" T, ");
-                    break;
-                case TransportType.BUS:
-                    System.out.print(" B, ");
-                    break;
-                case TransportType.FERRY:
-                    System.out.print(" F, ");
-                    break;
-            }
-        }
-        System.out.println("Fine");
+        return this.possibleDestinations;
     }
 
     @Override
@@ -336,6 +326,20 @@ public class GameStateImpl implements GameState {
             if (this.currentPlayer.equals(this.userPlayer)) {
                 this.incrementsRound();
             }
+        }
+    }
+
+    @Override
+    public boolean hideMisterX() {
+        if (GameMode.DETECTIVE.equals(this.gameMode)) {
+            if (Constants.REVEAL_TURNS_MISTER_X.contains(this.getGameRound())
+                    && this.currentPlayer.equals(this.computerPlayer)) {
+                return false;
+            } else {
+                return true;
+            }
+        } else {
+            return false;
         }
     }
 
