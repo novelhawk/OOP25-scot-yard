@@ -2,6 +2,7 @@ package it.unibo.scotyard.controller;
 
 import it.unibo.scotyard.controller.game.GameController;
 import it.unibo.scotyard.model.Pair;
+import it.unibo.scotyard.model.map.NodeId;
 import it.unibo.scotyard.model.map.TransportType;
 import java.util.List;
 import javax.swing.JPanel;
@@ -48,7 +49,7 @@ public interface Controller {
      * @param initialPosition the id of the starting position of the player
      * @return a list of possible destinations as pairs of integer and TransportType
      */
-    List<Pair<Integer, TransportType>> getPossibleDestinations(int initialPosition);
+    List<Pair<NodeId, TransportType>> getPossibleDestinations(NodeId initialPosition);
 
     /** Exits the application. */
     void exit();

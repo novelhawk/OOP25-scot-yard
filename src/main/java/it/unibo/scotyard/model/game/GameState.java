@@ -1,6 +1,7 @@
 package it.unibo.scotyard.model.game;
 
 import it.unibo.scotyard.model.Pair;
+import it.unibo.scotyard.model.map.NodeId;
 import it.unibo.scotyard.model.map.TransportType;
 import it.unibo.scotyard.model.players.Player;
 import it.unibo.scotyard.model.players.TicketType;
@@ -21,7 +22,7 @@ public interface GameState {
      * @param levelDifficulty the selected level of difficulty
      * @param initialPositions the list of the possible initial positions of players
      */
-    void initialize(final String gameMode, final String levelDifficulty, final List<Integer> initialPositions);
+    void initialize(final String gameMode, final String levelDifficulty, final List<NodeId> initialPositions);
 
     /**
      * @return the seeded shared random instance used by all game logic
@@ -51,11 +52,13 @@ public interface GameState {
      * @param inputPossibleDestinations the possible destinations loaded from Model
      * @return the updated set of possible destinations
      */
-    Set<Pair<Integer, TransportType>> loadPossibleDestinations(
-            Set<Pair<Integer, TransportType>> inputPossibleDestinations);
+    Set<Pair<NodeId, TransportType>> loadPossibleDestinations(
+            Set<Pair<NodeId, TransportType>> inputPossibleDestinations);
 
-    /** @return the set of possible destinations as pairs of integer and transport type */
-    Set<Pair<Integer, TransportType>> getPossibleDestinations();
+    /**
+     * @return the set of possible destinations as pairs of integer and transport type
+     */
+    Set<Pair<NodeId, TransportType>> getPossibleDestinations();
 
     /** Manages the current player. */
     void changeCurrentPlayer();
@@ -68,7 +71,7 @@ public interface GameState {
      * @return a boolean value which indicates whether there are multiple transports available for the destination given
      *     or not
      */
-    boolean areMultipleTransportsAvailable(int destinationId);
+    boolean areMultipleTransportsAvailable(NodeId destinationId);
 
     /**
      * Return a list of the transport types that can be used to reach the destination given.
@@ -76,7 +79,7 @@ public interface GameState {
      * @param destinationId the id of the destination
      * @return a list of transport types that can be used to reach destination
      */
-    List<TransportType> getAvailableTransports(int destinationId);
+    List<TransportType> getAvailableTransports(NodeId destinationId);
 
     /**
      * Return a boolean value which indicates whether the current player can be moved or not; if it's possible, their
@@ -86,7 +89,7 @@ public interface GameState {
      * @param transport the transport type to use to reach the destination
      * @return a boolean value which indicates whether the current player can be moved or not
      */
-    boolean moveCurrentPlayer(int destinationId, TransportType transport);
+    boolean moveCurrentPlayer(NodeId destinationId, TransportType transport);
 
     /** Goes to next round by incrementing the round number, if the current player is the last bobby. */
     void nextRound();
@@ -123,7 +126,7 @@ public interface GameState {
      *
      * @return the current position of the player passed as input
      */
-    int getPositionPlayer(Player player);
+    NodeId getPositionPlayer(Player player);
 
     /**
      * Return user player.

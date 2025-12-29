@@ -12,9 +12,9 @@ public interface Player {
     /**
      * Sets the position for the player.
      *
-     * @param position the input position
+     * @param nodeId the input position
      */
-    void setPosition(int newPosition);
+    void setPosition(NodeId nodeId);
 
     /**
      * @return the map containing the number of tickets possessed by the player for each ticket type
@@ -73,11 +73,4 @@ public interface Player {
      * @return the name of the player (their kind : detective, etc.)
      */
     String getName();
-
-    /**
-     * Sets the current position of the player.
-     *
-     * @param nodeId the node ID to set as current position
-     */
-    void setCurrentPosition(int nodeId);
 }

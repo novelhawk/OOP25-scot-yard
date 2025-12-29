@@ -1,7 +1,6 @@
 package it.unibo.scotyard.model.players;
 
 import it.unibo.scotyard.model.game.turn.TurnManager;
-import it.unibo.scotyard.model.map.MapNode;
 import it.unibo.scotyard.model.map.NodeId;
 import java.util.Map;
 
@@ -67,13 +66,6 @@ public abstract class PlayerImpl implements Player {
     @Override
     public String getName() {
         return this.name;
-    }
-
-    @Override
-    public void setCurrentPosition(final int nodeId) {
-        // Create a MapNode with the given ID
-        this.currentPositionId = nodeId;
-        this.currentPosition = new MapNode(nodeId, 0, 0);
     }
 
     /**

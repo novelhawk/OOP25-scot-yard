@@ -2,6 +2,7 @@ package it.unibo.scotyard.model.game;
 
 import it.unibo.scotyard.commons.Constants;
 import it.unibo.scotyard.model.Pair;
+import it.unibo.scotyard.model.map.NodeId;
 import it.unibo.scotyard.model.map.TransportType;
 import it.unibo.scotyard.model.players.Bobby;
 import it.unibo.scotyard.model.players.Detective;
@@ -34,8 +35,8 @@ public final class GameStateImpl implements GameState {
     private int playersNumber;
     private Player currentPlayer;
 
-    private List<Integer> initialPositions;
-    private Set<Pair<Integer, TransportType>> possibleDestinations; // They refer to the current player
+    private List<NodeId> initialPositions;
+    private Set<Pair<NodeId, TransportType>> possibleDestinations; // They refer to the current player
     private List<TransportType> availableTransports;
     private int indexCurrentPlayer; // It is used to keep track of the current player
 
@@ -48,19 +49,19 @@ public final class GameStateImpl implements GameState {
      * @param difficultyLevel the difficulty level
      * @param initialPositions the initial positions
      */
-    public GameStateImpl(String gameMode, String difficultyLevel, List<Integer> initialPositions) {
+    public GameStateImpl(String gameMode, String difficultyLevel, List<NodeId> initialPositions) {
         // TODO: seed
         this.random = new Random(0);
         this.additionalPlayers = new ArrayList<>();
         this.round = 0;
         this.playersNumber = 0;
-        this.availableTransports = new ArrayList<TransportType>();
-        this.possibleDestinations = new HashSet<Pair<Integer, TransportType>>();
+        this.availableTransports = new ArrayList<>();
+        this.possibleDestinations = new HashSet<>();
         this.initialize(gameMode, difficultyLevel, initialPositions);
     }
 
     @Override
-    public void initialize(final String gameMode, final String levelDifficulty, final List<Integer> initialPositions) {
+    public void initialize(final String gameMode, final String levelDifficulty, final List<NodeId> initialPositions) {
         this.gameMode = setGameMode(gameMode);
         this.gameDifficulty = setGameDifficulty(levelDifficulty);
         this.loadInitialPositions(initialPositions);
@@ -100,15 +101,14 @@ public final class GameStateImpl implements GameState {
         }
     }
 
-    private void loadInitialPositions(List<Integer> inputList) {
-        this.initialPositions = new ArrayList<Integer>(inputList);
+    private void loadInitialPositions(List<NodeId> inputList) {
+        this.initialPositions = new ArrayList<>(inputList);
     }
 
-    private int getRandomInitialPosition() {
+    private NodeId getRandomInitialPosition() {
         Random rand = new Random();
         int indexList = rand.nextInt(this.initialPositions.size());
-        int result = this.initialPositions.remove(indexList);
-        return result;
+        return this.initialPositions.remove(indexList);
     }
 
     private void setPlayers() {
@@ -124,25 +124,25 @@ public final class GameStateImpl implements GameState {
         }
         this.playersNumber++;
         this.playersNumber++;
-        this.userPlayer.setCurrentPosition(this.getRandomInitialPosition());
-        this.computerPlayer.setCurrentPosition(this.getRandomInitialPosition());
+        this.userPlayer.setPosition(this.getRandomInitialPosition());
+        this.computerPlayer.setPosition(this.getRandomInitialPosition());
         int index = 0;
         switch (this.gameDifficulty) {
             case MEDIUM:
             case DIFFICULT:
                 this.additionalPlayers.add(new Bobby());
-                this.additionalPlayers.get(index).setCurrentPosition(this.getRandomInitialPosition());
+                this.additionalPlayers.get(index).setPosition(this.getRandomInitialPosition());
                 index++;
                 this.additionalPlayers.get(index - 1).setName("Bobby" + index);
                 this.playersNumber++;
             case EASY:
                 this.additionalPlayers.add(new Bobby());
-                this.additionalPlayers.get(index).setCurrentPosition(this.getRandomInitialPosition());
+                this.additionalPlayers.get(index).setPosition(this.getRandomInitialPosition());
                 index++;
                 this.additionalPlayers.get(index - 1).setName("Bobby" + index);
                 this.playersNumber++;
                 this.additionalPlayers.add(new Bobby());
-                this.additionalPlayers.get(index).setCurrentPosition(this.getRandomInitialPosition());
+                this.additionalPlayers.get(index).setPosition(this.getRandomInitialPosition());
                 index++;
                 this.additionalPlayers.get(index - 1).setName("Bobby" + index);
                 this.playersNumber++;
@@ -160,17 +160,16 @@ public final class GameStateImpl implements GameState {
 
     @Override
     public boolean isGameOver() {
-        if (this.userPlayer.getCurrentPositionId() == this.computerPlayer.getCurrentPositionId()
+        if (this.userPlayer.getPosition().equals(this.computerPlayer.getPosition())
                 || this.round > Constants.FINAL_ROUND_NUMBER) {
-            this.setGameState(GameStatus.PAUSE);
+            this.setGameStatus(GameStatus.PAUSE);
             return true;
         }
         for (Player bobby : this.additionalPlayers) {
-            if ((this.userPlayer.getCurrentPositionId() == (bobby.getCurrentPositionId())
-                            && GameMode.MISTER_X.equals(this.gameMode))
-                    || (this.computerPlayer.getCurrentPositionId() == (bobby.getCurrentPositionId())
+            if ((this.userPlayer.getPosition().equals(bobby.getPosition()) && GameMode.MISTER_X.equals(this.gameMode))
+                    || (this.computerPlayer.getPosition().equals(bobby.getPosition())
                             && GameMode.DETECTIVE.equals(this.gameMode))) {
-                this.setGameState(GameStatus.PAUSE);
+                this.setGameStatus(GameStatus.PAUSE);
                 return true;
             }
         }
@@ -187,7 +186,7 @@ public final class GameStateImpl implements GameState {
         String victoryString = new String("Vittoria");
         String lossString = new String("Sconfitta");
         for (Player bobby : this.additionalPlayers) {
-            if (this.userPlayer.getCurrentPositionId() == (bobby.getCurrentPositionId())) {
+            if (this.userPlayer.getPosition().equals(bobby.getPosition())) {
                 if (GameMode.MISTER_X.equals(this.gameMode)) {
                     return lossString;
                 } else {
@@ -195,12 +194,12 @@ public final class GameStateImpl implements GameState {
                 }
             } else {
                 if (GameMode.DETECTIVE.equals(this.gameMode)
-                        && this.computerPlayer.getCurrentPositionId() == bobby.getCurrentPositionId()) {
+                        && this.computerPlayer.getPosition().equals(bobby.getPosition())) {
                     return victoryString;
                 }
             }
         }
-        if (this.userPlayer.getCurrentPositionId() == this.computerPlayer.getCurrentPositionId()) {
+        if (this.userPlayer.getPosition().equals(this.computerPlayer.getPosition())) {
             if (GameMode.MISTER_X.equals(this.gameMode)) {
                 return lossString;
             } else {
@@ -216,8 +215,8 @@ public final class GameStateImpl implements GameState {
     }
 
     @Override
-    public Set<Pair<Integer, TransportType>> loadPossibleDestinations(
-            Set<Pair<Integer, TransportType>> inputPossibleDestinations) {
+    public Set<Pair<NodeId, TransportType>> loadPossibleDestinations(
+            Set<Pair<NodeId, TransportType>> inputPossibleDestinations) {
         this.possibleDestinations.clear();
 
         /*
@@ -228,19 +227,19 @@ public final class GameStateImpl implements GameState {
          * - Detective can't go where other bobbies are
          * - Bobbies can't go where detective is
          */
-        for (Pair<Integer, TransportType> destination : inputPossibleDestinations) {
-            int pos = destination.getX();
+        for (Pair<NodeId, TransportType> destination : inputPossibleDestinations) {
+            final NodeId pos = destination.getX();
             this.possibleDestinations.add(destination);
             /* Mister X can't go where detective is. */
             if (GameMode.MISTER_X.equals(this.gameMode)
                     && this.currentPlayer.equals(this.userPlayer)
-                    && pos == this.computerPlayer.getCurrentPositionId()) {
+                    && pos == this.computerPlayer.getPosition()) {
                 this.possibleDestinations.remove(destination);
             }
             /* Mister X can't go where detective is. */
             if (GameMode.DETECTIVE.equals(this.gameMode)
                     && this.currentPlayer.equals(this.computerPlayer)
-                    && pos == this.userPlayer.getCurrentPositionId()) {
+                    && pos == this.userPlayer.getPosition()) {
                 this.possibleDestinations.remove(destination);
             }
             /*
@@ -248,10 +247,10 @@ public final class GameStateImpl implements GameState {
              * Bobbies can't go where detective is.
              */
             for (Player bobby : this.additionalPlayers) {
-                if (bobby.getCurrentPositionId() == pos
+                if (bobby.getPosition().equals(pos)
                         || (GameMode.DETECTIVE.equals(this.gameMode)
                                 && this.currentPlayer.equals(bobby)
-                                && pos == this.userPlayer.getCurrentPositionId())) {
+                                && pos == this.userPlayer.getPosition())) {
                     this.possibleDestinations.remove(destination);
                 }
             }
@@ -267,7 +266,7 @@ public final class GameStateImpl implements GameState {
     }
 
     @Override
-    public Set<Pair<Integer, TransportType>> getPossibleDestinations() {
+    public Set<Pair<NodeId, TransportType>> getPossibleDestinations() {
         return this.possibleDestinations;
     }
 
@@ -296,38 +295,30 @@ public final class GameStateImpl implements GameState {
         }
     }
 
-    private void loadAvailableTransports(int destinationId) {
+    private void loadAvailableTransports(NodeId destinationId) {
         this.availableTransports.clear();
-        for (Pair<Integer, TransportType> item : this.possibleDestinations) {
-            if (item.getX() == destinationId) {
+        for (Pair<NodeId, TransportType> item : this.possibleDestinations) {
+            if (item.getX().equals(destinationId)) {
                 this.availableTransports.add(item.getY());
             }
         }
     }
 
     @Override
-    public boolean areMultipleTransportsAvailable(int destinationId) {
+    public boolean areMultipleTransportsAvailable(NodeId destinationId) {
         this.loadAvailableTransports(destinationId);
-        if (this.availableTransports.size() > 1) {
-            return true;
-        } else {
-            return false;
-        }
+        return this.availableTransports.size() > 1;
     }
 
     @Override
-    public List<TransportType> getAvailableTransports(int destinationId) {
+    public List<TransportType> getAvailableTransports(NodeId destinationId) {
         return this.availableTransports;
     }
 
-    private void setPositionPlayer(Player player, int newPositionId) {
-        player.setPosition(newPositionId);
-    }
-
     @Override
-    public boolean moveCurrentPlayer(int destinationId, TransportType transport) {
+    public boolean moveCurrentPlayer(NodeId destinationId, TransportType transport) {
         if (this.possibleDestinations.contains(new Pair<>(destinationId, transport))) {
-            this.setPositionPlayer(this.currentPlayer, destinationId);
+            this.currentPlayer.setPosition(destinationId);
             this.currentPlayer.useTicket(Player.getTicketTypeForTransport(transport));
             return true;
         } else {
@@ -391,8 +382,8 @@ public final class GameStateImpl implements GameState {
     }
 
     @Override
-    public int getPositionPlayer(Player player) {
-        return player.getCurrentPositionId();
+    public NodeId getPositionPlayer(Player player) {
+        return player.getPosition();
     }
 
     @Override

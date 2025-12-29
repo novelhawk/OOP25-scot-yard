@@ -1,6 +1,7 @@
 package it.unibo.scotyard.controller.game;
 
 import it.unibo.scotyard.model.game.GameMode;
+import it.unibo.scotyard.model.map.NodeId;
 import it.unibo.scotyard.model.map.TransportType;
 import it.unibo.scotyard.model.players.Player;
 import it.unibo.scotyard.model.players.TicketType;
@@ -79,7 +80,7 @@ public interface GameController {
      *
      * @param newPositionId the id of the destination
      */
-    void destinationChosen(int newPositionId);
+    void destinationChosen(NodeId newPositionId);
 
     /**
      * Sets the selcted transport type to reach destination. Used only in DetectiveGameControllerImpl.

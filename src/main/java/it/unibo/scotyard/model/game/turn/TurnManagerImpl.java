@@ -2,6 +2,7 @@ package it.unibo.scotyard.model.game.turn;
 
 import it.unibo.scotyard.model.map.MapConnection;
 import it.unibo.scotyard.model.map.MapData;
+import it.unibo.scotyard.model.map.NodeId;
 import it.unibo.scotyard.model.map.TransportType;
 import java.util.List;
 import java.util.Objects;
@@ -18,7 +19,7 @@ public final class TurnManagerImpl implements TurnManager<TurnManagerImpl.MoveOp
 
     /** Represents a valid move option. Immutable value object combining destination and transport type. */
     public static final class MoveOption implements TurnManager.MoveOption {
-        private final int destinationNode;
+        private final NodeId destinationNode;
         private final TransportType transport;
 
         /**
@@ -28,13 +29,13 @@ public final class TurnManagerImpl implements TurnManager<TurnManagerImpl.MoveOp
          * @param transport the transport type
          * @throws NullPointerException if transport is null
          */
-        public MoveOption(final int destinationNode, final TransportType transport) {
+        public MoveOption(final NodeId destinationNode, final TransportType transport) {
             this.destinationNode = destinationNode;
             this.transport = Objects.requireNonNull(transport, "Transport cannot be null");
         }
 
         @Override
-        public int getDestinationNode() {
+        public NodeId getDestinationNode() {
             return destinationNode;
         }
 
@@ -71,7 +72,7 @@ public final class TurnManagerImpl implements TurnManager<TurnManagerImpl.MoveOp
     // Double move state
     private boolean doubleMoveAvailable;
     private boolean isFirstMoveOfDouble;
-    private int firstMoveDestination;
+    private NodeId firstMoveDestination;
     private TransportType firstMoveTransport;
 
     /**
@@ -87,7 +88,7 @@ public final class TurnManagerImpl implements TurnManager<TurnManagerImpl.MoveOp
     }
 
     @Override
-    public Set<MoveOption> getValidMoves(final int currentPosition, final Set<Integer> occupiedPositions) {
+    public Set<MoveOption> getValidMoves(final NodeId currentPosition, final Set<NodeId> occupiedPositions) {
         return mapData.getConnectionsFrom(currentPosition).stream()
                 .filter(conn -> !occupiedPositions.contains(conn.getTo()))
                 .map(conn -> new MoveOption(conn.getTo(), conn.getTransport()))
@@ -95,15 +96,18 @@ public final class TurnManagerImpl implements TurnManager<TurnManagerImpl.MoveOp
     }
 
     @Override
-    public boolean isValidMove(final int from, final int to, final TransportType transport) {
+    public boolean isValidMove(final NodeId from, final NodeId to, final TransportType transport) {
         final List<MapConnection> connections = mapData.getConnectionsFrom(from, transport);
 
         return connections.stream().anyMatch(conn -> conn.getTo() == to);
     }
 
     @Override
-    public int executeMove(
-            final int currentPosition, final int destination, final TransportType transport, final int turnNumber) {
+    public NodeId executeMove(
+            final NodeId currentPosition,
+            final NodeId destination,
+            final TransportType transport,
+            final int turnNumber) {
         validateMove(currentPosition, destination, transport);
         return destination;
     }
@@ -119,9 +123,9 @@ public final class TurnManagerImpl implements TurnManager<TurnManagerImpl.MoveOp
      * @throws IllegalStateException if double move not available
      * @throws IllegalArgumentException if the move is invalid
      */
-    public int startDoubleMove(
-            final int currentPosition,
-            final int firstDestination,
+    public NodeId startDoubleMove(
+            final NodeId currentPosition,
+            final NodeId firstDestination,
             final TransportType firstTransport,
             final int turnNumber) {
         if (!doubleMoveAvailable) {
@@ -147,8 +151,8 @@ public final class TurnManagerImpl implements TurnManager<TurnManagerImpl.MoveOp
      * @throws IllegalStateException if not in double move sequence
      * @throws IllegalArgumentException if the move is invalid
      */
-    public int completeDoubleMove(
-            final int secondDestination, final TransportType secondTransport, final int turnNumber) {
+    public NodeId completeDoubleMove(
+            final NodeId secondDestination, final TransportType secondTransport, final int turnNumber) {
         if (!isFirstMoveOfDouble) {
             throw new IllegalStateException("Non nella giusta sequenza");
         }
@@ -193,7 +197,7 @@ public final class TurnManagerImpl implements TurnManager<TurnManagerImpl.MoveOp
      * @param transport the transport type
      * @throws IllegalArgumentException if the move is invalid
      */
-    private void validateMove(final int from, final int to, final TransportType transport) {
+    private void validateMove(final NodeId from, final NodeId to, final TransportType transport) {
         if (!isValidMove(from, to, transport)) {
             throw new IllegalArgumentException(
                     "Mossa non valida: nessuna connessione via " + transport + " da " + from + " verso " + to);

@@ -4,10 +4,7 @@ import it.unibo.scotyard.model.game.GameState;
 import it.unibo.scotyard.model.game.GameStateImpl;
 import it.unibo.scotyard.model.handlers.CommandDispatcher;
 import it.unibo.scotyard.model.handlers.CommandRouter;
-import it.unibo.scotyard.model.map.MapConnection;
-import it.unibo.scotyard.model.map.MapData;
-import it.unibo.scotyard.model.map.MapReader;
-import it.unibo.scotyard.model.map.TransportType;
+import it.unibo.scotyard.model.map.*;
 import it.unibo.scotyard.model.service.GameStateService;
 import it.unibo.scotyard.model.service.RoundCommandService;
 import java.util.ArrayList;
@@ -83,13 +80,13 @@ public final class ModelImpl implements Model {
     }
 
     @Override
-    public List<Integer> getInitialPositions() {
+    public List<NodeId> getInitialPositions() {
         return this.mapData.getInitialPositions();
     }
 
     @Override
-    public List<Pair<Integer, TransportType>> getPossibleDestinations(int idStartPosition) {
-        List<Pair<Integer, TransportType>> resultList = new ArrayList<Pair<Integer, TransportType>>();
+    public List<Pair<NodeId, TransportType>> getPossibleDestinations(NodeId idStartPosition) {
+        List<Pair<NodeId, TransportType>> resultList = new ArrayList<>();
         List<MapConnection> connections = this.getMapData().getConnections();
         for (MapConnection connection : connections) {
             if (connection.getFrom() == idStartPosition) {
@@ -99,6 +96,7 @@ public final class ModelImpl implements Model {
                 resultList.add(new Pair<>(connection.getFrom(), connection.getTransport()));
             }
         }
+
         return resultList;
     }
 }

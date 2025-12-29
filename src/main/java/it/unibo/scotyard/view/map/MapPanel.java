@@ -31,6 +31,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.function.Consumer;
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
@@ -78,7 +79,7 @@ public final class MapPanel extends JPanel {
     private static final double NODE_SCALE_FACTOR = 0.5; // I nodi scalano al 50% rispetto allo zoom
 
     // Game State (Detective Mode)
-    private static final int POSITION_NOT_SET = -1;
+    private static final NodeId POSITION_NOT_SET = new NodeId(-1);
 
     private final MapInfo mapInfo;
     private BufferedImage backgroundImage;
@@ -106,13 +107,13 @@ public final class MapPanel extends JPanel {
     private int dragStartPanY;
 
     // Game Status
-    private int misterXPosition;
-    private int detectivePosition;
-    private List<Integer> bobbiesPositions;
-    private Set<Integer> possibleDestinations;
-    private int selectedDestination;
+    private NodeId misterXPosition;
+    private NodeId detectivePosition;
+    private List<NodeId> bobbiesPositions;
+    private Set<NodeId> possibleDestinations;
+    private NodeId selectedDestination;
     private Set<it.unibo.scotyard.model.game.turn.TurnManagerImpl.MoveOption> validMoves = new HashSet<>();
-    private java.util.function.Consumer<Integer> nodeClickListener = null;
+    private Consumer<NodeId> nodeClickListener = null;
 
     GameView gameView;
 
@@ -127,7 +128,7 @@ public final class MapPanel extends JPanel {
         this.gameView = view;
         this.detectivePosition = POSITION_NOT_SET;
         this.bobbiesPositions = new ArrayList<>();
-        this.possibleDestinations = new HashSet<Integer>();
+        this.possibleDestinations = new HashSet<>();
         this.selectedDestination = POSITION_NOT_SET;
         setupPanel();
     }
@@ -521,34 +522,34 @@ public final class MapPanel extends JPanel {
     // Detective Game Mode
 
     /** Sets the detective position. */
-    public void setDetectivePosition(int position) {
+    public void setDetectivePosition(NodeId position) {
         this.detectivePosition = position;
     }
 
     /** Sets Mister X position. */
-    public void setMisterXPosition(int position) {
+    public void setMisterXPosition(NodeId position) {
         this.misterXPosition = position;
     }
 
     /** Initializes bobbies list of positions. */
     public void initializeBobbies(int numberOfBobbies) {
         for (int i = 0; i < numberOfBobbies; i++) {
-            this.bobbiesPositions.add(i, -1);
+            this.bobbiesPositions.add(i, new NodeId(-1));
         }
     }
 
     /** Sets bobby position. */
-    public void setBobbyPosition(int position, int indexBobby) {
+    public void setBobbyPosition(NodeId position, int indexBobby) {
         this.bobbiesPositions.set(indexBobby, position);
     }
 
     /** Loads the possible destinations for current player. */
-    public void loadPossibleDestinations(Set<Integer> destinations) {
+    public void loadPossibleDestinations(Set<NodeId> destinations) {
         this.possibleDestinations = destinations;
     }
 
     /** Sets the selected destination. */
-    public void setSelectedDestination(int destination) {
+    public void setSelectedDestination(NodeId destination) {
         this.selectedDestination = destination;
     }
 
@@ -589,8 +590,8 @@ public final class MapPanel extends JPanel {
                         return;
                     }
                     // Otherwise use possibleDestinations (Detective mode)
-                    for (Integer nodeIdPossibleDest : this.possibleDestinations) {
-                        if (nodeIdPossibleDest == node.getId()) {
+                    for (NodeId possibleDestination : this.possibleDestinations) {
+                        if (possibleDestination.equals(node.getId())) {
                             this.setSelectedDestination(node.getId());
                             this.gameView.destinationChosen(node.getId());
                         }
@@ -601,8 +602,8 @@ public final class MapPanel extends JPanel {
     }
 
     /** Draw the player given as input on the map. */
-    private void drawPlayer(Graphics2D g2d, String playerString, int position, int scaledRadius, double nodeZoom) {
-        if (position > 0) {
+    private void drawPlayer(Graphics2D g2d, String playerString, NodeId position, int scaledRadius, double nodeZoom) {
+        if (position.id() > 0) {
             final Point2D pos = scaledNodePositions.get(position);
             if (pos != null) {
                 final int x = (int) pos.getX();
@@ -654,7 +655,7 @@ public final class MapPanel extends JPanel {
      *
      * @param listener the listener to call when a node is clicked (null to disable)
      */
-    public void setNodeClickListener(final java.util.function.Consumer<Integer> listener) {
+    public void setNodeClickListener(final Consumer<NodeId> listener) {
         this.nodeClickListener = listener;
     }
 
@@ -663,7 +664,7 @@ public final class MapPanel extends JPanel {
         final int scaledRadius = (int) (NODE_RADIUS * nodeZoom);
 
         // Render valid moves (green)
-        Set<Integer> validDestinations = new HashSet<>();
+        Set<NodeId> validDestinations = new HashSet<>();
 
         if (nodeClickListener != null) {
             // Mr. X mode: usa validMoves
@@ -676,7 +677,7 @@ public final class MapPanel extends JPanel {
         }
 
         // Render green node
-        for (int nodeId : validDestinations) {
+        for (NodeId nodeId : validDestinations) {
             final Point2D pos = scaledNodePositions.get(nodeId);
             if (pos != null) {
                 final int x = (int) pos.getX();
@@ -688,7 +689,7 @@ public final class MapPanel extends JPanel {
         }
 
         // Render selected destination (blu border)
-        if (selectedDestination >= 0) {
+        if (selectedDestination.id() >= 0) {
             final Point2D pos = scaledNodePositions.get(selectedDestination);
             if (pos != null) {
                 final int x = (int) pos.getX();

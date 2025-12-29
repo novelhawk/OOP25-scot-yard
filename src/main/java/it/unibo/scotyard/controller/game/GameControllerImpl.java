@@ -3,6 +3,7 @@ package it.unibo.scotyard.controller.game;
 import it.unibo.scotyard.controller.Controller;
 import it.unibo.scotyard.model.game.GameMode;
 import it.unibo.scotyard.model.game.GameState;
+import it.unibo.scotyard.model.map.NodeId;
 import it.unibo.scotyard.model.map.TransportType;
 import it.unibo.scotyard.model.players.Player;
 import it.unibo.scotyard.model.players.TicketType;
@@ -29,8 +30,8 @@ public abstract class GameControllerImpl implements GameController {
      * @param view the view
      * @param controller the controller
      */
-    public GameControllerImpl(final GameState gameData, final GameView view, final Controller controller) {
-        this.gameState = Objects.requireNonNull(gameData, "Game cannot be null");
+    public GameControllerImpl(final GameState gameState, final GameView view, final Controller controller) {
+        this.gameState = Objects.requireNonNull(gameState, "Game cannot be null");
         this.view = Objects.requireNonNull(view, "GameView cannot be null");
         this.mainController = Objects.requireNonNull(controller, "mainController cannot be null");
     }
@@ -102,7 +103,7 @@ public abstract class GameControllerImpl implements GameController {
      *
      * @param newPositionId the id of the destination
      */
-    public abstract void destinationChosen(int newPositionId);
+    public abstract void destinationChosen(NodeId newPositionId);
 
     /**
      * Sets the selcted transport type to reach destination. Used only in DetectiveGameControllerImpl.

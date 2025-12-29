@@ -1,6 +1,7 @@
 package it.unibo.scotyard.view.game;
 
 import it.unibo.scotyard.controller.game.GameController;
+import it.unibo.scotyard.model.map.NodeId;
 import it.unibo.scotyard.model.map.TransportType;
 import it.unibo.scotyard.view.map.MapPanel;
 import it.unibo.scotyard.view.sidebar.SidebarPanel;
@@ -65,5 +66,5 @@ public interface GameView {
      *
      * @param destinationId the id of the selected destination
      */
-    void destinationChosen(int destinationId);
+    void destinationChosen(NodeId destinationId);
 }

@@ -5,6 +5,7 @@ import it.unibo.scotyard.model.game.GameState;
 import it.unibo.scotyard.model.game.GameStatus;
 import it.unibo.scotyard.model.game.turn.TurnManagerImpl.MoveOption;
 import it.unibo.scotyard.model.map.MapData;
+import it.unibo.scotyard.model.map.NodeId;
 import it.unibo.scotyard.model.map.TransportType;
 import it.unibo.scotyard.model.players.MisterX;
 import it.unibo.scotyard.model.players.Player;
@@ -60,27 +61,27 @@ public final class MrXGameControllerImpl extends GameControllerImpl {
         initializeMrX();
 
         // Inizzializza bobbies list in MapPanel
-        final int numberOfBobbies = this.game.getBobbies().size();
+        final int numberOfBobbies = this.gameState.getBobbies().size();
         this.getMapPanel().initializeBobbies(numberOfBobbies);
 
         setupListeners();
 
         updateUI();
 
-        super.updateSidebar(this.game.getCurrentPlayer());
+        super.updateSidebar(this.gameState.getCurrentPlayer());
     }
 
     /** Initializes Mr. X with random starting position. */
     private void initializeMrX() {
-        final MisterX mrX = (MisterX) this.game.getUserPlayer();
+        final MisterX mrX = (MisterX) this.gameState.getUserPlayer();
 
-        // poizione Random
-        final List<Integer> initialPositions = this.mapData.getInitialPositions();
-        final int startPos = initialPositions.get(new Random().nextInt(initialPositions.size()));
+        // posizione Random
+        final List<NodeId> initialPositions = this.mapData.getInitialPositions();
+        final NodeId startPos = initialPositions.get(new Random().nextInt(initialPositions.size()));
         mrX.initialize(this.mapData);
 
         // Set game state
-        this.game.setGameState(GameStatus.PLAYING);
+        this.gameState.setGameStatus(GameStatus.PLAYING);
     }
 
     /** Sets up UI event listeners. */
@@ -100,8 +101,8 @@ public final class MrXGameControllerImpl extends GameControllerImpl {
      *
      * @param nodeId the clicked node ID
      */
-    private void onNodeClicked(final int nodeId) {
-        if (this.game.getGameState() != GameStatus.PLAYING) {
+    private void onNodeClicked(final NodeId nodeId) {
+        if (this.gameState.getGameStatus() != GameStatus.PLAYING) {
             return;
         }
 
@@ -115,11 +116,11 @@ public final class MrXGameControllerImpl extends GameControllerImpl {
             return;
         }
 
-        final MisterX mrX = (MisterX) this.game.getUserPlayer();
-        final int currentPos = mrX.getCurrentPosition().getId();
+        final MisterX mrX = (MisterX) this.gameState.getUserPlayer();
+        final NodeId currentPos = mrX.getPosition();
 
         // Se click on current position allora deselect
-        if (nodeId == currentPos) {
+        if (nodeId.equals(currentPos)) {
             selectedMove = null;
             updateUI();
             return;
@@ -128,14 +129,14 @@ public final class MrXGameControllerImpl extends GameControllerImpl {
         final Set<MoveOption> validMoves = mrX.getValidMoves(Set.of());
 
         final List<MoveOption> movesToNode = validMoves.stream()
-                .filter(move -> move.getDestinationNode() == nodeId)
+                .filter(move -> move.getDestinationNode().equals(nodeId))
                 .toList();
 
         if (movesToNode.isEmpty()) {
             // mossa non valida
             JOptionPane.showMessageDialog(
                     null,
-                    "Mossa non valida " + nodeId + " - connessione non esistente!",
+                    "Mossa non valida " + nodeId.id() + " - connessione non esistente!",
                     "Invalid Move",
                     JOptionPane.WARNING_MESSAGE);
             return;
@@ -145,7 +146,7 @@ public final class MrXGameControllerImpl extends GameControllerImpl {
         if (movesToNode.size() > 1) {
             selectedMove = chooseTransport(movesToNode, nodeId);
         } else {
-            selectedMove = movesToNode.get(0);
+            selectedMove = movesToNode.getFirst();
         }
 
         updateUI();
@@ -153,7 +154,7 @@ public final class MrXGameControllerImpl extends GameControllerImpl {
 
     /** Handles end turn button click. */
     private void onEndTurn() {
-        if (this.game.getGameState() != GameStatus.PLAYING) {
+        if (this.gameState.getGameStatus() != GameStatus.PLAYING) {
             return;
         }
 
@@ -165,7 +166,7 @@ public final class MrXGameControllerImpl extends GameControllerImpl {
             return;
         }
 
-        final MisterX mrX = (MisterX) this.game.getUserPlayer();
+        final MisterX mrX = (MisterX) this.gameState.getUserPlayer();
 
         if (doubleMoveState == DoubleMoveState.COMPLETED) {
             // La doppia mossa è già stata eseguita, non serve makeMove()
@@ -182,7 +183,8 @@ public final class MrXGameControllerImpl extends GameControllerImpl {
 
             try {
                 // singola mossa
-                mrX.makeMove(selectedMove.getDestinationNode(), selectedMove.getTransport(), this.game.getGameRound());
+                mrX.makeMove(
+                        selectedMove.getDestinationNode(), selectedMove.getTransport(), this.gameState.getGameRound());
 
                 // clear
                 selectedMove = null;
@@ -202,18 +204,18 @@ public final class MrXGameControllerImpl extends GameControllerImpl {
             return;
         }
 
-        final Player startingPlayer = this.game.getCurrentPlayer(); // Mr. X
+        final Player startingPlayer = this.gameState.getCurrentPlayer(); // Mr. X
 
         do {
-            this.game.changeCurrentPlayer();
+            this.gameState.changeCurrentPlayer();
 
             // TODO: executeAI() per il player corrente (Detective o Bobby)
             // Per ora non fanno nulla, si limitano a passare il turno
 
-        } while (this.game.getCurrentPlayer() != startingPlayer); // Finché non torna a Mr. X
+        } while (this.gameState.getCurrentPlayer() != startingPlayer); // Finché non torna a Mr. X
 
         // Ora siamo tornati a Mr. X, incrementa il round
-        this.game.nextRound();
+        this.gameState.nextRound();
 
         // RESET stato per il nuovo turno
         // Controlla se ha ancora ticket doppia mossa
@@ -233,16 +235,16 @@ public final class MrXGameControllerImpl extends GameControllerImpl {
         updateUI();
 
         // Update sidebar
-        super.updateSidebar(this.game.getCurrentPlayer());
+        super.updateSidebar(this.gameState.getCurrentPlayer());
     }
 
     /** Handles double move button click. */
     private void onDoubleMoveButtonClicked() {
-        if (this.game.getGameState() != GameStatus.PLAYING) {
+        if (this.gameState.getGameStatus() != GameStatus.PLAYING) {
             return;
         }
 
-        final MisterX mrX = (MisterX) this.game.getUserPlayer();
+        final MisterX mrX = (MisterX) this.gameState.getUserPlayer();
 
         switch (doubleMoveState) {
             case AVAILABLE:
@@ -279,7 +281,9 @@ public final class MrXGameControllerImpl extends GameControllerImpl {
 
                 try {
                     mrX.startDoubleMove(
-                            selectedMove.getDestinationNode(), selectedMove.getTransport(), this.game.getGameRound());
+                            selectedMove.getDestinationNode(),
+                            selectedMove.getTransport(),
+                            this.gameState.getGameRound());
 
                     doubleMoveState = DoubleMoveState.WAITING_SECOND_MOVE;
                     selectedMove = null;
@@ -310,7 +314,9 @@ public final class MrXGameControllerImpl extends GameControllerImpl {
 
                 try {
                     mrX.completeDoubleMove(
-                            selectedMove.getDestinationNode(), selectedMove.getTransport(), this.game.getGameRound());
+                            selectedMove.getDestinationNode(),
+                            selectedMove.getTransport(),
+                            this.gameState.getGameRound());
 
                     doubleMoveState = DoubleMoveState.COMPLETED;
                     selectedMove = null;
@@ -343,7 +349,7 @@ public final class MrXGameControllerImpl extends GameControllerImpl {
      * @param nodeId the destination node ID
      * @return the selected move option, or null if cancelled
      */
-    private MoveOption chooseTransport(final List<MoveOption> moves, final int nodeId) {
+    private MoveOption chooseTransport(final List<MoveOption> moves, final NodeId nodeId) {
 
         final List<TransportType> transportTypes =
                 moves.stream().map(MoveOption::getTransport).toList();
@@ -366,31 +372,31 @@ public final class MrXGameControllerImpl extends GameControllerImpl {
     /** Updates all UI components. */
     private void updateUI() {
         SwingUtilities.invokeLater(() -> {
-            final MisterX mrX = (MisterX) this.game.getUserPlayer();
+            final MisterX mrX = (MisterX) this.gameState.getUserPlayer();
 
             updateDoubleMoveButtonUI();
 
             // Mr. X position
-            final int mrXPos =
-                    mrX.getCurrentPosition() != null ? mrX.getCurrentPosition().getId() : -1;
+            final NodeId mrXPos = mrX.getPosition();
             this.getMapPanel().setMisterXPosition(mrXPos);
 
             // Detective position (Mr. X mode mostra tutto)
-            final Player detective = this.game.getDetective();
+            final Player detective = this.gameState.getDetective();
             if (detective != null) {
-                final int detectivePos = detective.getCurrentPositionId();
+                final NodeId detectivePos = detective.getPosition();
                 this.getMapPanel().setDetectivePosition(detectivePos);
             }
 
             // Bobby positions
-            final List<Player> bobbies = this.game.getBobbies();
+            final List<Player> bobbies = this.gameState.getBobbies();
             for (int i = 0; i < bobbies.size(); i++) {
                 final Player bobby = bobbies.get(i);
-                final int bobbyPos = bobby.getCurrentPositionId();
+                final NodeId bobbyPos = bobby.getPosition();
                 this.getMapPanel().setBobbyPosition(bobbyPos, i);
             }
 
-            this.getMapPanel().setSelectedDestination(selectedMove != null ? selectedMove.getDestinationNode() : -1);
+            this.getMapPanel()
+                    .setSelectedDestination(selectedMove != null ? selectedMove.getDestinationNode() : new NodeId(-1));
 
             // Se la doppia mossa è completata, non mostrare validMoves
             if (doubleMoveState == DoubleMoveState.COMPLETED) {
@@ -405,7 +411,7 @@ public final class MrXGameControllerImpl extends GameControllerImpl {
 
     /** Updates double move UI */
     private void updateDoubleMoveButtonUI() {
-        final MisterX mrX = (MisterX) this.game.getUserPlayer();
+        final MisterX mrX = (MisterX) this.gameState.getUserPlayer();
         final SidebarPanel sidebar = this.view.getSidebar();
 
         switch (doubleMoveState) {
@@ -431,7 +437,7 @@ public final class MrXGameControllerImpl extends GameControllerImpl {
     // --- GameController ---
 
     // It doesn't do anything
-    public void destinationChosen(int newPositionId) {
+    public void destinationChosen(NodeId newPositionId) {
         // TODO : Usare questo metodo (cambiando gestione turno)?
     }
 

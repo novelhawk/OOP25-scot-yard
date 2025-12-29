@@ -1,5 +1,6 @@
 package it.unibo.scotyard.view.dialogs;
 
+import it.unibo.scotyard.model.map.NodeId;
 import it.unibo.scotyard.model.map.TransportType;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -50,7 +51,7 @@ public final class TransportSelectionDialog extends JDialog {
      * @param nodeId the destination node ID
      * @param transportTypes the available transport types
      */
-    public TransportSelectionDialog(final Frame parent, final int nodeId, final List<TransportType> transportTypes) {
+    public TransportSelectionDialog(final Frame parent, final NodeId nodeId, final List<TransportType> transportTypes) {
         super(parent, "Select Transport", true);
 
         selectedTransport = null;
@@ -74,13 +75,13 @@ public final class TransportSelectionDialog extends JDialog {
      * @param nodeId the destination node ID
      * @param transportTypes the available transport types
      */
-    private void buildContent(final int nodeId, final List<TransportType> transportTypes) {
+    private void buildContent(final NodeId nodeId, final List<TransportType> transportTypes) {
         final JPanel mainPanel = new JPanel(new BorderLayout(10, 10));
         mainPanel.setBackground(BACKGROUND_COLOR);
         mainPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
         // title
-        final JLabel titleLabel = new JLabel("Choose transport to node " + nodeId);
+        final JLabel titleLabel = new JLabel("Choose transport to node " + nodeId.id());
         titleLabel.setForeground(TEXT_COLOR);
         titleLabel.setFont(TITLE_FONT);
         titleLabel.setHorizontalAlignment(SwingConstants.CENTER);

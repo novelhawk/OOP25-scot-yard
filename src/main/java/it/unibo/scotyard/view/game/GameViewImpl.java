@@ -4,6 +4,7 @@ import it.unibo.scotyard.commons.Constants;
 import it.unibo.scotyard.commons.dtos.map.MapInfo;
 import it.unibo.scotyard.commons.engine.Size;
 import it.unibo.scotyard.controller.game.GameController;
+import it.unibo.scotyard.model.map.NodeId;
 import it.unibo.scotyard.model.map.TransportType;
 import it.unibo.scotyard.view.map.MapPanel;
 import it.unibo.scotyard.view.sidebar.SidebarPanel;
@@ -229,7 +230,7 @@ public final class GameViewImpl implements GameView {
     }
 
     @Override
-    public void destinationChosen(int destinationId) {
+    public void destinationChosen(NodeId destinationId) {
         this.observer.destinationChosen(destinationId);
         this.getMapPanel().repaint();
     }

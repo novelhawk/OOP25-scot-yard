@@ -3,6 +3,7 @@ package it.unibo.scotyard.model.players;
 import it.unibo.scotyard.model.game.turn.TurnManager;
 import it.unibo.scotyard.model.game.turn.TurnManagerImpl;
 import it.unibo.scotyard.model.map.MapData;
+import it.unibo.scotyard.model.map.NodeId;
 import it.unibo.scotyard.model.map.TransportType;
 import java.util.EnumMap;
 import java.util.Map;
@@ -36,7 +37,7 @@ public final class MisterX extends PlayerImpl {
         return ticketsMap;
     }
 
-    public void makeMove(final int destination, final TransportType transport, final int turnNumber) {
+    public void makeMove(final NodeId destination, final TransportType transport, final int turnNumber) {
         ensureInitialized();
 
         // Get ticket richiesto per questo trasporto
@@ -48,8 +49,8 @@ public final class MisterX extends PlayerImpl {
         }
 
         // esegue la mossa
-        final int newPosition = executeMoveInternal(destination, transport, turnNumber);
-        setCurrentPosition(newPosition);
+        final NodeId newPosition = executeMoveInternal(destination, transport, turnNumber);
+        setPosition(newPosition);
     }
 
     /**
@@ -81,8 +82,9 @@ public final class MisterX extends PlayerImpl {
         return (TurnManagerImpl) turnManager;
     }
 
-    protected int executeMoveInternal(final int destination, final TransportType transport, final int turnNumber) {
-        return getTurnManagerImpl().executeMove(this.currentPosition.getId(), destination, transport, turnNumber);
+    protected NodeId executeMoveInternal(
+            final NodeId destination, final TransportType transport, final int turnNumber) {
+        return getTurnManagerImpl().executeMove(this.position, destination, transport, turnNumber);
     }
 
     // --- MrX- Metodi Specifici (Double Move) ---
@@ -95,7 +97,8 @@ public final class MisterX extends PlayerImpl {
      * @param turnNumber the current turn number
      * @throws IllegalStateException if DOUBLE_MOVE ticket not available
      */
-    public void startDoubleMove(final int firstDestination, final TransportType firstTransport, final int turnNumber) {
+    public void startDoubleMove(
+            final NodeId firstDestination, final TransportType firstTransport, final int turnNumber) {
         ensureInitialized();
 
         // Usa DOUBLE_MOVE
@@ -107,9 +110,9 @@ public final class MisterX extends PlayerImpl {
         useTicket(ticketType);
 
         // first move
-        final int newPosition = getTurnManagerImpl()
-                .startDoubleMove(this.currentPosition.getId(), firstDestination, firstTransport, turnNumber);
-        setCurrentPosition(newPosition);
+        final NodeId newPosition =
+                getTurnManagerImpl().startDoubleMove(this.position, firstDestination, firstTransport, turnNumber);
+        setPosition(newPosition);
     }
 
     /**
@@ -120,15 +123,16 @@ public final class MisterX extends PlayerImpl {
      * @param turnNumber the current turn number
      */
     public void completeDoubleMove(
-            final int secondDestination, final TransportType secondTransport, final int turnNumber) {
+            final NodeId secondDestination, final TransportType secondTransport, final int turnNumber) {
         ensureInitialized();
 
         final TicketType ticketType = Player.getTicketTypeForTransport(secondTransport);
         useTicket(ticketType);
 
         // second move
-        final int newPosition = getTurnManagerImpl().completeDoubleMove(secondDestination, secondTransport, turnNumber);
-        setCurrentPosition(newPosition);
+        final NodeId newPosition =
+                getTurnManagerImpl().completeDoubleMove(secondDestination, secondTransport, turnNumber);
+        setPosition(newPosition);
     }
 
     /**
@@ -147,8 +151,8 @@ public final class MisterX extends PlayerImpl {
      * @param occupiedPositions set of positions occupied by other players
      * @return set of valid move options
      */
-    public Set<TurnManagerImpl.MoveOption> getValidMoves(final Set<Integer> occupiedPositions) {
+    public Set<TurnManagerImpl.MoveOption> getValidMoves(final Set<NodeId> occupiedPositions) {
         ensureInitialized();
-        return getTurnManagerImpl().getValidMoves(this.currentPosition.getId(), occupiedPositions);
+        return getTurnManagerImpl().getValidMoves(this.getPosition(), occupiedPositions);
     }
 }

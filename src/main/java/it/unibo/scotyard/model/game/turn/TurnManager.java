@@ -1,5 +1,6 @@
 package it.unibo.scotyard.model.game.turn;
 
+import it.unibo.scotyard.model.map.NodeId;
 import it.unibo.scotyard.model.map.TransportType;
 import java.util.Set;
 
@@ -20,7 +21,7 @@ public interface TurnManager<M extends TurnManager.MoveOption> {
          *
          * @return the node ID
          */
-        int getDestinationNode();
+        NodeId getDestinationNode();
 
         /**
          * Gets the transport type used for this move.
@@ -39,7 +40,7 @@ public interface TurnManager<M extends TurnManager.MoveOption> {
      * @return a set of valid move options
      * @throws IllegalArgumentException if currentPosition is invalid
      */
-    Set<M> getValidMoves(int currentPosition, Set<Integer> occupiedPositions);
+    Set<M> getValidMoves(NodeId currentPosition, Set<NodeId> occupiedPositions);
 
     /**
      * Checks if a specific move is valid. A move is valid if there exists a connection from 'from' to 'to' using the
@@ -51,7 +52,7 @@ public interface TurnManager<M extends TurnManager.MoveOption> {
      * @return true if the move is valid, false otherwise
      * @throws NullPointerException if transport is null
      */
-    boolean isValidMove(int from, int to, TransportType transport);
+    boolean isValidMove(NodeId from, NodeId to, TransportType transport);
 
     /**
      * Executes a move from current position to destination using the specified transport. This method validates the
@@ -65,5 +66,5 @@ public interface TurnManager<M extends TurnManager.MoveOption> {
      * @throws IllegalArgumentException if the move is invalid
      * @throws NullPointerException if transport is null
      */
-    int executeMove(int currentPosition, int destination, TransportType transport, int turnNumber);
+    NodeId executeMove(NodeId currentPosition, NodeId destination, TransportType transport, int turnNumber);
 }

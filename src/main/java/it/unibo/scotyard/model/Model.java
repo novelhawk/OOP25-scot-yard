@@ -3,6 +3,7 @@ package it.unibo.scotyard.model;
 import it.unibo.scotyard.model.game.GameState;
 import it.unibo.scotyard.model.handlers.CommandDispatcher;
 import it.unibo.scotyard.model.map.MapData;
+import it.unibo.scotyard.model.map.NodeId;
 import it.unibo.scotyard.model.map.TransportType;
 import java.util.List;
 
@@ -15,7 +16,6 @@ public interface Model {
      * @throws IllegalStateException if initialization fails
      * @param gameMode the selected game mode
      * @param levelDifficulty the selected level of difficulty
-     * @param initialPositions the list of the possible initial positions of players
      */
     void initialize(String gameMode, String levelDifficulty);
 
@@ -40,7 +40,7 @@ public interface Model {
      *
      * @return list of integers representing the possible initial positions of players
      */
-    List<Integer> getInitialPositions();
+    List<NodeId> getInitialPositions();
 
     /**
      * Return list of pairs of integer (representing the id) and TransportType of possible destinations, given the id of
@@ -49,7 +49,7 @@ public interface Model {
      * @param idStartPosition the id of the starting position
      * @return list of possible destinations as pairs of integer and TransportType
      */
-    List<Pair<Integer, TransportType>> getPossibleDestinations(int idStartPosition);
+    List<Pair<NodeId, TransportType>> getPossibleDestinations(NodeId idStartPosition);
 
     /**
      * Get the global command dispatcher.

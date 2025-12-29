@@ -13,6 +13,7 @@ import it.unibo.scotyard.controller.menu.NewGameMenuControllerImpl;
 import it.unibo.scotyard.model.Model;
 import it.unibo.scotyard.model.Pair;
 import it.unibo.scotyard.model.game.GameMode;
+import it.unibo.scotyard.model.map.NodeId;
 import it.unibo.scotyard.model.map.TransportType;
 import it.unibo.scotyard.view.ViewImpl;
 import it.unibo.scotyard.view.game.GameView;
@@ -77,13 +78,13 @@ public final class ControllerImpl implements Controller {
                 this.view.createGameView(this.model.getMapData().info());
 
         final GameController gameController;
-        if (this.model.getGameData().getGameMode() == GameMode.MISTER_X) {
+        if (this.model.getGameState().getGameMode() == GameMode.MISTER_X) {
             // Modalità Mister X
             gameController =
-                    new MrXGameControllerImpl(this.model.getGameData(), this.model.getMapData(), gameView, this);
+                    new MrXGameControllerImpl(this.model.getGameState(), this.model.getMapData(), gameView, this);
         } else {
             // Modalità Detective
-            gameController = new DetectiveGameControllerImpl(this.model.getGameData(), gameView, this);
+            gameController = new DetectiveGameControllerImpl(this.model.getGameState(), gameView, this);
         }
         gameController.initializeGame();
         gameView.setObserver(gameController);
@@ -93,7 +94,7 @@ public final class ControllerImpl implements Controller {
     }
 
     @Override
-    public List<Pair<Integer, TransportType>> getPossibleDestinations(int initialPosition) {
+    public List<Pair<NodeId, TransportType>> getPossibleDestinations(NodeId initialPosition) {
         return this.model.getPossibleDestinations(initialPosition);
     }
 
