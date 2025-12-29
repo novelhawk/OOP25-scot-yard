@@ -105,25 +105,25 @@ public class GameStateImpl implements GameState {
         }
         this.playersNumber++;
         this.playersNumber++;
-        this.userPlayer.setPosition(this.getRandomInitialPosition());
-        this.computerPlayer.setPosition(this.getRandomInitialPosition());
+        this.userPlayer.setCurrentPosition(this.getRandomInitialPosition());
+        this.computerPlayer.setCurrentPosition(this.getRandomInitialPosition());
         int index = 0;
         switch (this.gameDifficulty) {
             case MEDIUM:
             case DIFFICULT:
                 this.additionalPlayers.add(new Bobby());
-                this.additionalPlayers.get(index).setPosition(this.getRandomInitialPosition());
+                this.additionalPlayers.get(index).setCurrentPosition(this.getRandomInitialPosition());
                 index++;
                 this.additionalPlayers.get(index - 1).setName("Bobby" + index);
                 this.playersNumber++;
             case EASY:
                 this.additionalPlayers.add(new Bobby());
-                this.additionalPlayers.get(index).setPosition(this.getRandomInitialPosition());
+                this.additionalPlayers.get(index).setCurrentPosition(this.getRandomInitialPosition());
                 index++;
                 this.additionalPlayers.get(index - 1).setName("Bobby" + index);
                 this.playersNumber++;
                 this.additionalPlayers.add(new Bobby());
-                this.additionalPlayers.get(index).setPosition(this.getRandomInitialPosition());
+                this.additionalPlayers.get(index).setCurrentPosition(this.getRandomInitialPosition());
                 index++;
                 this.additionalPlayers.get(index - 1).setName("Bobby" + index);
                 this.playersNumber++;
@@ -155,8 +155,10 @@ public class GameStateImpl implements GameState {
                 return true;
             }
         }
-        if (this.possibleDestinations.isEmpty() && this.getGameRound() > 1) {
-            return true;
+        if (GameMode.DETECTIVE.equals(this.gameMode)) {
+            if (this.possibleDestinations.isEmpty() && this.getGameRound() > 1) {
+                return true;
+            }
         }
         return false;
     }

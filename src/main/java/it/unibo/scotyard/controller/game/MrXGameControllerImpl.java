@@ -7,6 +7,7 @@ import it.unibo.scotyard.model.game.turn.TurnManagerImpl.MoveOption;
 import it.unibo.scotyard.model.map.MapData;
 import it.unibo.scotyard.model.map.TransportType;
 import it.unibo.scotyard.model.players.MisterX;
+import it.unibo.scotyard.model.players.Player;
 import it.unibo.scotyard.view.dialogs.TransportSelectionDialog;
 import it.unibo.scotyard.view.game.GameView;
 import it.unibo.scotyard.view.sidebar.SidebarPanel;
@@ -30,7 +31,8 @@ public final class MrXGameControllerImpl extends GameControllerImpl {
         AVAILABLE,
         WAITING_FIRST_MOVE,
         WAITING_SECOND_MOVE,
-        COMPLETED
+        COMPLETED,
+        USED
     }
 
     private final MapData mapData;
@@ -56,6 +58,10 @@ public final class MrXGameControllerImpl extends GameControllerImpl {
     @Override
     public void initializeGame() {
         initializeMrX();
+
+        // Inizzializza bobbies list in MapPanel
+        final int numberOfBobbies = this.game.getBobbies().size();
+        this.getMapPanel().initializeBobbies(numberOfBobbies);
 
         setupListeners();
 
@@ -96,6 +102,16 @@ public final class MrXGameControllerImpl extends GameControllerImpl {
      */
     private void onNodeClicked(final int nodeId) {
         if (this.game.getGameState() != GameStatus.PLAYING) {
+            return;
+        }
+
+        // Se la doppia mossa è completata, blocca selezione nodi
+        if (doubleMoveState == DoubleMoveState.COMPLETED) {
+            JOptionPane.showMessageDialog(
+                    null,
+                    "Doppia mossa completata!\n\nClicca 'Fine Turno' per terminare il tuo turno.",
+                    "Turno Completato",
+                    JOptionPane.INFORMATION_MESSAGE);
             return;
         }
 
@@ -149,52 +165,75 @@ public final class MrXGameControllerImpl extends GameControllerImpl {
             return;
         }
 
-        if (selectedMove == null) {
-            JOptionPane.showMessageDialog(
-                    null, "Seleziona la prima destinazione!", "No Move Selected", JOptionPane.WARNING_MESSAGE);
+        final MisterX mrX = (MisterX) this.game.getUserPlayer();
+
+        if (doubleMoveState == DoubleMoveState.COMPLETED) {
+            // La doppia mossa è già stata eseguita, non serve makeMove()
+            selectedMove = null;
+
+            doubleMoveState = DoubleMoveState.USED;
+        } else if (doubleMoveState == DoubleMoveState.AVAILABLE || doubleMoveState == DoubleMoveState.USED) {
+            // Mossa normale (può farla se è AVAILABLE o USED)
+            if (selectedMove == null) {
+                JOptionPane.showMessageDialog(
+                        null, "Seleziona la prima destinazione!", "No Move Selected", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+
+            try {
+                // singola mossa
+                mrX.makeMove(selectedMove.getDestinationNode(), selectedMove.getTransport(), this.game.getGameRound());
+
+                // clear
+                selectedMove = null;
+
+                // Rimane nello stato corrente (AVAILABLE o USED)
+
+            } catch (IllegalArgumentException | IllegalStateException e) {
+                JOptionPane.showMessageDialog(
+                        null, "Mossa non valida: " + e.getMessage(), "Errore", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+        }
+
+        // Check victory
+        if (super.isGameOver()) {
+            super.loadGameOverWindow();
             return;
         }
 
-        final MisterX mrX = (MisterX) this.game.getUserPlayer();
-        try {
-            // singola mossa
-            mrX.makeMove(selectedMove.getDestinationNode(), selectedMove.getTransport(), this.game.getGameRound());
+        final Player startingPlayer = this.game.getCurrentPlayer(); // Mr. X
 
-            // clear
-            selectedMove = null;
-
-            // reset double move (se non usata in quel round) per il round successivo
-            if (doubleMoveState == DoubleMoveState.COMPLETED) {
-                // Keep completed state
-            } else {
-                doubleMoveState = mrX.isDoubleMoveAvailable() ? DoubleMoveState.AVAILABLE : DoubleMoveState.COMPLETED;
-            }
-
-            // Check victory
-            if (super.isGameOver()) {
-                super.loadGameOverWindow();
-            }
-
-            // Advance turn (AI turn starts)
+        do {
             this.game.changeCurrentPlayer();
 
-            // TODO: executeAI() for detective and bobbies
+            // TODO: executeAI() per il player corrente (Detective o Bobby)
+            // Per ora non fanno nulla, si limitano a passare il turno
 
-            // Advance turn (back to Mr. X's turn)
-            this.game.nextRound();
+        } while (this.game.getCurrentPlayer() != startingPlayer); // Finché non torna a Mr. X
 
-            // Check if game is over after AI's turn
-            if (super.isGameOver()) {
-                super.loadGameOverWindow();
-            }
+        // Ora siamo tornati a Mr. X, incrementa il round
+        this.game.nextRound();
 
-            // Update UI
-            updateUI();
-
-        } catch (IllegalArgumentException | IllegalStateException e) {
-            JOptionPane.showMessageDialog(
-                    null, "Mossa non valida: " + e.getMessage(), "Errore", JOptionPane.ERROR_MESSAGE);
+        // RESET stato per il nuovo turno
+        // Controlla se ha ancora ticket doppia mossa
+        if (mrX.isDoubleMoveAvailable()) {
+            doubleMoveState = DoubleMoveState.AVAILABLE;
+        } else {
+            doubleMoveState = DoubleMoveState.USED;
         }
+
+        // Check if game is over after AI turns
+        if (super.isGameOver()) {
+            super.loadGameOverWindow();
+            return;
+        }
+
+        // Update UI
+        updateUI();
+
+        // Update sidebar
+        super.updateSidebar(this.game.getCurrentPlayer());
     }
 
     /** Handles double move button click. */
@@ -331,9 +370,34 @@ public final class MrXGameControllerImpl extends GameControllerImpl {
 
             updateDoubleMoveButtonUI();
 
-            this.getMapPanel().setMisterXPosition(mrX.getCurrentPosition().getId());
+            // Mr. X position
+            final int mrXPos =
+                    mrX.getCurrentPosition() != null ? mrX.getCurrentPosition().getId() : -1;
+            this.getMapPanel().setMisterXPosition(mrXPos);
+
+            // Detective position (Mr. X mode mostra tutto)
+            final Player detective = this.game.getDetective();
+            if (detective != null) {
+                final int detectivePos = detective.getCurrentPositionId();
+                this.getMapPanel().setDetectivePosition(detectivePos);
+            }
+
+            // Bobby positions
+            final List<Player> bobbies = this.game.getBobbies();
+            for (int i = 0; i < bobbies.size(); i++) {
+                final Player bobby = bobbies.get(i);
+                final int bobbyPos = bobby.getCurrentPositionId();
+                this.getMapPanel().setBobbyPosition(bobbyPos, i);
+            }
+
             this.getMapPanel().setSelectedDestination(selectedMove != null ? selectedMove.getDestinationNode() : -1);
-            this.getMapPanel().setValidMoves(mrX.getValidMoves(Set.of()));
+
+            // Se la doppia mossa è completata, non mostrare validMoves
+            if (doubleMoveState == DoubleMoveState.COMPLETED) {
+                this.getMapPanel().setValidMoves(Set.of()); // Empty set
+            } else {
+                this.getMapPanel().setValidMoves(mrX.getValidMoves(Set.of()));
+            }
 
             this.getMapPanel().repaint();
         });
@@ -346,16 +410,20 @@ public final class MrXGameControllerImpl extends GameControllerImpl {
 
         switch (doubleMoveState) {
             case AVAILABLE:
+                sidebar.showElseHideDoubleMoveButton(true);
                 sidebar.updateDoubleMoveButton(mrX.isDoubleMoveAvailable(), "Doppia Mossa");
                 break;
             case WAITING_FIRST_MOVE:
+                sidebar.showElseHideDoubleMoveButton(true);
                 sidebar.updateDoubleMoveButton(true, "Conferma 1° Mossa");
                 break;
             case WAITING_SECOND_MOVE:
+                sidebar.showElseHideDoubleMoveButton(true);
                 sidebar.updateDoubleMoveButton(true, "Conferma 2° Mossa");
                 break;
             case COMPLETED:
-                sidebar.updateDoubleMoveButton(false, "Doppia Mossa");
+            case USED:
+                sidebar.showElseHideDoubleMoveButton(false);
                 break;
         }
     }

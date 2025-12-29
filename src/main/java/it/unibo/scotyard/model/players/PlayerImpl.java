@@ -46,11 +46,16 @@ public abstract class PlayerImpl implements Player {
 
     @Override
     public boolean useTicket(TicketType ticket) {
-        if (this.tickets.containsKey(ticket) && this.tickets.get(ticket) > NONE) {
-            if (this.tickets.get(ticket) != INFINITE) {
-                this.tickets.put(ticket, this.tickets.get(ticket) - 1);
+        if (this.tickets.containsKey(ticket)) {
+            final int currentTickets = this.tickets.get(ticket);
+            // INFINITE (-1) o > 0
+            if (currentTickets == INFINITE || currentTickets > NONE) {
+                // Decrementa solo se non infinito
+                if (currentTickets != INFINITE) {
+                    this.tickets.put(ticket, currentTickets - 1);
+                }
+                return true;
             }
-            return true;
         }
         return false;
     }

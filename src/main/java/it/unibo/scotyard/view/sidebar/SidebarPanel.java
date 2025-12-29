@@ -118,7 +118,8 @@ public final class SidebarPanel extends JPanel {
         this.add(doubleMoveTicketsLabel);
         this.add(Box.createVerticalStrut(SPACING));
 
-        // TODO : aggiungere pannello per tracciamento posizioni e mezzi usati da Mister X
+        // TODO : aggiungere pannello per tracciamento posizioni e mezzi usati da Mister
+        // X
 
         this.doubleMoveButton = createActionButton("Doppia Mossa");
         this.add(doubleMoveButton);
@@ -306,6 +307,10 @@ public final class SidebarPanel extends JPanel {
      */
     public void updateCurrentPlayerLabel(Player player) {
         this.currentPlayerLabel.setText(CURRENT_PLAYER_TEXT + player.getName());
+    }
+
+    public void showElseHideDoubleMoveButton(final boolean show) {
+        doubleMoveButton.setVisible(show);
     }
 
     /**

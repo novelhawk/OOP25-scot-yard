@@ -41,12 +41,14 @@ public final class MapPanel extends JPanel {
     private static final Color NODE_FILL_COLOR = new Color(255, 255, 255);
     private static final Color NODE_TEXT_COLOR = new Color(33, 33, 33);
     private static final Color SHADOW_COLOR = new Color(0, 0, 0, 30);
-    private static final Color MISTER_X_COLOR = new Color(0, 0, 0); // black
-    private static final Color DETECTIVE_COLOR = new Color(0, 0, 128); // navy blue
-    private static final Color BOBBIES_COLOR = new Color(255, 95, 31); // neon orange
-    private static final Color POSSIBLE_DESTINATIONS_COLOR = new Color(152, 251, 152); // mint green
-    private static final Color POSSIBLE_DESTINATIONS_TEXT_COLOR = new Color(34, 139, 34); // forest green
-    private static final Color SELECTED_DESTINATION_COLOR = new Color(15, 255, 8); // neon green
+
+    private static final Color MISTER_X_COLOR = new Color(0, 0, 0); // nero
+    private static final Color DETECTIVE_COLOR = new Color(0, 100, 200); // blu
+    private static final Color BOBBIES_COLOR = new Color(255, 140, 0); // arancione scuro
+
+    private static final Color MISTER_X_BORDER_COLOR = Color.GRAY;
+    private static final Color DETECTIVE_BORDER_COLOR = new Color(0, 150, 255); // blu chiaro
+    private static final Color BOBBIES_BORDER_COLOR = new Color(255, 200, 100); // arancione chiaro
 
     // Zoom settings
     private static final double MIN_ZOOM = 1.0;
@@ -562,6 +564,12 @@ public final class MapPanel extends JPanel {
                 final double distance = Math.sqrt(Math.pow(mouseX - nodeX, 2) + Math.pow(mouseY - nodeY, 2));
 
                 if (distance <= scaledRadius) {
+                    // Use nodeClickListener if set (Mr. X mode)
+                    if (nodeClickListener != null) {
+                        nodeClickListener.accept(node.getId());
+                        return;
+                    }
+                    // Otherwise use possibleDestinations (Detective mode)
                     for (Integer nodeIdPossibleDest : this.possibleDestinations) {
                         if (nodeIdPossibleDest == node.getId()) {
                             this.setSelectedDestination(node.getId());
@@ -574,73 +582,51 @@ public final class MapPanel extends JPanel {
     }
 
     /** Draw the player given as input on the map. */
-    private void drawPlayer(Graphics2D g2d, String playerString, int position, int scaledRadius) {
+    private void drawPlayer(Graphics2D g2d, String playerString, int position, int scaledRadius, double nodeZoom) {
         if (position > 0) {
-            if (!this.possibleDestinations.contains(position)) {
-                final Point2D pos = scaledNodePositions.get(position);
-                if (pos != null) {
-                    final int x = (int) pos.getX();
-                    final int y = (int) pos.getY();
-
-                    // Player circle
-                    if ("D".equals(playerString)) {
-                        g2d.setColor(DETECTIVE_COLOR);
-                    }
-                    if ("X".equals(playerString)) {
-                        g2d.setColor(MISTER_X_COLOR);
-                    }
-                    if (playerString.startsWith("B")) {
-                        g2d.setColor(BOBBIES_COLOR);
-                    }
-                    g2d.fillOval(x - scaledRadius, y - scaledRadius, scaledRadius * 2, scaledRadius * 2);
-
-                    // Player text (white)
-                    g2d.setColor(Color.WHITE);
-                    g2d.setFont(PLAYERS_FONT);
-                    final FontMetrics fontMetrics = g2d.getFontMetrics();
-                    final String label = playerString;
-                    final int textWidth = fontMetrics.stringWidth(label);
-                    final int textHeight = fontMetrics.getAscent();
-                    g2d.drawString(label, x - textWidth / 2, y + textHeight / 2 - 2);
-                }
-            }
-        }
-    }
-
-    /** Draw the possible destinations. */
-    private void drawDestinations(Graphics2D g2d, int scaledRadius, double nodeZoom) {
-        for (Integer dest : this.possibleDestinations) {
-            final Point2D pos = scaledNodePositions.get(dest);
+            final Point2D pos = scaledNodePositions.get(position);
             if (pos != null) {
                 final int x = (int) pos.getX();
                 final int y = (int) pos.getY();
-                g2d.setColor(POSSIBLE_DESTINATIONS_COLOR);
-                g2d.fillOval(x - scaledRadius, y - scaledRadius, scaledRadius * 2, scaledRadius * 2);
-                g2d.setColor(POSSIBLE_DESTINATIONS_TEXT_COLOR);
-                final String label = String.valueOf(dest);
-                final FontMetrics fm = g2d.getFontMetrics();
-                final int textWidth = fm.stringWidth(label);
-                final int textHeight = fm.getAscent();
-                g2d.drawString(label, x - textWidth / 2, y + textHeight / 2 - Math.max(2, (int) (2 * nodeZoom)));
-            }
-        }
-    }
 
-    /** Draw selected destination (the clicked one) */
-    private void drawSelectedDestination(Graphics g2d, int scaledRadius, double nodeZoom) {
-        int dest = this.selectedDestination;
-        final Point2D pos = scaledNodePositions.get(dest);
-        if (pos != null) {
-            final int x = (int) pos.getX();
-            final int y = (int) pos.getY();
-            g2d.setColor(SELECTED_DESTINATION_COLOR);
-            g2d.fillOval(x - scaledRadius, y - scaledRadius, scaledRadius * 2, scaledRadius * 2);
-            g2d.setColor(POSSIBLE_DESTINATIONS_TEXT_COLOR);
-            final String label = String.valueOf(dest);
-            final FontMetrics fm = g2d.getFontMetrics();
-            final int textWidth = fm.stringWidth(label);
-            final int textHeight = fm.getAscent();
-            g2d.drawString(label, x - textWidth / 2, y + textHeight / 2 - Math.max(2, (int) (2 * nodeZoom)));
+                // Player circle
+                if ("D".equals(playerString)) {
+                    g2d.setColor(DETECTIVE_COLOR);
+                } else if ("X".equals(playerString)) {
+                    g2d.setColor(MISTER_X_COLOR);
+                } else if (playerString.startsWith("B")) {
+                    g2d.setColor(BOBBIES_COLOR);
+                }
+                g2d.fillOval(x - scaledRadius, y - scaledRadius, scaledRadius * 2, scaledRadius * 2);
+
+                // Bordo colorato
+                if ("D".equals(playerString)) {
+                    g2d.setColor(DETECTIVE_BORDER_COLOR);
+                    g2d.setStroke(new BasicStroke(2.0f * (float) nodeZoom));
+                } else if ("X".equals(playerString)) {
+                    g2d.setColor(MISTER_X_BORDER_COLOR);
+                    g2d.setStroke(new BasicStroke(3.0f * (float) nodeZoom));
+                } else if (playerString.startsWith("B")) {
+                    g2d.setColor(BOBBIES_BORDER_COLOR);
+                    g2d.setStroke(new BasicStroke(2.0f * (float) nodeZoom));
+                }
+                g2d.drawOval(x - scaledRadius, y - scaledRadius, scaledRadius * 2, scaledRadius * 2);
+
+                // Player text (white)
+                g2d.setColor(Color.WHITE);
+                int fontSize;
+                if ("X".equals(playerString)) {
+                    fontSize = (int) (18 * nodeZoom);
+                } else {
+                    fontSize = (int) (16 * nodeZoom);
+                }
+                g2d.setFont(new Font("Arial", Font.BOLD, fontSize));
+                final FontMetrics fontMetrics = g2d.getFontMetrics();
+                final String label = playerString;
+                final int textWidth = fontMetrics.stringWidth(label);
+                final int textHeight = fontMetrics.getAscent();
+                g2d.drawString(label, x - textWidth / 2, y + textHeight / 2 - 2);
+            }
         }
     }
 
@@ -657,13 +643,49 @@ public final class MapPanel extends JPanel {
         final double nodeZoom = 1.0 + (zoomLevel - 1.0) * NODE_SCALE_FACTOR;
         final int scaledRadius = (int) (NODE_RADIUS * nodeZoom);
 
-        this.drawPlayer(g2d, "D", this.detectivePosition, scaledRadius);
-        this.drawPlayer(g2d, "X", this.misterXPosition, scaledRadius);
-        for (int i = 0; i < this.bobbiesPositions.size(); i++) {
-            int bobbyIndex = i + 1;
-            this.drawPlayer(g2d, "B" + bobbyIndex, this.bobbiesPositions.get(i), scaledRadius);
+        // Render valid moves (green)
+        Set<Integer> validDestinations = new HashSet<>();
+
+        if (nodeClickListener != null) {
+            // Mr. X mode: usa validMoves
+            for (var move : validMoves) {
+                validDestinations.add(move.getDestinationNode());
+            }
+        } else {
+            // Detective mode: usa possibleDestinations
+            validDestinations = this.possibleDestinations;
         }
-        this.drawDestinations(g2d, scaledRadius, nodeZoom);
-        this.drawSelectedDestination(g2d, scaledRadius, nodeZoom);
+
+        // Render green node
+        for (int nodeId : validDestinations) {
+            final Point2D pos = scaledNodePositions.get(nodeId);
+            if (pos != null) {
+                final int x = (int) pos.getX();
+                final int y = (int) pos.getY();
+                g2d.setColor(new Color(0, 255, 0, 80)); // green semi-transparent
+                g2d.fillOval(
+                        x - scaledRadius - 4, y - scaledRadius - 4, (scaledRadius + 4) * 2, (scaledRadius + 4) * 2);
+            }
+        }
+
+        // Render selected destination (blu border)
+        if (selectedDestination >= 0) {
+            final Point2D pos = scaledNodePositions.get(selectedDestination);
+            if (pos != null) {
+                final int x = (int) pos.getX();
+                final int y = (int) pos.getY();
+                g2d.setColor(new Color(0, 150, 255, 180)); // blu semi-transparent
+                g2d.setStroke(new BasicStroke(4.0f * (float) nodeZoom));
+                g2d.drawOval(
+                        x - scaledRadius - 2, y - scaledRadius - 2, (scaledRadius + 2) * 2, (scaledRadius + 2) * 2);
+            }
+        }
+
+        // Render players
+        this.drawPlayer(g2d, "D", this.detectivePosition, scaledRadius, nodeZoom);
+        this.drawPlayer(g2d, "X", this.misterXPosition, scaledRadius, nodeZoom);
+        for (int i = 0; i < this.bobbiesPositions.size(); i++) {
+            this.drawPlayer(g2d, "B" + (i + 1), this.bobbiesPositions.get(i), scaledRadius, nodeZoom);
+        }
     }
 }
