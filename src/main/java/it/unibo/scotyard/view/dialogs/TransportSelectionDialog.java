@@ -38,6 +38,9 @@ public final class TransportSelectionDialog extends JDialog {
     private static final Color UNDERGROUND_COLOR = new Color(200, 43, 29);
     private static final Color FERRY_COLOR = new Color(128, 128, 128);
 
+    private static final Font TITLE_FONT = new Font("Arial", Font.BOLD, 16);
+    private static final Font BUTTON_FONT = new Font("Arial", Font.BOLD, 14);
+
     private TransportType selectedTransport;
 
     /**
@@ -79,7 +82,7 @@ public final class TransportSelectionDialog extends JDialog {
         // title
         final JLabel titleLabel = new JLabel("Choose transport to node " + nodeId);
         titleLabel.setForeground(TEXT_COLOR);
-        titleLabel.setFont(new Font("Arial", Font.BOLD, 16));
+        titleLabel.setFont(TITLE_FONT);
         titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
         mainPanel.add(titleLabel, BorderLayout.NORTH);
 
@@ -106,7 +109,7 @@ public final class TransportSelectionDialog extends JDialog {
     private JButton createTransportButton(final TransportType transport) {
         final JButton button = new JButton(transport.toString());
         button.setPreferredSize(new Dimension(120, 50));
-        button.setFont(new Font("Arial", Font.BOLD, 14));
+        button.setFont(BUTTON_FONT);
 
         button.setBackground(Color.WHITE);
         button.setForeground(BACKGROUND_COLOR);

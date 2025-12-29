@@ -4,7 +4,16 @@ import it.unibo.scotyard.commons.dtos.map.MapInfo;
 import it.unibo.scotyard.commons.dtos.map.Node;
 import it.unibo.scotyard.model.map.TransportType;
 import it.unibo.scotyard.view.game.GameView;
-import java.awt.*;
+import java.awt.BasicStroke;
+import java.awt.Color;
+import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.FontMetrics;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Point;
+import java.awt.RenderingHints;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.MouseAdapter;
@@ -31,7 +40,10 @@ public final class MapPanel extends JPanel {
     private static final int NODE_RADIUS = 14;
     private static final int NODE_LABEL_SIZE = 10;
     private static final Font NODE_FONT = new Font("Arial", Font.BOLD, NODE_LABEL_SIZE);
-    private static final Font PLAYERS_FONT = new Font("Arial", Font.BOLD, 10);
+
+    private static final String MRX_STRING = "X";
+    private static final String DETECTIVE_STRING = "D";
+    private static final String BOBBIES_STRING = "B";
 
     // Dimensioni originali del background
     private static final int ORIGINAL_BACKGROUND_WIDTH = 2570;
@@ -54,6 +66,7 @@ public final class MapPanel extends JPanel {
     private static final double MIN_ZOOM = 1.0;
     private static final double MAX_ZOOM = 10.0;
     private static final double ZOOM_STEP = 0.1; // Ridotto per trackpad più fluido
+    private static final double ZOOM_COMPARISON = 0.001;
 
     // Scaling factors per i nodi durante lo zoom
     // I nodi scalano meno del background per rimanere leggibili
@@ -215,7 +228,7 @@ public final class MapPanel extends JPanel {
         final double oldZoom = zoomLevel;
         zoomLevel = Math.min(MAX_ZOOM, zoomLevel + ZOOM_STEP);
 
-        if (Math.abs(oldZoom - zoomLevel) > 0.001) {
+        if (Math.abs(oldZoom - zoomLevel) > ZOOM_COMPARISON) {
             Point zoomCenter;
             if (centerPoint != null) {
                 zoomCenter = centerPoint;
@@ -239,11 +252,11 @@ public final class MapPanel extends JPanel {
         final double oldZoom = zoomLevel;
         zoomLevel = Math.max(MIN_ZOOM, zoomLevel - ZOOM_STEP);
 
-        if (Math.abs(zoomLevel - MIN_ZOOM) < 0.001) {
+        if (Math.abs(zoomLevel - MIN_ZOOM) < ZOOM_COMPARISON) {
             zoomLevel = MIN_ZOOM;
             panOffsetX = 0;
             panOffsetY = 0;
-        } else if (Math.abs(oldZoom - zoomLevel) > 0.001) {
+        } else if (Math.abs(oldZoom - zoomLevel) > ZOOM_COMPARISON) {
             // Mantieni il centro durante il dezoom
             final Point zoomCenter = new Point(getWidth() / 2, getHeight() / 2);
             final double mapX = (zoomCenter.x - baseOffsetX - panOffsetX) / oldZoom;
@@ -281,7 +294,7 @@ public final class MapPanel extends JPanel {
     }
 
     private boolean isZoomed() {
-        return zoomLevel > MIN_ZOOM + 0.001;
+        return zoomLevel > MIN_ZOOM + ZOOM_COMPARISON;
     }
 
     private void constrainPan() {
@@ -347,8 +360,8 @@ public final class MapPanel extends JPanel {
 
     private void loadBackgroundImage() {
         try {
-            final InputStream imageStream =
-                    getClass().getClassLoader().getResourceAsStream("it/unibo/scotyard/view/map/background.png");
+            final InputStream imageStream = getClass().getClassLoader()
+                    .getResourceAsStream("it/unibo/scotyard/view/map/background.png");
             if (imageStream != null) {
                 backgroundImage = ImageIO.read(imageStream);
             } else {
@@ -440,7 +453,7 @@ public final class MapPanel extends JPanel {
         if (hasFerry) {
             final float dashLength = Math.max(4.0f, 6.0f * (float) nodeZoom);
             final float gapLength = Math.max(3.0f, 4.0f * (float) nodeZoom);
-            final float[] dashPattern = {dashLength, gapLength};
+            final float[] dashPattern = { dashLength, gapLength };
             g2d.setStroke(new BasicStroke(
                     strokeWidth, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 10.0f, dashPattern, 0.0f));
         } else {
@@ -544,7 +557,8 @@ public final class MapPanel extends JPanel {
     }
 
     /**
-     * Handles node click detection. Finds which node (if any) was clicked based on mouse coordinates.
+     * Handles node click detection. Finds which node (if any) was clicked based on
+     * mouse coordinates.
      *
      * @param mouseX the mouse X coordinate
      * @param mouseY the mouse Y coordinate
@@ -590,9 +604,9 @@ public final class MapPanel extends JPanel {
                 final int y = (int) pos.getY();
 
                 // Player circle
-                if ("D".equals(playerString)) {
+                if (DETECTIVE_STRING.equals(playerString)) {
                     g2d.setColor(DETECTIVE_COLOR);
-                } else if ("X".equals(playerString)) {
+                } else if (MRX_STRING.equals(playerString)) {
                     g2d.setColor(MISTER_X_COLOR);
                 } else if (playerString.startsWith("B")) {
                     g2d.setColor(BOBBIES_COLOR);
@@ -600,10 +614,10 @@ public final class MapPanel extends JPanel {
                 g2d.fillOval(x - scaledRadius, y - scaledRadius, scaledRadius * 2, scaledRadius * 2);
 
                 // Bordo colorato
-                if ("D".equals(playerString)) {
+                if (DETECTIVE_STRING.equals(playerString)) {
                     g2d.setColor(DETECTIVE_BORDER_COLOR);
                     g2d.setStroke(new BasicStroke(2.0f * (float) nodeZoom));
-                } else if ("X".equals(playerString)) {
+                } else if (MRX_STRING.equals(playerString)) {
                     g2d.setColor(MISTER_X_BORDER_COLOR);
                     g2d.setStroke(new BasicStroke(3.0f * (float) nodeZoom));
                 } else if (playerString.startsWith("B")) {
@@ -615,7 +629,7 @@ public final class MapPanel extends JPanel {
                 // Player text (white)
                 g2d.setColor(Color.WHITE);
                 int fontSize;
-                if ("X".equals(playerString)) {
+                if (MRX_STRING.equals(playerString)) {
                     fontSize = (int) (18 * nodeZoom);
                 } else {
                     fontSize = (int) (16 * nodeZoom);
@@ -682,10 +696,10 @@ public final class MapPanel extends JPanel {
         }
 
         // Render players
-        this.drawPlayer(g2d, "D", this.detectivePosition, scaledRadius, nodeZoom);
-        this.drawPlayer(g2d, "X", this.misterXPosition, scaledRadius, nodeZoom);
+        this.drawPlayer(g2d, DETECTIVE_STRING, this.detectivePosition, scaledRadius, nodeZoom);
+        this.drawPlayer(g2d, MRX_STRING, this.misterXPosition, scaledRadius, nodeZoom);
         for (int i = 0; i < this.bobbiesPositions.size(); i++) {
-            this.drawPlayer(g2d, "B" + (i + 1), this.bobbiesPositions.get(i), scaledRadius, nodeZoom);
+            this.drawPlayer(g2d, BOBBIES_STRING + (i + 1), this.bobbiesPositions.get(i), scaledRadius, nodeZoom);
         }
     }
 }

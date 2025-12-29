@@ -46,6 +46,7 @@ public final class SidebarPanel extends JPanel {
     private static final int SMALL_SPACING = 6;
 
     // Texts
+    private static final String INFINITI_STRING = "infiniti";
     private static final String INVENTORY_TEXT = "Inventario";
     private static final String TAXI_TICKETS_TEXT = "Biglietti taxi";
     private static final String BUS_TICKETS_TEXT = "Biglietti bus";
@@ -321,7 +322,7 @@ public final class SidebarPanel extends JPanel {
      */
     public void updateTaxiTicketsLabel(int tickets) {
         if (tickets == -1) {
-            this.taxiTicketsLabel.setText(TAXI_TICKETS_TEXT + " : infiniti");
+            this.taxiTicketsLabel.setText(TAXI_TICKETS_TEXT + ": " + INFINITI_STRING);
         } else {
             this.taxiTicketsLabel.setText(TAXI_TICKETS_TEXT + " : " + Integer.toString(tickets));
         }
@@ -335,7 +336,7 @@ public final class SidebarPanel extends JPanel {
      */
     public void updateBusTicketsLabel(int tickets) {
         if (tickets == -1) {
-            this.busTicketsLabel.setText(BUS_TICKETS_TEXT + " : infiniti");
+            this.busTicketsLabel.setText(BUS_TICKETS_TEXT + ": " + INFINITI_STRING);
         } else {
             this.busTicketsLabel.setText(BUS_TICKETS_TEXT + " : " + Integer.toString(tickets));
         }
@@ -349,7 +350,7 @@ public final class SidebarPanel extends JPanel {
      */
     public void updateUndergroundTicketsLabel(int tickets) {
         if (tickets == -1) {
-            this.undergroundTicketsLabel.setText(UNDERGROUND_TICKETS_TEXT + " : infiniti");
+            this.undergroundTicketsLabel.setText(UNDERGROUND_TICKETS_TEXT + ": " + INFINITI_STRING);
         } else {
             this.undergroundTicketsLabel.setText(UNDERGROUND_TICKETS_TEXT + " : " + Integer.toString(tickets));
         }
