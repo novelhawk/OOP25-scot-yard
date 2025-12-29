@@ -2,16 +2,16 @@ package it.unibo.scotyard.model;
 
 import it.unibo.scotyard.model.game.GameState;
 import it.unibo.scotyard.model.game.GameStateImpl;
-import it.unibo.scotyard.model.map.MapConnection;
 import it.unibo.scotyard.model.handlers.CommandDispatcher;
 import it.unibo.scotyard.model.handlers.CommandRouter;
+import it.unibo.scotyard.model.map.MapConnection;
 import it.unibo.scotyard.model.map.MapData;
 import it.unibo.scotyard.model.map.MapReader;
 import it.unibo.scotyard.model.map.TransportType;
-import java.util.ArrayList;
-import java.util.List;
 import it.unibo.scotyard.model.service.GameStateService;
 import it.unibo.scotyard.model.service.RoundCommandService;
+import java.util.ArrayList;
+import java.util.List;
 
 /** model. Manages map data loading and game state. */
 public final class ModelImpl implements Model {

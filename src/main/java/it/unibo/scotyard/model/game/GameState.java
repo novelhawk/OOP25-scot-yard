@@ -5,8 +5,8 @@ import it.unibo.scotyard.model.map.TransportType;
 import it.unibo.scotyard.model.players.Player;
 import it.unibo.scotyard.model.players.TicketType;
 import java.util.List;
-import java.util.Set;
 import java.util.Random;
+import java.util.Set;
 
 /**
  * The game state.
@@ -175,4 +175,3 @@ public interface GameState {
      */
     Player getDetective();
 }
-

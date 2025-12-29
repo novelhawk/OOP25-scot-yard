@@ -365,8 +365,8 @@ public final class MapPanel extends JPanel {
 
     private void loadBackgroundImage() {
         try {
-            final InputStream imageStream = getClass().getClassLoader()
-                    .getResourceAsStream("it/unibo/scotyard/view/map/background.png");
+            final InputStream imageStream =
+                    getClass().getClassLoader().getResourceAsStream("it/unibo/scotyard/view/map/background.png");
             if (imageStream != null) {
                 backgroundImage = ImageIO.read(imageStream);
             } else {
@@ -458,7 +458,7 @@ public final class MapPanel extends JPanel {
         if (hasFerry) {
             final float dashLength = Math.max(4.0f, 6.0f * (float) nodeZoom);
             final float gapLength = Math.max(3.0f, 4.0f * (float) nodeZoom);
-            final float[] dashPattern = { dashLength, gapLength };
+            final float[] dashPattern = {dashLength, gapLength};
             g2d.setStroke(new BasicStroke(
                     strokeWidth, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 10.0f, dashPattern, 0.0f));
         } else {

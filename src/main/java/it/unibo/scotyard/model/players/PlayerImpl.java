@@ -2,7 +2,6 @@ package it.unibo.scotyard.model.players;
 
 import it.unibo.scotyard.model.game.turn.TurnManager;
 import it.unibo.scotyard.model.map.MapNode;
-import java.util.List;
 import it.unibo.scotyard.model.map.NodeId;
 import java.util.Map;
 

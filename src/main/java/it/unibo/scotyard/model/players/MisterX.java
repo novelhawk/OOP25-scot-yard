@@ -4,8 +4,6 @@ import it.unibo.scotyard.model.game.turn.TurnManager;
 import it.unibo.scotyard.model.game.turn.TurnManagerImpl;
 import it.unibo.scotyard.model.map.MapData;
 import it.unibo.scotyard.model.map.TransportType;
-import java.util.HashMap;
-import java.util.List;
 import java.util.EnumMap;
 import java.util.Map;
 import java.util.Set;

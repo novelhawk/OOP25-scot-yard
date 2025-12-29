@@ -1,9 +1,7 @@
 package it.unibo.scotyard.model.players;
 
-import it.unibo.scotyard.model.map.MapNode;
-import it.unibo.scotyard.model.map.TransportType;
-import java.util.List;
 import it.unibo.scotyard.model.map.NodeId;
+import it.unibo.scotyard.model.map.TransportType;
 import java.util.Map;
 
 /*

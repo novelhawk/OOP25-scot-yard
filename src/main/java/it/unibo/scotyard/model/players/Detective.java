@@ -1,7 +1,5 @@
 package it.unibo.scotyard.model.players;
 
-import java.util.HashMap;
-import java.util.List;
 import java.util.EnumMap;
 import java.util.Map;
 
