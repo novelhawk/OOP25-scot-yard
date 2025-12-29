@@ -7,6 +7,10 @@ import it.unibo.scotyard.view.sidebar.SidebarPanel;
 import java.util.Set;
 import javax.swing.JPanel;
 
+/**
+ * The game view
+ *
+ */
 public interface GameView {
 
     /**
@@ -16,18 +20,24 @@ public interface GameView {
      */
     void setObserver(GameController gameController);
 
-    /** @return the game panel (with the map panel and the sidebar) */
+    /**
+     * @return the game panel (with the map panel and the sidebar)
+     */
     JPanel getMainPanel();
 
-    /** @return the sidebar component */
+    /**
+     * @return the sidebar component
+     */
     SidebarPanel getSidebar();
 
-    /** @return the map panel component */
+    /**
+     * @return the map panel component
+     */
     MapPanel getMapPanel();
 
     /**
-     * Displays the small window which displays a summary of the game rules. This method is called after the user has
-     * pressed the button rules in the sidebar.
+     * Displays the small window which displays a summary of the game rules. This method is called
+     * after the user has pressed the button rules in the sidebar.
      *
      * @param panel the panel of the rules window.
      */

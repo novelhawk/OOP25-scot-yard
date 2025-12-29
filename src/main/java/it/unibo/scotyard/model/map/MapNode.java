@@ -4,7 +4,7 @@ import java.util.Objects;
 
 /** node (location) on the game map. unique identifier and x, y coordinates for rendering. */
 public class MapNode {
-    private final int id;
+    private final NodeId id;
     private final int x;
     private final int y;
 
@@ -15,7 +15,7 @@ public class MapNode {
      * @param x the x-coordinate for rendering
      * @param y the y-coordinate for rendering
      */
-    public MapNode(final int id, final int x, final int y) {
+    public MapNode(final NodeId id, final int x, final int y) {
         this.id = id;
         this.x = x;
         this.y = y;
@@ -26,7 +26,7 @@ public class MapNode {
      *
      * @return the node ID
      */
-    public int getId() {
+    public NodeId getId() {
         return id;
     }
 

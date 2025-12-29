@@ -2,15 +2,20 @@ package it.unibo.scotyard.model.players;
 
 import it.unibo.scotyard.model.game.turn.TurnManager;
 import it.unibo.scotyard.model.map.MapNode;
+import java.util.List;
+import it.unibo.scotyard.model.map.NodeId;
 import java.util.Map;
 
+/**
+ * The default player entity implementation.
+ *
+ */
 public abstract class PlayerImpl implements Player {
 
     protected static final int NONE = 0;
     protected static final int INFINITE = -1;
 
-    protected int currentPositionId;
-    protected MapNode currentPosition;
+    protected NodeId position;
     protected Map<TicketType, Integer> tickets;
     protected String name;
 
@@ -25,27 +30,22 @@ public abstract class PlayerImpl implements Player {
     public abstract Map<TicketType, Integer> setInitialTickets();
 
     @Override
-    public void setPosition(int newPosition) {
-        this.currentPositionId = newPosition;
+    public void setPosition(final NodeId newPosition) {
+        this.position = newPosition;
     }
 
     @Override
-    public int getCurrentPositionId() {
-        return this.currentPositionId;
+    public NodeId getPosition() {
+        return this.position;
     }
 
     @Override
-    public MapNode getCurrentPosition() {
-        return this.currentPosition;
-    }
-
-    @Override
-    public int getNumberTickets(TicketType ticketType) {
+    public int getNumberTickets(final TicketType ticketType) {
         return this.tickets.get(ticketType);
     }
 
     @Override
-    public boolean useTicket(TicketType ticket) {
+    public boolean useTicket(final TicketType ticket) {
         if (this.tickets.containsKey(ticket)) {
             final int currentTickets = this.tickets.get(ticket);
             // INFINITE (-1) o > 0

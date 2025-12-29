@@ -12,14 +12,25 @@ import it.unibo.scotyard.view.sidebar.SidebarPanel;
 import java.util.Objects;
 import javax.swing.JPanel;
 
+/**
+ * The controller for all game related actions
+ *
+ */
 public abstract class GameControllerImpl implements GameController {
 
-    protected final GameState game;
+    protected final GameState gameState;
     protected final GameView view;
     protected final Controller mainController;
 
+    /**
+     * Creates the controller
+     *
+     * @param gameState the game state
+     * @param view the view
+     * @param controller the controller
+     */
     public GameControllerImpl(final GameState gameData, final GameView view, final Controller controller) {
-        this.game = Objects.requireNonNull(gameData, "Game cannot be null");
+        this.gameState = Objects.requireNonNull(gameData, "Game cannot be null");
         this.view = Objects.requireNonNull(view, "GameView cannot be null");
         this.mainController = Objects.requireNonNull(controller, "mainController cannot be null");
     }
@@ -44,22 +55,22 @@ public abstract class GameControllerImpl implements GameController {
 
     @Override
     public GameMode getGameMode() {
-        return this.game.getGameMode();
+        return this.gameState.getGameMode();
     }
 
     @Override
     public int getNumberRound() {
-        return this.game.getGameRound();
+        return this.gameState.getGameRound();
     }
 
     @Override
-    public int getNumberTicketsUserPlayer(TicketType ticketType) {
-        return this.game.getNumberTicketsUserPlayer(ticketType);
+    public int getNumberTicketsUserPlayer(final TicketType ticketType) {
+        return this.gameState.getNumberTicketsUserPlayer(ticketType);
     }
 
     @Override
     public void updateSidebar(Player currentPlayer) {
-        SidebarPanel sidebar = this.getSidebarPanel();
+        final SidebarPanel sidebar = this.getSidebarPanel();
         sidebar.setGameModeLabel(this.getGameMode());
         sidebar.updateRoundLabel(this.getNumberRound());
         sidebar.updateCurrentPlayerLabel(currentPlayer);
@@ -72,12 +83,12 @@ public abstract class GameControllerImpl implements GameController {
 
     @Override
     public boolean isGameOver() {
-        return this.game.isGameOver();
+        return this.gameState.isGameOver();
     }
 
     @Override
     public void loadGameOverWindow() {
-        this.view.displayGameOverWindow(this.game.resultGame());
+        this.view.displayGameOverWindow(this.gameState.resultGame());
     }
 
     @Override

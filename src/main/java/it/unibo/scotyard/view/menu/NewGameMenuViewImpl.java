@@ -15,7 +15,10 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-/** start menu view */
+/**
+ * Start menu view
+ *
+ */
 public final class NewGameMenuViewImpl implements NewGameMenuView {
 
     // Component sizes
@@ -27,9 +30,10 @@ public final class NewGameMenuViewImpl implements NewGameMenuView {
     private static final Color ACCENT_COLOR = new Color(31, 81, 255); // neon blue
 
     // Typography
-    private static final Font LABEL_FONT = new Font("Arial", Font.PLAIN, 20);
-    private static final Font BUTTON_FONT = new Font("Arial", Font.BOLD, 20);
-    private static final Font USER_FONT = new Font("Arial", Font.PLAIN, 16);
+    private static final String MAIN_FONT_FAMILY = "Arial";
+    private static final Font LABEL_FONT = new Font(MAIN_FONT_FAMILY, Font.PLAIN, 20);
+    private static final Font BUTTON_FONT = new Font(MAIN_FONT_FAMILY, Font.BOLD, 20);
+    private static final Font USER_FONT = new Font(MAIN_FONT_FAMILY, Font.PLAIN, 16);
 
     // UI text
     private static final String PLAYER_NAME_TEXT = "Inserire nome";
@@ -144,7 +148,7 @@ public final class NewGameMenuViewImpl implements NewGameMenuView {
     }
 
     // Seleceted game mode String
-    private String getSelectedGameMode(JComboBox<?> comboBox) {
+    private String getSelectedGameMode(final JComboBox<?> comboBox) {
         return comboBox.getSelectedItem().toString();
     }
 
@@ -167,18 +171,20 @@ public final class NewGameMenuViewImpl implements NewGameMenuView {
     }
 
     // Seleceted difficulty level String
-    private String getSelectedDifficultyLevel(JComboBox<?> comboBox) {
+    private String getSelectedDifficultyLevel(final JComboBox<?> comboBox) {
         return comboBox.getSelectedItem().toString();
     }
 
     // Player name String
-    private String getPlayerName(JTextField textField) {
+    private String getPlayerName(final JTextField textField) {
         return textField.getText();
     }
 
     // Start game button
     private JButton createStartGameButton(
-            JComboBox<?> gameModeComboBox, JComboBox<?> difficultyLevelComboBox, JTextField playerTextField) {
+            final JComboBox<?> gameModeComboBox,
+            final JComboBox<?> difficultyLevelComboBox,
+            final JTextField playerTextField) {
         final JButton button = new JButton(START_BUTTON_TEXT);
         button.setFont(BUTTON_FONT);
         button.setForeground(BACKGROUND_COLOR);

@@ -5,22 +5,31 @@ import it.unibo.scotyard.model.game.turn.TurnManagerImpl;
 import it.unibo.scotyard.model.map.MapData;
 import it.unibo.scotyard.model.map.TransportType;
 import java.util.HashMap;
+import java.util.List;
+import java.util.EnumMap;
 import java.util.Map;
 import java.util.Set;
 
-public class MisterX extends PlayerImpl {
+/**
+ * The mister X player entity.
+ *
+ */
+public final class MisterX extends PlayerImpl {
 
     private static final int NUMBER_TICKETS_BLACK = 5;
     private static final int NUMBER_TICKETS_DOUBLE_MOVE = 2;
     private static final int INFINITE = -1;
 
+    /**
+     * Creates a new mister X player entity.
+     */
     public MisterX() {
         this.name = "Mister X";
     }
 
     @Override
     public Map<TicketType, Integer> setInitialTickets() {
-        Map<TicketType, Integer> ticketsMap = new HashMap<>();
+        final Map<TicketType, Integer> ticketsMap = new EnumMap<>(TicketType.class);
         ticketsMap.put(TicketType.BLACK, NUMBER_TICKETS_BLACK);
         ticketsMap.put(TicketType.DOUBLE_MOVE, NUMBER_TICKETS_DOUBLE_MOVE);
         ticketsMap.put(TicketType.TAXI, INFINITE);

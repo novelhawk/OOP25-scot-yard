@@ -1,6 +1,7 @@
 package it.unibo.scotyard.model;
 
 import it.unibo.scotyard.model.game.GameState;
+import it.unibo.scotyard.model.handlers.CommandDispatcher;
 import it.unibo.scotyard.model.map.MapData;
 import it.unibo.scotyard.model.map.TransportType;
 import java.util.List;
@@ -32,7 +33,7 @@ public interface Model {
      * @return the game data
      * @throwsIllegalStateException if model not initialized
      */
-    GameState getGameData();
+    GameState getGameState();
 
     /**
      * Return list of initial positions of players, taken from MapData.
@@ -49,4 +50,11 @@ public interface Model {
      * @return list of possible destinations as pairs of integer and TransportType
      */
     List<Pair<Integer, TransportType>> getPossibleDestinations(int idStartPosition);
+
+    /**
+     * Get the global command dispatcher.
+     *
+     * @return the global command dispatcher
+     */
+    CommandDispatcher getDispatcher();
 }

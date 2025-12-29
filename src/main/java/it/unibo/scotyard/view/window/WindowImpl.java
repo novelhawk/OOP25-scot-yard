@@ -20,9 +20,11 @@ public final class WindowImpl extends JFrame implements Window {
      * Creates a window with specified resolution.
      *
      * @param resolution the window size
+     * @param containerPanel the container panel
+     * @param windowTitle the window title
      * @throws NullPointerException if resolution is null
      */
-    public WindowImpl(final Size resolution, final JPanel containerPanel, String windowTitle) {
+    public WindowImpl(final Size resolution, final JPanel containerPanel, final String windowTitle) {
         super(windowTitle);
         Objects.requireNonNull(resolution, "Resolution cannot be null");
 
@@ -49,14 +51,14 @@ public final class WindowImpl extends JFrame implements Window {
         setMinimumSize(new Dimension(MIN_WIDTH, (int) (MIN_WIDTH / ASPECT_RATIO)));
     }
 
-    private void setResoultion(Size resolution) {
+    private void setResoultion(final Size resolution) {
         this.windowWidth = resolution.getWidth();
         this.windowHeight = resolution.getHeight();
     }
 
     @Override
-    public void setsMainFeatures(Size resolution) {
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    public void setsMainFeatures(final Size resolution) {
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.setResoultion(resolution);
         setSize(this.windowWidth, this.windowHeight);
         setLocationByPlatform(true);
@@ -68,13 +70,8 @@ public final class WindowImpl extends JFrame implements Window {
     }
 
     @Override
-    public boolean isVisible() {
-        return super.isVisible();
-    }
-
-    @Override
     public void setHideOnClose() {
-        setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+        setDefaultCloseOperation(HIDE_ON_CLOSE);
     }
 
     @Override

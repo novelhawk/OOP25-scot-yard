@@ -1,23 +1,29 @@
 package it.unibo.scotyard.commons.dtos.map;
 
+import it.unibo.scotyard.model.map.NodeId;
 import it.unibo.scotyard.model.map.TransportType;
 import java.util.Objects;
 
-/** Immutable implementation */
-public record ConnectionImpl(int from, int to, TransportType transport) implements Connection {
+/**
+ * An immutable connection
+ *
+ */
+public record ConnectionImpl(NodeId from, NodeId to, TransportType transport) implements Connection {
 
-    // validation and defensive copy
+    /**
+     * Validation and defensive copy.
+     */
     public ConnectionImpl {
         Objects.requireNonNull(transport, "Transport type cannot be null");
     }
 
     @Override
-    public int getFrom() {
+    public NodeId getFrom() {
         return this.from;
     }
 
     @Override
-    public int getTo() {
+    public NodeId getTo() {
         return this.to;
     }
 

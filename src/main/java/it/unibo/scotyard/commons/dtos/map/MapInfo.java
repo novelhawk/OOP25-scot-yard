@@ -5,12 +5,18 @@ import java.util.stream.Stream;
 /** Provides read-only access to map information. */
 public interface MapInfo {
 
-    /** @return map name */
+    /**
+     * @return map name
+     */
     String getName();
 
-    /** @return stream of all nodes */
+    /**
+     * @return stream of all nodes
+     */
     Stream<Node> getNodes();
 
-    /** @return stream of all connections */
+    /**
+     * @return stream of all connections
+     */
     Stream<Connection> getConnections();
 }

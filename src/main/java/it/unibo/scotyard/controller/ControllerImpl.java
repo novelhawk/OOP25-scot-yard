@@ -25,7 +25,6 @@ public final class ControllerImpl implements Controller {
 
     private final Model model;
     private final ViewImpl view;
-    private Size selectedResolution;
 
     /**
      * Creates a controller with model and view.
@@ -106,9 +105,9 @@ public final class ControllerImpl implements Controller {
 
     // Callback for resolution selection
     private void run(final Size resolution) {
-        this.selectedResolution = Objects.requireNonNull(resolution, "Resolution cannot be null");
+        final Size selectedResolution = Objects.requireNonNull(resolution, "Resolution cannot be null");
 
-        this.view.setWindowMainFeatures(this.selectedResolution);
+        this.view.setWindowMainFeatures(selectedResolution);
         this.loadMainMenu();
     }
 }

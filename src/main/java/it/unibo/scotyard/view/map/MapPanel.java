@@ -2,6 +2,7 @@ package it.unibo.scotyard.view.map;
 
 import it.unibo.scotyard.commons.dtos.map.MapInfo;
 import it.unibo.scotyard.commons.dtos.map.Node;
+import it.unibo.scotyard.model.map.NodeId;
 import it.unibo.scotyard.model.map.TransportType;
 import it.unibo.scotyard.view.game.GameView;
 import java.awt.BasicStroke;
@@ -33,6 +34,10 @@ import java.util.Set;
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
+/**
+ * The map panel
+ *
+ */
 public final class MapPanel extends JPanel {
 
     private static final long serialVersionUID = 1L;
@@ -84,16 +89,16 @@ public final class MapPanel extends JPanel {
     private double currentScaleX = 1.0;
     private double currentScaleY = 1.0;
 
-    private int baseOffsetX = 0;
-    private int baseOffsetY = 0;
-    private int panOffsetX = 0;
-    private int panOffsetY = 0;
+    private int baseOffsetX;
+    private int baseOffsetY;
+    private int panOffsetX;
+    private int panOffsetY;
 
-    private int scaledBackgroundWidth = 0;
-    private int scaledBackgroundHeight = 0;
-    private boolean scaleCalculated = false;
+    private int scaledBackgroundWidth;
+    private int scaledBackgroundHeight;
+    private boolean scaleCalculated;
 
-    private final Map<Integer, Point2D> scaledNodePositions = new HashMap<>();
+    private final Map<NodeId, Point2D> scaledNodePositions = new HashMap<>();
 
     // Pan dragging
     private Point dragStartPoint;
@@ -229,7 +234,7 @@ public final class MapPanel extends JPanel {
         zoomLevel = Math.min(MAX_ZOOM, zoomLevel + ZOOM_STEP);
 
         if (Math.abs(oldZoom - zoomLevel) > ZOOM_COMPARISON) {
-            Point zoomCenter;
+            final Point zoomCenter;
             if (centerPoint != null) {
                 zoomCenter = centerPoint;
             } else {
@@ -367,7 +372,7 @@ public final class MapPanel extends JPanel {
             } else {
                 System.err.println("Background image not found");
             }
-        } catch (IOException e) {
+        } catch (final IOException e) {
             System.err.println("Error loading background image: " + e.getMessage());
             backgroundImage = null;
         }
@@ -483,7 +488,7 @@ public final class MapPanel extends JPanel {
 
         // ID nodo
         g2d.setColor(NODE_TEXT_COLOR);
-        final String label = String.valueOf(node.getId());
+        final String label = String.valueOf(node.getId().id());
         final FontMetrics fm = g2d.getFontMetrics();
         final int textWidth = fm.stringWidth(label);
         final int textHeight = fm.getAscent();

@@ -5,7 +5,9 @@ import javax.swing.JPanel;
 /** Controller for the start new game menu screen. */
 public interface NewGameMenuController {
 
-    /** @return the main panel of the new game menu. */
+    /**
+     * @return the main panel of the new game menu.
+     */
     JPanel getMainPanel();
 
     /**

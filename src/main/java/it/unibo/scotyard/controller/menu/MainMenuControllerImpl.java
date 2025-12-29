@@ -7,7 +7,11 @@ import it.unibo.scotyard.view.menu.MainMenuViewImpl;
 import java.util.Objects;
 import javax.swing.JPanel;
 
-public class MainMenuControllerImpl implements MainMenuController {
+/**
+ * The controller used by the MainMenu view
+ *
+ */
+public final class MainMenuControllerImpl implements MainMenuController {
 
     private final Controller controller;
     private final View view;

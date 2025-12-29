@@ -8,18 +8,30 @@ import it.unibo.scotyard.view.map.MapPanel;
 import it.unibo.scotyard.view.sidebar.SidebarPanel;
 import javax.swing.JPanel;
 
+/**
+ * The controller for all game related actions
+ *
+ */
 public interface GameController {
 
-    /** Initializes game. */
+    /**
+     * Initializes game.
+     */
     void initializeGame();
 
-    /** @return the main game panel */
+    /**
+     * @return the main game panel
+     */
     JPanel getMainPanel();
 
-    /** @return the map panel */
+    /**
+     * @return the map panel
+     */
     MapPanel getMapPanel();
 
-    /** @return the sidebar panel */
+    /**
+     * @return the sidebar panel
+     */
     SidebarPanel getSidebarPanel();
 
     /**

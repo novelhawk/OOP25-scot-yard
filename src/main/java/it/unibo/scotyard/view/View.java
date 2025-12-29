@@ -25,8 +25,8 @@ public interface View {
     void displayLauncher(GameLauncherController controller);
 
     /**
-     * Sets window main features (default close operation, size, location by platform). To be called before first window
-     * display.
+     * Sets window main features (default close operation, size, location by platform). To be called
+     * before first window display.
      *
      * @param resolution the window resolution
      */
@@ -43,7 +43,7 @@ public interface View {
     /**
      * Displays the input panel. Used to display MainMenu + NewGameMenu + Game
      *
-     * @param panel
+     * @param panel the panel to display
      */
     void displayPanel(JPanel panel);
 

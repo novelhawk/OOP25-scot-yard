@@ -6,8 +6,8 @@ import java.util.Optional;
 /** connection between two nodes on the game map. each connection has a transport type. */
 public class MapConnection {
     private final Integer id;
-    private final int from;
-    private final int to;
+    private final NodeId from;
+    private final NodeId to;
     private final TransportType transport;
 
     /**
@@ -18,7 +18,7 @@ public class MapConnection {
      * @param transport the transport type for this connection
      * @throws NullPointerException if transport is null
      */
-    public MapConnection(final int from, final int to, final TransportType transport) {
+    public MapConnection(final NodeId from, final NodeId to, final TransportType transport) {
         this(null, from, to, transport);
     }
 
@@ -31,7 +31,7 @@ public class MapConnection {
      * @param transport the transport type for this connection
      * @throws NullPointerException if transport is null
      */
-    public MapConnection(final Integer id, final int from, final int to, final TransportType transport) {
+    public MapConnection(final Integer id, final NodeId from, final NodeId to, final TransportType transport) {
         this.id = id;
         this.from = from;
         this.to = to;
@@ -52,7 +52,7 @@ public class MapConnection {
      *
      * @return the from node ID
      */
-    public int getFrom() {
+    public NodeId getFrom() {
         return from;
     }
 
@@ -61,7 +61,7 @@ public class MapConnection {
      *
      * @return the to node ID
      */
-    public int getTo() {
+    public NodeId getTo() {
         return to;
     }
 

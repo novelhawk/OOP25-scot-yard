@@ -1,6 +1,8 @@
 package it.unibo.scotyard.model.players;
 
 import java.util.HashMap;
+import java.util.List;
+import java.util.EnumMap;
 import java.util.Map;
 
 public class Detective extends PlayerImpl {
@@ -15,7 +17,7 @@ public class Detective extends PlayerImpl {
 
     @Override
     public Map<TicketType, Integer> setInitialTickets() {
-        Map<TicketType, Integer> ticketsMap = new HashMap<>();
+        final Map<TicketType, Integer> ticketsMap = new EnumMap<>(TicketType.class);
         ticketsMap.put(TicketType.TAXI, NUMBER_TICKETS_TAXI);
         ticketsMap.put(TicketType.BUS, NUMBER_TICKETS_BUS);
         ticketsMap.put(TicketType.UNDERGROUND, NUMBER_TIKCETS_UNDERGROUND);

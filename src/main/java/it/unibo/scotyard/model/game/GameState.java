@@ -6,7 +6,12 @@ import it.unibo.scotyard.model.players.Player;
 import it.unibo.scotyard.model.players.TicketType;
 import java.util.List;
 import java.util.Set;
+import java.util.Random;
 
+/**
+ * The game state.
+ *
+ */
 public interface GameState {
 
     /**
@@ -16,7 +21,12 @@ public interface GameState {
      * @param levelDifficulty the selected level of difficulty
      * @param initialPositions the list of the possible initial positions of players
      */
-    void initialize(String gameMode, String levelDifficulty, List<Integer> initialPositions);
+    void initialize(final String gameMode, final String levelDifficulty, final List<Integer> initialPositions);
+
+    /**
+     * @return the seeded shared random instance used by all game logic
+     */
+    Random getSeededRandom();
 
     /**
      * Returns a boolean that indicates if the game is over. In particular, the game is over if the detective or one of
@@ -101,9 +111,9 @@ public interface GameState {
      * Return the number of tickets of a specific type possessed by the user player.
      *
      * @param ticketType the type of ticket
-     * @return the number of tickets of a specific tyep of the user player
+     * @return the number of tickets of type {@code ticketType}
      */
-    int getNumberTicketsUserPlayer(TicketType ticketType);
+    int getNumberTicketsUserPlayer(final TicketType ticketType);
 
     /** Return the current player. */
     Player getCurrentPlayer();
@@ -139,9 +149,17 @@ public interface GameState {
      */
     int getGameRound();
 
-    GameStatus getGameState();
+    /**
+     * Gets the current game status.
+     */
+    GameStatus getGameStatus();
 
-    void setGameState(GameStatus state);
+    /**
+     * Sets the current game status.
+     *
+     * @param state the updated game status
+     */
+    void setGameStatus(final GameStatus state);
 
     /**
      * Gets all Bobby players (additional detectives).
@@ -157,3 +175,4 @@ public interface GameState {
      */
     Player getDetective();
 }
+

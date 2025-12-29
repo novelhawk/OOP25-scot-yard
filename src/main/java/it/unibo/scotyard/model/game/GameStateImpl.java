@@ -14,12 +14,17 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
-public class GameStateImpl implements GameState {
+/**
+ * The game state.
+ *
+ */
+public final class GameStateImpl implements GameState {
 
     private static final int MISTER_X_ROUND_INDEX = -2;
     private static final int DETECTIVE_ROUND_INDEX = -1;
 
-    private GameStatus gameState;
+    private final Random random;
+    private GameStatus gameStatus;
     private GameMode gameMode;
     private GameDifficulty gameDifficulty;
 
@@ -36,17 +41,26 @@ public class GameStateImpl implements GameState {
 
     private int round;
 
-    public GameStateImpl(String gameMode, String levelOfDifficulty, List<Integer> initialPositions) {
+    /**
+     * Creates a new game state.
+     *
+     * @param gameMode the game mode
+     * @param difficultyLevel the difficulty level
+     * @param initialPositions the initial positions
+     */
+    public GameStateImpl(String gameMode, String difficultyLevel, List<Integer> initialPositions) {
+        // TODO: seed
+        this.random = new Random(0);
         this.additionalPlayers = new ArrayList<>();
         this.round = 0;
         this.playersNumber = 0;
         this.availableTransports = new ArrayList<TransportType>();
         this.possibleDestinations = new HashSet<Pair<Integer, TransportType>>();
-        this.initialize(gameMode, levelOfDifficulty, initialPositions);
+        this.initialize(gameMode, difficultyLevel, initialPositions);
     }
 
     @Override
-    public void initialize(String gameMode, String levelDifficulty, List<Integer> initialPositions) {
+    public void initialize(final String gameMode, final String levelDifficulty, final List<Integer> initialPositions) {
         this.gameMode = setGameMode(gameMode);
         this.gameDifficulty = setGameDifficulty(levelDifficulty);
         this.loadInitialPositions(initialPositions);
@@ -54,10 +68,15 @@ public class GameStateImpl implements GameState {
         this.setIA();
         this.round++;
         this.indexCurrentPlayer = MISTER_X_ROUND_INDEX;
-        this.setGameState(GameStatus.PLAYING);
+        this.setGameStatus(GameStatus.PLAYING);
     }
 
-    private GameMode setGameMode(String inputGameMode) {
+    @Override
+    public Random getSeededRandom() {
+        return this.random;
+    }
+
+    private GameMode setGameMode(final String inputGameMode) {
         switch (inputGameMode) {
             case "Detective":
                 return GameMode.DETECTIVE;
@@ -68,8 +87,8 @@ public class GameStateImpl implements GameState {
         }
     }
 
-    private GameDifficulty setGameDifficulty(String inputGameDifficulty) {
-        switch (inputGameDifficulty) {
+    private GameDifficulty setGameDifficulty(final String difficultyLevel) {
+        switch (difficultyLevel) {
             case "Facile":
                 return GameDifficulty.EASY;
             case "Media":
@@ -353,11 +372,11 @@ public class GameStateImpl implements GameState {
     }
 
     @Override
-    public int getNumberTicketsUserPlayer(TicketType ticketType) {
+    public int getNumberTicketsUserPlayer(final TicketType ticketType) {
         return this.getNumberTickets(this.userPlayer, ticketType);
     }
 
-    private int getNumberTickets(Player player, TicketType ticketType) {
+    private int getNumberTickets(final Player player, final TicketType ticketType) {
         return player.getNumberTickets(ticketType);
     }
 
@@ -392,13 +411,13 @@ public class GameStateImpl implements GameState {
     }
 
     @Override
-    public GameStatus getGameState() {
-        return this.gameState;
+    public GameStatus getGameStatus() {
+        return this.gameStatus;
     }
 
     @Override
-    public void setGameState(GameStatus state) {
-        this.gameState = state;
+    public void setGameStatus(final GameStatus state) {
+        this.gameStatus = state;
     }
 
     @Override

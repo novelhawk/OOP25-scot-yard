@@ -15,8 +15,8 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * reads and parses Scotland Yard map data from JSON files. The map data includes nodes, connections, reveal turns, and
- * initial positions.
+ * reads and parses Scotland Yard map data from JSON files. The map data includes nodes,
+ * connections, reveal turns, and initial positions.
  */
 public class MapReader {
     private static final String DEFAULT_MAP_PATH = "/it/unibo/scotyard/model/map/ScotlandYardMap.json";
@@ -62,13 +62,13 @@ public class MapReader {
     }
 
     private MapData parseMapData(final Reader reader) throws MapLoadException {
+        final JsonObject jsonObject = gson.fromJson(reader, JsonObject.class);
+
+        if (jsonObject == null) {
+            throw new MapLoadException("Invalid JSON: root object is null");
+        }
+
         try {
-            final JsonObject jsonObject = gson.fromJson(reader, JsonObject.class);
-
-            if (jsonObject == null) {
-                throw new MapLoadException("Invalid JSON: root object is null");
-            }
-
             final String name = jsonObject.get("name").getAsString();
             final List<MapNode> nodes = parseNodes(jsonObject.getAsJsonArray("nodes"));
             final List<MapConnection> connections = parseConnections(jsonObject);
@@ -91,15 +91,16 @@ public class MapReader {
             final int x = nodeArray.get(0).getAsInt();
             final int y = nodeArray.get(1).getAsInt();
 
-            nodes.add(new MapNode(id++, x, y));
+            nodes.add(new MapNode(new NodeId(id), x, y));
+            id++;
         }
 
         return nodes;
     }
 
     /**
-     * Parses connections from JSON where transports are separated by type. Has "taxi", "bus", "underground", "black"
-     * arrays with [from, to] pairs.
+     * Parses connections from JSON where transports are separated by type. Has "taxi", "bus",
+     * "underground", "black" arrays with [from, to] pairs.
      *
      * @param jsonObject the root JSON object containing transport arrays
      * @return list of all connections combined from all transport types
@@ -137,8 +138,8 @@ public class MapReader {
 
         for (final JsonElement element : jsonArray) {
             final JsonArray connectionArray = element.getAsJsonArray();
-            final int from = connectionArray.get(0).getAsInt();
-            final int to = connectionArray.get(1).getAsInt();
+            final NodeId from = new NodeId(connectionArray.get(0).getAsInt());
+            final NodeId to = new NodeId(connectionArray.get(1).getAsInt());
 
             connections.add(new MapConnection(null, from, to, transport));
             connections.add(new MapConnection(null, to, from, transport));

@@ -55,7 +55,7 @@ spotless {
             .addMutator("SafeButNotConsensual")
             .includeDraft(true)
 
-        palantirJavaFormat().formatJavadoc(true)
+        palantirJavaFormat().formatJavadoc(false)
         formatAnnotations()
 
         trimTrailingWhitespace()

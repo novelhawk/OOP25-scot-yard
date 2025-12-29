@@ -21,7 +21,7 @@ import javax.swing.SwingUtilities;
 public final class ViewImpl implements View {
     private static final String MAIN_WINDOW_TITLE = "Scotland Yard";
 
-    private Window window;
+    private final Window window;
     private final JPanel mainContainer;
 
     /** new view instance. */
@@ -75,8 +75,13 @@ public final class ViewImpl implements View {
         return Size.of((int) screenSize.getWidth(), (int) screenSize.getHeight());
     }
 
-    // Force UI layout update on EDT
-    public void forceLayoutUpdate(JPanel mainPanel, MapPanel mapPanel) {
+    /**
+     * Force UI layout update on EDT
+     *
+     * @param mainPanel the main panel
+     * @param mapPanel the map panel
+     */
+    public void forceLayoutUpdate(final JPanel mainPanel, final MapPanel mapPanel) {
         SwingUtilities.invokeLater(() -> {
             mainPanel.revalidate();
             if (mapPanel != null) {

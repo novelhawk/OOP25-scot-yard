@@ -25,7 +25,11 @@ import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-public class GameViewImpl implements GameView {
+/**
+ * The game view
+ *
+ */
+public final class GameViewImpl implements GameView {
 
     private static final int SMALL_WINDOW_WIDTH = 300;
     private static final int SMALL_WINDOW_HEIGHT = 100;
@@ -52,9 +56,9 @@ public class GameViewImpl implements GameView {
     private static final Font SMALL_TEXT_FONT = new Font("Arial", Font.BOLD, 14);
     private static final Font WINNER_FONT = new Font("Arial", Font.BOLD, 28);
 
-    private MapPanel mapPanel;
-    private SidebarPanel sidebar;
-    private JPanel mainPanel;
+    private final MapPanel mapPanel;
+    private final SidebarPanel sidebar;
+    private final JPanel mainPanel;
     private Window gameOverWindow;
     private JLabel winnerLabel;
 
@@ -62,6 +66,11 @@ public class GameViewImpl implements GameView {
 
     private TransportType selectedTransportType;
 
+    /**
+     * Creates a new game view
+     *
+     * @param mapInfo the game map
+     */
     public GameViewImpl(final MapInfo mapInfo) {
         this.mapPanel = new MapPanel(mapInfo, this);
         this.sidebar = new SidebarPanel(this);
@@ -93,9 +102,9 @@ public class GameViewImpl implements GameView {
     }
 
     @Override
-    public void displayRulesWindow(JPanel panel) {
+    public void displayRulesWindow(final JPanel panel) {
         final Size smallSize = Size.of(SMALL_WINDOW_WIDTH, SMALL_WINDOW_HEIGHT);
-        Window rulesWindow = new WindowImpl(smallSize, panel, RULES_WINDOW_TITLE);
+        final Window rulesWindow = new WindowImpl(smallSize, panel, RULES_WINDOW_TITLE);
         rulesWindow.setsMainFeatures(smallSize);
         rulesWindow.setHideOnClose();
         rulesWindow.display();
