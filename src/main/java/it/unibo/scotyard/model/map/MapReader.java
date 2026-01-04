@@ -13,6 +13,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * reads and parses Scotland Yard map data from JSON files. The map data includes nodes,
@@ -73,7 +74,10 @@ public class MapReader {
             final List<MapNode> nodes = parseNodes(jsonObject.getAsJsonArray("nodes"));
             final List<MapConnection> connections = parseConnections(jsonObject);
             final List<Integer> revealTurns = parseIntegerArray(jsonObject.getAsJsonArray("revealTurns"));
-            final List<Integer> initialPositions = parseIntegerArray(jsonObject.getAsJsonArray("initialPositions"));
+            final List<NodeId> initialPositions =
+                    parseIntegerArray(jsonObject.getAsJsonArray("initialPositions")).stream()
+                            .map(NodeId::new)
+                            .collect(Collectors.toList());
 
             return new MapData(name, nodes, connections, revealTurns, initialPositions);
         } catch (Exception e) {
@@ -142,6 +146,7 @@ public class MapReader {
             final NodeId to = new NodeId(connectionArray.get(1).getAsInt());
 
             connections.add(new MapConnection(null, from, to, transport));
+            connections.add(new MapConnection(null, to, from, transport));
         }
 
         return connections;

@@ -1,7 +1,7 @@
 package it.unibo.scotyard.model.players;
 
+import it.unibo.scotyard.model.game.turn.TurnManager;
 import it.unibo.scotyard.model.map.NodeId;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -15,21 +15,22 @@ public abstract class PlayerImpl implements Player {
 
     protected NodeId position;
     protected Map<TicketType, Integer> tickets;
+    protected String name;
+
+    // For Mr.X game mode turn managament
+    protected TurnManager<?> turnManager;
 
     public PlayerImpl() {
         this.tickets = this.setInitialTickets();
-        // this.setInitialPosition(null);
     }
 
     @Override
     public abstract Map<TicketType, Integer> setInitialTickets();
 
-    protected NodeId generateRandomInitialPosition(List<Integer> initialPositions) {
-        return new NodeId(1);
-    }
-
     @Override
-    public abstract void setInitialPosition(List<Integer> initialPositions);
+    public void setPosition(final NodeId newPosition) {
+        this.position = newPosition;
+    }
 
     @Override
     public NodeId getPosition() {
@@ -43,12 +44,38 @@ public abstract class PlayerImpl implements Player {
 
     @Override
     public boolean useTicket(final TicketType ticket) {
-        if (this.tickets.containsKey(ticket) && this.tickets.get(ticket) > NONE) {
-            if (this.tickets.get(ticket) != INFINITE) {
-                this.tickets.put(ticket, this.tickets.get(ticket) - 1);
+        if (this.tickets.containsKey(ticket)) {
+            final int currentTickets = this.tickets.get(ticket);
+            // INFINITE (-1) o > 0
+            if (currentTickets == INFINITE || currentTickets > NONE) {
+                // Decrementa solo se non infinito
+                if (currentTickets != INFINITE) {
+                    this.tickets.put(ticket, currentTickets - 1);
+                }
+                return true;
             }
-            return true;
         }
         return false;
+    }
+
+    @Override
+    public void setName(String newName) {
+        this.name = newName;
+    }
+
+    @Override
+    public String getName() {
+        return this.name;
+    }
+
+    /**
+     * Ensures turn manager has been initialized.
+     *
+     * @throws IllegalStateException if not initialized
+     */
+    protected void ensureInitialized() {
+        if (turnManager == null) {
+            throw new IllegalStateException("Player not initialized. Call initialize(mapData) first.");
+        }
     }
 }

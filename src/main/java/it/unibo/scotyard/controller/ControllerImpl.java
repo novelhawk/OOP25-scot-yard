@@ -1,8 +1,9 @@
 package it.unibo.scotyard.controller;
 
 import it.unibo.scotyard.commons.engine.Size;
+import it.unibo.scotyard.controller.game.DetectiveGameControllerImpl;
 import it.unibo.scotyard.controller.game.GameController;
-import it.unibo.scotyard.controller.game.GameControllerImpl;
+import it.unibo.scotyard.controller.game.MrXGameControllerImpl;
 import it.unibo.scotyard.controller.gamelauncher.GameLauncherController;
 import it.unibo.scotyard.controller.gamelauncher.GameLauncherControllerImpl;
 import it.unibo.scotyard.controller.menu.MainMenuController;
@@ -10,8 +11,13 @@ import it.unibo.scotyard.controller.menu.MainMenuControllerImpl;
 import it.unibo.scotyard.controller.menu.NewGameMenuController;
 import it.unibo.scotyard.controller.menu.NewGameMenuControllerImpl;
 import it.unibo.scotyard.model.Model;
+import it.unibo.scotyard.model.Pair;
+import it.unibo.scotyard.model.game.GameMode;
+import it.unibo.scotyard.model.map.NodeId;
+import it.unibo.scotyard.model.map.TransportType;
 import it.unibo.scotyard.view.ViewImpl;
 import it.unibo.scotyard.view.game.GameView;
+import java.util.List;
 import java.util.Objects;
 import javax.swing.JPanel;
 
@@ -57,11 +63,7 @@ public final class ControllerImpl implements Controller {
     }
 
     @Override
-    public void loadGamePanel() {
-        final GameView gameView =
-                this.view.createGameView(this.model.getMapData().info());
-        final GameController gameController = new GameControllerImpl(this.model.getGameState(), gameView);
-        gameController.updateSidebar();
+    public void loadGamePanel(GameController gameController) {
         this.displayPanel(gameController.getMainPanel());
         this.view.forceLayoutUpdate(gameController.getMainPanel(), gameController.getMapPanel());
     }
@@ -71,8 +73,29 @@ public final class ControllerImpl implements Controller {
         // Initialize the game and load map data from model
         this.model.initialize(gameMode, difficultyLevel);
 
+        // Create the GameView and the GameController
+        final GameView gameView =
+                this.view.createGameView(this.model.getMapData().info());
+
+        final GameController gameController;
+        if (this.model.getGameState().getGameMode() == GameMode.MISTER_X) {
+            // Modalità Mister X
+            gameController =
+                    new MrXGameControllerImpl(this.model.getGameState(), this.model.getMapData(), gameView, this);
+        } else {
+            // Modalità Detective
+            gameController = new DetectiveGameControllerImpl(this.model.getGameState(), gameView, this);
+        }
+        gameController.initializeGame();
+        gameView.setObserver(gameController);
+
         // Load the game panel
-        this.loadGamePanel();
+        this.loadGamePanel(gameController);
+    }
+
+    @Override
+    public List<Pair<NodeId, TransportType>> getPossibleDestinations(NodeId initialPosition) {
+        return this.model.getPossibleDestinations(initialPosition);
     }
 
     @Override

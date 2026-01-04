@@ -1,32 +1,43 @@
 package it.unibo.scotyard.controller.game;
 
+import it.unibo.scotyard.controller.Controller;
 import it.unibo.scotyard.model.game.GameMode;
 import it.unibo.scotyard.model.game.GameState;
+import it.unibo.scotyard.model.map.NodeId;
+import it.unibo.scotyard.model.map.TransportType;
+import it.unibo.scotyard.model.players.Player;
 import it.unibo.scotyard.model.players.TicketType;
 import it.unibo.scotyard.view.game.GameView;
 import it.unibo.scotyard.view.map.MapPanel;
 import it.unibo.scotyard.view.sidebar.SidebarPanel;
+import java.util.Objects;
 import javax.swing.JPanel;
 
 /**
  * The controller for all game related actions
  *
  */
-public final class GameControllerImpl implements GameController {
+public abstract class GameControllerImpl implements GameController {
 
-    private final GameState gameState;
-    private final GameView view;
+    protected final GameState gameState;
+    protected final GameView view;
+    protected final Controller mainController;
 
     /**
      * Creates the controller
      *
      * @param gameState the game state
      * @param view the view
+     * @param controller the controller
      */
-    public GameControllerImpl(final GameState gameState, final GameView view) {
-        this.gameState = gameState;
-        this.view = view;
+    public GameControllerImpl(final GameState gameState, final GameView view, final Controller controller) {
+        this.gameState = Objects.requireNonNull(gameState, "Game cannot be null");
+        this.view = Objects.requireNonNull(view, "GameView cannot be null");
+        this.mainController = Objects.requireNonNull(controller, "mainController cannot be null");
     }
+
+    @Override
+    public abstract void initializeGame();
 
     @Override
     public JPanel getMainPanel() {
@@ -59,14 +70,45 @@ public final class GameControllerImpl implements GameController {
     }
 
     @Override
-    public void updateSidebar() {
+    public void updateSidebar(Player currentPlayer) {
         final SidebarPanel sidebar = this.getSidebarPanel();
         sidebar.setGameModeLabel(this.getGameMode());
         sidebar.updateRoundLabel(this.getNumberRound());
+        sidebar.updateCurrentPlayerLabel(currentPlayer);
         sidebar.updateTaxiTicketsLabel(this.getNumberTicketsUserPlayer(TicketType.TAXI));
         sidebar.updateBusTicketsLabel(this.getNumberTicketsUserPlayer(TicketType.BUS));
         sidebar.updateUndergroundTicketsLabel(this.getNumberTicketsUserPlayer(TicketType.UNDERGROUND));
         sidebar.updateBlackTicketsLabel(this.getNumberTicketsUserPlayer(TicketType.BLACK));
         sidebar.updateDoubleMoveTicketsLabel(this.getNumberTicketsUserPlayer(TicketType.DOUBLE_MOVE));
     }
+
+    @Override
+    public boolean isGameOver() {
+        return this.gameState.isGameOver();
+    }
+
+    @Override
+    public void loadGameOverWindow() {
+        this.view.displayGameOverWindow(this.gameState.resultGame());
+    }
+
+    @Override
+    public void loadMainMenu() {
+        this.mainController.loadMainMenu();
+    }
+
+    /**
+     * Checks if there are multiple transport types to reach destination or not. Used only in
+     * DetectiveGameControllerImpl.
+     *
+     * @param newPositionId the id of the destination
+     */
+    public abstract void destinationChosen(NodeId newPositionId);
+
+    /**
+     * Sets the selcted transport type to reach destination. Used only in DetectiveGameControllerImpl.
+     *
+     * @param transportType the type of transport selected
+     */
+    public abstract void selectTransport(TransportType transportType);
 }

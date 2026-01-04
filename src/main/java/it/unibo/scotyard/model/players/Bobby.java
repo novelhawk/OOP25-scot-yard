@@ -1,13 +1,12 @@
 package it.unibo.scotyard.model.players;
 
 import java.util.EnumMap;
-import java.util.List;
 import java.util.Map;
 
 public class Bobby extends PlayerImpl {
 
     public Bobby() {
-        super();
+        this.name = "Bobby";
     }
 
     @Override
@@ -19,10 +18,5 @@ public class Bobby extends PlayerImpl {
         ticketsMap.put(TicketType.BLACK, NONE);
         ticketsMap.put(TicketType.DOUBLE_MOVE, NONE);
         return ticketsMap;
-    }
-
-    @Override
-    public void setInitialPosition(final List<Integer> initialPositions) {
-        this.position = this.generateRandomInitialPosition(initialPositions);
     }
 }

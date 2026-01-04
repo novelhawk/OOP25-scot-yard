@@ -1,6 +1,7 @@
 package it.unibo.scotyard.view.sidebar;
 
 import it.unibo.scotyard.model.game.GameMode;
+import it.unibo.scotyard.model.players.Player;
 import it.unibo.scotyard.view.game.GameView;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -45,6 +46,7 @@ public final class SidebarPanel extends JPanel {
     private static final int SMALL_SPACING = 6;
 
     // Texts
+    private static final String INFINITI_STRING = "infiniti";
     private static final String INVENTORY_TEXT = "Inventario";
     private static final String TAXI_TICKETS_TEXT = "Biglietti taxi";
     private static final String BUS_TICKETS_TEXT = "Biglietti bus";
@@ -52,16 +54,20 @@ public final class SidebarPanel extends JPanel {
     private static final String BLACK_TICKETS_TEXT = "Biglietti neri";
     private static final String DOUBLE_MOVE_TICKETS_TEXT = "Biglietti doppia mossa";
     private static final String LOAD_RULES_TEXT = "Regole";
+    private static final String CURRENT_PLAYER_TEXT = "Turno di : ";
 
     // Components
     private JLabel currentGameModeLabel;
     private JLabel roundLabel;
+    private JLabel currentPlayerLabel;
     private JLabel taxiTicketsLabel;
     private JLabel busTicketsLabel;
     private JLabel undergroundTicketsLabel;
     private JLabel blackTicketsLabel;
     private JLabel doubleMoveTicketsLabel;
+    private JButton endTurnButton;
     private JButton loadRulesButton;
+    private JButton doubleMoveButton;
 
     private GameView gameView;
     private GameMode currentGameMode;
@@ -95,6 +101,10 @@ public final class SidebarPanel extends JPanel {
         this.add(roundLabel);
         this.add(Box.createVerticalStrut(SPACING));
 
+        this.currentPlayerLabel = createCurrentPlayerLabel();
+        this.add(currentPlayerLabel);
+        this.add(Box.createVerticalStrut(SPACING));
+
         this.add(createInventoryLabel());
         this.add(Box.createVerticalStrut(SMALL_SPACING));
         this.taxiTicketsLabel = createTicketLabel(TAXI_TICKETS_TEXT);
@@ -113,7 +123,19 @@ public final class SidebarPanel extends JPanel {
         this.add(doubleMoveTicketsLabel);
         this.add(Box.createVerticalStrut(SPACING));
 
-        // TODO : aggiungere pannello per tracciamento posizioni e mezzi usati da Mister X
+        // TODO : aggiungere pannello per tracciamento posizioni e mezzi usati da Mister
+        // X
+
+        this.doubleMoveButton = createActionButton("Doppia Mossa");
+        this.add(doubleMoveButton);
+        this.add(Box.createVerticalStrut(SMALL_SPACING));
+
+        this.endTurnButton = createActionButton("Fine Turno");
+        this.add(endTurnButton);
+        this.add(Box.createVerticalStrut(SPACING));
+
+        // Nasconde i bottony by default (da capire)
+        this.doubleMoveButton.setVisible(false);
 
         this.loadRulesButton = createLoadRulesButton(LOAD_RULES_TEXT);
         this.add(loadRulesButton);
@@ -173,6 +195,26 @@ public final class SidebarPanel extends JPanel {
         label.setAlignmentY(TOP_ALIGNMENT);
         label.setAlignmentX(CENTER_ALIGNMENT);
         return label;
+    }
+
+    private JLabel createCurrentPlayerLabel() {
+        final JLabel label = new JLabel(CURRENT_PLAYER_TEXT);
+        label.setFont(TEXT_FONT);
+        label.setForeground(ACCENT_COLOR);
+        label.setAlignmentY(CENTER_ALIGNMENT);
+        label.setAlignmentX(CENTER_ALIGNMENT);
+        return label;
+    }
+
+    private JButton createActionButton(String text) {
+        final JButton button = new JButton(text);
+        button.setFont(BUTTON_FONT);
+        button.setBackground(ACCENT_COLOR);
+        button.setForeground(BACKGROUND_COLOR);
+        button.setAlignmentY(CENTER_ALIGNMENT);
+        button.setAlignmentX(CENTER_ALIGNMENT);
+        button.setMaximumSize(new Dimension(SIDEBAR_WIDTH - 2 * PADDING, 40));
+        return button;
     }
 
     /**
@@ -287,7 +329,19 @@ public final class SidebarPanel extends JPanel {
     }
 
     /**
-     * Method which is called by the GameController when updating the sideabar displaying. Updates the
+     * Method which is called by the GameController when updating the sidebar displaying. Updates the text of the
+     * currentPlayerLabel according to the current player.
+     */
+    public void updateCurrentPlayerLabel(Player player) {
+        this.currentPlayerLabel.setText(CURRENT_PLAYER_TEXT + player.getName());
+    }
+
+    public void showElseHideDoubleMoveButton(final boolean show) {
+        doubleMoveButton.setVisible(show);
+    }
+
+    /**
+     * Method which is called by the GameController when updating the sidebar displaying. Updates the
      * text of the taxiTicketsLabel according to current number of taxi tickets possessed by the user
      * player.
      *
@@ -358,5 +412,65 @@ public final class SidebarPanel extends JPanel {
         }
 
         return label;
+    }
+
+    /**
+     * Sets the listener for the end turn button.
+     *
+     * @param listener the action listener
+     */
+    public void setEndTurnListener(ActionListener listener) {
+        // rimuove tutti i listener
+        for (ActionListener al : endTurnButton.getActionListeners()) {
+            endTurnButton.removeActionListener(al);
+        }
+        endTurnButton.addActionListener(listener);
+    }
+
+    /**
+     * Updates the end turn button state.
+     *
+     * @param enabled true to enable button
+     */
+    public void updateEndTurnButton(boolean enabled) {
+        endTurnButton.setEnabled(enabled);
+    }
+
+    public void enableEndTurnButton(boolean value) {
+        this.endTurnButton.setEnabled(value);
+    }
+
+    /**
+     * Sets the listener for the double move button.
+     *
+     * @param listener the action listener
+     */
+    public void setDoubleMoveListener(ActionListener listener) {
+        // rimuove tutti i listener
+        for (ActionListener al : doubleMoveButton.getActionListeners()) {
+            doubleMoveButton.removeActionListener(al);
+        }
+        doubleMoveButton.addActionListener(listener);
+    }
+
+    /**
+     * Shows or hides the game action buttons (for MrX mode).
+     *
+     * @param visible true to show buttons, false to hide
+     */
+    public void setActionButtonsVisible(boolean visible) {
+        endTurnButton.setVisible(visible);
+        doubleMoveButton.setVisible(visible);
+    }
+
+    /**
+     * Updates the double move button state and text.
+     *
+     * @param enabled true to enable button
+     * @param text the button text
+     */
+    public void updateDoubleMoveButton(boolean enabled, String text) {
+        doubleMoveButton.setEnabled(enabled);
+        doubleMoveButton.setText(text);
     }
 }

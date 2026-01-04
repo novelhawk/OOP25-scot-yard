@@ -4,11 +4,17 @@ import it.unibo.scotyard.commons.dtos.map.MapInfo;
 import it.unibo.scotyard.commons.dtos.map.Node;
 import it.unibo.scotyard.model.map.NodeId;
 import it.unibo.scotyard.model.map.TransportType;
-import java.awt.*;
+import it.unibo.scotyard.view.game.GameView;
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Cursor;
+import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.FontMetrics;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.RenderingHints;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.MouseAdapter;
@@ -18,9 +24,14 @@ import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
+import java.util.function.Consumer;
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
@@ -36,6 +47,10 @@ public final class MapPanel extends JPanel {
     private static final int NODE_LABEL_SIZE = 10;
     private static final Font NODE_FONT = new Font("Arial", Font.BOLD, NODE_LABEL_SIZE);
 
+    private static final String MRX_STRING = "X";
+    private static final String DETECTIVE_STRING = "D";
+    private static final String BOBBIES_STRING = "B";
+
     // Dimensioni originali del background
     private static final int ORIGINAL_BACKGROUND_WIDTH = 2570;
     private static final int ORIGINAL_BACKGROUND_HEIGHT = 1926;
@@ -45,14 +60,26 @@ public final class MapPanel extends JPanel {
     private static final Color NODE_TEXT_COLOR = new Color(33, 33, 33);
     private static final Color SHADOW_COLOR = new Color(0, 0, 0, 30);
 
+    private static final Color MISTER_X_COLOR = new Color(0, 0, 0); // nero
+    private static final Color DETECTIVE_COLOR = new Color(0, 100, 200); // blu
+    private static final Color BOBBIES_COLOR = new Color(255, 140, 0); // arancione scuro
+
+    private static final Color MISTER_X_BORDER_COLOR = Color.GRAY;
+    private static final Color DETECTIVE_BORDER_COLOR = new Color(0, 150, 255); // blu chiaro
+    private static final Color BOBBIES_BORDER_COLOR = new Color(255, 200, 100); // arancione chiaro
+
     // Zoom settings
     private static final double MIN_ZOOM = 1.0;
     private static final double MAX_ZOOM = 10.0;
     private static final double ZOOM_STEP = 0.1; // Ridotto per trackpad più fluido
+    private static final double ZOOM_COMPARISON = 0.001;
 
     // Scaling factors per i nodi durante lo zoom
     // I nodi scalano meno del background per rimanere leggibili
     private static final double NODE_SCALE_FACTOR = 0.5; // I nodi scalano al 50% rispetto allo zoom
+
+    // Game State (Detective Mode)
+    private static final NodeId POSITION_NOT_SET = new NodeId(-1);
 
     private final MapInfo mapInfo;
     private BufferedImage backgroundImage;
@@ -79,14 +106,30 @@ public final class MapPanel extends JPanel {
     private int dragStartPanX;
     private int dragStartPanY;
 
+    // Game Status
+    private NodeId misterXPosition;
+    private NodeId detectivePosition;
+    private List<NodeId> bobbiesPositions;
+    private Set<NodeId> possibleDestinations;
+    private NodeId selectedDestination;
+    private Set<it.unibo.scotyard.model.game.turn.TurnManagerImpl.MoveOption> validMoves = new HashSet<>();
+    private Consumer<NodeId> nodeClickListener = null;
+
+    GameView gameView;
+
     /**
      * Creates a new MapPanel with the given map info DTO.
      *
      * @param mapInfo the map info DTO to render
      * @throws NullPointerException if mapInfo is null
      */
-    public MapPanel(final MapInfo mapInfo) {
+    public MapPanel(final MapInfo mapInfo, final GameView view) {
         this.mapInfo = Objects.requireNonNull(mapInfo, "Map info cannot be null");
+        this.gameView = view;
+        this.detectivePosition = POSITION_NOT_SET;
+        this.bobbiesPositions = new ArrayList<>();
+        this.possibleDestinations = new HashSet<>();
+        this.selectedDestination = POSITION_NOT_SET;
         setupPanel();
     }
 
@@ -171,6 +214,11 @@ public final class MapPanel extends JPanel {
             public void mouseExited(final MouseEvent e) {
                 setCursor(Cursor.getDefaultCursor());
             }
+
+            @Override
+            public void mouseClicked(final MouseEvent e) {
+                handleNodeClick(e.getX(), e.getY());
+            }
         };
 
         addMouseListener(mouseAdapter);
@@ -186,7 +234,7 @@ public final class MapPanel extends JPanel {
         final double oldZoom = zoomLevel;
         zoomLevel = Math.min(MAX_ZOOM, zoomLevel + ZOOM_STEP);
 
-        if (Math.abs(oldZoom - zoomLevel) > 0.001) {
+        if (Math.abs(oldZoom - zoomLevel) > ZOOM_COMPARISON) {
             final Point zoomCenter;
             if (centerPoint != null) {
                 zoomCenter = centerPoint;
@@ -210,11 +258,11 @@ public final class MapPanel extends JPanel {
         final double oldZoom = zoomLevel;
         zoomLevel = Math.max(MIN_ZOOM, zoomLevel - ZOOM_STEP);
 
-        if (Math.abs(zoomLevel - MIN_ZOOM) < 0.001) {
+        if (Math.abs(zoomLevel - MIN_ZOOM) < ZOOM_COMPARISON) {
             zoomLevel = MIN_ZOOM;
             panOffsetX = 0;
             panOffsetY = 0;
-        } else if (Math.abs(oldZoom - zoomLevel) > 0.001) {
+        } else if (Math.abs(oldZoom - zoomLevel) > ZOOM_COMPARISON) {
             // Mantieni il centro durante il dezoom
             final Point zoomCenter = new Point(getWidth() / 2, getHeight() / 2);
             final double mapX = (zoomCenter.x - baseOffsetX - panOffsetX) / oldZoom;
@@ -252,7 +300,7 @@ public final class MapPanel extends JPanel {
     }
 
     private boolean isZoomed() {
-        return zoomLevel > MIN_ZOOM + 0.001;
+        return zoomLevel > MIN_ZOOM + ZOOM_COMPARISON;
     }
 
     private void constrainPan() {
@@ -348,6 +396,7 @@ public final class MapPanel extends JPanel {
 
         drawBackground(g2d);
         drawNodes(g2d);
+        drawGameStatus(g2d);
     }
 
     private void drawBackground(final Graphics2D g2d) {
@@ -468,5 +517,195 @@ public final class MapPanel extends JPanel {
      */
     public MapInfo getMapInfo() {
         return this.mapInfo;
+    }
+
+    // Detective Game Mode
+
+    /** Sets the detective position. */
+    public void setDetectivePosition(NodeId position) {
+        this.detectivePosition = position;
+    }
+
+    /** Sets Mister X position. */
+    public void setMisterXPosition(NodeId position) {
+        this.misterXPosition = position;
+    }
+
+    /** Initializes bobbies list of positions. */
+    public void initializeBobbies(int numberOfBobbies) {
+        for (int i = 0; i < numberOfBobbies; i++) {
+            this.bobbiesPositions.add(i, new NodeId(-1));
+        }
+    }
+
+    /** Sets bobby position. */
+    public void setBobbyPosition(NodeId position, int indexBobby) {
+        this.bobbiesPositions.set(indexBobby, position);
+    }
+
+    /** Loads the possible destinations for current player. */
+    public void loadPossibleDestinations(Set<NodeId> destinations) {
+        this.possibleDestinations = destinations;
+    }
+
+    /** Sets the selected destination. */
+    public void setSelectedDestination(NodeId destination) {
+        this.selectedDestination = destination;
+    }
+
+    /**
+     * Sets the valid moves for highlighting.
+     *
+     * @param moves the set of valid move options
+     */
+    public void setValidMoves(final Set<it.unibo.scotyard.model.game.turn.TurnManagerImpl.MoveOption> moves) {
+        this.validMoves = moves != null ? new HashSet<>(moves) : new HashSet<>();
+    }
+
+    /**
+     * Handles node click detection. Finds which node (if any) was clicked based on
+     * mouse coordinates.
+     *
+     * @param mouseX the mouse X coordinate
+     * @param mouseY the mouse Y coordinate
+     */
+    private void handleNodeClick(final int mouseX, final int mouseY) {
+        final double nodeZoom = 1.0 + (zoomLevel - 1.0) * NODE_SCALE_FACTOR;
+        final int scaledRadius = (int) (NODE_RADIUS * nodeZoom);
+
+        // Check if click is within node radius
+        for (final Node node : mapInfo.getNodes().toList()) {
+            final Point2D pos = scaledNodePositions.get(node.getId());
+            if (pos != null) {
+                final int nodeX = (int) pos.getX();
+                final int nodeY = (int) pos.getY();
+
+                // Distance of click from node centre
+                final double distance = Math.sqrt(Math.pow(mouseX - nodeX, 2) + Math.pow(mouseY - nodeY, 2));
+
+                if (distance <= scaledRadius) {
+                    // Use nodeClickListener if set (Mr. X mode)
+                    if (nodeClickListener != null) {
+                        nodeClickListener.accept(node.getId());
+                        return;
+                    }
+                    // Otherwise use possibleDestinations (Detective mode)
+                    for (NodeId possibleDestination : this.possibleDestinations) {
+                        if (possibleDestination.equals(node.getId())) {
+                            this.setSelectedDestination(node.getId());
+                            this.gameView.destinationChosen(node.getId());
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    /** Draw the player given as input on the map. */
+    private void drawPlayer(Graphics2D g2d, String playerString, NodeId position, int scaledRadius, double nodeZoom) {
+        if (position.id() > 0) {
+            final Point2D pos = scaledNodePositions.get(position);
+            if (pos != null) {
+                final int x = (int) pos.getX();
+                final int y = (int) pos.getY();
+
+                // Player circle
+                if (DETECTIVE_STRING.equals(playerString)) {
+                    g2d.setColor(DETECTIVE_COLOR);
+                } else if (MRX_STRING.equals(playerString)) {
+                    g2d.setColor(MISTER_X_COLOR);
+                } else if (playerString.startsWith("B")) {
+                    g2d.setColor(BOBBIES_COLOR);
+                }
+                g2d.fillOval(x - scaledRadius, y - scaledRadius, scaledRadius * 2, scaledRadius * 2);
+
+                // Bordo colorato
+                if (DETECTIVE_STRING.equals(playerString)) {
+                    g2d.setColor(DETECTIVE_BORDER_COLOR);
+                    g2d.setStroke(new BasicStroke(2.0f * (float) nodeZoom));
+                } else if (MRX_STRING.equals(playerString)) {
+                    g2d.setColor(MISTER_X_BORDER_COLOR);
+                    g2d.setStroke(new BasicStroke(3.0f * (float) nodeZoom));
+                } else if (playerString.startsWith("B")) {
+                    g2d.setColor(BOBBIES_BORDER_COLOR);
+                    g2d.setStroke(new BasicStroke(2.0f * (float) nodeZoom));
+                }
+                g2d.drawOval(x - scaledRadius, y - scaledRadius, scaledRadius * 2, scaledRadius * 2);
+
+                // Player text (white)
+                g2d.setColor(Color.WHITE);
+                int fontSize;
+                if (MRX_STRING.equals(playerString)) {
+                    fontSize = (int) (18 * nodeZoom);
+                } else {
+                    fontSize = (int) (16 * nodeZoom);
+                }
+                g2d.setFont(new Font("Arial", Font.BOLD, fontSize));
+                final FontMetrics fontMetrics = g2d.getFontMetrics();
+                final String label = playerString;
+                final int textWidth = fontMetrics.stringWidth(label);
+                final int textHeight = fontMetrics.getAscent();
+                g2d.drawString(label, x - textWidth / 2, y + textHeight / 2 - 2);
+            }
+        }
+    }
+
+    /**
+     * Sets the node click listener for interactive gameplay.
+     *
+     * @param listener the listener to call when a node is clicked (null to disable)
+     */
+    public void setNodeClickListener(final Consumer<NodeId> listener) {
+        this.nodeClickListener = listener;
+    }
+
+    private void drawGameStatus(final Graphics2D g2d) {
+        final double nodeZoom = 1.0 + (zoomLevel - 1.0) * NODE_SCALE_FACTOR;
+        final int scaledRadius = (int) (NODE_RADIUS * nodeZoom);
+
+        // Render valid moves (green)
+        Set<NodeId> validDestinations = new HashSet<>();
+
+        if (nodeClickListener != null) {
+            // Mr. X mode: usa validMoves
+            for (var move : validMoves) {
+                validDestinations.add(move.getDestinationNode());
+            }
+        } else {
+            // Detective mode: usa possibleDestinations
+            validDestinations = this.possibleDestinations;
+        }
+
+        // Render green node
+        for (NodeId nodeId : validDestinations) {
+            final Point2D pos = scaledNodePositions.get(nodeId);
+            if (pos != null) {
+                final int x = (int) pos.getX();
+                final int y = (int) pos.getY();
+                g2d.setColor(new Color(0, 255, 0, 80)); // green semi-transparent
+                g2d.fillOval(
+                        x - scaledRadius - 4, y - scaledRadius - 4, (scaledRadius + 4) * 2, (scaledRadius + 4) * 2);
+            }
+        }
+
+        // Render selected destination (blu border)
+        if (selectedDestination.id() >= 0) {
+            final Point2D pos = scaledNodePositions.get(selectedDestination);
+            if (pos != null) {
+                final int x = (int) pos.getX();
+                final int y = (int) pos.getY();
+                g2d.setColor(new Color(0, 150, 255, 180)); // blu semi-transparent
+                g2d.setStroke(new BasicStroke(4.0f * (float) nodeZoom));
+                g2d.drawOval(
+                        x - scaledRadius - 2, y - scaledRadius - 2, (scaledRadius + 2) * 2, (scaledRadius + 2) * 2);
+            }
+        }
+
+        // Render players
+        this.drawPlayer(g2d, DETECTIVE_STRING, this.detectivePosition, scaledRadius, nodeZoom);
+        this.drawPlayer(g2d, MRX_STRING, this.misterXPosition, scaledRadius, nodeZoom);
+        for (int i = 0; i < this.bobbiesPositions.size(); i++) {
+            this.drawPlayer(g2d, BOBBIES_STRING + (i + 1), this.bobbiesPositions.get(i), scaledRadius, nodeZoom);
+        }
     }
 }

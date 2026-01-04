@@ -19,7 +19,7 @@ public final class MapData {
     private final List<MapNode> nodes;
     private final List<MapConnection> connections;
     private final List<Integer> revealTurns;
-    private final List<Integer> initialPositions;
+    private final List<NodeId> initialPositions;
 
     /**
      * Creates a new MapData with the specified configuration. All collection parameters are
@@ -37,7 +37,7 @@ public final class MapData {
             final List<MapNode> nodes,
             final List<MapConnection> connections,
             final List<Integer> revealTurns,
-            final List<Integer> initialPositions) {
+            final List<NodeId> initialPositions) {
         this.name = Objects.requireNonNull(name, "Map name non può essere null");
         this.nodes = List.copyOf(Objects.requireNonNull(nodes, "Nodes non può essere null"));
         this.connections = List.copyOf(Objects.requireNonNull(connections, "Connections non può essere null"));
@@ -88,7 +88,7 @@ public final class MapData {
      *
      * @return an unmodifiable list of node IDs
      */
-    public List<Integer> getInitialPositions() {
+    public List<NodeId> getInitialPositions() {
         return initialPositions;
     }
 

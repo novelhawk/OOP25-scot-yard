@@ -73,4 +73,9 @@ public final class WindowImpl extends JFrame implements Window {
     public void setHideOnClose() {
         setDefaultCloseOperation(HIDE_ON_CLOSE);
     }
+
+    @Override
+    public void close() {
+        setVisible(false);
+    }
 }
