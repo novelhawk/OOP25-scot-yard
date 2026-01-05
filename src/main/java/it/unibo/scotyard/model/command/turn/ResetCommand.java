@@ -1,4 +1,4 @@
-package it.unibo.scotyard.model.command.round;
+package it.unibo.scotyard.model.command.turn;
 
 import it.unibo.scotyard.model.command.GameCommand;
 

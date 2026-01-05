@@ -2,6 +2,7 @@ package it.unibo.scotyard.model.game;
 
 import it.unibo.scotyard.commons.Constants;
 import it.unibo.scotyard.model.Pair;
+import it.unibo.scotyard.model.entities.RunnerTurnTracker;
 import it.unibo.scotyard.model.map.NodeId;
 import it.unibo.scotyard.model.map.TransportType;
 import it.unibo.scotyard.model.players.Bobby;
@@ -40,6 +41,9 @@ public final class GameStateImpl implements GameState {
     private List<TransportType> availableTransports;
     private int indexCurrentPlayer; // It is used to keep track of the current player
 
+    private TurnState turnState;
+    private final RunnerTurnTracker runnerTurnTracker;
+
     private int round;
 
     /**
@@ -57,6 +61,8 @@ public final class GameStateImpl implements GameState {
         this.playersNumber = 0;
         this.availableTransports = new ArrayList<>();
         this.possibleDestinations = new HashSet<>();
+        this.runnerTurnTracker = new RunnerTurnTracker();
+        this.turnState = new TurnState();
         this.initialize(gameMode, difficultyLevel, initialPositions);
     }
 
@@ -425,5 +431,20 @@ public final class GameStateImpl implements GameState {
         } else {
             return userPlayer;
         }
+    }
+
+    @Override
+    public void resetTurn() {
+        this.turnState = new TurnState();
+    }
+
+    @Override
+    public TurnState getTurnState() {
+        return this.turnState;
+    }
+
+    @Override
+    public RunnerTurnTracker getRunnerTurnTracker() {
+        return runnerTurnTracker;
     }
 }

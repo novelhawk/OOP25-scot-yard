@@ -1,6 +1,7 @@
 package it.unibo.scotyard.model.game;
 
 import it.unibo.scotyard.model.Pair;
+import it.unibo.scotyard.model.entities.RunnerTurnTracker;
 import it.unibo.scotyard.model.map.NodeId;
 import it.unibo.scotyard.model.map.TransportType;
 import it.unibo.scotyard.model.players.Player;
@@ -177,4 +178,23 @@ public interface GameState {
      * @return the Detective player
      */
     Player getDetective();
+
+    /**
+     * Resets the turn state to the start of the turn.
+     */
+    void resetTurn();
+
+    /**
+     * Gets the current turn's state, which will be merged with the game state at the end of the turn.
+     *
+     * @return the current turn's state
+     */
+    TurnState getTurnState();
+
+    /**
+     * Gets the runner turn tracker, which tracks the tickets used by MisterX during the game.
+     *
+     * @return the runner turn tracker
+     */
+    RunnerTurnTracker getRunnerTurnTracker();
 }

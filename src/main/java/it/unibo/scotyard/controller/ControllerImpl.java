@@ -80,11 +80,12 @@ public final class ControllerImpl implements Controller {
         final GameController gameController;
         if (this.model.getGameState().getGameMode() == GameMode.MISTER_X) {
             // Modalità Mister X
-            gameController =
-                    new MrXGameControllerImpl(this.model.getGameState(), this.model.getMapData(), gameView, this);
+            gameController = new MrXGameControllerImpl(
+                    this.model.getDispatcher(), this.model.getGameState(), this.model.getMapData(), gameView, this);
         } else {
             // Modalità Detective
-            gameController = new DetectiveGameControllerImpl(this.model.getGameState(), gameView, this);
+            gameController = new DetectiveGameControllerImpl(
+                    this.model.getDispatcher(), this.model.getGameState(), gameView, this);
         }
         gameController.initializeGame();
         gameView.setObserver(gameController);

@@ -2,11 +2,11 @@ package it.unibo.scotyard.model;
 
 import it.unibo.scotyard.model.game.GameState;
 import it.unibo.scotyard.model.game.GameStateImpl;
-import it.unibo.scotyard.model.handlers.CommandDispatcher;
-import it.unibo.scotyard.model.handlers.CommandRouter;
 import it.unibo.scotyard.model.map.*;
+import it.unibo.scotyard.model.router.CommandDispatcher;
+import it.unibo.scotyard.model.router.CommandRouter;
 import it.unibo.scotyard.model.service.GameStateService;
-import it.unibo.scotyard.model.service.RoundCommandService;
+import it.unibo.scotyard.model.service.TurnService;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -73,8 +73,8 @@ public final class ModelImpl implements Model {
         final GameStateService gameStateService = new GameStateService(model);
         gameStateService.register(store);
 
-        final RoundCommandService roundCommandService = new RoundCommandService();
-        roundCommandService.register(store);
+        final TurnService turnService = new TurnService(model);
+        turnService.register(store);
 
         return model;
     }

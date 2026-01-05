@@ -6,6 +6,7 @@ import it.unibo.scotyard.model.game.GameState;
 import it.unibo.scotyard.model.map.NodeId;
 import it.unibo.scotyard.model.map.TransportType;
 import it.unibo.scotyard.model.players.Player;
+import it.unibo.scotyard.model.router.CommandDispatcher;
 import it.unibo.scotyard.view.game.GameView;
 import java.util.HashSet;
 import java.util.Set;
@@ -17,8 +18,12 @@ public final class DetectiveGameControllerImpl extends GameControllerImpl {
     private NodeId selectedDestination;
     private TransportType selectedTransportType;
 
-    public DetectiveGameControllerImpl(final GameState gameData, final GameView view, final Controller mainController) {
-        super(gameData, view, mainController);
+    public DetectiveGameControllerImpl(
+            final CommandDispatcher dispatcher,
+            final GameState gameData,
+            final GameView view,
+            final Controller mainController) {
+        super(dispatcher, gameData, view, mainController);
 
         this.view.getSidebar().setEndTurnListener(e -> onEndTurn());
     }

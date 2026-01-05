@@ -1,4 +1,4 @@
-package it.unibo.scotyard.model.handlers;
+package it.unibo.scotyard.model.router;
 
 import it.unibo.scotyard.model.command.GameCommand;
 import java.util.function.Consumer;

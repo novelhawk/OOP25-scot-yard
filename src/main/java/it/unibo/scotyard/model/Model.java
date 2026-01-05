@@ -1,10 +1,10 @@
 package it.unibo.scotyard.model;
 
 import it.unibo.scotyard.model.game.GameState;
-import it.unibo.scotyard.model.handlers.CommandDispatcher;
 import it.unibo.scotyard.model.map.MapData;
 import it.unibo.scotyard.model.map.NodeId;
 import it.unibo.scotyard.model.map.TransportType;
+import it.unibo.scotyard.model.router.CommandDispatcher;
 import java.util.List;
 
 /** Main model interface for game data management. */

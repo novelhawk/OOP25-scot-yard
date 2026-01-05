@@ -7,6 +7,7 @@ import it.unibo.scotyard.model.map.NodeId;
 import it.unibo.scotyard.model.map.TransportType;
 import it.unibo.scotyard.model.players.Player;
 import it.unibo.scotyard.model.players.TicketType;
+import it.unibo.scotyard.model.router.CommandDispatcher;
 import it.unibo.scotyard.view.game.GameView;
 import it.unibo.scotyard.view.map.MapPanel;
 import it.unibo.scotyard.view.sidebar.SidebarPanel;
@@ -19,6 +20,7 @@ import javax.swing.JPanel;
  */
 public abstract class GameControllerImpl implements GameController {
 
+    protected final CommandDispatcher dispatcher;
     protected final GameState gameState;
     protected final GameView view;
     protected final Controller mainController;
@@ -30,7 +32,12 @@ public abstract class GameControllerImpl implements GameController {
      * @param view the view
      * @param controller the controller
      */
-    public GameControllerImpl(final GameState gameState, final GameView view, final Controller controller) {
+    public GameControllerImpl(
+            final CommandDispatcher dispatcher,
+            final GameState gameState,
+            final GameView view,
+            final Controller controller) {
+        this.dispatcher = Objects.requireNonNull(dispatcher, "Dispatcher cannot be null");
         this.gameState = Objects.requireNonNull(gameState, "Game cannot be null");
         this.view = Objects.requireNonNull(view, "GameView cannot be null");
         this.mainController = Objects.requireNonNull(controller, "mainController cannot be null");

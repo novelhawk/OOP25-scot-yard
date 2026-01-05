@@ -2,7 +2,7 @@ package it.unibo.scotyard.model.service;
 
 import it.unibo.scotyard.model.Model;
 import it.unibo.scotyard.model.command.game.InitializeGameCommand;
-import it.unibo.scotyard.model.handlers.CommandHandlerStore;
+import it.unibo.scotyard.model.router.CommandHandlerStore;
 
 /**
  * The service responsible for handling the commands regarding changes in the

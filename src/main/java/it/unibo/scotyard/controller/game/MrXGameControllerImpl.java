@@ -1,6 +1,9 @@
 package it.unibo.scotyard.controller.game;
 
 import it.unibo.scotyard.controller.Controller;
+import it.unibo.scotyard.model.command.turn.EndTurnCommand;
+import it.unibo.scotyard.model.command.turn.MoveCommand;
+import it.unibo.scotyard.model.command.turn.UseDoubleMoveCommand;
 import it.unibo.scotyard.model.game.GameState;
 import it.unibo.scotyard.model.game.GameStatus;
 import it.unibo.scotyard.model.game.turn.TurnManagerImpl.MoveOption;
@@ -9,6 +12,7 @@ import it.unibo.scotyard.model.map.NodeId;
 import it.unibo.scotyard.model.map.TransportType;
 import it.unibo.scotyard.model.players.MisterX;
 import it.unibo.scotyard.model.players.Player;
+import it.unibo.scotyard.model.router.CommandDispatcher;
 import it.unibo.scotyard.view.dialogs.TransportSelectionDialog;
 import it.unibo.scotyard.view.game.GameView;
 import it.unibo.scotyard.view.sidebar.SidebarPanel;
@@ -50,8 +54,12 @@ public final class MrXGameControllerImpl extends GameControllerImpl {
      * @throws NullPointerException if any parameter is null
      */
     public MrXGameControllerImpl(
-            final GameState game, final MapData mapData, final GameView gameView, final Controller controller) {
-        super(game, gameView, controller);
+            final CommandDispatcher dispatcher,
+            final GameState game,
+            final MapData mapData,
+            final GameView gameView,
+            final Controller controller) {
+        super(dispatcher, game, gameView, controller);
         this.mapData = Objects.requireNonNull(mapData, "MapData cannot be null");
         this.doubleMoveState = DoubleMoveState.AVAILABLE;
     }
@@ -186,6 +194,8 @@ public final class MrXGameControllerImpl extends GameControllerImpl {
                 mrX.makeMove(
                         selectedMove.getDestinationNode(), selectedMove.getTransport(), this.gameState.getGameRound());
 
+                dispatcher.dispatch(new MoveCommand(selectedMove.getDestinationNode(), selectedMove.getTransport()));
+
                 // clear
                 selectedMove = null;
 
@@ -197,6 +207,8 @@ public final class MrXGameControllerImpl extends GameControllerImpl {
                 return;
             }
         }
+
+        dispatcher.dispatch(new EndTurnCommand());
 
         // Check victory
         if (super.isGameOver()) {
@@ -260,6 +272,7 @@ public final class MrXGameControllerImpl extends GameControllerImpl {
 
                 doubleMoveState = DoubleMoveState.WAITING_FIRST_MOVE;
                 selectedMove = null;
+                dispatcher.dispatch(new UseDoubleMoveCommand());
 
                 JOptionPane.showMessageDialog(
                         null,
@@ -284,6 +297,9 @@ public final class MrXGameControllerImpl extends GameControllerImpl {
                             selectedMove.getDestinationNode(),
                             selectedMove.getTransport(),
                             this.gameState.getGameRound());
+
+                    dispatcher.dispatch(
+                            new MoveCommand(selectedMove.getDestinationNode(), selectedMove.getTransport()));
 
                     doubleMoveState = DoubleMoveState.WAITING_SECOND_MOVE;
                     selectedMove = null;
@@ -317,6 +333,9 @@ public final class MrXGameControllerImpl extends GameControllerImpl {
                             selectedMove.getDestinationNode(),
                             selectedMove.getTransport(),
                             this.gameState.getGameRound());
+
+                    dispatcher.dispatch(
+                            new MoveCommand(selectedMove.getDestinationNode(), selectedMove.getTransport()));
 
                     doubleMoveState = DoubleMoveState.COMPLETED;
                     selectedMove = null;
