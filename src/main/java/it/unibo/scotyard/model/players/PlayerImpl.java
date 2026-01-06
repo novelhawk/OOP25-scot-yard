@@ -1,8 +1,10 @@
 package it.unibo.scotyard.model.players;
 
+import it.unibo.scotyard.model.ai.PlayerBrain;
 import it.unibo.scotyard.model.game.turn.TurnManager;
 import it.unibo.scotyard.model.map.NodeId;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * The default player entity implementation.
@@ -13,15 +15,33 @@ public abstract class PlayerImpl implements Player {
     protected static final int NONE = 0;
     protected static final int INFINITE = -1;
 
-    protected NodeId position;
+    private final PlayerBrain brain;
+    private NodeId position;
     protected Map<TicketType, Integer> tickets;
     protected String name;
 
-    // For Mr.X game mode turn managament
+    // For Mr.X game mode turn management
     protected TurnManager<?> turnManager;
 
-    public PlayerImpl() {
+    /**
+     * Creates a new AI player starting at the given position.
+     *
+     * @param position the starting position
+     * @param brain the AI brain
+     */
+    public PlayerImpl(NodeId position, PlayerBrain brain) {
+        this.position = position;
         this.tickets = this.setInitialTickets();
+        this.brain = brain;
+    }
+
+    /**
+     * Creates a new player starting at the given position.
+     *
+     * @param position the starting position
+     */
+    public PlayerImpl(NodeId position) {
+        this(position, null);
     }
 
     @Override
@@ -66,6 +86,16 @@ public abstract class PlayerImpl implements Player {
     @Override
     public String getName() {
         return this.name;
+    }
+
+    @Override
+    public boolean isHuman() {
+        return brain == null;
+    }
+
+    @Override
+    public Optional<PlayerBrain> getBrain() {
+        return Optional.ofNullable(brain);
     }
 
     /**

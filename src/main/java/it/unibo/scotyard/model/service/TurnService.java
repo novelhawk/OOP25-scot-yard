@@ -1,15 +1,14 @@
 package it.unibo.scotyard.model.service;
 
 import it.unibo.scotyard.model.Model;
-import it.unibo.scotyard.model.command.turn.EndTurnCommand;
-import it.unibo.scotyard.model.command.turn.MoveCommand;
-import it.unibo.scotyard.model.command.turn.ResetCommand;
-import it.unibo.scotyard.model.command.turn.UseDoubleMoveCommand;
+import it.unibo.scotyard.model.command.turn.*;
 import it.unibo.scotyard.model.entities.MoveAction;
 import it.unibo.scotyard.model.game.GameState;
 import it.unibo.scotyard.model.game.TurnState;
 import it.unibo.scotyard.model.map.TransportType;
 import it.unibo.scotyard.model.players.MisterX;
+import it.unibo.scotyard.model.players.Player;
+import it.unibo.scotyard.model.router.CommandDispatcher;
 import it.unibo.scotyard.model.router.CommandHandlerStore;
 import java.util.List;
 import java.util.Objects;
@@ -24,6 +23,22 @@ public class TurnService {
 
     public TurnService(final Model model) {
         this.model = Objects.requireNonNull(model, "model cannot be null");
+    }
+
+    /**
+     * Handles the {@code StartTurnCommand}
+     *
+     * @param command a start turn command
+     */
+    public void handleStartTurn(final StartTurnCommand command) {
+        final CommandDispatcher dispatcher = this.model.getDispatcher();
+        final GameState gameState = this.model.getGameState();
+        gameState.resetTurn();
+
+        final Player player = gameState.getCurrentPlayer();
+        player.getBrain().map(it -> it.playTurn(player)).stream()
+                .flatMap(List::stream)
+                .forEach(dispatcher::dispatch);
     }
 
     /**
@@ -50,6 +65,7 @@ public class TurnService {
      * @param command a pass command.
      */
     public void handleEndTurn(final EndTurnCommand command) {
+        final CommandDispatcher dispatcher = this.model.getDispatcher();
         final GameState gameState = this.model.getGameState();
         final TurnState turnState = gameState.getTurnState();
 
@@ -61,8 +77,8 @@ public class TurnService {
             gameState.getRunnerTurnTracker().addTurn(usedTransports);
         }
 
-        // TODO: Change current player here
-        gameState.resetTurn();
+        gameState.changeCurrentPlayer();
+        dispatcher.dispatch(new StartTurnCommand());
     }
 
     /**
@@ -81,6 +97,7 @@ public class TurnService {
      */
     public void register(final CommandHandlerStore store) {
         store.register(MoveCommand.class, this::handleMove);
+        store.register(StartTurnCommand.class, this::handleStartTurn);
         store.register(UseDoubleMoveCommand.class, this::handleDoubleMove);
         store.register(EndTurnCommand.class, this::handleEndTurn);
         store.register(ResetCommand.class, this::handleReset);

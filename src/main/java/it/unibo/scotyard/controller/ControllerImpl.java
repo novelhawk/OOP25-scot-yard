@@ -12,6 +12,8 @@ import it.unibo.scotyard.controller.menu.NewGameMenuController;
 import it.unibo.scotyard.controller.menu.NewGameMenuControllerImpl;
 import it.unibo.scotyard.model.Model;
 import it.unibo.scotyard.model.Pair;
+import it.unibo.scotyard.model.command.game.InitializeGameCommand;
+import it.unibo.scotyard.model.game.GameDifficulty;
 import it.unibo.scotyard.model.game.GameMode;
 import it.unibo.scotyard.model.map.NodeId;
 import it.unibo.scotyard.model.map.TransportType;
@@ -73,6 +75,10 @@ public final class ControllerImpl implements Controller {
         // Initialize the game and load map data from model
         this.model.initialize(gameMode, difficultyLevel);
 
+        this.model
+                .getDispatcher()
+                .dispatch(new InitializeGameCommand(parseGameMode(gameMode), parseGameDifficulty(difficultyLevel)));
+
         // Create the GameView and the GameController
         final GameView gameView =
                 this.view.createGameView(this.model.getMapData().info());
@@ -111,5 +117,20 @@ public final class ControllerImpl implements Controller {
 
         this.view.setWindowMainFeatures(selectedResolution);
         this.loadMainMenu();
+    }
+
+    private GameMode parseGameMode(final String inputGameMode) {
+        if ("Mister X".equals(inputGameMode)) {
+            return GameMode.MISTER_X;
+        }
+        return GameMode.DETECTIVE;
+    }
+
+    private GameDifficulty parseGameDifficulty(final String difficultyLevel) {
+        return switch (difficultyLevel) {
+            case "Media" -> GameDifficulty.MEDIUM;
+            case "Difficile" -> GameDifficulty.DIFFICULT;
+            default -> GameDifficulty.EASY;
+        };
     }
 }

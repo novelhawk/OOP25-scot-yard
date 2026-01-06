@@ -4,10 +4,10 @@ import it.unibo.scotyard.model.Pair;
 import it.unibo.scotyard.model.entities.RunnerTurnTracker;
 import it.unibo.scotyard.model.map.NodeId;
 import it.unibo.scotyard.model.map.TransportType;
+import it.unibo.scotyard.model.players.Bobby;
 import it.unibo.scotyard.model.players.Player;
 import it.unibo.scotyard.model.players.TicketType;
 import java.util.List;
-import java.util.Random;
 import java.util.Set;
 
 /**
@@ -15,20 +15,6 @@ import java.util.Set;
  *
  */
 public interface GameState {
-
-    /**
-     * Initialises the game according to the game mode and the level of difficulty chosen.
-     *
-     * @param gameMode the selected game mode
-     * @param levelDifficulty the selected level of difficulty
-     * @param initialPositions the list of the possible initial positions of players
-     */
-    void initialize(final String gameMode, final String levelDifficulty, final List<NodeId> initialPositions);
-
-    /**
-     * @return the seeded shared random instance used by all game logic
-     */
-    Random getSeededRandom();
 
     /**
      * Returns a boolean that indicates if the game is over. In particular, the game is over if the detective or one of
@@ -170,7 +156,7 @@ public interface GameState {
      *
      * @return list of Bobby players (can be empty)
      */
-    List<Player> getBobbies();
+    List<Bobby> getBobbies();
 
     /**
      * Gets the Detective player (computer or user depending on mode).

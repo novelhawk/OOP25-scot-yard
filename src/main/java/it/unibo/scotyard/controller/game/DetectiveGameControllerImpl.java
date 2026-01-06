@@ -2,6 +2,8 @@ package it.unibo.scotyard.controller.game;
 
 import it.unibo.scotyard.controller.Controller;
 import it.unibo.scotyard.model.Pair;
+import it.unibo.scotyard.model.command.turn.EndTurnCommand;
+import it.unibo.scotyard.model.command.turn.MoveCommand;
 import it.unibo.scotyard.model.game.GameState;
 import it.unibo.scotyard.model.map.NodeId;
 import it.unibo.scotyard.model.map.TransportType;
@@ -126,6 +128,8 @@ public final class DetectiveGameControllerImpl extends GameControllerImpl {
         if (this.gameState.moveCurrentPlayer(this.selectedDestination, this.selectedTransportType)) {
             this.view.getMapPanel().setSelectedDestination(NOT_VISIBLE_ON_MAP);
             this.updatePlayerPositionView(this.gameState.getCurrentPlayer());
+            this.dispatcher.dispatch(new MoveCommand(this.selectedDestination, this.selectedTransportType));
+            this.dispatcher.dispatch(new EndTurnCommand());
             this.gameState.changeCurrentPlayer();
             this.gameState.nextRound();
             this.manageGameRound();

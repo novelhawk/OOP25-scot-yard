@@ -1,5 +1,6 @@
 package it.unibo.scotyard.model.players;
 
+import it.unibo.scotyard.model.ai.PlayerBrain;
 import it.unibo.scotyard.model.game.turn.TurnManager;
 import it.unibo.scotyard.model.game.turn.TurnManagerImpl;
 import it.unibo.scotyard.model.map.MapData;
@@ -20,10 +21,23 @@ public final class MisterX extends PlayerImpl {
     private static final int INFINITE = -1;
 
     /**
-     * Creates a new mister X player entity.
+     * Creates a new AI Mister X player starting at the given position.
+     *
+     * @param position the starting position
+     * @param brain the AI brain
      */
-    public MisterX() {
+    public MisterX(NodeId position, PlayerBrain brain) {
+        super(position, brain);
         this.name = "Mister X";
+    }
+
+    /**
+     * Creates a new Mister X player starting at the given position.
+     *
+     * @param position the starting position
+     */
+    public MisterX(NodeId position) {
+        this(position, null);
     }
 
     @Override
@@ -84,7 +98,7 @@ public final class MisterX extends PlayerImpl {
 
     protected NodeId executeMoveInternal(
             final NodeId destination, final TransportType transport, final int turnNumber) {
-        return getTurnManagerImpl().executeMove(this.position, destination, transport, turnNumber);
+        return getTurnManagerImpl().executeMove(getPosition(), destination, transport, turnNumber);
     }
 
     // --- MrX- Metodi Specifici (Double Move) ---
@@ -111,7 +125,7 @@ public final class MisterX extends PlayerImpl {
 
         // first move
         final NodeId newPosition =
-                getTurnManagerImpl().startDoubleMove(this.position, firstDestination, firstTransport, turnNumber);
+                getTurnManagerImpl().startDoubleMove(getPosition(), firstDestination, firstTransport, turnNumber);
         setPosition(newPosition);
     }
 

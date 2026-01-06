@@ -10,6 +10,7 @@ import it.unibo.scotyard.model.game.turn.TurnManagerImpl.MoveOption;
 import it.unibo.scotyard.model.map.MapData;
 import it.unibo.scotyard.model.map.NodeId;
 import it.unibo.scotyard.model.map.TransportType;
+import it.unibo.scotyard.model.players.Bobby;
 import it.unibo.scotyard.model.players.MisterX;
 import it.unibo.scotyard.model.players.Player;
 import it.unibo.scotyard.model.router.CommandDispatcher;
@@ -407,9 +408,9 @@ public final class MrXGameControllerImpl extends GameControllerImpl {
             }
 
             // Bobby positions
-            final List<Player> bobbies = this.gameState.getBobbies();
+            final List<Bobby> bobbies = this.gameState.getBobbies();
             for (int i = 0; i < bobbies.size(); i++) {
-                final Player bobby = bobbies.get(i);
+                final Bobby bobby = bobbies.get(i);
                 final NodeId bobbyPos = bobby.getPosition();
                 this.getMapPanel().setBobbyPosition(bobbyPos, i);
             }
