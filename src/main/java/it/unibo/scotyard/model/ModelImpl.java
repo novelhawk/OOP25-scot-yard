@@ -1,7 +1,6 @@
 package it.unibo.scotyard.model;
 
 import it.unibo.scotyard.model.game.GameState;
-import it.unibo.scotyard.model.game.GameStateImpl;
 import it.unibo.scotyard.model.map.*;
 import it.unibo.scotyard.model.router.CommandDispatcher;
 import it.unibo.scotyard.model.router.CommandRouter;
@@ -9,6 +8,7 @@ import it.unibo.scotyard.model.service.GameStateService;
 import it.unibo.scotyard.model.service.TurnService;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 /** model. Manages map data loading and game state. */
 public final class ModelImpl implements Model {
@@ -16,6 +16,7 @@ public final class ModelImpl implements Model {
     private final CommandDispatcher dispatcher;
     private MapData mapData;
     private GameState gameState;
+    private Random random;
     private boolean initialized;
 
     /**
@@ -32,7 +33,7 @@ public final class ModelImpl implements Model {
         try {
             final MapReader mapReader = new MapReader();
             this.mapData = mapReader.loadDefaultMap();
-            this.gameState = new GameStateImpl(gameMode, levelDifficulty, this.getInitialPositions());
+            this.random = new Random(System.currentTimeMillis());
             this.initialized = true;
         } catch (final MapReader.MapLoadException e) {
             System.err.println("Errore caricamento mappa: " + e.getMessage());
@@ -41,11 +42,21 @@ public final class ModelImpl implements Model {
     }
 
     @Override
+    public Random getSeededRandom() {
+        return random;
+    }
+
+    @Override
     public MapData getMapData() {
         if (!this.initialized || this.mapData == null) {
             throw new IllegalStateException("Modello non inizializzato. Chiamare initialize() prima.");
         }
         return this.mapData;
+    }
+
+    @Override
+    public void setGameState(GameState gameState) {
+        this.gameState = gameState;
     }
 
     @Override

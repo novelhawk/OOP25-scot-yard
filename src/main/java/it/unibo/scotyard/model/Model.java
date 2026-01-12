@@ -6,6 +6,7 @@ import it.unibo.scotyard.model.map.NodeId;
 import it.unibo.scotyard.model.map.TransportType;
 import it.unibo.scotyard.model.router.CommandDispatcher;
 import java.util.List;
+import java.util.Random;
 
 /** Main model interface for game data management. */
 public interface Model {
@@ -20,12 +21,22 @@ public interface Model {
     void initialize(String gameMode, String levelDifficulty);
 
     /**
+     * @return the seeded shared random instance used by all game logic
+     */
+    Random getSeededRandom();
+
+    /**
      * Returns the loaded map data.
      *
      * @return the map data
      * @throws IllegalStateException if model not initialized
      */
     MapData getMapData();
+
+    /**
+     * Sets the active game state.
+     */
+    void setGameState(GameState gameState);
 
     /**
      * Return the data of the game created.

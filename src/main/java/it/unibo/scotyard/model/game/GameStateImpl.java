@@ -6,14 +6,11 @@ import it.unibo.scotyard.model.entities.RunnerTurnTracker;
 import it.unibo.scotyard.model.map.NodeId;
 import it.unibo.scotyard.model.map.TransportType;
 import it.unibo.scotyard.model.players.Bobby;
-import it.unibo.scotyard.model.players.Detective;
-import it.unibo.scotyard.model.players.MisterX;
 import it.unibo.scotyard.model.players.Player;
 import it.unibo.scotyard.model.players.TicketType;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Random;
 import java.util.Set;
 
 /**
@@ -22,24 +19,19 @@ import java.util.Set;
  */
 public final class GameStateImpl implements GameState {
 
-    private static final int MISTER_X_ROUND_INDEX = -2;
-    private static final int DETECTIVE_ROUND_INDEX = -1;
-
-    private final Random random;
     private GameStatus gameStatus;
     private GameMode gameMode;
     private GameDifficulty gameDifficulty;
 
-    private Player userPlayer;
-    private Player computerPlayer;
-    private List<Player> additionalPlayers; // bobbies
-    private int playersNumber;
-    private Player currentPlayer;
+    /**
+     * It is used to keep track of the current player in the turn order.
+     */
+    private int indexCurrentPlayer;
 
-    private List<NodeId> initialPositions;
-    private Set<Pair<NodeId, TransportType>> possibleDestinations; // They refer to the current player
-    private List<TransportType> availableTransports;
-    private int indexCurrentPlayer; // It is used to keep track of the current player
+    private final Players players;
+
+    private final Set<Pair<NodeId, TransportType>> possibleDestinations; // They refer to the current player
+    private final List<TransportType> availableTransports;
 
     private TurnState turnState;
     private final RunnerTurnTracker runnerTurnTracker;
@@ -50,172 +42,59 @@ public final class GameStateImpl implements GameState {
      * Creates a new game state.
      *
      * @param gameMode the game mode
-     * @param difficultyLevel the difficulty level
-     * @param initialPositions the initial positions
+     * @param gameDifficulty the difficulty level
+     * @param players the involved players
      */
-    public GameStateImpl(String gameMode, String difficultyLevel, List<NodeId> initialPositions) {
-        // TODO: seed
-        this.random = new Random(0);
-        this.additionalPlayers = new ArrayList<>();
-        this.round = 0;
-        this.playersNumber = 0;
+    public GameStateImpl(GameMode gameMode, GameDifficulty gameDifficulty, Players players) {
+        this.round = 1;
         this.availableTransports = new ArrayList<>();
         this.possibleDestinations = new HashSet<>();
         this.runnerTurnTracker = new RunnerTurnTracker();
         this.turnState = new TurnState();
-        this.initialize(gameMode, difficultyLevel, initialPositions);
-    }
-
-    @Override
-    public void initialize(final String gameMode, final String levelDifficulty, final List<NodeId> initialPositions) {
-        this.gameMode = setGameMode(gameMode);
-        this.gameDifficulty = setGameDifficulty(levelDifficulty);
-        this.loadInitialPositions(initialPositions);
-        this.setPlayers();
-        this.setIA();
-        this.round++;
-        this.indexCurrentPlayer = MISTER_X_ROUND_INDEX;
-        this.setGameStatus(GameStatus.PLAYING);
-    }
-
-    @Override
-    public Random getSeededRandom() {
-        return this.random;
-    }
-
-    private GameMode setGameMode(final String inputGameMode) {
-        switch (inputGameMode) {
-            case "Detective":
-                return GameMode.DETECTIVE;
-            case "Mister X":
-                return GameMode.MISTER_X;
-            default:
-                return GameMode.DETECTIVE;
-        }
-    }
-
-    private GameDifficulty setGameDifficulty(final String difficultyLevel) {
-        switch (difficultyLevel) {
-            case "Facile":
-                return GameDifficulty.EASY;
-            case "Media":
-                return GameDifficulty.MEDIUM;
-            case "Difficle":
-                return GameDifficulty.DIFFICULT;
-            default:
-                return GameDifficulty.EASY;
-        }
-    }
-
-    private void loadInitialPositions(List<NodeId> inputList) {
-        this.initialPositions = new ArrayList<>(inputList);
-    }
-
-    private NodeId getRandomInitialPosition() {
-        Random rand = new Random();
-        int indexList = rand.nextInt(this.initialPositions.size());
-        return this.initialPositions.remove(indexList);
-    }
-
-    private void setPlayers() {
-        if (GameMode.DETECTIVE.equals((this.gameMode))) {
-            this.userPlayer = new Detective();
-            this.computerPlayer = new MisterX();
-            this.currentPlayer = this.computerPlayer;
-        }
-        if (GameMode.MISTER_X.equals((this.gameMode))) {
-            this.userPlayer = new MisterX();
-            this.computerPlayer = new Detective();
-            this.currentPlayer = this.userPlayer;
-        }
-        this.playersNumber++;
-        this.playersNumber++;
-        this.userPlayer.setPosition(this.getRandomInitialPosition());
-        this.computerPlayer.setPosition(this.getRandomInitialPosition());
-        int index = 0;
-        switch (this.gameDifficulty) {
-            case MEDIUM:
-            case DIFFICULT:
-                this.additionalPlayers.add(new Bobby());
-                this.additionalPlayers.get(index).setPosition(this.getRandomInitialPosition());
-                index++;
-                this.additionalPlayers.get(index - 1).setName("Bobby" + index);
-                this.playersNumber++;
-            case EASY:
-                this.additionalPlayers.add(new Bobby());
-                this.additionalPlayers.get(index).setPosition(this.getRandomInitialPosition());
-                index++;
-                this.additionalPlayers.get(index - 1).setName("Bobby" + index);
-                this.playersNumber++;
-                this.additionalPlayers.add(new Bobby());
-                this.additionalPlayers.get(index).setPosition(this.getRandomInitialPosition());
-                index++;
-                this.additionalPlayers.get(index - 1).setName("Bobby" + index);
-                this.playersNumber++;
-        }
-    }
-
-    private void setIA() {
-        // TODO : set IA according to the level of difficulty.
-        /*
-         * EASY : easy IA (random)
-         * MEDIUM : medium IA
-         * DIFFICULT : difficult IA
-         */
+        this.players = players;
+        this.gameMode = gameMode;
+        this.gameDifficulty = gameDifficulty;
+        this.gameStatus = GameStatus.PLAYING;
     }
 
     @Override
     public boolean isGameOver() {
-        if (this.userPlayer.getPosition().equals(this.computerPlayer.getPosition())
-                || this.round > Constants.FINAL_ROUND_NUMBER) {
+        final NodeId runnerPosition = this.players.getMisterX().getPosition();
+        final boolean found =
+                this.players.getSeekers().anyMatch(it -> it.getPosition().equals(runnerPosition));
+
+        if (found || this.round > Constants.FINAL_ROUND_NUMBER) {
             this.setGameStatus(GameStatus.PAUSE);
             return true;
         }
-        for (Player bobby : this.additionalPlayers) {
-            if ((this.userPlayer.getPosition().equals(bobby.getPosition()) && GameMode.MISTER_X.equals(this.gameMode))
-                    || (this.computerPlayer.getPosition().equals(bobby.getPosition())
-                            && GameMode.DETECTIVE.equals(this.gameMode))) {
-                this.setGameStatus(GameStatus.PAUSE);
-                return true;
-            }
+
+        if (this.gameMode == GameMode.DETECTIVE) {
+            return this.possibleDestinations.isEmpty() && this.getGameRound() > 1;
         }
-        if (GameMode.DETECTIVE.equals(this.gameMode)) {
-            if (this.possibleDestinations.isEmpty() && this.getGameRound() > 1) {
-                return true;
-            }
-        }
+
         return false;
     }
 
     @Override
     public String resultGame() {
-        String victoryString = new String("Vittoria");
-        String lossString = new String("Sconfitta");
-        for (Player bobby : this.additionalPlayers) {
-            if (this.userPlayer.getPosition().equals(bobby.getPosition())) {
-                if (GameMode.MISTER_X.equals(this.gameMode)) {
-                    return lossString;
-                } else {
-                    return victoryString;
-                }
-            } else {
-                if (GameMode.DETECTIVE.equals(this.gameMode)
-                        && this.computerPlayer.getPosition().equals(bobby.getPosition())) {
-                    return victoryString;
-                }
-            }
-        }
-        if (this.userPlayer.getPosition().equals(this.computerPlayer.getPosition())) {
-            if (GameMode.MISTER_X.equals(this.gameMode)) {
+        final String victoryString = "Vittoria";
+        final String lossString = "Sconfitta";
+
+        final NodeId runnerPosition = this.players.getMisterX().getPosition();
+        final boolean found =
+                this.players.getSeekers().anyMatch(it -> it.getPosition().equals(runnerPosition));
+
+        if (found) {
+            if (this.gameMode == GameMode.MISTER_X) {
                 return lossString;
             } else {
                 return victoryString;
             }
         } else {
-            if (GameMode.DETECTIVE.equals(this.gameMode)) {
-                return lossString;
-            } else {
+            if (this.gameMode == GameMode.MISTER_X) {
                 return victoryString;
+            } else {
+                return lossString;
             }
         }
     }
@@ -237,33 +116,35 @@ public final class GameStateImpl implements GameState {
             final NodeId pos = destination.getX();
             this.possibleDestinations.add(destination);
             /* Mister X can't go where detective is. */
-            if (GameMode.MISTER_X.equals(this.gameMode)
-                    && this.currentPlayer.equals(this.userPlayer)
-                    && pos == this.computerPlayer.getPosition()) {
+            if (this.gameMode == GameMode.MISTER_X
+                    && this.getCurrentPlayer().equals(this.players.getUserPlayer())
+                    && pos == this.players.getComputerPlayer().getPosition()) {
                 this.possibleDestinations.remove(destination);
             }
             /* Mister X can't go where detective is. */
-            if (GameMode.DETECTIVE.equals(this.gameMode)
-                    && this.currentPlayer.equals(this.computerPlayer)
-                    && pos == this.userPlayer.getPosition()) {
+            if (this.gameMode == GameMode.DETECTIVE
+                    && this.getCurrentPlayer().equals(this.players.getComputerPlayer())
+                    && pos == this.players.getUserPlayer().getPosition()) {
                 this.possibleDestinations.remove(destination);
             }
             /*
              * No player can go where other bobbies are.
              * Bobbies can't go where detective is.
              */
-            for (Player bobby : this.additionalPlayers) {
+            for (Player bobby : this.players.getBobbies()) {
                 if (bobby.getPosition().equals(pos)
-                        || (GameMode.DETECTIVE.equals(this.gameMode)
-                                && this.currentPlayer.equals(bobby)
-                                && pos == this.userPlayer.getPosition())) {
+                        || (this.gameMode == GameMode.DETECTIVE
+                                && this.getCurrentPlayer().equals(bobby)
+                                && pos == this.players.getUserPlayer().getPosition())) {
                     this.possibleDestinations.remove(destination);
                 }
             }
             // Removal of destinations that can be reached by ferry, if player is not Mister
             // X
-            if ((GameMode.DETECTIVE.equals(this.gameMode) && this.currentPlayer != this.computerPlayer)
-                    || (GameMode.MISTER_X.equals(this.gameMode) && this.currentPlayer != this.userPlayer)) {
+            if ((GameMode.DETECTIVE.equals(this.gameMode)
+                            && this.getCurrentPlayer() != this.players.getComputerPlayer())
+                    || (GameMode.MISTER_X.equals(this.gameMode)
+                            && this.getCurrentPlayer() != this.players.getUserPlayer())) {
                 this.possibleDestinations.removeIf(item -> TransportType.FERRY.equals(item.getY()));
             }
         }
@@ -278,27 +159,8 @@ public final class GameStateImpl implements GameState {
 
     @Override
     public void changeCurrentPlayer() {
-        this.indexCurrentPlayer++;
-        if (this.indexCurrentPlayer < this.additionalPlayers.size()) {
-            if (this.indexCurrentPlayer >= 0) {
-                this.currentPlayer = additionalPlayers.get(this.indexCurrentPlayer);
-            } else {
-                if (this.indexCurrentPlayer == DETECTIVE_ROUND_INDEX) {
-                    if (GameMode.DETECTIVE.equals(this.gameMode)) {
-                        this.currentPlayer = this.userPlayer;
-                    } else {
-                        this.currentPlayer = this.computerPlayer;
-                    }
-                }
-            }
-        } else {
-            this.indexCurrentPlayer = MISTER_X_ROUND_INDEX;
-            if (GameMode.DETECTIVE.equals(this.gameMode)) {
-                this.currentPlayer = this.computerPlayer;
-            } else {
-                this.currentPlayer = this.userPlayer;
-            }
-        }
+        round += (indexCurrentPlayer + 1) / players.getPlayersCount();
+        indexCurrentPlayer = (indexCurrentPlayer + 1) % players.getPlayersCount();
     }
 
     private void loadAvailableTransports(NodeId destinationId) {
@@ -324,8 +186,8 @@ public final class GameStateImpl implements GameState {
     @Override
     public boolean moveCurrentPlayer(NodeId destinationId, TransportType transport) {
         if (this.possibleDestinations.contains(new Pair<>(destinationId, transport))) {
-            this.currentPlayer.setPosition(destinationId);
-            this.currentPlayer.useTicket(Player.getTicketTypeForTransport(transport));
+            this.getCurrentPlayer().setPosition(destinationId);
+            this.getCurrentPlayer().useTicket(Player.getTicketTypeForTransport(transport));
             return true;
         } else {
             return false;
@@ -338,12 +200,12 @@ public final class GameStateImpl implements GameState {
 
     @Override
     public void nextRound() {
-        if (GameMode.DETECTIVE.equals(this.gameMode)) {
-            if (this.currentPlayer.equals(this.computerPlayer)) {
+        if (this.gameMode == GameMode.DETECTIVE) {
+            if (this.getCurrentPlayer().equals(this.players.getComputerPlayer())) {
                 this.incrementsRound();
             }
         } else {
-            if (this.currentPlayer.equals(this.userPlayer)) {
+            if (this.getCurrentPlayer().equals(this.players.getUserPlayer())) {
                 this.incrementsRound();
             }
         }
@@ -351,13 +213,9 @@ public final class GameStateImpl implements GameState {
 
     @Override
     public boolean hideMisterX() {
-        if (GameMode.DETECTIVE.equals(this.gameMode)) {
-            if (Constants.REVEAL_TURNS_MISTER_X.contains(this.getGameRound())
-                    && this.currentPlayer.equals(this.computerPlayer)) {
-                return false;
-            } else {
-                return true;
-            }
+        if (this.gameMode == GameMode.DETECTIVE) {
+            return !Constants.REVEAL_TURNS_MISTER_X.contains(this.getGameRound())
+                    || !this.getCurrentPlayer().equals(this.players.getComputerPlayer());
         } else {
             return false;
         }
@@ -370,7 +228,7 @@ public final class GameStateImpl implements GameState {
 
     @Override
     public int getNumberTicketsUserPlayer(final TicketType ticketType) {
-        return this.getNumberTickets(this.userPlayer, ticketType);
+        return this.getNumberTickets(this.players.getUserPlayer(), ticketType);
     }
 
     private int getNumberTickets(final Player player, final TicketType ticketType) {
@@ -384,7 +242,7 @@ public final class GameStateImpl implements GameState {
 
     @Override
     public Player getCurrentPlayer() {
-        return this.currentPlayer;
+        return this.players.getTurnOrder().get(indexCurrentPlayer);
     }
 
     @Override
@@ -394,17 +252,17 @@ public final class GameStateImpl implements GameState {
 
     @Override
     public Player getUserPlayer() {
-        return this.userPlayer;
+        return this.players.getUserPlayer();
     }
 
     @Override
     public Player getComputerPlayer() {
-        return this.computerPlayer;
+        return this.players.getComputerPlayer();
     }
 
     @Override
     public int getNumberOfPlayers() {
-        return this.playersNumber;
+        return this.players.getPlayersCount();
     }
 
     @Override
@@ -418,19 +276,13 @@ public final class GameStateImpl implements GameState {
     }
 
     @Override
-    public List<Player> getBobbies() {
-        return new ArrayList<>(additionalPlayers);
+    public List<Bobby> getBobbies() {
+        return this.players.getBobbies();
     }
 
     @Override
     public Player getDetective() {
-        // In MISTER_X mode, Detective is the computer player
-        // In DETECTIVE mode, Detective is the user player
-        if (gameMode == GameMode.MISTER_X) {
-            return computerPlayer;
-        } else {
-            return userPlayer;
-        }
+        return this.players.getDetective();
     }
 
     @Override

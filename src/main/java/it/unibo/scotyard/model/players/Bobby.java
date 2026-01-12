@@ -1,11 +1,19 @@
 package it.unibo.scotyard.model.players;
 
+import it.unibo.scotyard.model.ai.PlayerBrain;
+import it.unibo.scotyard.model.map.NodeId;
 import java.util.EnumMap;
 import java.util.Map;
 
 public class Bobby extends PlayerImpl {
-
-    public Bobby() {
+    /**
+     * Creates a new AI Bobby player starting at the given position.
+     *
+     * @param position the starting position
+     * @param brain the AI brain
+     */
+    public Bobby(NodeId position, PlayerBrain brain) {
+        super(position, brain);
         this.name = "Bobby";
     }
 

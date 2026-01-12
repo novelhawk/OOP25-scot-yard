@@ -1,6 +1,7 @@
 package it.unibo.scotyard.model.command.game;
 
 import it.unibo.scotyard.model.command.GameCommand;
+import it.unibo.scotyard.model.game.GameDifficulty;
 import it.unibo.scotyard.model.game.GameMode;
 
-public record InitializeGameCommand(GameMode gameMode) implements GameCommand {}
+public record InitializeGameCommand(GameMode gameMode, GameDifficulty difficulty) implements GameCommand {}

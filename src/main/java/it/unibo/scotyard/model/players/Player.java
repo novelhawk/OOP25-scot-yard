@@ -1,8 +1,10 @@
 package it.unibo.scotyard.model.players;
 
+import it.unibo.scotyard.model.ai.PlayerBrain;
 import it.unibo.scotyard.model.map.NodeId;
 import it.unibo.scotyard.model.map.TransportType;
 import java.util.Map;
+import java.util.Optional;
 
 /*
  * Player interface
@@ -73,4 +75,18 @@ public interface Player {
      * @return the name of the player (their kind : detective, etc.)
      */
     String getName();
+
+    /**
+     * Gets whether the player is controlled by a human or by AI.
+     *
+     * @return true if the player is controlled by a human
+     */
+    boolean isHuman();
+
+    /**
+     * Gets the AI brain that plays the player if present.
+     *
+     * @return the AI brain
+     */
+    Optional<PlayerBrain> getBrain();
 }

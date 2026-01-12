@@ -1,8 +1,22 @@
 package it.unibo.scotyard.model.service;
 
 import it.unibo.scotyard.model.Model;
+import it.unibo.scotyard.model.ai.RunnerBrain;
+import it.unibo.scotyard.model.ai.SkipTurnBrain;
 import it.unibo.scotyard.model.command.game.InitializeGameCommand;
+import it.unibo.scotyard.model.command.turn.StartTurnCommand;
+import it.unibo.scotyard.model.game.GameDifficulty;
+import it.unibo.scotyard.model.game.GameMode;
+import it.unibo.scotyard.model.game.GameStateImpl;
+import it.unibo.scotyard.model.game.Players;
+import it.unibo.scotyard.model.map.NodeId;
+import it.unibo.scotyard.model.players.Bobby;
+import it.unibo.scotyard.model.players.Detective;
+import it.unibo.scotyard.model.players.MisterX;
 import it.unibo.scotyard.model.router.CommandHandlerStore;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * The service responsible for handling the commands regarding changes in the
@@ -24,19 +38,35 @@ public class GameStateService {
     /**
      * Handles the {@code InitializeGameCommand}.
      *
-     * @param command a initialize game command.
+     * @param command an initialize game command.
      */
     public void handleInitialize(final InitializeGameCommand command) {
-        final var initialPositions = model.getMapData().getInitialPositions();
-        final var playerPositions = model.getGameState()
-                .getSeededRandom()
-                .ints(0, initialPositions.size())
-                .distinct()
-                .limit(3)
-                .mapToObj(initialPositions::get)
-                .toList();
+        final Random random = model.getSeededRandom();
+        final List<NodeId> initialPositions = model.getMapData().getInitialPositions();
+        final Iterator<NodeId> shuffledInitialPositions =
+                shuffleInitialPositions(random, initialPositions).iterator();
+        final int additionalPlayers = getAdditionalSeekersCount(command.gameMode(), command.difficulty());
 
-        // TODO: Create GameState instance here, based on number of players
+        final MisterX misterX =
+                createMisterX(command.gameMode(), command.difficulty(), shuffledInitialPositions.next());
+        final Detective detective = createDetective(command.gameMode(), shuffledInitialPositions.next());
+
+        final List<Bobby> bobbies = Stream.generate(shuffledInitialPositions::next)
+                .limit(additionalPlayers)
+                .map(position -> new Bobby(position, new SkipTurnBrain()))
+                .collect(Collectors.toList());
+
+        for (int i = 0; i < bobbies.size(); i++) {
+            Bobby bobby = bobbies.get(i);
+            bobby.setName("Bobby" + (i + 1));
+        }
+
+        final Players players = new Players(command.gameMode(), misterX, detective, bobbies);
+
+        final GameStateImpl gameState = new GameStateImpl(command.gameMode(), command.difficulty(), players);
+        this.model.setGameState(gameState);
+
+        this.model.getDispatcher().dispatch(new StartTurnCommand());
     }
 
     /**
@@ -46,5 +76,44 @@ public class GameStateService {
      */
     public void register(final CommandHandlerStore store) {
         store.register(InitializeGameCommand.class, this::handleInitialize);
+    }
+
+    private MisterX createMisterX(GameMode gameMode, GameDifficulty difficulty, NodeId initialPosition) {
+        return switch (gameMode) {
+            case GameMode.DETECTIVE -> {
+                final RunnerBrain runnerBrain =
+                        new RunnerBrain(this.model.getSeededRandom(), this.model.getMapData(), difficulty);
+                yield new MisterX(initialPosition, runnerBrain);
+            }
+            case GameMode.MISTER_X -> new MisterX(initialPosition);
+        };
+    }
+
+    private Detective createDetective(GameMode gameMode, NodeId initialPosition) {
+        return switch (gameMode) {
+            case GameMode.DETECTIVE -> new Detective(initialPosition);
+            case GameMode.MISTER_X -> new Detective(initialPosition, new SkipTurnBrain());
+        };
+    }
+
+    private List<NodeId> shuffleInitialPositions(final Random random, final List<NodeId> initialPositions) {
+        final List<NodeId> copy = new ArrayList<>(initialPositions);
+        Collections.shuffle(copy, random);
+        return copy;
+    }
+
+    private int getAdditionalSeekersCount(GameMode gameMode, GameDifficulty difficulty) {
+        final int seekers =
+                switch (difficulty) {
+                    case GameDifficulty.EASY -> 0;
+                    case GameDifficulty.MEDIUM -> 1;
+                    case GameDifficulty.DIFFICULT -> 2;
+                };
+
+        if (gameMode == GameMode.DETECTIVE) {
+            return 2 - seekers;
+        } else {
+            return seekers;
+        }
     }
 }
