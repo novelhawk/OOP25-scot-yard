@@ -19,7 +19,6 @@ import java.util.function.Consumer;
  *
  */
 public final class GameStateImpl implements GameState {
-
     private GameStatus gameStatus;
     private GameMode gameMode;
     private GameDifficulty gameDifficulty;
@@ -69,11 +68,7 @@ public final class GameStateImpl implements GameState {
             return true;
         }
 
-        if (this.gameMode == GameMode.DETECTIVE) {
-            return this.possibleDestinations.isEmpty() && this.getGameRound() > 1;
-        }
-
-        return false;
+        return this.getGameRound() > 1 && this.possibleDestinations.isEmpty();
     }
 
     @Override
@@ -140,8 +135,7 @@ public final class GameStateImpl implements GameState {
                     this.possibleDestinations.remove(destination);
                 }
             }
-            // Removal of destinations that can be reached by ferry, if player is not Mister
-            // X
+            // Removal of destinations that can be reached by ferry, if player isn't Mister X
             if ((GameMode.DETECTIVE.equals(this.gameMode)
                             && this.getCurrentPlayer() != this.players.getComputerPlayer())
                     || (GameMode.MISTER_X.equals(this.gameMode)
@@ -160,7 +154,6 @@ public final class GameStateImpl implements GameState {
 
     @Override
     public void changeCurrentPlayer() {
-        round += (indexCurrentPlayer + 1) / players.getPlayersCount();
         indexCurrentPlayer = (indexCurrentPlayer + 1) % players.getPlayersCount();
     }
 
@@ -215,8 +208,7 @@ public final class GameStateImpl implements GameState {
     @Override
     public boolean hideMisterX() {
         if (this.gameMode == GameMode.DETECTIVE) {
-            return !Constants.REVEAL_TURNS_MISTER_X.contains(this.getGameRound())
-                    || !this.getCurrentPlayer().equals(this.players.getComputerPlayer());
+            return !Constants.REVEAL_TURNS_MISTER_X.contains(this.getGameRound());
         } else {
             return false;
         }

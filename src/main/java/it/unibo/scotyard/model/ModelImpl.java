@@ -98,16 +98,12 @@ public final class ModelImpl implements Model {
     @Override
     public List<Pair<NodeId, TransportType>> getPossibleDestinations(NodeId idStartPosition) {
         List<Pair<NodeId, TransportType>> resultList = new ArrayList<>();
-        List<MapConnection> connections = this.getMapData().getConnections();
+        List<MapConnection> connections = this.getMapData().getConnectionsFrom(idStartPosition);
         for (MapConnection connection : connections) {
-            if (connection.getFrom() == idStartPosition) {
-                resultList.add(new Pair<>(connection.getTo(), connection.getTransport()));
-            }
-            if (connection.getTo() == idStartPosition) {
-                resultList.add(new Pair<>(connection.getFrom(), connection.getTransport()));
-            }
+            resultList.add(new Pair<>(connection.getTo(), connection.getTransport()));
         }
 
         return resultList;
     }
+
 }

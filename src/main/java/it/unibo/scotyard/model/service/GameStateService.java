@@ -53,7 +53,7 @@ public class GameStateService {
 
         final List<Bobby> bobbies = Stream.generate(shuffledInitialPositions::next)
                 .limit(additionalPlayers)
-                .map(position -> new Bobby(position, new SkipTurnBrain()))
+                .map(position -> new Bobby(position))
                 .collect(Collectors.toList());
 
         for (int i = 0; i < bobbies.size(); i++) {

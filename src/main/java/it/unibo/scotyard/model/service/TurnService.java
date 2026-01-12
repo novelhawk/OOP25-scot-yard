@@ -1,17 +1,23 @@
 package it.unibo.scotyard.model.service;
 
+import it.unibo.scotyard.controller.game.DetectiveGameControllerImpl;
 import it.unibo.scotyard.model.Model;
+import it.unibo.scotyard.model.Pair;
 import it.unibo.scotyard.model.command.turn.*;
 import it.unibo.scotyard.model.entities.MoveAction;
 import it.unibo.scotyard.model.game.GameState;
 import it.unibo.scotyard.model.game.TurnState;
+import it.unibo.scotyard.model.map.NodeId;
 import it.unibo.scotyard.model.map.TransportType;
 import it.unibo.scotyard.model.players.MisterX;
 import it.unibo.scotyard.model.players.Player;
 import it.unibo.scotyard.model.router.CommandDispatcher;
 import it.unibo.scotyard.model.router.CommandHandlerStore;
+
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -24,7 +30,7 @@ public class TurnService {
     public TurnService(final Model model) {
         this.model = Objects.requireNonNull(model, "model cannot be null");
     }
-
+    
     /**
      * Handles the {@code StartTurnCommand}
      *
@@ -41,6 +47,12 @@ public class TurnService {
                 .forEach(dispatcher::dispatch);
     }
 
+    private void loadPossibleDestinationsIntoGameState(){
+        final NodeId currentPosition = this.model.getGameState().getCurrentPlayer().getPosition();
+        Set<Pair<NodeId,TransportType>> setPossibleDestinations = new HashSet<Pair<NodeId,TransportType>> (this.model.getPossibleDestinations(currentPosition));
+        this.model.getGameState().loadPossibleDestinations(setPossibleDestinations);
+    }
+
     /**
      * Handles the {@code MoveCommand}.
      *
@@ -48,6 +60,9 @@ public class TurnService {
      */
     public void handleMove(final MoveCommand command) {
         this.model.getGameState().getTurnState().addMove(new MoveAction(command.targetNode(), command.transportType()));
+        
+        this.loadPossibleDestinationsIntoGameState();
+        this.model.getGameState().moveCurrentPlayer(command.targetNode(), command.transportType());
     }
 
     /**
@@ -65,7 +80,6 @@ public class TurnService {
      * @param command a pass command.
      */
     public void handleEndTurn(final EndTurnCommand command) {
-        final CommandDispatcher dispatcher = this.model.getDispatcher();
         final GameState gameState = this.model.getGameState();
         final TurnState turnState = gameState.getTurnState();
 
@@ -76,9 +90,6 @@ public class TurnService {
 
             gameState.getRunnerTurnTracker().addTurn(usedTransports);
         }
-
-        gameState.changeCurrentPlayer();
-        dispatcher.dispatch(new StartTurnCommand());
     }
 
     /**
