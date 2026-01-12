@@ -46,7 +46,6 @@ public final class SidebarPanel extends JPanel {
     private static final int SMALL_SPACING = 6;
 
     // Texts
-    private static final String INFINITI_STRING = "infiniti";
     private static final String INVENTORY_TEXT = "Inventario";
     private static final String TAXI_TICKETS_TEXT = "Biglietti taxi";
     private static final String BUS_TICKETS_TEXT = "Biglietti bus";
