@@ -63,6 +63,8 @@ public final class DetectiveGameControllerImpl extends GameControllerImpl {
                 if (this.gameState.hideMisterX()) {
                     hideMisterXPosition();
                 } else {
+                    /* The position displayed of Mr. X is the one before he makes a new move 
+                    ** after the reveal turn.  */
                     this.view.getMapPanel().setMisterXPosition(currentPlayer.getPosition());
                 }
                 break;
@@ -71,6 +73,14 @@ public final class DetectiveGameControllerImpl extends GameControllerImpl {
                 this.view.getMapPanel().setBobbyPosition(currentPlayer.getPosition(), index);
         }
         this.view.getMapPanel().repaint();
+    }
+
+    private void manageMisterXRound(){
+        NodeId startPosition = this.gameState.getComputerPlayer().getPosition();
+        dispatcher.dispatch(new StartTurnCommand()); // Starts IA Mister X turn (RunnerBrain)
+        // The following loop has the only aim to wait for the ending od IA Mister X turn
+        while (this.gameState.getComputerPlayer().getPosition() == startPosition && this.gameState.getCurrentPlayer() instanceof MisterX) {}
+        this.manageGameRound();
     }
 
     /**
@@ -83,27 +93,19 @@ public final class DetectiveGameControllerImpl extends GameControllerImpl {
         } else {
             this.updateSidebar(this.gameState.getCurrentPlayer());
             this.updatePlayerPositionView(this.gameState.getCurrentPlayer());
-            NodeId startPosition = this.gameState.getCurrentPlayer().getPosition();
-            while(this.gameState.getCurrentPlayer() instanceof MisterX){
-                dispatcher.dispatch(new StartTurnCommand()); // Starts IA Mister X turn (RunnerBrain)
-
-                if(this.gameState.getCurrentPlayer().getPosition()!=startPosition){
-                    gameState.changeCurrentPlayer();
-                    gameState.nextRound();
-                }
-            }
-            this.updateSidebar(this.gameState.getCurrentPlayer());
-            this.updatePlayerPositionView(this.gameState.getCurrentPlayer());
             Set<Pair<NodeId, TransportType>> possibleDestinations =
-                    new HashSet<>(this.mainController.getPossibleDestinations(
-                            this.gameState.getPositionPlayer(this.gameState.getCurrentPlayer())));
+                new HashSet<>(this.mainController.getPossibleDestinations( this.gameState.getPositionPlayer(this.gameState.getCurrentPlayer())));
             possibleDestinations = this.gameState.loadPossibleDestinations(possibleDestinations);
-            Set<NodeId> possibleDestinationsIDs = new HashSet<>();
-            for (Pair<NodeId, TransportType> pair : possibleDestinations) {
-                possibleDestinationsIDs.add(pair.getX());
-            } 
-            this.view.getMapPanel().loadPossibleDestinations(possibleDestinationsIDs);
-            this.view.getMapPanel().repaint();
+            if(this.gameState.getCurrentPlayer().equals(this.gameState.getComputerPlayer())){
+                manageMisterXRound();
+            } else{
+                Set<NodeId> possibleDestinationsIDs = new HashSet<>();
+                for (Pair<NodeId, TransportType> pair : possibleDestinations) {
+                    possibleDestinationsIDs.add(pair.getX());
+                }
+                this.view.getMapPanel().loadPossibleDestinations(possibleDestinationsIDs);
+                this.view.getMapPanel().repaint();
+            }
         }
     }
 
@@ -131,15 +133,15 @@ public final class DetectiveGameControllerImpl extends GameControllerImpl {
     }
 
     private void movePlayer() {
-        if (this.gameState.moveCurrentPlayer(this.selectedDestination, this.selectedTransportType)) {
+        if (this.gameState.isMovableCurrentPlayer(this.selectedDestination, this.selectedTransportType)) {
             this.view.getMapPanel().setSelectedDestination(NOT_VISIBLE_ON_MAP);
-            this.updatePlayerPositionView(this.gameState.getCurrentPlayer());
             this.dispatcher.dispatch(new MoveCommand(this.selectedDestination, this.selectedTransportType));
-            this.dispatcher.dispatch(new EndTurnCommand());
-            this.gameState.changeCurrentPlayer();
-            this.gameState.nextRound();
-            this.manageGameRound();
+            NodeId startPosition = this.gameState.getComputerPlayer().getPosition();
+            while(this.gameState.getCurrentPlayer().getPosition() == startPosition){}
+            this.updatePlayerPositionView(this.gameState.getCurrentPlayer());
             this.view.getMapPanel().repaint();
+            this.dispatcher.dispatch(new EndTurnCommand());
+            this.manageGameRound();
         }
     }
 }

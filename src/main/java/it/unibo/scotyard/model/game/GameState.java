@@ -70,14 +70,24 @@ public interface GameState {
     List<TransportType> getAvailableTransports(NodeId destinationId);
 
     /**
-     * Return a boolean value which indicates whether the current player can be moved or not; if it's possible, their
-     * position id gets changed and their tickets decrement (according to the type of transport used).
+     * Return a boolean value which indicates whether the current player can be moved or not.
+     * This method need to be called before moveCurrentPlayer(), to check if it is possible 
+     * to move the current player into the desired destination.
+     * 
+     * @param destinationId
+     * @param transport
+     * @return a boolean value which indicates whether the current player can be moved or not
+     */
+    boolean isMovableCurrentPlayer(NodeId destinationId, TransportType transport);
+
+    /**
+     * Moves the current player into the desination given in input, using the transport given in input.
+     * The tickets of current player decrement (according to the type of transport used).
      *
      * @param destinationId the destination id
      * @param transport the transport type to use to reach the destination
-     * @return a boolean value which indicates whether the current player can be moved or not
      */
-    boolean moveCurrentPlayer(NodeId destinationId, TransportType transport);
+    void moveCurrentPlayer(NodeId destinationId, TransportType transport);
 
     /** Goes to next round by incrementing the round number, if the current player is the last bobby. */
     void nextRound();

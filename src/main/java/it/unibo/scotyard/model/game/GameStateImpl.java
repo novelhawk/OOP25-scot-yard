@@ -110,6 +110,7 @@ public final class GameStateImpl implements GameState {
          */
         for (Pair<NodeId, TransportType> destination : inputPossibleDestinations) {
             final NodeId pos = destination.getX();
+            final TransportType transport = destination.getY();
             this.possibleDestinations.add(destination);
             /* Mister X can't go where detective is. */
             if (this.gameMode == GameMode.MISTER_X
@@ -141,6 +142,10 @@ public final class GameStateImpl implements GameState {
                     || (GameMode.MISTER_X.equals(this.gameMode)
                             && this.getCurrentPlayer() != this.players.getUserPlayer())) {
                 this.possibleDestinations.removeIf(item -> TransportType.FERRY.equals(item.getY()));
+            }
+            // Removal of destinations for which current player has no tickets
+            if(this.getCurrentPlayer().getNumberTickets(Player.getTicketTypeForTransport(transport))==0){
+                this.possibleDestinations.remove(destination);
             }
         }
 
@@ -178,14 +183,18 @@ public final class GameStateImpl implements GameState {
     }
 
     @Override
-    public boolean moveCurrentPlayer(NodeId destinationId, TransportType transport) {
+    public boolean isMovableCurrentPlayer(NodeId destinationId, TransportType transport) {
         if (this.possibleDestinations.contains(new Pair<>(destinationId, transport))) {
-            this.getCurrentPlayer().setPosition(destinationId);
-            this.getCurrentPlayer().useTicket(Player.getTicketTypeForTransport(transport));
             return true;
         } else {
             return false;
         }
+    }
+
+    @Override
+    public void moveCurrentPlayer(NodeId destinationId, TransportType transport){
+        this.getCurrentPlayer().setPosition(destinationId);
+        this.getCurrentPlayer().useTicket(Player.getTicketTypeForTransport(transport));
     }
 
     private void incrementsRound() {
