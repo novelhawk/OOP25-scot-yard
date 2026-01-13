@@ -105,5 +105,4 @@ public final class ModelImpl implements Model {
 
         return resultList;
     }
-
 }

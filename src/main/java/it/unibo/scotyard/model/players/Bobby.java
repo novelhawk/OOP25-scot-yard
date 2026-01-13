@@ -19,10 +19,10 @@ public class Bobby extends PlayerImpl {
 
     /**
      * Creates a new Bobby player starting at the given position.
-     * 
+     *
      * @param position the starting position
      */
-    public Bobby(NodeId position){
+    public Bobby(NodeId position) {
         super(position);
         this.name = "Bobby";
     }
