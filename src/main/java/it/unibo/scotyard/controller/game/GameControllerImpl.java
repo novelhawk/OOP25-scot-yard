@@ -11,6 +11,7 @@ import it.unibo.scotyard.model.router.CommandDispatcher;
 import it.unibo.scotyard.view.game.GameView;
 import it.unibo.scotyard.view.map.MapPanel;
 import it.unibo.scotyard.view.sidebar.SidebarPanel;
+import java.util.List;
 import java.util.Objects;
 import javax.swing.JPanel;
 
@@ -19,6 +20,8 @@ import javax.swing.JPanel;
  *
  */
 public abstract class GameControllerImpl implements GameController {
+
+    private static final int ROUND_COUNT = 24;
 
     protected final CommandDispatcher dispatcher;
     protected final GameState gameState;
@@ -44,7 +47,16 @@ public abstract class GameControllerImpl implements GameController {
     }
 
     @Override
-    public abstract void initializeGame();
+    public void initializeGame() {
+        this.view.getTrackerPanel().createGrid(ROUND_COUNT);
+        this.gameState.getRunnerTurnTracker().subscribe(this::syncRunnerTurns);
+    }
+
+    private void syncRunnerTurns(List<List<TransportType>> turns) {
+        for (int i = 0; i < turns.size(); i++) {
+            this.view.getTrackerPanel().setTransportModes(i, turns.get(i));
+        }
+    }
 
     @Override
     public JPanel getMainPanel() {

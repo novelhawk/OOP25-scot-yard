@@ -67,6 +67,7 @@ public final class MrXGameControllerImpl extends GameControllerImpl {
 
     @Override
     public void initializeGame() {
+        super.initializeGame();
         initializeMrX();
 
         // Inizzializza bobbies list in MapPanel

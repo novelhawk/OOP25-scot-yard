@@ -4,7 +4,9 @@ import it.unibo.scotyard.controller.game.GameController;
 import it.unibo.scotyard.model.map.NodeId;
 import it.unibo.scotyard.model.map.TransportType;
 import it.unibo.scotyard.view.map.MapPanel;
+import it.unibo.scotyard.view.resources.IconRegistry;
 import it.unibo.scotyard.view.sidebar.SidebarPanel;
+import it.unibo.scotyard.view.tracker.TrackerPanel;
 import java.util.Set;
 import javax.swing.JPanel;
 
@@ -20,6 +22,20 @@ public interface GameView {
      * @param gameController the observer
      */
     void setObserver(GameController gameController);
+
+    /**
+     * Gets the Mister X tracker panel
+     *
+     * @return the Mister X tracker panel
+     */
+    TrackerPanel getTrackerPanel();
+
+    /**
+     * Returns the registry of all icons.
+     *
+     * @return the icon registry
+     */
+    IconRegistry getIconRegistry();
 
     /**
      * @return the game panel (with the map panel and the sidebar)

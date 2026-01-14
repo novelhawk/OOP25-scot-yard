@@ -7,7 +7,9 @@ import it.unibo.scotyard.controller.game.GameController;
 import it.unibo.scotyard.model.map.NodeId;
 import it.unibo.scotyard.model.map.TransportType;
 import it.unibo.scotyard.view.map.MapPanel;
+import it.unibo.scotyard.view.resources.IconRegistry;
 import it.unibo.scotyard.view.sidebar.SidebarPanel;
+import it.unibo.scotyard.view.tracker.TrackerPanel;
 import it.unibo.scotyard.view.window.Window;
 import it.unibo.scotyard.view.window.WindowImpl;
 import java.awt.BorderLayout;
@@ -57,6 +59,7 @@ public final class GameViewImpl implements GameView {
     private static final Font SMALL_TEXT_FONT = new Font("Arial", Font.BOLD, 14);
     private static final Font WINNER_FONT = new Font("Arial", Font.BOLD, 28);
 
+    private final IconRegistry iconRegistry;
     private final MapPanel mapPanel;
     private final SidebarPanel sidebar;
     private final JPanel mainPanel;
@@ -72,7 +75,8 @@ public final class GameViewImpl implements GameView {
      *
      * @param mapInfo the game map
      */
-    public GameViewImpl(final MapInfo mapInfo) {
+    public GameViewImpl(final IconRegistry iconRegistry, final MapInfo mapInfo) {
+        this.iconRegistry = iconRegistry;
         this.mapPanel = new MapPanel(mapInfo, this);
         this.sidebar = new SidebarPanel(this);
         this.createGameOverWindow();
@@ -85,6 +89,16 @@ public final class GameViewImpl implements GameView {
     @Override
     public void setObserver(GameController gameController) {
         this.observer = gameController;
+    }
+
+    @Override
+    public TrackerPanel getTrackerPanel() {
+        return sidebar.getTrackerPanel();
+    }
+
+    @Override
+    public IconRegistry getIconRegistry() {
+        return iconRegistry;
     }
 
     @Override

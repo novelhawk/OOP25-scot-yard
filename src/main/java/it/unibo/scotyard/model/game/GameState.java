@@ -9,6 +9,7 @@ import it.unibo.scotyard.model.players.Player;
 import it.unibo.scotyard.model.players.TicketType;
 import java.util.List;
 import java.util.Set;
+import java.util.function.Consumer;
 
 /**
  * The game state.

@@ -8,6 +8,8 @@ import it.unibo.scotyard.view.game.GameViewImpl;
 import it.unibo.scotyard.view.gamelauncher.GameLauncherView;
 import it.unibo.scotyard.view.gamelauncher.GameLauncherViewImpl;
 import it.unibo.scotyard.view.map.MapPanel;
+import it.unibo.scotyard.view.resources.IconRegistry;
+import it.unibo.scotyard.view.resources.IconRegistryImpl;
 import it.unibo.scotyard.view.window.Window;
 import it.unibo.scotyard.view.window.WindowImpl;
 import java.awt.BorderLayout;
@@ -23,11 +25,13 @@ public final class ViewImpl implements View {
 
     private final Window window;
     private final JPanel mainContainer;
+    private final IconRegistry iconRegistry;
 
     /** new view instance. */
     public ViewImpl() {
         this.mainContainer = new JPanel(new BorderLayout());
         this.window = new WindowImpl(this.getMaxResolution(), this.mainContainer, MAIN_WINDOW_TITLE);
+        this.iconRegistry = new IconRegistryImpl();
     }
 
     @Override
@@ -52,7 +56,7 @@ public final class ViewImpl implements View {
     @Override
     public GameView createGameView(final MapInfo mapInfo) {
         Objects.requireNonNull(mapInfo, "MapInfo cannot be null");
-        return new GameViewImpl(mapInfo);
+        return new GameViewImpl(iconRegistry, mapInfo);
     }
 
     @Override
