@@ -12,6 +12,7 @@ import it.unibo.scotyard.model.players.TicketType;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
+import java.util.function.Consumer;
 
 /**
  * The game state.
@@ -226,4 +227,18 @@ public interface GameState {
      * @return the max round count of the current game
      */
     int maxRoundCount();
+
+    /**
+     * Adds a subscriber to the GameState events.
+     *
+     * @param subscriber the subscriber
+     */
+    void subscribe(GameStateSubscriber subscriber);
+
+    /**
+     * Notifies all subscribers with the provided action.
+     *
+     * @param action the action to invoke on all subscribers.
+     */
+    void notifySubscribers(Consumer<GameStateSubscriber> action);
 }

@@ -13,6 +13,7 @@ import it.unibo.scotyard.model.players.Bobby;
 import it.unibo.scotyard.model.players.Player;
 import it.unibo.scotyard.model.players.TicketType;
 import java.util.*;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 /**
@@ -24,6 +25,7 @@ public final class GameStateImpl implements GameState {
     private static final int ROUND_COUNT = 24;
 
     private final Random random;
+    private final List<GameStateSubscriber> subscribers = new ArrayList<>();
     private GameStatus gameStatus;
     private final GameMode gameMode;
 
@@ -323,10 +325,22 @@ public final class GameStateImpl implements GameState {
         final NodeId position = players.getMisterX().getPosition();
         final ExposedPosition exposed = new ExposedPosition(position, round);
         exposedPositions.add(exposed);
+        notifySubscribers(it -> it.onExposedPosition(exposed));
     }
 
     @Override
     public int maxRoundCount() {
         return ROUND_COUNT;
+    }
+
+    @Override
+    public void subscribe(GameStateSubscriber subscriber) {
+        subscribers.add(subscriber);
+    }
+
+    public void notifySubscribers(Consumer<GameStateSubscriber> action) {
+        for (final GameStateSubscriber subscriber : subscribers) {
+            action.accept(subscriber);
+        }
     }
 }
