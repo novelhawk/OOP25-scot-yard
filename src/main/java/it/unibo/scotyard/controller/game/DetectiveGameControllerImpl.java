@@ -32,6 +32,7 @@ public final class DetectiveGameControllerImpl extends GameControllerImpl {
 
     @Override
     public void initializeGame() {
+        super.initializeGame();
         this.initializePlayersPositionsView();
         this.manageGameRound();
         this.view.getSidebar().enableEndTurnButton(false);
