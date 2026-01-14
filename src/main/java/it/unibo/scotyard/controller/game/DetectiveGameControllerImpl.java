@@ -101,6 +101,7 @@ public final class DetectiveGameControllerImpl extends GameControllerImpl {
         }
     }
 
+    @Override
     public void destinationChosen(NodeId newPositionId) {
         if (this.gameState.areMultipleTransportsAvailable(newPositionId)) {
             System.out.println(this.gameState.getAvailableTransports(newPositionId));
@@ -121,6 +122,7 @@ public final class DetectiveGameControllerImpl extends GameControllerImpl {
         this.movePlayer();
     }
 
+    @Override
     public void selectTransport(TransportType transportType) {
         this.selectedTransportType = transportType;
     }

@@ -122,6 +122,7 @@ public abstract class GameControllerImpl implements GameController {
      *
      * @param newPositionId the id of the destination
      */
+    @Override
     public abstract void destinationChosen(NodeId newPositionId);
 
     /**
@@ -129,5 +130,6 @@ public abstract class GameControllerImpl implements GameController {
      *
      * @param transportType the type of transport selected
      */
+    @Override
     public abstract void selectTransport(TransportType transportType);
 }

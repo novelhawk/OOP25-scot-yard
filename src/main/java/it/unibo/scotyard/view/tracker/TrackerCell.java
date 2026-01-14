@@ -16,7 +16,7 @@ public class TrackerCell extends JPanel {
 
     private static final Color EMPTY_COLOR = new Color(66, 66, 66);
 
-    private final Map<TransportType, Color> TRANSPORT_TYPES_COLORS = Map.of(
+    private static final Map<TransportType, Color> TRANSPORT_TYPES_COLORS = Map.of(
             TransportType.BUS, BUS_COLOR,
             TransportType.UNDERGROUND, UNDERGROUND_COLOR,
             TransportType.FERRY, FERRY_COLOR,
@@ -24,7 +24,6 @@ public class TrackerCell extends JPanel {
 
     private static final Dimension MINIMUM_SIZE = new Dimension(100, 20);
     private static final Color BACKGROUND_COLOR = new Color(48, 48, 48);
-    ;
 
     private final GameView gameView;
     private List<TransportType> tickets;

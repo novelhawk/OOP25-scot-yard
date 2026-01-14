@@ -73,7 +73,6 @@ public final class TurnManagerImpl implements TurnManager<TurnManagerImpl.MoveOp
     private boolean doubleMoveAvailable;
     private boolean isFirstMoveOfDouble;
     private NodeId firstMoveDestination;
-    private TransportType firstMoveTransport;
 
     /**
      * Creates a new turn manager.
@@ -136,7 +135,6 @@ public final class TurnManagerImpl implements TurnManager<TurnManagerImpl.MoveOp
 
         isFirstMoveOfDouble = true;
         firstMoveDestination = firstDestination;
-        firstMoveTransport = firstTransport;
 
         return firstDestination;
     }

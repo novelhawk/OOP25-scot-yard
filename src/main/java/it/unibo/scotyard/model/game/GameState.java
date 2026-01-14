@@ -9,7 +9,6 @@ import it.unibo.scotyard.model.players.Player;
 import it.unibo.scotyard.model.players.TicketType;
 import java.util.List;
 import java.util.Set;
-import java.util.function.Consumer;
 
 /**
  * The game state.
@@ -104,7 +103,7 @@ public interface GameState {
      * @param ticketType the type of ticket
      * @return the number of tickets of type {@code ticketType}
      */
-    int getNumberTicketsUserPlayer(final TicketType ticketType);
+    int getNumberTicketsUserPlayer(TicketType ticketType);
 
     /** Return the current player. */
     Player getCurrentPlayer();
@@ -150,7 +149,7 @@ public interface GameState {
      *
      * @param state the updated game status
      */
-    void setGameStatus(final GameStatus state);
+    void setGameStatus(GameStatus state);
 
     /**
      * Gets all Bobby players (additional detectives).

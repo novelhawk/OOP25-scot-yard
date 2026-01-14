@@ -8,6 +8,7 @@ public class RunnerTurnTrackerImpl implements RunnerTurnTracker {
     private final List<List<TransportType>> turns = new ArrayList<>();
     private final List<RunnerTurnTrackerSubscriber> subscribers = new ArrayList<>();
 
+    @Override
     public void addTurn(List<TransportType> turnMoves) {
         turns.add(turnMoves);
         notifySubscribers();

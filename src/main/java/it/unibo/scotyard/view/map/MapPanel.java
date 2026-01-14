@@ -115,7 +115,7 @@ public final class MapPanel extends JPanel {
     private Set<it.unibo.scotyard.model.game.turn.TurnManagerImpl.MoveOption> validMoves = new HashSet<>();
     private Consumer<NodeId> nodeClickListener = null;
 
-    GameView gameView;
+    private final GameView gameView;
 
     /**
      * Creates a new MapPanel with the given map info DTO.

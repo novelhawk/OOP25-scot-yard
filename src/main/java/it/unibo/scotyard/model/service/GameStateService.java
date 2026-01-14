@@ -63,7 +63,7 @@ public class GameStateService {
 
         final Players players = new Players(command.gameMode(), misterX, detective, bobbies);
 
-        final GameStateImpl gameState = new GameStateImpl(command.gameMode(), command.difficulty(), players);
+        final GameStateImpl gameState = new GameStateImpl(command.gameMode(), players);
         this.model.setGameState(gameState);
 
         this.model.getDispatcher().dispatch(new StartTurnCommand());

@@ -36,22 +36,16 @@ public interface Player {
     /**
      * Given a transport type, returns the corresponding TicketType.
      *
-     * @param transport
+     * @param transport the transport type
      * @return the corresponding TicketType to the given TransportType
      */
     static TicketType getTicketTypeForTransport(final TransportType transport) {
-        switch (transport) {
-            case TAXI:
-                return TicketType.TAXI;
-            case BUS:
-                return TicketType.BUS;
-            case UNDERGROUND:
-                return TicketType.UNDERGROUND;
-            case FERRY:
-                return TicketType.BLACK;
-            default:
-                throw new IllegalArgumentException("Trasporto non conosciuto: " + transport);
-        }
+        return switch (transport) {
+            case TAXI -> TicketType.TAXI;
+            case BUS -> TicketType.BUS;
+            case UNDERGROUND -> TicketType.UNDERGROUND;
+            case FERRY -> TicketType.BLACK;
+        };
     }
 
     /**

@@ -12,7 +12,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.function.Consumer;
 
 /**
  * The game state.
@@ -21,8 +20,7 @@ import java.util.function.Consumer;
 public final class GameStateImpl implements GameState {
 
     private GameStatus gameStatus;
-    private GameMode gameMode;
-    private GameDifficulty gameDifficulty;
+    private final GameMode gameMode;
 
     /**
      * It is used to keep track of the current player in the turn order.
@@ -43,10 +41,9 @@ public final class GameStateImpl implements GameState {
      * Creates a new game state.
      *
      * @param gameMode the game mode
-     * @param gameDifficulty the difficulty level
      * @param players the involved players
      */
-    public GameStateImpl(GameMode gameMode, GameDifficulty gameDifficulty, Players players) {
+    public GameStateImpl(GameMode gameMode, Players players) {
         this.round = 1;
         this.availableTransports = new ArrayList<>();
         this.possibleDestinations = new HashSet<>();
@@ -54,7 +51,6 @@ public final class GameStateImpl implements GameState {
         this.turnState = new TurnState();
         this.players = players;
         this.gameMode = gameMode;
-        this.gameDifficulty = gameDifficulty;
         this.gameStatus = GameStatus.PLAYING;
     }
 
