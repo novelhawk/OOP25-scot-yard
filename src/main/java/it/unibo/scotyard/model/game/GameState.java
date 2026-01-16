@@ -70,9 +70,9 @@ public interface GameState {
 
     /**
      * Return a boolean value which indicates whether the current player can be moved or not.
-     * This method need to be called before moveCurrentPlayer(), to check if it is possible 
+     * This method need to be called before moveCurrentPlayer(), to check if it is possible
      * to move the current player into the desired destination.
-     * 
+     *
      * @param destinationId
      * @param transport
      * @return a boolean value which indicates whether the current player can be moved or not

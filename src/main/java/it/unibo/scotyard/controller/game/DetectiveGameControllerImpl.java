@@ -8,7 +8,6 @@ import it.unibo.scotyard.model.command.turn.StartTurnCommand;
 import it.unibo.scotyard.model.game.GameState;
 import it.unibo.scotyard.model.map.NodeId;
 import it.unibo.scotyard.model.map.TransportType;
-import it.unibo.scotyard.model.players.MisterX;
 import it.unibo.scotyard.model.players.Player;
 import it.unibo.scotyard.model.router.CommandDispatcher;
 import it.unibo.scotyard.view.game.GameView;
@@ -62,8 +61,8 @@ public final class DetectiveGameControllerImpl extends GameControllerImpl {
                 if (this.gameState.hideMisterX()) {
                     hideMisterXPosition();
                 } else {
-                    /* The position displayed of Mr. X is the one before he makes a new move 
-                    ** after the reveal turn.  */
+                    /* The position displayed of Mr. X is the one before he makes a new move
+                     ** after the reveal turn.  */
                     this.view.getMapPanel().setMisterXPosition(currentPlayer.getPosition());
                 }
                 break;
@@ -74,11 +73,8 @@ public final class DetectiveGameControllerImpl extends GameControllerImpl {
         this.view.getMapPanel().repaint();
     }
 
-    private void manageMisterXRound(){
-        NodeId startPosition = this.gameState.getComputerPlayer().getPosition();
+    private void manageMisterXRound() {
         dispatcher.dispatch(new StartTurnCommand()); // Starts IA Mister X turn (RunnerBrain)
-        // The following loop has the only aim to wait for the ending od IA Mister X turn
-        while (this.gameState.getComputerPlayer().getPosition() == startPosition && this.gameState.getCurrentPlayer() instanceof MisterX) {}
         this.manageGameRound();
     }
 
@@ -93,11 +89,12 @@ public final class DetectiveGameControllerImpl extends GameControllerImpl {
             this.updateSidebar(this.gameState.getCurrentPlayer());
             this.updatePlayerPositionView(this.gameState.getCurrentPlayer());
             Set<Pair<NodeId, TransportType>> possibleDestinations =
-                new HashSet<>(this.mainController.getPossibleDestinations( this.gameState.getPositionPlayer(this.gameState.getCurrentPlayer())));
+                    new HashSet<>(this.mainController.getPossibleDestinations(
+                            this.gameState.getPositionPlayer(this.gameState.getCurrentPlayer())));
             possibleDestinations = this.gameState.loadPossibleDestinations(possibleDestinations);
-            if(this.gameState.getCurrentPlayer().equals(this.gameState.getComputerPlayer())){
+            if (this.gameState.getCurrentPlayer().equals(this.gameState.getComputerPlayer())) {
                 manageMisterXRound();
-            } else{
+            } else {
                 Set<NodeId> possibleDestinationsIDs = new HashSet<>();
                 for (Pair<NodeId, TransportType> pair : possibleDestinations) {
                     possibleDestinationsIDs.add(pair.getX());
@@ -135,8 +132,6 @@ public final class DetectiveGameControllerImpl extends GameControllerImpl {
         if (this.gameState.isMovableCurrentPlayer(this.selectedDestination, this.selectedTransportType)) {
             this.view.getMapPanel().setSelectedDestination(NOT_VISIBLE_ON_MAP);
             this.dispatcher.dispatch(new MoveCommand(this.selectedDestination, this.selectedTransportType));
-            NodeId startPosition = this.gameState.getComputerPlayer().getPosition();
-            while(this.gameState.getCurrentPlayer().getPosition() == startPosition){}
             this.updatePlayerPositionView(this.gameState.getCurrentPlayer());
             this.view.getMapPanel().repaint();
             this.dispatcher.dispatch(new EndTurnCommand());

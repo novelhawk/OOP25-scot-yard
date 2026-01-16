@@ -48,7 +48,7 @@ public class TurnService {
      */
     public void handleMove(final MoveCommand command) {
         final GameState gameState = this.model.getGameState();
-        if(gameState.isMovableCurrentPlayer(command.targetNode(), command.transportType())){
+        if (gameState.isMovableCurrentPlayer(command.targetNode(), command.transportType())) {
             gameState.getTurnState().addMove(new MoveAction(command.targetNode(), command.transportType()));
             gameState.moveCurrentPlayer(command.targetNode(), command.transportType());
         }

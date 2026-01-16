@@ -67,7 +67,11 @@ public final class GameStateImpl implements GameState {
             return true;
         }
 
-        return this.getGameRound() > 1 && this.possibleDestinations.isEmpty();
+        if(this.gameMode.equals(GameMode.DETECTIVE)){
+            return this.getGameRound() > 1 && this.possibleDestinations.isEmpty();
+        }
+        
+        return found;
     }
 
     @Override
@@ -143,7 +147,7 @@ public final class GameStateImpl implements GameState {
                 this.possibleDestinations.removeIf(item -> TransportType.FERRY.equals(item.getY()));
             }
             // Removal of destinations for which current player has no tickets
-            if(this.getCurrentPlayer().getNumberTickets(Player.getTicketTypeForTransport(transport))==0){
+            if (this.getCurrentPlayer().getNumberTickets(Player.getTicketTypeForTransport(transport)) == 0) {
                 this.possibleDestinations.remove(destination);
             }
         }
@@ -191,7 +195,7 @@ public final class GameStateImpl implements GameState {
     }
 
     @Override
-    public void moveCurrentPlayer(NodeId destinationId, TransportType transport){
+    public void moveCurrentPlayer(NodeId destinationId, TransportType transport) {
         this.getCurrentPlayer().setPosition(destinationId);
         this.getCurrentPlayer().useTicket(Player.getTicketTypeForTransport(transport));
     }
