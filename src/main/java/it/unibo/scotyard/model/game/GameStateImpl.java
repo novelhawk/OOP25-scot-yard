@@ -67,10 +67,10 @@ public final class GameStateImpl implements GameState {
             return true;
         }
 
-        if(this.gameMode.equals(GameMode.DETECTIVE)){
+        if (GameMode.DETECTIVE.equals(this.gameMode)) {
             return this.getGameRound() > 1 && this.possibleDestinations.isEmpty();
         }
-        
+
         return found;
     }
 
