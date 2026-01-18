@@ -5,9 +5,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TurnState {
+    private List<MoveAction> legalMoves;
     private final List<MoveAction> moves = new ArrayList<>();
     private boolean usedDoubleMove = false;
     private int remainingMoves = 1;
+
+    public TurnState() {}
 
     public void addMove(MoveAction moveAction) {
         moves.add(moveAction);
@@ -29,5 +32,13 @@ public class TurnState {
 
     public int getRemainingMoves() {
         return remainingMoves;
+    }
+
+    public List<MoveAction> getLegalMoves() {
+        return legalMoves;
+    }
+
+    public void setLegalMoves(List<MoveAction> legalMoves) {
+        this.legalMoves = legalMoves;
     }
 }

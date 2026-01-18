@@ -2,13 +2,17 @@ package it.unibo.scotyard.model.game;
 
 import it.unibo.scotyard.commons.Constants;
 import it.unibo.scotyard.model.Pair;
+import it.unibo.scotyard.model.entities.MoveAction;
 import it.unibo.scotyard.model.entities.RunnerTurnTrackerImpl;
+import it.unibo.scotyard.model.map.MapConnection;
+import it.unibo.scotyard.model.map.MapData;
 import it.unibo.scotyard.model.map.NodeId;
 import it.unibo.scotyard.model.map.TransportType;
 import it.unibo.scotyard.model.players.Bobby;
 import it.unibo.scotyard.model.players.Player;
 import it.unibo.scotyard.model.players.TicketType;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * The game state.
@@ -247,6 +251,11 @@ public final class GameStateImpl implements GameState {
     }
 
     @Override
+    public Players getPlayers() {
+        return players;
+    }
+
+    @Override
     public NodeId getPositionPlayer(Player player) {
         return player.getPosition();
     }
@@ -299,5 +308,19 @@ public final class GameStateImpl implements GameState {
     @Override
     public RunnerTurnTrackerImpl getRunnerTurnTracker() {
         return runnerTurnTracker;
+    }
+
+    @Override
+    public List<MoveAction> computeValidMoves(MapData mapData, Player player) {
+        final NodeId startingPosition = player.getPosition();
+        final List<MapConnection> connections = mapData.getConnectionsFrom(startingPosition);
+
+        final Set<NodeId> invalidPositions =
+                players.getSeekers().map(Player::getPosition).collect(Collectors.toUnmodifiableSet());
+        return connections.stream()
+                .filter(it -> !invalidPositions.contains(it.getTo()))
+                .filter(it -> player.hasTransportModeTicket(it.getTransport()))
+                .map(it -> new MoveAction(it.getTo(), it.getTransport()))
+                .toList();
     }
 }

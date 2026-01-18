@@ -1,7 +1,9 @@
 package it.unibo.scotyard.model.game;
 
 import it.unibo.scotyard.model.Pair;
+import it.unibo.scotyard.model.entities.MoveAction;
 import it.unibo.scotyard.model.entities.RunnerTurnTracker;
+import it.unibo.scotyard.model.map.MapData;
 import it.unibo.scotyard.model.map.NodeId;
 import it.unibo.scotyard.model.map.TransportType;
 import it.unibo.scotyard.model.players.Bobby;
@@ -117,6 +119,13 @@ public interface GameState {
     Player getCurrentPlayer();
 
     /**
+     * Get the players object containing all the players playing the match.
+     *
+     * @return the players container
+     */
+    Players getPlayers();
+
+    /**
      * Return the current position of the player passed as input.
      *
      * @return the current position of the player passed as input
@@ -191,4 +200,13 @@ public interface GameState {
      * @return the runner turn tracker
      */
     RunnerTurnTracker getRunnerTurnTracker();
+
+    /**
+     * Computes the legal moves of the supplied player.
+     *
+     * @param mapData the map data
+     * @param player the player to move
+     * @return the legal moves of the supplied player
+     */
+    List<MoveAction> computeValidMoves(MapData mapData, Player player);
 }

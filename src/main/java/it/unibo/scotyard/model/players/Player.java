@@ -83,4 +83,12 @@ public interface Player {
      * @return the AI brain
      */
     Optional<PlayerBrain> getBrain();
+
+    /**
+     * Returns whether the player has the tickets to take the supplied transport type.
+     *
+     * @param transportType the transport type
+     * @return whether the user has the ticket
+     */
+    boolean hasTransportModeTicket(TransportType transportType);
 }
