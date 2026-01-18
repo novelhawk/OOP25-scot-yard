@@ -33,6 +33,7 @@ public final class DetectiveGameControllerImpl extends GameControllerImpl {
 
     @Override
     public void initializeGame() {
+        super.initializeGame();
         this.initializePlayersPositionsView();
         this.view.getSidebar().enableEndTurnButton(false);
         this.manageGameRound();
@@ -89,8 +90,7 @@ public final class DetectiveGameControllerImpl extends GameControllerImpl {
             this.updateSidebar(this.gameState.getCurrentPlayer());
             this.updatePlayerPositionView(this.gameState.getCurrentPlayer());
             Set<Pair<NodeId, TransportType>> possibleDestinations =
-                    new HashSet<>(this.mainController.getPossibleDestinations(
-                            this.gameState.getPositionPlayer(this.gameState.getCurrentPlayer())));
+                new HashSet<>(this.mainController.getPossibleDestinations( this.gameState.getPositionPlayer(this.gameState.getCurrentPlayer())));
             possibleDestinations = this.gameState.loadPossibleDestinations(possibleDestinations);
             if (this.gameState.getCurrentPlayer().equals(this.gameState.getComputerPlayer())) {
                 manageMisterXRound();

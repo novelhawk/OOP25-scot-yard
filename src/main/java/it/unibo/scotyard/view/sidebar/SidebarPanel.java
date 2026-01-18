@@ -3,6 +3,8 @@ package it.unibo.scotyard.view.sidebar;
 import it.unibo.scotyard.model.game.GameMode;
 import it.unibo.scotyard.model.players.Player;
 import it.unibo.scotyard.view.game.GameView;
+import it.unibo.scotyard.view.tracker.TrackerPanel;
+import it.unibo.scotyard.view.tracker.TrackerPanelImpl;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -22,11 +24,11 @@ public final class SidebarPanel extends JPanel {
 
     private static final long serialVersionUID = 1L;
 
-    private static final int SIDEBAR_WIDTH = 200;
+    private static final int SIDEBAR_WIDTH = 300;
     private static final int PADDING = 10;
 
     // Color scheme
-    private static final Color BACKGROUND_COLOR = new Color(0, 0, 0); // black
+    private static final Color BACKGROUND_COLOR = new Color(48, 48, 48); // black
     private static final Color ACCENT_COLOR = new Color(31, 81, 255); // neon blue
     private static final Color TAXI_COLOR = new Color(255, 255, 85); // yellow
     private static final Color BUS_COLOR = new Color(58, 132, 36); // green
@@ -67,6 +69,7 @@ public final class SidebarPanel extends JPanel {
     private JButton endTurnButton;
     private JButton loadRulesButton;
     private JButton doubleMoveButton;
+    private final TrackerPanelImpl trackerPanel;
 
     private GameView gameView;
     private GameMode currentGameMode;
@@ -77,9 +80,19 @@ public final class SidebarPanel extends JPanel {
      * @param gameView the game view
      */
     public SidebarPanel(final GameView gameView) {
+        this.gameView = gameView;
+        this.trackerPanel = new TrackerPanelImpl(gameView);
         setupSidebar();
         buildContent();
-        this.gameView = gameView;
+    }
+
+    /**
+     * Gets the Mister X tracker panel
+     *
+     * @return the Mister X tracker panel
+     */
+    public TrackerPanel getTrackerPanel() {
+        return trackerPanel;
     }
 
     // Configure sidebar properties
@@ -122,8 +135,8 @@ public final class SidebarPanel extends JPanel {
         this.add(doubleMoveTicketsLabel);
         this.add(Box.createVerticalStrut(SPACING));
 
-        // TODO : aggiungere pannello per tracciamento posizioni e mezzi usati da Mister
-        // X
+        this.add(trackerPanel);
+        this.add(Box.createVerticalStrut(SPACING));
 
         this.doubleMoveButton = createActionButton("Doppia Mossa");
         this.add(doubleMoveButton);

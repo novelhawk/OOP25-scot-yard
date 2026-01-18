@@ -2,7 +2,7 @@ package it.unibo.scotyard.model.game;
 
 import it.unibo.scotyard.commons.Constants;
 import it.unibo.scotyard.model.Pair;
-import it.unibo.scotyard.model.entities.RunnerTurnTracker;
+import it.unibo.scotyard.model.entities.RunnerTurnTrackerImpl;
 import it.unibo.scotyard.model.map.NodeId;
 import it.unibo.scotyard.model.map.TransportType;
 import it.unibo.scotyard.model.players.Bobby;
@@ -33,7 +33,7 @@ public final class GameStateImpl implements GameState {
     private final List<TransportType> availableTransports;
 
     private TurnState turnState;
-    private final RunnerTurnTracker runnerTurnTracker;
+    private final RunnerTurnTrackerImpl runnerTurnTracker;
 
     private int round;
 
@@ -48,7 +48,7 @@ public final class GameStateImpl implements GameState {
         this.round = 1;
         this.availableTransports = new ArrayList<>();
         this.possibleDestinations = new HashSet<>();
-        this.runnerTurnTracker = new RunnerTurnTracker();
+        this.runnerTurnTracker = new RunnerTurnTrackerImpl();
         this.turnState = new TurnState();
         this.players = players;
         this.gameMode = gameMode;
@@ -147,7 +147,7 @@ public final class GameStateImpl implements GameState {
                 this.possibleDestinations.removeIf(item -> TransportType.FERRY.equals(item.getY()));
             }
             // Removal of destinations for which current player has no tickets
-            if (this.getCurrentPlayer().getNumberTickets(Player.getTicketTypeForTransport(transport)) == 0) {
+            if(this.getCurrentPlayer().getNumberTickets(Player.getTicketTypeForTransport(transport))==0){
                 this.possibleDestinations.remove(destination);
             }
         }
@@ -301,7 +301,7 @@ public final class GameStateImpl implements GameState {
     }
 
     @Override
-    public RunnerTurnTracker getRunnerTurnTracker() {
+    public RunnerTurnTrackerImpl getRunnerTurnTracker() {
         return runnerTurnTracker;
     }
 }
