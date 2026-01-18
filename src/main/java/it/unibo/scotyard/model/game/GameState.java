@@ -8,6 +8,7 @@ import it.unibo.scotyard.model.players.Bobby;
 import it.unibo.scotyard.model.players.Player;
 import it.unibo.scotyard.model.players.TicketType;
 import java.util.List;
+import java.util.Random;
 import java.util.Set;
 
 /**
@@ -24,6 +25,13 @@ public interface GameState {
      * @return a boolean which indicates whether the game is over (true) or not
      */
     boolean isGameOver();
+
+    /**
+     * Gets the Random instance shared for the current game session.
+     *
+     * @return the seeded shared random instance used by all game logic
+     */
+    Random getSeededRandom();
 
     /**
      * This method gets called when the game is over, to get the result : the user player has won or not.

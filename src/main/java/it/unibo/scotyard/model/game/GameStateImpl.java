@@ -8,10 +8,7 @@ import it.unibo.scotyard.model.map.TransportType;
 import it.unibo.scotyard.model.players.Bobby;
 import it.unibo.scotyard.model.players.Player;
 import it.unibo.scotyard.model.players.TicketType;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * The game state.
@@ -19,6 +16,7 @@ import java.util.Set;
  */
 public final class GameStateImpl implements GameState {
 
+    private final Random random;
     private GameStatus gameStatus;
     private final GameMode gameMode;
 
@@ -35,22 +33,23 @@ public final class GameStateImpl implements GameState {
     private TurnState turnState;
     private final RunnerTurnTrackerImpl runnerTurnTracker;
 
-    private int round;
+    private int round = 1;
 
     /**
      * Creates a new game state.
      *
+     * @param random the seeded random instance used the active match
      * @param gameMode the game mode
      * @param players the involved players
      */
-    public GameStateImpl(GameMode gameMode, Players players) {
-        this.round = 1;
+    public GameStateImpl(Random random, GameMode gameMode, Players players) {
+        this.random = random;
+        this.gameMode = gameMode;
+        this.players = players;
         this.availableTransports = new ArrayList<>();
         this.possibleDestinations = new HashSet<>();
         this.runnerTurnTracker = new RunnerTurnTrackerImpl();
         this.turnState = new TurnState();
-        this.players = players;
-        this.gameMode = gameMode;
         this.gameStatus = GameStatus.PLAYING;
     }
 
@@ -70,6 +69,11 @@ public final class GameStateImpl implements GameState {
         }
 
         return false;
+    }
+
+    @Override
+    public Random getSeededRandom() {
+        return random;
     }
 
     @Override

@@ -41,14 +41,14 @@ public class GameStateService {
      * @param command an initialize game command.
      */
     public void handleInitialize(final InitializeGameCommand command) {
-        final Random random = model.getSeededRandom();
+        final Random random = new Random(System.currentTimeMillis());
         final List<NodeId> initialPositions = model.getMapData().getInitialPositions();
         final Iterator<NodeId> shuffledInitialPositions =
                 shuffleInitialPositions(random, initialPositions).iterator();
         final int additionalPlayers = getAdditionalSeekersCount(command.gameMode(), command.difficulty());
 
         final MisterX misterX =
-                createMisterX(command.gameMode(), command.difficulty(), shuffledInitialPositions.next());
+                createMisterX(random, command.gameMode(), command.difficulty(), shuffledInitialPositions.next());
         final Detective detective = createDetective(command.gameMode(), shuffledInitialPositions.next());
 
         final List<Bobby> bobbies = Stream.generate(shuffledInitialPositions::next)
@@ -63,7 +63,7 @@ public class GameStateService {
 
         final Players players = new Players(command.gameMode(), misterX, detective, bobbies);
 
-        final GameStateImpl gameState = new GameStateImpl(command.gameMode(), players);
+        final GameStateImpl gameState = new GameStateImpl(random, command.gameMode(), players);
         this.model.setGameState(gameState);
 
         this.model.getDispatcher().dispatch(new StartTurnCommand());
@@ -78,11 +78,10 @@ public class GameStateService {
         store.register(InitializeGameCommand.class, this::handleInitialize);
     }
 
-    private MisterX createMisterX(GameMode gameMode, GameDifficulty difficulty, NodeId initialPosition) {
+    private MisterX createMisterX(Random random, GameMode gameMode, GameDifficulty difficulty, NodeId initialPosition) {
         return switch (gameMode) {
             case GameMode.DETECTIVE -> {
-                final RunnerBrain runnerBrain =
-                        new RunnerBrain(this.model.getSeededRandom(), this.model.getMapData(), difficulty);
+                final RunnerBrain runnerBrain = new RunnerBrain(random, this.model.getMapData(), difficulty);
                 yield new MisterX(initialPosition, runnerBrain);
             }
             case GameMode.MISTER_X -> new MisterX(initialPosition);
