@@ -41,7 +41,7 @@ public class GameStateService {
      * @param command an initialize game command.
      */
     public void handleInitialize(final InitializeGameCommand command) {
-        final Random random = new Random(System.currentTimeMillis());
+        final Random random = new Random(command.seed());
         final List<NodeId> initialPositions = model.getMapData().getInitialPositions();
         final Iterator<NodeId> shuffledInitialPositions =
                 shuffleInitialPositions(random, initialPositions).iterator();
