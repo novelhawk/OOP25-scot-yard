@@ -206,7 +206,8 @@ public interface GameState {
      *
      * @param mapData the map data
      * @param player the player to move
+     * @param excludedNodes additional nodes to exclude even if valid
      * @return the legal moves of the supplied player
      */
-    List<MoveAction> computeValidMoves(MapData mapData, Player player);
+    List<MoveAction> computeValidMoves(MapData mapData, Player player, List<NodeId> excludedNodes);
 }

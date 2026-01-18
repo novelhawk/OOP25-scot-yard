@@ -53,7 +53,6 @@ public final class GameStateImpl implements GameState {
         this.availableTransports = new ArrayList<>();
         this.possibleDestinations = new HashSet<>();
         this.runnerTurnTracker = new RunnerTurnTrackerImpl();
-        this.turnState = new TurnState();
         this.gameStatus = GameStatus.PLAYING;
     }
 
@@ -297,7 +296,8 @@ public final class GameStateImpl implements GameState {
 
     @Override
     public void resetTurn() {
-        this.turnState = new TurnState();
+        final Player player = getCurrentPlayer();
+        this.turnState = new TurnState(player.getPosition());
     }
 
     @Override
@@ -311,15 +311,16 @@ public final class GameStateImpl implements GameState {
     }
 
     @Override
-    public List<MoveAction> computeValidMoves(MapData mapData, Player player) {
+    public List<MoveAction> computeValidMoves(MapData mapData, Player player, List<NodeId> excludedNodes) {
         final NodeId startingPosition = player.getPosition();
         final List<MapConnection> connections = mapData.getConnectionsFrom(startingPosition);
-
         final Set<NodeId> invalidPositions =
                 players.getSeekers().map(Player::getPosition).collect(Collectors.toUnmodifiableSet());
+
         return connections.stream()
-                .filter(it -> !invalidPositions.contains(it.getTo()))
-                .filter(it -> player.hasTransportModeTicket(it.getTransport()))
+                .filter(it -> !invalidPositions.contains(it.getTo())
+                        && !excludedNodes.contains(it.getTo())
+                        && player.hasTransportModeTicket(it.getTransport()))
                 .map(it -> new MoveAction(it.getTo(), it.getTransport()))
                 .toList();
     }

@@ -36,7 +36,7 @@ public class TurnService {
         final Player player = gameState.getCurrentPlayer();
         gameState.resetTurn();
 
-        final List<MoveAction> legalMoves = gameState.computeValidMoves(this.model.getMapData(), player);
+        final List<MoveAction> legalMoves = gameState.computeValidMoves(this.model.getMapData(), player, List.of());
         gameState.getTurnState().setLegalMoves(legalMoves);
 
         player.getBrain().map(it -> it.playTurn(gameState)).stream()
@@ -55,9 +55,11 @@ public class TurnService {
         final Player player = gameState.getCurrentPlayer();
         turnState.addMove(new MoveAction(command.targetNode(), command.transportType()));
 
-        final List<MoveAction> validMoves = gameState.computeValidMoves(this.model.getMapData(), player);
-        turnState.setLegalMoves(validMoves);
-
+        if (turnState.getRemainingMoves() > 0) {
+            final List<MoveAction> validMoves =
+                    gameState.computeValidMoves(this.model.getMapData(), player, turnState.getPositionHistory());
+            turnState.setLegalMoves(validMoves);
+        }
     }
 
     /**
