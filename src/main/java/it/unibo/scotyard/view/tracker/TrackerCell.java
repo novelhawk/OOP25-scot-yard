@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Map;
 import javax.swing.*;
 
-public class TrackerCell extends JPanel {
+public final class TrackerCell extends JPanel {
     private static final Color TAXI_COLOR = new Color(255, 255, 85);
     private static final Color BUS_COLOR = new Color(58, 132, 36);
     private static final Color UNDERGROUND_COLOR = new Color(200, 43, 29);
