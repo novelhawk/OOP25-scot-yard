@@ -33,10 +33,13 @@ public class TurnService {
     public void handleStartTurn(final StartTurnCommand command) {
         final CommandDispatcher dispatcher = this.model.getDispatcher();
         final GameState gameState = this.model.getGameState();
+        final Player player = gameState.getCurrentPlayer();
         gameState.resetTurn();
 
-        final Player player = gameState.getCurrentPlayer();
-        player.getBrain().map(it -> it.playTurn(player)).stream()
+        final List<MoveAction> legalMoves = gameState.computeValidMoves(this.model.getMapData(), player, List.of());
+        gameState.getTurnState().setLegalMoves(legalMoves);
+
+        player.getBrain().map(it -> it.playTurn(gameState)).stream()
                 .flatMap(List::stream)
                 .forEach(dispatcher::dispatch);
     }
@@ -47,7 +50,16 @@ public class TurnService {
      * @param command a move command.
      */
     public void handleMove(final MoveCommand command) {
-        this.model.getGameState().getTurnState().addMove(new MoveAction(command.targetNode(), command.transportType()));
+        final GameState gameState = this.model.getGameState();
+        final TurnState turnState = gameState.getTurnState();
+        final Player player = gameState.getCurrentPlayer();
+        turnState.addMove(new MoveAction(command.targetNode(), command.transportType()));
+
+        if (turnState.getRemainingMoves() > 0) {
+            final List<MoveAction> validMoves =
+                    gameState.computeValidMoves(this.model.getMapData(), player, turnState.getPositionHistory());
+            turnState.setLegalMoves(validMoves);
+        }
     }
 
     /**

@@ -2,17 +2,17 @@ package it.unibo.scotyard.model.game;
 
 import it.unibo.scotyard.commons.Constants;
 import it.unibo.scotyard.model.Pair;
+import it.unibo.scotyard.model.entities.MoveAction;
 import it.unibo.scotyard.model.entities.RunnerTurnTrackerImpl;
+import it.unibo.scotyard.model.map.MapConnection;
+import it.unibo.scotyard.model.map.MapData;
 import it.unibo.scotyard.model.map.NodeId;
 import it.unibo.scotyard.model.map.TransportType;
 import it.unibo.scotyard.model.players.Bobby;
 import it.unibo.scotyard.model.players.Player;
 import it.unibo.scotyard.model.players.TicketType;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.function.Consumer;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * The game state.
@@ -20,9 +20,9 @@ import java.util.function.Consumer;
  */
 public final class GameStateImpl implements GameState {
 
+    private final Random random;
     private GameStatus gameStatus;
-    private GameMode gameMode;
-    private GameDifficulty gameDifficulty;
+    private final GameMode gameMode;
 
     /**
      * It is used to keep track of the current player in the turn order.
@@ -37,24 +37,22 @@ public final class GameStateImpl implements GameState {
     private TurnState turnState;
     private final RunnerTurnTrackerImpl runnerTurnTracker;
 
-    private int round;
+    private int round = 1;
 
     /**
      * Creates a new game state.
      *
+     * @param random the seeded random instance used the active match
      * @param gameMode the game mode
-     * @param gameDifficulty the difficulty level
      * @param players the involved players
      */
-    public GameStateImpl(GameMode gameMode, GameDifficulty gameDifficulty, Players players) {
-        this.round = 1;
+    public GameStateImpl(Random random, GameMode gameMode, Players players) {
+        this.random = random;
+        this.gameMode = gameMode;
+        this.players = players;
         this.availableTransports = new ArrayList<>();
         this.possibleDestinations = new HashSet<>();
         this.runnerTurnTracker = new RunnerTurnTrackerImpl();
-        this.turnState = new TurnState();
-        this.players = players;
-        this.gameMode = gameMode;
-        this.gameDifficulty = gameDifficulty;
         this.gameStatus = GameStatus.PLAYING;
     }
 
@@ -74,6 +72,11 @@ public final class GameStateImpl implements GameState {
         }
 
         return false;
+    }
+
+    @Override
+    public Random getSeededRandom() {
+        return random;
     }
 
     @Override
@@ -247,6 +250,11 @@ public final class GameStateImpl implements GameState {
     }
 
     @Override
+    public Players getPlayers() {
+        return players;
+    }
+
+    @Override
     public NodeId getPositionPlayer(Player player) {
         return player.getPosition();
     }
@@ -288,7 +296,8 @@ public final class GameStateImpl implements GameState {
 
     @Override
     public void resetTurn() {
-        this.turnState = new TurnState();
+        final Player player = getCurrentPlayer();
+        this.turnState = new TurnState(player.getPosition());
     }
 
     @Override
@@ -299,5 +308,20 @@ public final class GameStateImpl implements GameState {
     @Override
     public RunnerTurnTrackerImpl getRunnerTurnTracker() {
         return runnerTurnTracker;
+    }
+
+    @Override
+    public List<MoveAction> computeValidMoves(MapData mapData, Player player, List<NodeId> excludedNodes) {
+        final NodeId startingPosition = player.getPosition();
+        final List<MapConnection> connections = mapData.getConnectionsFrom(startingPosition);
+        final Set<NodeId> invalidPositions =
+                players.getSeekers().map(Player::getPosition).collect(Collectors.toUnmodifiableSet());
+
+        return connections.stream()
+                .filter(it -> !invalidPositions.contains(it.getTo())
+                        && !excludedNodes.contains(it.getTo())
+                        && player.hasTransportModeTicket(it.getTransport()))
+                .map(it -> new MoveAction(it.getTo(), it.getTransport()))
+                .toList();
     }
 }

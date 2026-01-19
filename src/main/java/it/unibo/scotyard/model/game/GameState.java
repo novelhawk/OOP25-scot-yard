@@ -1,15 +1,17 @@
 package it.unibo.scotyard.model.game;
 
 import it.unibo.scotyard.model.Pair;
+import it.unibo.scotyard.model.entities.MoveAction;
 import it.unibo.scotyard.model.entities.RunnerTurnTracker;
+import it.unibo.scotyard.model.map.MapData;
 import it.unibo.scotyard.model.map.NodeId;
 import it.unibo.scotyard.model.map.TransportType;
 import it.unibo.scotyard.model.players.Bobby;
 import it.unibo.scotyard.model.players.Player;
 import it.unibo.scotyard.model.players.TicketType;
 import java.util.List;
+import java.util.Random;
 import java.util.Set;
-import java.util.function.Consumer;
 
 /**
  * The game state.
@@ -25,6 +27,13 @@ public interface GameState {
      * @return a boolean which indicates whether the game is over (true) or not
      */
     boolean isGameOver();
+
+    /**
+     * Gets the Random instance shared for the current game session.
+     *
+     * @return the seeded shared random instance used by all game logic
+     */
+    Random getSeededRandom();
 
     /**
      * This method gets called when the game is over, to get the result : the user player has won or not.
@@ -104,10 +113,17 @@ public interface GameState {
      * @param ticketType the type of ticket
      * @return the number of tickets of type {@code ticketType}
      */
-    int getNumberTicketsUserPlayer(final TicketType ticketType);
+    int getNumberTicketsUserPlayer(TicketType ticketType);
 
     /** Return the current player. */
     Player getCurrentPlayer();
+
+    /**
+     * Get the players object containing all the players playing the match.
+     *
+     * @return the players container
+     */
+    Players getPlayers();
 
     /**
      * Return the current position of the player passed as input.
@@ -150,7 +166,7 @@ public interface GameState {
      *
      * @param state the updated game status
      */
-    void setGameStatus(final GameStatus state);
+    void setGameStatus(GameStatus state);
 
     /**
      * Gets all Bobby players (additional detectives).
@@ -184,4 +200,14 @@ public interface GameState {
      * @return the runner turn tracker
      */
     RunnerTurnTracker getRunnerTurnTracker();
+
+    /**
+     * Computes the legal moves of the supplied player.
+     *
+     * @param mapData the map data
+     * @param player the player to move
+     * @param excludedNodes additional nodes to exclude even if valid
+     * @return the legal moves of the supplied player
+     */
+    List<MoveAction> computeValidMoves(MapData mapData, Player player, List<NodeId> excludedNodes);
 }

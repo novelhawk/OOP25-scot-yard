@@ -155,11 +155,9 @@ public final class GameViewImpl implements GameView {
         this.gameOverWindow = new WindowImpl(smallSize, panel, GAME_OVER_WINDOW_TITLE);
         this.gameOverWindow.setsMainFeatures(smallSize);
 
-        button.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                observer.loadMainMenu();
-                gameOverWindow.close();
-            }
+        button.addActionListener(e -> {
+            observer.loadMainMenu();
+            gameOverWindow.close();
         });
     }
 
