@@ -23,6 +23,9 @@ public final class Constants {
     // Final round number
     public static final int FINAL_ROUND_NUMBER = 32;
 
+    // Delay time (in milliseconds)
+    public static final int DELAY_TIME = 1000;
+
     private Constants() {
         throw new AssertionError("non istanziabili le costanti");
     }

@@ -3,6 +3,7 @@ package it.unibo.scotyard.controller.game;
 import it.unibo.scotyard.controller.Controller;
 import it.unibo.scotyard.model.game.GameMode;
 import it.unibo.scotyard.model.game.GameState;
+import it.unibo.scotyard.model.game.GameStatus;
 import it.unibo.scotyard.model.map.NodeId;
 import it.unibo.scotyard.model.map.TransportType;
 import it.unibo.scotyard.model.players.Player;
@@ -50,6 +51,8 @@ public abstract class GameControllerImpl implements GameController {
     public void initializeGame() {
         this.view.getTrackerPanel().createGrid(ROUND_COUNT);
         this.gameState.getRunnerTurnTracker().subscribe(this::syncRunnerTurns);
+        // Set game state
+        this.gameState.setGameStatus(GameStatus.PLAYING);
     }
 
     private void syncRunnerTurns(List<List<TransportType>> turns) {

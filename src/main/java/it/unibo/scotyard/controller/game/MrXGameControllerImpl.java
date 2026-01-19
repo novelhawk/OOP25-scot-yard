@@ -3,6 +3,7 @@ package it.unibo.scotyard.controller.game;
 import it.unibo.scotyard.controller.Controller;
 import it.unibo.scotyard.model.command.turn.EndTurnCommand;
 import it.unibo.scotyard.model.command.turn.MoveCommand;
+import it.unibo.scotyard.model.command.turn.StartTurnCommand;
 import it.unibo.scotyard.model.command.turn.UseDoubleMoveCommand;
 import it.unibo.scotyard.model.game.GameState;
 import it.unibo.scotyard.model.game.GameStatus;
@@ -19,7 +20,6 @@ import it.unibo.scotyard.view.game.GameView;
 import it.unibo.scotyard.view.sidebar.SidebarPanel;
 import java.util.List;
 import java.util.Objects;
-import java.util.Random;
 import java.util.Set;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
@@ -85,13 +85,7 @@ public final class MrXGameControllerImpl extends GameControllerImpl {
     private void initializeMrX() {
         final MisterX mrX = (MisterX) this.gameState.getUserPlayer();
 
-        // posizione Random
-        final List<NodeId> initialPositions = this.mapData.getInitialPositions();
-        final NodeId startPos = initialPositions.get(new Random().nextInt(initialPositions.size()));
         mrX.initialize(this.mapData);
-
-        // Set game state
-        this.gameState.setGameStatus(GameStatus.PLAYING);
     }
 
     /** Sets up UI event listeners. */
@@ -210,26 +204,25 @@ public final class MrXGameControllerImpl extends GameControllerImpl {
             }
         }
 
-        dispatcher.dispatch(new EndTurnCommand());
-
         // Check victory
         if (super.isGameOver()) {
             super.loadGameOverWindow();
             return;
         }
 
-        final Player startingPlayer = this.gameState.getCurrentPlayer(); // Mr. X
+        final Player startingPlayer = this.gameState.getUserPlayer(); // Mr. X
+        dispatcher.dispatch(new EndTurnCommand());
 
         do {
-            this.gameState.changeCurrentPlayer();
+            dispatcher.dispatch(new StartTurnCommand());
 
-            // TODO: executeAI() per il player corrente (Detective o Bobby)
-            // Per ora non fanno nulla, si limitano a passare il turno
+            // Check if game is over
+            if (super.isGameOver()) {
+                super.loadGameOverWindow();
+                return;
+            }
 
         } while (this.gameState.getCurrentPlayer() != startingPlayer); // Finché non torna a Mr. X
-
-        // Ora siamo tornati a Mr. X, incrementa il round
-        this.gameState.nextRound();
 
         // RESET stato per il nuovo turno
         // Controlla se ha ancora ticket doppia mossa

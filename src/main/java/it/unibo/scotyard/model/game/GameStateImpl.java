@@ -147,7 +147,7 @@ public final class GameStateImpl implements GameState {
                 this.possibleDestinations.removeIf(item -> TransportType.FERRY.equals(item.getY()));
             }
             // Removal of destinations for which current player has no tickets
-            if(this.getCurrentPlayer().getNumberTickets(Player.getTicketTypeForTransport(transport))==0){
+            if (this.getCurrentPlayer().getNumberTickets(Player.getTicketTypeForTransport(transport)) == 0) {
                 this.possibleDestinations.remove(destination);
             }
         }

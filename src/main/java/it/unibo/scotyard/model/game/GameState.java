@@ -9,7 +9,6 @@ import it.unibo.scotyard.model.players.Player;
 import it.unibo.scotyard.model.players.TicketType;
 import java.util.List;
 import java.util.Set;
-import java.util.function.Consumer;
 
 /**
  * The game state.
@@ -71,15 +70,15 @@ public interface GameState {
 
     /**
      * Return a boolean value which indicates whether the current player can be moved or not.
-<<<<<<< HEAD
+     * <<<<<<< HEAD
      * This method need to be called before moveCurrentPlayer(), to check if it is possible
      * to move the current player into the desired destination.
      *
-=======
-     * This method need to be called before moveCurrentPlayer(), to check if it is possible 
+     * =======
+     * This method need to be called before moveCurrentPlayer(), to check if it is possible
      * to move the current player into the desired destination.
-     * 
->>>>>>> 798231739eb31e51261e93c5e85487b93c4e4ca3
+     *
+     * >>>>>>> 798231739eb31e51261e93c5e85487b93c4e4ca3
      * @param destinationId
      * @param transport
      * @return a boolean value which indicates whether the current player can be moved or not

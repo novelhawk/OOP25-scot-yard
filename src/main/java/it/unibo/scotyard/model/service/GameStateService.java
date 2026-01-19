@@ -2,7 +2,7 @@ package it.unibo.scotyard.model.service;
 
 import it.unibo.scotyard.model.Model;
 import it.unibo.scotyard.model.ai.RunnerBrain;
-import it.unibo.scotyard.model.ai.SkipTurnBrain;
+import it.unibo.scotyard.model.ai.SeekerBrain;
 import it.unibo.scotyard.model.command.game.InitializeGameCommand;
 import it.unibo.scotyard.model.game.GameDifficulty;
 import it.unibo.scotyard.model.game.GameMode;
@@ -48,11 +48,11 @@ public class GameStateService {
 
         final MisterX misterX =
                 createMisterX(command.gameMode(), command.difficulty(), shuffledInitialPositions.next());
-        final Detective detective = createDetective(command.gameMode(), shuffledInitialPositions.next());
+        final Detective detective = createDetective(command.gameMode(), command.difficulty(), shuffledInitialPositions.next());
 
         final List<Bobby> bobbies = Stream.generate(shuffledInitialPositions::next)
                 .limit(additionalPlayers)
-                .map(position -> new Bobby(position))
+                .map(position -> createBobby(command.gameMode(), command.difficulty(), position))
                 .collect(Collectors.toList());
 
         for (int i = 0; i < bobbies.size(); i++) {
@@ -86,10 +86,23 @@ public class GameStateService {
         };
     }
 
-    private Detective createDetective(GameMode gameMode, NodeId initialPosition) {
+    private Detective createDetective(GameMode gameMode,  GameDifficulty difficulty, NodeId initialPosition) {
         return switch (gameMode) {
             case GameMode.DETECTIVE -> new Detective(initialPosition);
-            case GameMode.MISTER_X -> new Detective(initialPosition, new SkipTurnBrain());
+            case GameMode.MISTER_X -> {
+                final SeekerBrain detectiveBrain = new SeekerBrain(this.model.getSeededRandom(), this.model, this.model.getMapData(), difficulty);
+                yield new Detective(initialPosition, detectiveBrain);
+            }
+        };
+    }
+
+    private Bobby createBobby(GameMode gameMode,  GameDifficulty difficulty, NodeId initialPosition){
+        return switch(gameMode){
+            case GameMode.DETECTIVE -> new Bobby(initialPosition);
+            case GameMode.MISTER_X -> {
+                final SeekerBrain bobbyBrain = new SeekerBrain(this.model.getSeededRandom(), this.model, this.model.getMapData(), difficulty);
+                yield new Bobby(initialPosition, bobbyBrain);
+            }
         };
     }
 
