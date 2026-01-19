@@ -229,7 +229,7 @@ public final class MrXGameControllerImpl extends GameControllerImpl {
         } while (this.gameState.getCurrentPlayer() != startingPlayer); // Finché non torna a Mr. X
 
         // Ora siamo tornati a Mr. X, incrementa il round
-        this.gameState.nextRound();
+//        this.gameState.nextRound();
 
         // RESET stato per il nuovo turno
         // Controlla se ha ancora ticket doppia mossa
