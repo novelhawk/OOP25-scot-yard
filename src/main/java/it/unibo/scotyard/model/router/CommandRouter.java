@@ -3,7 +3,6 @@ package it.unibo.scotyard.model.router;
 import it.unibo.scotyard.model.command.GameCommand;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 import java.util.function.Consumer;
 
 /**
@@ -31,7 +30,8 @@ public class CommandRouter implements CommandDispatcher, CommandHandlerStore {
     public <T extends GameCommand> void dispatch(final T command) {
         // SAFETY: Type safety is enforced by the register method signature
         final Consumer<T> handler = (Consumer<T>) handlers.get(command.getClass());
-        Objects.requireNonNull(handler, "No handler found for command " + command.getClass());
-        handler.accept(command);
+        if (handler != null) {
+            handler.accept(command);
+        }
     }
 }
