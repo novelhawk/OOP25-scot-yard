@@ -21,8 +21,6 @@ import javax.swing.JPanel;
  */
 public abstract class GameControllerImpl implements GameController {
 
-    private static final int ROUND_COUNT = 24;
-
     protected final CommandDispatcher dispatcher;
     protected final GameState gameState;
     protected final GameView view;
@@ -48,7 +46,7 @@ public abstract class GameControllerImpl implements GameController {
 
     @Override
     public void initializeGame() {
-        this.view.getTrackerPanel().createGrid(ROUND_COUNT);
+        this.view.getTrackerPanel().createGrid(gameState.maxRoundCount());
         this.gameState.getRunnerTurnTracker().subscribe(this::syncRunnerTurns);
     }
 

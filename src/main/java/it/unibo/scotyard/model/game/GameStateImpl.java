@@ -1,6 +1,5 @@
 package it.unibo.scotyard.model.game;
 
-import com.google.gson.annotations.Expose;
 import it.unibo.scotyard.commons.Constants;
 import it.unibo.scotyard.model.Pair;
 import it.unibo.scotyard.model.entities.ExposedPosition;
@@ -21,6 +20,8 @@ import java.util.stream.Collectors;
  *
  */
 public final class GameStateImpl implements GameState {
+
+    private static final int ROUND_COUNT = 24;
 
     private final Random random;
     private GameStatus gameStatus;
@@ -322,5 +323,10 @@ public final class GameStateImpl implements GameState {
         final NodeId position = players.getMisterX().getPosition();
         final ExposedPosition exposed = new ExposedPosition(position, round);
         exposedPositions.add(exposed);
+    }
+
+    @Override
+    public int maxRoundCount() {
+        return ROUND_COUNT;
     }
 }

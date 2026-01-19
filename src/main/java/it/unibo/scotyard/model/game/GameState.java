@@ -1,7 +1,6 @@
 package it.unibo.scotyard.model.game;
 
 import it.unibo.scotyard.model.Pair;
-import it.unibo.scotyard.model.entities.ExposedPosition;
 import it.unibo.scotyard.model.entities.MoveAction;
 import it.unibo.scotyard.model.entities.RunnerTurnTracker;
 import it.unibo.scotyard.model.map.MapData;
@@ -220,4 +219,11 @@ public interface GameState {
      * Exposes Mister X position for all seekers to see.
      */
     void exposePosition();
+
+    /**
+     * Current game max round count.
+     *
+     * @return the max round count of the current game
+     */
+    int maxRoundCount();
 }
