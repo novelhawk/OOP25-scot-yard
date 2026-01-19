@@ -1,6 +1,7 @@
 package it.unibo.scotyard.model.game;
 
 import it.unibo.scotyard.model.Pair;
+import it.unibo.scotyard.model.entities.ExposedPosition;
 import it.unibo.scotyard.model.entities.MoveAction;
 import it.unibo.scotyard.model.entities.RunnerTurnTracker;
 import it.unibo.scotyard.model.map.MapData;
@@ -214,4 +215,9 @@ public interface GameState {
      * @return the legal moves of the supplied player
      */
     List<MoveAction> computeValidMoves(MapData mapData, Player player, List<NodeId> excludedNodes);
+
+    /**
+     * Exposes Mister X position for all seekers to see.
+     */
+    void exposePosition();
 }

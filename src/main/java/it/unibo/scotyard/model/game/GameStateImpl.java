@@ -1,7 +1,9 @@
 package it.unibo.scotyard.model.game;
 
+import com.google.gson.annotations.Expose;
 import it.unibo.scotyard.commons.Constants;
 import it.unibo.scotyard.model.Pair;
+import it.unibo.scotyard.model.entities.ExposedPosition;
 import it.unibo.scotyard.model.entities.MoveAction;
 import it.unibo.scotyard.model.entities.RunnerTurnTrackerImpl;
 import it.unibo.scotyard.model.map.MapConnection;
@@ -36,6 +38,7 @@ public final class GameStateImpl implements GameState {
 
     private TurnState turnState;
     private final RunnerTurnTrackerImpl runnerTurnTracker;
+    private final List<ExposedPosition> exposedPositions;
 
     private int round = 1;
 
@@ -53,6 +56,7 @@ public final class GameStateImpl implements GameState {
         this.availableTransports = new ArrayList<>();
         this.possibleDestinations = new HashSet<>();
         this.runnerTurnTracker = new RunnerTurnTrackerImpl();
+        this.exposedPositions = new ArrayList<>();
         this.gameStatus = GameStatus.PLAYING;
     }
 
@@ -311,5 +315,12 @@ public final class GameStateImpl implements GameState {
                         && player.hasTransportModeTicket(it.getTransport()))
                 .map(it -> new MoveAction(it.getTo(), it.getTransport()))
                 .toList();
+    }
+
+    @Override
+    public void exposePosition() {
+        final NodeId position = players.getMisterX().getPosition();
+        final ExposedPosition exposed = new ExposedPosition(position, round);
+        exposedPositions.add(exposed);
     }
 }

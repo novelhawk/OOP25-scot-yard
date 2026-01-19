@@ -20,7 +20,14 @@ public class RoundService {
      *
      * @param command a start round command.
      */
-    public void handleStartRound(final StartRoundCommand command) {}
+    public void handleStartRound(final StartRoundCommand command) {
+        final GameState gameState = this.model.getGameState();
+        final int round = gameState.getGameRound();
+
+        if (model.getMapData().isRevealTurn(round)) {
+            gameState.exposePosition();
+        }
+    }
 
     /**
      * Handles the {@code EndRoundCommand}.
@@ -28,8 +35,8 @@ public class RoundService {
      * @param command a end round command.
      */
     public void handleEndRound(final EndRoundCommand command) {
-        final CommandDispatcher dispatcher = this.model.getDispatcher();
-        final GameState gameState = this.model.getGameState();
+        final CommandDispatcher dispatcher = model.getDispatcher();
+        final GameState gameState = model.getGameState();
 
         gameState.nextRound();
         dispatcher.dispatch(new StartRoundCommand());
