@@ -162,9 +162,9 @@ public final class GameStateImpl implements GameState {
     }
 
     @Override
-    public void changeCurrentPlayer() {
-        round += (indexCurrentPlayer + 1) / players.getPlayersCount();
+    public boolean changeCurrentPlayer() {
         indexCurrentPlayer = (indexCurrentPlayer + 1) % players.getPlayersCount();
+        return indexCurrentPlayer == 0;
     }
 
     private void loadAvailableTransports(NodeId destinationId) {
@@ -198,21 +198,9 @@ public final class GameStateImpl implements GameState {
         }
     }
 
-    private void incrementsRound() {
-        this.round++;
-    }
-
     @Override
     public void nextRound() {
-        if (this.gameMode == GameMode.DETECTIVE) {
-            if (this.getCurrentPlayer().equals(this.players.getComputerPlayer())) {
-                this.incrementsRound();
-            }
-        } else {
-            if (this.getCurrentPlayer().equals(this.players.getUserPlayer())) {
-                this.incrementsRound();
-            }
-        }
+        this.round++;
     }
 
     @Override

@@ -1,6 +1,7 @@
 package it.unibo.scotyard.model.service;
 
 import it.unibo.scotyard.model.Model;
+import it.unibo.scotyard.model.command.round.EndRoundCommand;
 import it.unibo.scotyard.model.command.turn.*;
 import it.unibo.scotyard.model.entities.MoveAction;
 import it.unibo.scotyard.model.game.GameState;
@@ -89,7 +90,10 @@ public class TurnService {
             gameState.getRunnerTurnTracker().addTurn(usedTransports);
         }
 
-        gameState.changeCurrentPlayer();
+        if (gameState.changeCurrentPlayer()) {
+            dispatcher.dispatch(new EndRoundCommand());
+        }
+
         dispatcher.dispatch(new StartTurnCommand());
     }
 

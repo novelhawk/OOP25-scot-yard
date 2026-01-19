@@ -57,8 +57,12 @@ public interface GameState {
      */
     Set<Pair<NodeId, TransportType>> getPossibleDestinations();
 
-    /** Manages the current player. */
-    void changeCurrentPlayer();
+    /**
+     * Changes the turn to the next player.
+     *
+     * @return whether the turn circled back to the first player.
+     */
+    boolean changeCurrentPlayer();
 
     /**
      * Return a boolean value which indicates whether there are multiple transports available for the destination id
