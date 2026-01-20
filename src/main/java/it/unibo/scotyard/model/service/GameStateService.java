@@ -48,11 +48,12 @@ public class GameStateService {
 
         final MisterX misterX =
                 createMisterX(command.gameMode(), command.difficulty(), shuffledInitialPositions.next());
-        final Detective detective = createDetective(command.gameMode(), command.difficulty(), shuffledInitialPositions.next());
+        final Detective detective =
+                createDetective(command.gameMode(), shuffledInitialPositions.next());
 
         final List<Bobby> bobbies = Stream.generate(shuffledInitialPositions::next)
                 .limit(additionalPlayers)
-                .map(position -> createBobby(command.gameMode(), command.difficulty(), position))
+                .map(position -> createBobby(command.gameMode(), position))
                 .collect(Collectors.toList());
 
         for (int i = 0; i < bobbies.size(); i++) {
@@ -86,21 +87,23 @@ public class GameStateService {
         };
     }
 
-    private Detective createDetective(GameMode gameMode,  GameDifficulty difficulty, NodeId initialPosition) {
+    private Detective createDetective(GameMode gameMode, NodeId initialPosition) {
         return switch (gameMode) {
             case GameMode.DETECTIVE -> new Detective(initialPosition);
             case GameMode.MISTER_X -> {
-                final SeekerBrain detectiveBrain = new SeekerBrain(this.model.getSeededRandom(), this.model, this.model.getMapData(), difficulty);
+                final SeekerBrain detectiveBrain =
+                        new SeekerBrain(this.model.getSeededRandom(), this.model, this.model.getMapData());
                 yield new Detective(initialPosition, detectiveBrain);
             }
         };
     }
 
-    private Bobby createBobby(GameMode gameMode,  GameDifficulty difficulty, NodeId initialPosition){
-        return switch(gameMode){
+    private Bobby createBobby(GameMode gameMode, NodeId initialPosition) {
+        return switch (gameMode) {
             case GameMode.DETECTIVE -> new Bobby(initialPosition);
             case GameMode.MISTER_X -> {
-                final SeekerBrain bobbyBrain = new SeekerBrain(this.model.getSeededRandom(), this.model, this.model.getMapData(), difficulty);
+                final SeekerBrain bobbyBrain =
+                        new SeekerBrain(this.model.getSeededRandom(), this.model, this.model.getMapData());
                 yield new Bobby(initialPosition, bobbyBrain);
             }
         };

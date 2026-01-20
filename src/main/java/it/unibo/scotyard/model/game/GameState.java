@@ -168,6 +168,13 @@ public interface GameState {
     void setGameStatus(final GameStatus state);
 
     /**
+     * Retruns the difficulty of the game.
+     * 
+     * @return the current difficulty
+     */
+    GameDifficulty getGameDifficulty();
+
+    /**
      * Gets all Bobby players (additional detectives).
      *
      * @return list of Bobby players (can be empty)
