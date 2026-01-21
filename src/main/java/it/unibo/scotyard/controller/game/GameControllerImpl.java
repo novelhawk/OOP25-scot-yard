@@ -15,7 +15,7 @@ import it.unibo.scotyard.view.map.MapPanel;
 import it.unibo.scotyard.view.sidebar.SidebarPanel;
 import java.util.List;
 import java.util.Objects;
-import javax.swing.JPanel;
+import javax.swing.*;
 
 /**
  * The controller for all game related actions
@@ -140,12 +140,12 @@ public abstract class GameControllerImpl implements GameController, GameStateSub
     @Override
     public void onExposedPosition(ExposedPosition exposedPosition) {
         this.view.getMapPanel().setMisterXPosition(exposedPosition.position());
-        this.view.getMapPanel().repaint();
+        SwingUtilities.invokeLater(() -> this.view.getMapPanel().repaint());
     }
 
     @Override
     public void onRunnerHidden() {
         this.view.getMapPanel().setMisterXPosition(HIDDEN_POSITION);
-        this.view.getMapPanel().repaint();
+        SwingUtilities.invokeLater(() -> this.view.getMapPanel().repaint());
     }
 }
