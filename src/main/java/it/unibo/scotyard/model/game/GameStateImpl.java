@@ -210,16 +210,6 @@ public final class GameStateImpl implements GameState {
     }
 
     @Override
-    public boolean hideMisterX() {
-        if (this.gameMode == GameMode.DETECTIVE) {
-            return !Constants.REVEAL_TURNS_MISTER_X.contains(this.getGameRound())
-                    || !this.getCurrentPlayer().equals(this.players.getComputerPlayer());
-        } else {
-            return false;
-        }
-    }
-
-    @Override
     public GameMode getGameMode() {
         return this.gameMode;
     }

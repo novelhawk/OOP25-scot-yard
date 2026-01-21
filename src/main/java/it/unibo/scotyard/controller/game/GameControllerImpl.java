@@ -23,6 +23,8 @@ import javax.swing.JPanel;
  */
 public abstract class GameControllerImpl implements GameController, GameStateSubscriber {
 
+    protected static final NodeId HIDDEN_POSITION = new NodeId(-1);
+
     protected final CommandDispatcher dispatcher;
     protected final GameState gameState;
     protected final GameView view;
@@ -128,7 +130,7 @@ public abstract class GameControllerImpl implements GameController, GameStateSub
     public abstract void destinationChosen(NodeId newPositionId);
 
     /**
-     * Sets the selcted transport type to reach destination. Used only in DetectiveGameControllerImpl.
+     * Sets the selected transport type to reach destination. Used only in DetectiveGameControllerImpl.
      *
      * @param transportType the type of transport selected
      */
@@ -138,10 +140,12 @@ public abstract class GameControllerImpl implements GameController, GameStateSub
     @Override
     public void onExposedPosition(ExposedPosition exposedPosition) {
         this.view.getMapPanel().setMisterXPosition(exposedPosition.position());
+        this.view.getMapPanel().repaint();
     }
 
     @Override
     public void onRunnerHidden() {
-        this.view.getMapPanel().setMisterXPosition(new NodeId(-1));
+        this.view.getMapPanel().setMisterXPosition(HIDDEN_POSITION);
+        this.view.getMapPanel().repaint();
     }
 }

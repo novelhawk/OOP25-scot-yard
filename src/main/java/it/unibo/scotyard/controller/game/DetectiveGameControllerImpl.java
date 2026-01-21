@@ -15,8 +15,6 @@ import java.util.Set;
 
 public final class DetectiveGameControllerImpl extends GameControllerImpl {
 
-    private static final NodeId NOT_VISIBLE_ON_MAP = new NodeId(-1);
-
     private NodeId selectedDestination;
     private TransportType selectedTransportType;
 
@@ -47,22 +45,12 @@ public final class DetectiveGameControllerImpl extends GameControllerImpl {
         }
     }
 
-    /** Hides Mister X position on the map */
-    private void hideMisterXPosition() {
-        this.view.getMapPanel().setMisterXPosition(NOT_VISIBLE_ON_MAP);
-    }
-
     private void updatePlayerPositionView(Player currentPlayer) {
         switch (currentPlayer.getName()) {
             case "Detective":
                 this.view.getMapPanel().setDetectivePosition(currentPlayer.getPosition());
                 break;
             case "Mister X":
-                if (this.gameState.hideMisterX()) {
-                    hideMisterXPosition();
-                } else {
-                    this.view.getMapPanel().setMisterXPosition(currentPlayer.getPosition());
-                }
                 break;
             default:
                 int index = Integer.parseInt(currentPlayer.getName().substring(5, 6)) - 1;
@@ -80,9 +68,6 @@ public final class DetectiveGameControllerImpl extends GameControllerImpl {
             this.loadGameOverWindow();
         } else {
             this.updateSidebar(this.gameState.getCurrentPlayer());
-            if (this.gameState.hideMisterX()) {
-                hideMisterXPosition();
-            }
             this.updatePlayerPositionView(this.gameState.getCurrentPlayer());
             Set<Pair<NodeId, TransportType>> possibleDestinations =
                     new HashSet<>(this.mainController.getPossibleDestinations(
@@ -129,7 +114,7 @@ public final class DetectiveGameControllerImpl extends GameControllerImpl {
 
     private void movePlayer() {
         if (this.gameState.moveCurrentPlayer(this.selectedDestination, this.selectedTransportType)) {
-            this.view.getMapPanel().setSelectedDestination(NOT_VISIBLE_ON_MAP);
+            this.view.getMapPanel().setSelectedDestination(HIDDEN_POSITION);
             this.updatePlayerPositionView(this.gameState.getCurrentPlayer());
             this.dispatcher.dispatch(new MoveCommand(this.selectedDestination, this.selectedTransportType));
             this.dispatcher.dispatch(new EndTurnCommand());
