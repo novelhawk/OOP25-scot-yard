@@ -3,6 +3,7 @@ package it.unibo.scotyard.model.service;
 import it.unibo.scotyard.model.Model;
 import it.unibo.scotyard.model.command.round.EndRoundCommand;
 import it.unibo.scotyard.model.command.round.StartRoundCommand;
+import it.unibo.scotyard.model.game.GameMode;
 import it.unibo.scotyard.model.game.GameState;
 import it.unibo.scotyard.model.router.CommandDispatcher;
 import it.unibo.scotyard.model.router.CommandHandlerStore;
@@ -20,14 +21,7 @@ public class RoundService {
      *
      * @param command a start round command.
      */
-    public void handleStartRound(final StartRoundCommand command) {
-        final GameState gameState = this.model.getGameState();
-        final int round = gameState.getGameRound();
-
-        if (model.getMapData().isRevealTurn(round)) {
-            gameState.exposePosition();
-        }
-    }
+    public void handleStartRound(final StartRoundCommand command) {}
 
     /**
      * Handles the {@code EndRoundCommand}.
@@ -37,6 +31,10 @@ public class RoundService {
     public void handleEndRound(final EndRoundCommand command) {
         final CommandDispatcher dispatcher = model.getDispatcher();
         final GameState gameState = model.getGameState();
+
+        if (gameState.isRunnerExposed() && gameState.getGameMode() != GameMode.MISTER_X) {
+            gameState.hideRunnerPosition();
+        }
 
         gameState.nextRound();
         dispatcher.dispatch(new StartRoundCommand());

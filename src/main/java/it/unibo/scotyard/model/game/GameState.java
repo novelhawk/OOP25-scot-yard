@@ -219,7 +219,7 @@ public interface GameState {
     /**
      * Exposes Mister X position for all seekers to see.
      */
-    void exposePosition();
+    void exposeRunnerPosition();
 
     /**
      * Current game max round count.
@@ -238,7 +238,19 @@ public interface GameState {
     /**
      * Notifies all subscribers with the provided action.
      *
-     * @param action the action to invoke on all subscribers.
+     * @param action the action to invoke on all subscribers
      */
     void notifySubscribers(Consumer<GameStateSubscriber> action);
+
+    /**
+     * Gets whether Mister X is currently exposed to every player.
+     *
+     * @return whether Mister X is currently exposed to every player
+     */
+    boolean isRunnerExposed();
+
+    /**
+     * Hides Mister X position from detectives.
+     */
+    void hideRunnerPosition();
 }

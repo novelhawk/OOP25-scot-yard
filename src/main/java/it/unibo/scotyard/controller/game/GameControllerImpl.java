@@ -1,8 +1,10 @@
 package it.unibo.scotyard.controller.game;
 
 import it.unibo.scotyard.controller.Controller;
+import it.unibo.scotyard.model.entities.ExposedPosition;
 import it.unibo.scotyard.model.game.GameMode;
 import it.unibo.scotyard.model.game.GameState;
+import it.unibo.scotyard.model.game.GameStateSubscriber;
 import it.unibo.scotyard.model.map.NodeId;
 import it.unibo.scotyard.model.map.TransportType;
 import it.unibo.scotyard.model.players.Player;
@@ -19,7 +21,7 @@ import javax.swing.JPanel;
  * The controller for all game related actions
  *
  */
-public abstract class GameControllerImpl implements GameController {
+public abstract class GameControllerImpl implements GameController, GameStateSubscriber {
 
     protected final CommandDispatcher dispatcher;
     protected final GameState gameState;
@@ -48,6 +50,8 @@ public abstract class GameControllerImpl implements GameController {
     public void initializeGame() {
         this.view.getTrackerPanel().createGrid(gameState.maxRoundCount());
         this.gameState.getRunnerTurnTracker().subscribe(this::syncRunnerTurns);
+
+        this.gameState.subscribe(this);
     }
 
     private void syncRunnerTurns(List<List<TransportType>> turns) {
@@ -130,4 +134,14 @@ public abstract class GameControllerImpl implements GameController {
      */
     @Override
     public abstract void selectTransport(TransportType transportType);
+
+    @Override
+    public void onExposedPosition(ExposedPosition exposedPosition) {
+        this.view.getMapPanel().setMisterXPosition(exposedPosition.position());
+    }
+
+    @Override
+    public void onRunnerHidden() {
+        this.view.getMapPanel().setMisterXPosition(new NodeId(-1));
+    }
 }

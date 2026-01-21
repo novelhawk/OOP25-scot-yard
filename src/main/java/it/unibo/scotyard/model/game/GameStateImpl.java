@@ -41,6 +41,7 @@ public final class GameStateImpl implements GameState {
 
     private TurnState turnState;
     private final RunnerTurnTrackerImpl runnerTurnTracker;
+    private boolean runnerExposed = false;
 
     private int round = 1;
 
@@ -319,10 +320,22 @@ public final class GameStateImpl implements GameState {
     }
 
     @Override
-    public void exposePosition() {
+    public void exposeRunnerPosition() {
         final NodeId position = players.getMisterX().getPosition();
         final ExposedPosition exposed = new ExposedPosition(position, round);
+        runnerExposed = true;
         notifySubscribers(it -> it.onExposedPosition(exposed));
+    }
+
+    @Override
+    public void hideRunnerPosition() {
+        runnerExposed = false;
+        notifySubscribers(GameStateSubscriber::onRunnerHidden);
+    }
+
+    @Override
+    public boolean isRunnerExposed() {
+        return runnerExposed;
     }
 
     @Override

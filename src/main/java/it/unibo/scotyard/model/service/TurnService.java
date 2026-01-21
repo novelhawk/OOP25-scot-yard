@@ -91,6 +91,11 @@ public class TurnService {
                     turnState.getMoves().stream().map(MoveAction::transportType).collect(Collectors.toList());
 
             gameState.getRunnerTurnTracker().addTurn(usedTransports);
+
+            final boolean shouldReveal = model.getMapData().isRevealTurn(gameState.getGameRound());
+            if (shouldReveal) {
+                gameState.exposeRunnerPosition();
+            }
         }
 
         gameState.notifySubscribers(GameStateSubscriber::onTurnEnd);
