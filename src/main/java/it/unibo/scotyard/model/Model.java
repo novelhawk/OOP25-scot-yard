@@ -36,7 +36,7 @@ public interface Model {
      * Return the data of the game created.
      *
      * @return the game data
-     * @throwsIllegalStateException if model not initialized
+     * @throws IllegalStateException if model not initialized
      */
     GameState getGameState();
 

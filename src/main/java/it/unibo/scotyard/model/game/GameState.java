@@ -12,6 +12,7 @@ import it.unibo.scotyard.model.players.TicketType;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
+import java.util.function.Consumer;
 
 /**
  * The game state.
@@ -57,8 +58,12 @@ public interface GameState {
      */
     Set<Pair<NodeId, TransportType>> getPossibleDestinations();
 
-    /** Manages the current player. */
-    void changeCurrentPlayer();
+    /**
+     * Changes the turn to the next player.
+     *
+     * @return whether the turn circled back to the first player.
+     */
+    boolean changeCurrentPlayer();
 
     /**
      * Return a boolean value which indicates whether there are multiple transports available for the destination id
@@ -90,15 +95,6 @@ public interface GameState {
 
     /** Goes to next round by incrementing the round number, if the current player is the last bobby. */
     void nextRound();
-
-    /**
-     * Return a boolean inidicating if Mister X must be hidden on the map. In particular, Mister X must be hidden if the
-     * game mode is Detective and if the current game round number correspond to one of the reveal turns for Mister X
-     * (present in the class Constants in folder commons).
-     *
-     * @return a boolean indicating whether Mister X must be hidden or not on the map
-     */
-    boolean hideMisterX();
 
     /**
      * Return the current game mode.
@@ -210,4 +206,42 @@ public interface GameState {
      * @return the legal moves of the supplied player
      */
     List<MoveAction> computeValidMoves(MapData mapData, Player player, List<NodeId> excludedNodes);
+
+    /**
+     * Exposes Mister X position for all seekers to see.
+     */
+    void exposeRunnerPosition();
+
+    /**
+     * Current game max round count.
+     *
+     * @return the max round count of the current game
+     */
+    int maxRoundCount();
+
+    /**
+     * Adds a subscriber to the GameState events.
+     *
+     * @param subscriber the subscriber
+     */
+    void subscribe(GameStateSubscriber subscriber);
+
+    /**
+     * Notifies all subscribers with the provided action.
+     *
+     * @param action the action to invoke on all subscribers
+     */
+    void notifySubscribers(Consumer<GameStateSubscriber> action);
+
+    /**
+     * Gets whether Mister X is currently exposed to every player.
+     *
+     * @return whether Mister X is currently exposed to every player
+     */
+    boolean isRunnerExposed();
+
+    /**
+     * Hides Mister X position from detectives.
+     */
+    void hideRunnerPosition();
 }

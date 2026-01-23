@@ -2,6 +2,7 @@ package it.unibo.scotyard.model.game;
 
 import it.unibo.scotyard.commons.Constants;
 import it.unibo.scotyard.model.Pair;
+import it.unibo.scotyard.model.entities.ExposedPosition;
 import it.unibo.scotyard.model.entities.MoveAction;
 import it.unibo.scotyard.model.entities.RunnerTurnTrackerImpl;
 import it.unibo.scotyard.model.map.MapConnection;
@@ -12,6 +13,7 @@ import it.unibo.scotyard.model.players.Bobby;
 import it.unibo.scotyard.model.players.Player;
 import it.unibo.scotyard.model.players.TicketType;
 import java.util.*;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 /**
@@ -20,7 +22,10 @@ import java.util.stream.Collectors;
  */
 public final class GameStateImpl implements GameState {
 
+    private static final int ROUND_COUNT = 24;
+
     private final Random random;
+    private final List<GameStateSubscriber> subscribers = new ArrayList<>();
     private GameStatus gameStatus;
     private final GameMode gameMode;
 
@@ -36,6 +41,7 @@ public final class GameStateImpl implements GameState {
 
     private TurnState turnState;
     private final RunnerTurnTrackerImpl runnerTurnTracker;
+    private boolean runnerExposed = false;
 
     private int round = 1;
 
@@ -162,9 +168,9 @@ public final class GameStateImpl implements GameState {
     }
 
     @Override
-    public void changeCurrentPlayer() {
-        round += (indexCurrentPlayer + 1) / players.getPlayersCount();
+    public boolean changeCurrentPlayer() {
         indexCurrentPlayer = (indexCurrentPlayer + 1) % players.getPlayersCount();
+        return indexCurrentPlayer == 0;
     }
 
     private void loadAvailableTransports(NodeId destinationId) {
@@ -198,31 +204,9 @@ public final class GameStateImpl implements GameState {
         }
     }
 
-    private void incrementsRound() {
-        this.round++;
-    }
-
     @Override
     public void nextRound() {
-        if (this.gameMode == GameMode.DETECTIVE) {
-            if (this.getCurrentPlayer().equals(this.players.getComputerPlayer())) {
-                this.incrementsRound();
-            }
-        } else {
-            if (this.getCurrentPlayer().equals(this.players.getUserPlayer())) {
-                this.incrementsRound();
-            }
-        }
-    }
-
-    @Override
-    public boolean hideMisterX() {
-        if (this.gameMode == GameMode.DETECTIVE) {
-            return !Constants.REVEAL_TURNS_MISTER_X.contains(this.getGameRound())
-                    || !this.getCurrentPlayer().equals(this.players.getComputerPlayer());
-        } else {
-            return false;
-        }
+        this.round++;
     }
 
     @Override
@@ -323,5 +307,40 @@ public final class GameStateImpl implements GameState {
                         && player.hasTransportModeTicket(it.getTransport()))
                 .map(it -> new MoveAction(it.getTo(), it.getTransport()))
                 .toList();
+    }
+
+    @Override
+    public void exposeRunnerPosition() {
+        final NodeId position = players.getMisterX().getPosition();
+        final ExposedPosition exposed = new ExposedPosition(position, round);
+        runnerExposed = true;
+        notifySubscribers(it -> it.onExposedPosition(exposed));
+    }
+
+    @Override
+    public void hideRunnerPosition() {
+        runnerExposed = false;
+        notifySubscribers(GameStateSubscriber::onRunnerHidden);
+    }
+
+    @Override
+    public boolean isRunnerExposed() {
+        return runnerExposed;
+    }
+
+    @Override
+    public int maxRoundCount() {
+        return ROUND_COUNT;
+    }
+
+    @Override
+    public void subscribe(GameStateSubscriber subscriber) {
+        subscribers.add(subscriber);
+    }
+
+    public void notifySubscribers(Consumer<GameStateSubscriber> action) {
+        for (final GameStateSubscriber subscriber : subscribers) {
+            action.accept(subscriber);
+        }
     }
 }

@@ -1,9 +1,11 @@
 package it.unibo.scotyard.model.service;
 
 import it.unibo.scotyard.model.Model;
+import it.unibo.scotyard.model.command.round.EndRoundCommand;
 import it.unibo.scotyard.model.command.turn.*;
 import it.unibo.scotyard.model.entities.MoveAction;
 import it.unibo.scotyard.model.game.GameState;
+import it.unibo.scotyard.model.game.GameStateSubscriber;
 import it.unibo.scotyard.model.game.TurnState;
 import it.unibo.scotyard.model.map.TransportType;
 import it.unibo.scotyard.model.players.MisterX;
@@ -38,6 +40,8 @@ public class TurnService {
 
         final List<MoveAction> legalMoves = gameState.computeValidMoves(this.model.getMapData(), player, List.of());
         gameState.getTurnState().setLegalMoves(legalMoves);
+
+        gameState.notifySubscribers(GameStateSubscriber::onTurnStart);
 
         player.getBrain().map(it -> it.playTurn(gameState)).stream()
                 .flatMap(List::stream)
@@ -87,9 +91,19 @@ public class TurnService {
                     turnState.getMoves().stream().map(MoveAction::transportType).collect(Collectors.toList());
 
             gameState.getRunnerTurnTracker().addTurn(usedTransports);
+
+            final boolean shouldReveal = model.getMapData().isRevealTurn(gameState.getGameRound());
+            if (shouldReveal) {
+                gameState.exposeRunnerPosition();
+            }
         }
 
-        gameState.changeCurrentPlayer();
+        gameState.notifySubscribers(GameStateSubscriber::onTurnEnd);
+
+        if (gameState.changeCurrentPlayer()) {
+            dispatcher.dispatch(new EndRoundCommand());
+        }
+
         dispatcher.dispatch(new StartTurnCommand());
     }
 

@@ -126,6 +126,7 @@ public final class MapPanel extends JPanel {
     public MapPanel(final MapInfo mapInfo, final GameView view) {
         this.mapInfo = Objects.requireNonNull(mapInfo, "Map info cannot be null");
         this.gameView = view;
+        this.misterXPosition = POSITION_NOT_SET;
         this.detectivePosition = POSITION_NOT_SET;
         this.bobbiesPositions = new ArrayList<>();
         this.possibleDestinations = new HashSet<>();
