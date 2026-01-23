@@ -18,6 +18,9 @@ import java.util.Set;
  *
  */
 public final class GameStateImpl implements GameState {
+
+    private static final int NOT_REVEALED_YET = -1;
+
     private GameStatus gameStatus;
     private GameMode gameMode;
     private GameDifficulty gameDifficulty;
@@ -37,6 +40,8 @@ public final class GameStateImpl implements GameState {
 
     private int round;
 
+    private NodeId lastRevealedMisterXPosition;
+
     /**
      * Creates a new game state.
      *
@@ -54,6 +59,7 @@ public final class GameStateImpl implements GameState {
         this.gameMode = gameMode;
         this.gameDifficulty = gameDifficulty;
         this.gameStatus = GameStatus.PLAYING;
+        lastRevealedMisterXPosition = new NodeId(NOT_REVEALED_YET);
     }
 
     @Override
@@ -224,6 +230,23 @@ public final class GameStateImpl implements GameState {
         } else {
             return false;
         }
+    }
+
+    private void setLastRevealedMisterXPosition(){
+        boolean reveal = Constants.REVEAL_TURNS_MISTER_X.contains(this.getGameRound());
+        if(reveal){
+            if(this.gameMode==GameMode.MISTER_X){
+                this.lastRevealedMisterXPosition = this.getUserPlayer().getPosition();
+            } else{
+                this.lastRevealedMisterXPosition = this.getComputerPlayer().getPosition();
+            }
+        }
+    }
+
+    @Override
+    public NodeId getLastRevealedMisterXPosition(){
+        this.setLastRevealedMisterXPosition();
+        return this.lastRevealedMisterXPosition;
     }
 
     @Override

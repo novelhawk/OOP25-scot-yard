@@ -107,6 +107,13 @@ public interface GameState {
     boolean hideMisterX();
 
     /**
+     * Return the NodeId of the last revealed Mister X position.
+     * 
+     * @return the node id of the last revealed Mister X position
+     */
+    NodeId getLastRevealedMisterXPosition();
+
+    /**
      * Return the current game mode.
      *
      * @return the game mode

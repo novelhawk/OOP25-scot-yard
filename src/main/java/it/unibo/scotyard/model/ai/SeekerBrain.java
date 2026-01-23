@@ -62,6 +62,7 @@ public class SeekerBrain implements PlayerBrain {
                         .collect(Collectors.toList());
 
         Pair<NodeId, TransportType> selectedMove;
+        NodeId misterXNodeId = gameState.getLastRevealedMisterXPosition();
 
         switch (gameDifficulty) {
             default:
@@ -69,11 +70,14 @@ public class SeekerBrain implements PlayerBrain {
                 // Selects a random destination among the possible ones
                 selectedMove = possibleDestinations.get(random.nextInt(possibleDestinations.size()));
                 return List.of(new MoveCommand(selectedMove.getX(), selectedMove.getY()), new EndTurnCommand());
-            case DIFFICULT:
             case MEDIUM:
+                misterXNodeId = gameState.getLastRevealedMisterXPosition();
+            case DIFFICULT:
                 // Selects the destination that has the closer NodeId number to the NodeId of the current position of
                 // Mister X
-                NodeId misterXNodeId = gameState.getUserPlayer().getPosition();
+                if(gameDifficulty.equals(GameDifficulty.DIFFICULT)){
+                    misterXNodeId = gameState.getUserPlayer().getPosition();
+                }
                 selectedMove = possibleDestinations.getFirst();
                 for (Pair<NodeId, TransportType> pair : possibleDestinations) {
                     int currentDifference =
