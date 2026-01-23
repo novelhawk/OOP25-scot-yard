@@ -21,7 +21,8 @@ public interface Model {
     void initialize(String gameMode, String levelDifficulty);
 
     /**
-     * @return the seeded shared random instance used by all game logic
+     * 
+     * @return @return the seeded shared random instance used by all game logic
      */
     Random getSeededRandom();
 
@@ -42,7 +43,7 @@ public interface Model {
      * Return the data of the game created.
      *
      * @return the game data
-     * @throwsIllegalStateException if model not initialized
+     * @throws IllegalStateException if model not initialized
      */
     GameState getGameState();
 

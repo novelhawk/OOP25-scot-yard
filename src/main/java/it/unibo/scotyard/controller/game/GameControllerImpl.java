@@ -1,9 +1,10 @@
 package it.unibo.scotyard.controller.game;
 
 import it.unibo.scotyard.controller.Controller;
+import it.unibo.scotyard.model.entities.ExposedPosition;
 import it.unibo.scotyard.model.game.GameMode;
 import it.unibo.scotyard.model.game.GameState;
-import it.unibo.scotyard.model.game.GameStatus;
+import it.unibo.scotyard.model.game.GameStateSubscriber;
 import it.unibo.scotyard.model.map.NodeId;
 import it.unibo.scotyard.model.map.TransportType;
 import it.unibo.scotyard.model.players.Player;
@@ -14,15 +15,15 @@ import it.unibo.scotyard.view.map.MapPanel;
 import it.unibo.scotyard.view.sidebar.SidebarPanel;
 import java.util.List;
 import java.util.Objects;
-import javax.swing.JPanel;
+import javax.swing.*;
 
 /**
  * The controller for all game related actions
  *
  */
-public abstract class GameControllerImpl implements GameController {
+public abstract class GameControllerImpl implements GameController, GameStateSubscriber {
 
-    private static final int ROUND_COUNT = 24;
+    protected static final NodeId HIDDEN_POSITION = new NodeId(-1);
 
     protected final CommandDispatcher dispatcher;
     protected final GameState gameState;
@@ -49,10 +50,10 @@ public abstract class GameControllerImpl implements GameController {
 
     @Override
     public void initializeGame() {
-        this.view.getTrackerPanel().createGrid(ROUND_COUNT);
+        this.view.getTrackerPanel().createGrid(gameState.maxRoundCount());
         this.gameState.getRunnerTurnTracker().subscribe(this::syncRunnerTurns);
-        // Set game state
-        this.gameState.setGameStatus(GameStatus.PLAYING);
+
+        this.gameState.subscribe(this);
     }
 
     private void syncRunnerTurns(List<List<TransportType>> turns) {
@@ -125,12 +126,26 @@ public abstract class GameControllerImpl implements GameController {
      *
      * @param newPositionId the id of the destination
      */
+    @Override
     public abstract void destinationChosen(NodeId newPositionId);
 
     /**
-     * Sets the selcted transport type to reach destination. Used only in DetectiveGameControllerImpl.
+     * Sets the selected transport type to reach destination. Used only in DetectiveGameControllerImpl.
      *
      * @param transportType the type of transport selected
      */
+    @Override
     public abstract void selectTransport(TransportType transportType);
+
+    @Override
+    public void onExposedPosition(ExposedPosition exposedPosition) {
+        this.view.getMapPanel().setMisterXPosition(exposedPosition.position());
+        SwingUtilities.invokeLater(() -> this.view.getMapPanel().repaint());
+    }
+
+    @Override
+    public void onRunnerHidden() {
+        this.view.getMapPanel().setMisterXPosition(HIDDEN_POSITION);
+        SwingUtilities.invokeLater(() -> this.view.getMapPanel().repaint());
+    }
 }

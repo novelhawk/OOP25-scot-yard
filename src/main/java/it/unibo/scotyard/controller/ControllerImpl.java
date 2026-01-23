@@ -75,9 +75,9 @@ public final class ControllerImpl implements Controller {
         // Initialize the game and load map data from model
         this.model.initialize(gameMode, difficultyLevel);
 
-        this.model
-                .getDispatcher()
-                .dispatch(new InitializeGameCommand(parseGameMode(gameMode), parseGameDifficulty(difficultyLevel)));
+        final InitializeGameCommand initCommand = new InitializeGameCommand(
+                System.currentTimeMillis(), parseGameMode(gameMode), parseGameDifficulty(difficultyLevel));
+        this.model.getDispatcher().dispatch(initCommand);
 
         // Create the GameView and the GameController
         final GameView gameView =

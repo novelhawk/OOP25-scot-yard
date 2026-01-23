@@ -3,6 +3,7 @@ package it.unibo.scotyard.model.players;
 import it.unibo.scotyard.model.ai.PlayerBrain;
 import it.unibo.scotyard.model.game.turn.TurnManager;
 import it.unibo.scotyard.model.map.NodeId;
+import it.unibo.scotyard.model.map.TransportType;
 import java.util.Map;
 import java.util.Optional;
 
@@ -96,6 +97,16 @@ public abstract class PlayerImpl implements Player {
     @Override
     public Optional<PlayerBrain> getBrain() {
         return Optional.ofNullable(brain);
+    }
+
+    @Override
+    public boolean hasTransportModeTicket(TransportType transportType) {
+        if (getNumberTickets(TicketType.BLACK) > 1) {
+            return true;
+        }
+
+        final TicketType specificTicketType = Player.getTicketTypeForTransport(transportType);
+        return getNumberTickets(specificTicketType) > 1;
     }
 
     /**

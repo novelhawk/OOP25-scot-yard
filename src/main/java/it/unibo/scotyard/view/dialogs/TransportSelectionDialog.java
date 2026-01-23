@@ -146,18 +146,12 @@ public final class TransportSelectionDialog extends JDialog {
      * @return the color
      */
     private Color getTransportColor(final TransportType transport) {
-        switch (transport) {
-            case TAXI:
-                return TAXI_COLOR;
-            case BUS:
-                return BUS_COLOR;
-            case UNDERGROUND:
-                return UNDERGROUND_COLOR;
-            case FERRY:
-                return FERRY_COLOR;
-            default:
-                return ACCENT_COLOR;
-        }
+        return switch (transport) {
+            case TAXI -> TAXI_COLOR;
+            case BUS -> BUS_COLOR;
+            case UNDERGROUND -> UNDERGROUND_COLOR;
+            case FERRY -> FERRY_COLOR;
+        };
     }
 
     /**

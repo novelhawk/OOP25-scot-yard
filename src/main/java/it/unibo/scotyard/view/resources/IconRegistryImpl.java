@@ -18,6 +18,7 @@ public class IconRegistryImpl implements IconRegistry {
 
     private final Map<TransportType, ImageIcon> transportIcons = new EnumMap<>(TransportType.class);
 
+    @Override
     public ImageIcon getTransportIcon(final TransportType transportType) {
         return transportIcons.computeIfAbsent(transportType, t -> loadIcon(TRASPORT_TYPE_PATHS.get(t)));
     }

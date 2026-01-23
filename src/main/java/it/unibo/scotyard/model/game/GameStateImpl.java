@@ -2,16 +2,19 @@ package it.unibo.scotyard.model.game;
 
 import it.unibo.scotyard.commons.Constants;
 import it.unibo.scotyard.model.Pair;
+import it.unibo.scotyard.model.entities.ExposedPosition;
+import it.unibo.scotyard.model.entities.MoveAction;
 import it.unibo.scotyard.model.entities.RunnerTurnTrackerImpl;
+import it.unibo.scotyard.model.map.MapConnection;
+import it.unibo.scotyard.model.map.MapData;
 import it.unibo.scotyard.model.map.NodeId;
 import it.unibo.scotyard.model.map.TransportType;
 import it.unibo.scotyard.model.players.Bobby;
 import it.unibo.scotyard.model.players.Player;
 import it.unibo.scotyard.model.players.TicketType;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
+import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 /**
  * The game state.
@@ -20,10 +23,13 @@ import java.util.Set;
 public final class GameStateImpl implements GameState {
 
     private static final int NOT_REVEALED_YET = -1;
+     private static final int ROUND_COUNT = 24;
 
+    private final Random random;
+    private final List<GameStateSubscriber> subscribers = new ArrayList<>();
     private GameStatus gameStatus;
-    private GameMode gameMode;
-    private GameDifficulty gameDifficulty;
+    private final GameMode gameMode;
+    private final GameDifficulty gameDifficulty;
 
     /**
      * It is used to keep track of the current player in the turn order.
@@ -37,27 +43,27 @@ public final class GameStateImpl implements GameState {
 
     private TurnState turnState;
     private final RunnerTurnTrackerImpl runnerTurnTracker;
+    private boolean runnerExposed = false;
 
-    private int round;
+    private int round = 1;
 
     private NodeId lastRevealedMisterXPosition;
 
     /**
      * Creates a new game state.
      *
+     * @param random the seeded random instance used the active match
      * @param gameMode the game mode
-     * @param gameDifficulty the difficulty level
      * @param players the involved players
      */
-    public GameStateImpl(GameMode gameMode, GameDifficulty gameDifficulty, Players players) {
-        this.round = 1;
+    public GameStateImpl(Random random, GameMode gameMode, Players players, GameDifficulty gameDifficulty) {
+        this.random = random;
+        this.gameMode = gameMode;
+        this.players = players;
+        this.gameDifficulty = gameDifficulty;
         this.availableTransports = new ArrayList<>();
         this.possibleDestinations = new HashSet<>();
         this.runnerTurnTracker = new RunnerTurnTrackerImpl();
-        this.turnState = new TurnState();
-        this.players = players;
-        this.gameMode = gameMode;
-        this.gameDifficulty = gameDifficulty;
         this.gameStatus = GameStatus.PLAYING;
         lastRevealedMisterXPosition = new NodeId(NOT_REVEALED_YET);
     }
@@ -78,6 +84,11 @@ public final class GameStateImpl implements GameState {
         }
 
         return found;
+    }
+
+    @Override
+    public Random getSeededRandom() {
+        return random;
     }
 
     @Override
@@ -167,8 +178,9 @@ public final class GameStateImpl implements GameState {
     }
 
     @Override
-    public void changeCurrentPlayer() {
+    public boolean changeCurrentPlayer() {
         indexCurrentPlayer = (indexCurrentPlayer + 1) % players.getPlayersCount();
+        return indexCurrentPlayer == 0;
     }
 
     private void loadAvailableTransports(NodeId destinationId) {
@@ -255,6 +267,11 @@ public final class GameStateImpl implements GameState {
     }
 
     @Override
+    public GameDifficulty getGameDifficulty(){
+        return this.gameDifficulty;
+    }
+
+    @Override
     public int getNumberTicketsUserPlayer(final TicketType ticketType) {
         return this.getNumberTickets(this.players.getUserPlayer(), ticketType);
     }
@@ -271,6 +288,11 @@ public final class GameStateImpl implements GameState {
     @Override
     public Player getCurrentPlayer() {
         return this.players.getTurnOrder().get(indexCurrentPlayer);
+    }
+
+    @Override
+    public Players getPlayers() {
+        return players;
     }
 
     @Override
@@ -304,11 +326,6 @@ public final class GameStateImpl implements GameState {
     }
 
     @Override
-    public GameDifficulty getGameDifficulty() {
-        return this.gameDifficulty;
-    }
-
-    @Override
     public List<Bobby> getBobbies() {
         return this.players.getBobbies();
     }
@@ -320,7 +337,8 @@ public final class GameStateImpl implements GameState {
 
     @Override
     public void resetTurn() {
-        this.turnState = new TurnState();
+        final Player player = getCurrentPlayer();
+        this.turnState = new TurnState(player.getPosition());
     }
 
     @Override
@@ -331,5 +349,55 @@ public final class GameStateImpl implements GameState {
     @Override
     public RunnerTurnTrackerImpl getRunnerTurnTracker() {
         return runnerTurnTracker;
+    }
+
+    @Override
+    public List<MoveAction> computeValidMoves(MapData mapData, Player player, List<NodeId> excludedNodes) {
+        final NodeId startingPosition = player.getPosition();
+        final List<MapConnection> connections = mapData.getConnectionsFrom(startingPosition);
+        final Set<NodeId> invalidPositions =
+                players.getSeekers().map(Player::getPosition).collect(Collectors.toUnmodifiableSet());
+
+        return connections.stream()
+                .filter(it -> !invalidPositions.contains(it.getTo())
+                        && !excludedNodes.contains(it.getTo())
+                        && player.hasTransportModeTicket(it.getTransport()))
+                .map(it -> new MoveAction(it.getTo(), it.getTransport()))
+                .toList();
+    }
+
+    @Override
+    public void exposeRunnerPosition() {
+        final NodeId position = players.getMisterX().getPosition();
+        final ExposedPosition exposed = new ExposedPosition(position, round);
+        runnerExposed = true;
+        notifySubscribers(it -> it.onExposedPosition(exposed));
+    }
+
+    @Override
+    public void hideRunnerPosition() {
+        runnerExposed = false;
+        notifySubscribers(GameStateSubscriber::onRunnerHidden);
+    }
+
+    @Override
+    public boolean isRunnerExposed() {
+        return runnerExposed;
+    }
+
+    @Override
+    public int maxRoundCount() {
+        return ROUND_COUNT;
+    }
+
+    @Override
+    public void subscribe(GameStateSubscriber subscriber) {
+        subscribers.add(subscriber);
+    }
+
+    public void notifySubscribers(Consumer<GameStateSubscriber> action) {
+        for (final GameStateSubscriber subscriber : subscribers) {
+            action.accept(subscriber);
+        }
     }
 }

@@ -16,8 +16,6 @@ import java.util.Set;
 
 public final class DetectiveGameControllerImpl extends GameControllerImpl {
 
-    private static final NodeId NOT_VISIBLE_ON_MAP = new NodeId(-1);
-
     private NodeId selectedDestination;
     private TransportType selectedTransportType;
 
@@ -50,7 +48,7 @@ public final class DetectiveGameControllerImpl extends GameControllerImpl {
 
     /** Hides Mister X position on the map */
     private void hideMisterXPosition() {
-        this.view.getMapPanel().setMisterXPosition(NOT_VISIBLE_ON_MAP);
+        this.view.getMapPanel().setMisterXPosition(HIDDEN_POSITION);
     }
 
     private void updatePlayerPositionView(Player currentPlayer) {
@@ -106,6 +104,7 @@ public final class DetectiveGameControllerImpl extends GameControllerImpl {
         }
     }
 
+    @Override
     public void destinationChosen(NodeId newPositionId) {
         if (this.gameState.areMultipleTransportsAvailable(newPositionId)) {
             this.view.loadTransportSelectionDialog(new HashSet<>(this.gameState.getAvailableTransports(newPositionId)));
@@ -125,13 +124,14 @@ public final class DetectiveGameControllerImpl extends GameControllerImpl {
         this.movePlayer();
     }
 
+    @Override
     public void selectTransport(TransportType transportType) {
         this.selectedTransportType = transportType;
     }
 
     private void movePlayer() {
         if (this.gameState.isMovableCurrentPlayer(this.selectedDestination, this.selectedTransportType)) {
-            this.view.getMapPanel().setSelectedDestination(NOT_VISIBLE_ON_MAP);
+            this.view.getMapPanel().setSelectedDestination(HIDDEN_POSITION);
             this.dispatcher.dispatch(new MoveCommand(this.selectedDestination, this.selectedTransportType));
             this.updatePlayerPositionView(this.gameState.getCurrentPlayer());
             this.view.getMapPanel().repaint();

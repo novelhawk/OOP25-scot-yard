@@ -1,6 +1,5 @@
 package it.unibo.scotyard.model.ai;
 
-import it.unibo.scotyard.model.Model;
 import it.unibo.scotyard.model.Pair;
 import it.unibo.scotyard.model.command.GameCommand;
 import it.unibo.scotyard.model.command.turn.EndTurnCommand;
@@ -19,15 +18,16 @@ import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
 
+/*
+* The AI used by Detective and Bobbies
+*/
 public class SeekerBrain implements PlayerBrain {
 
     private final Random random;
-    private final Model model;
     private final MapData map;
 
-    public SeekerBrain(final Random random, final Model model, final MapData mapData) {
+    public SeekerBrain(final Random random, final MapData mapData) {
         this.random = random;
-        this.model = model;
         this.map = mapData;
     }
 
@@ -48,10 +48,9 @@ public class SeekerBrain implements PlayerBrain {
     }
 
     @Override
-    public List<GameCommand> playTurn(Player player) {
-        GameState gameState = this.model.getGameState();
+    public List<GameCommand> playTurn(GameState gameState) {
         GameDifficulty gameDifficulty = gameState.getGameDifficulty();
-
+        Player player = gameState.getCurrentPlayer();
         final NodeId currentPosition = player.getPosition();
         List<Pair<NodeId, TransportType>> possibleDestinations = new ArrayList<>();
         for (MapConnection connection : this.map.getConnectionsFrom(currentPosition)) {

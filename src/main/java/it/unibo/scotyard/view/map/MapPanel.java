@@ -115,7 +115,7 @@ public final class MapPanel extends JPanel {
     private Set<it.unibo.scotyard.model.game.turn.TurnManagerImpl.MoveOption> validMoves = new HashSet<>();
     private Consumer<NodeId> nodeClickListener = null;
 
-    GameView gameView;
+    private final GameView gameView;
 
     /**
      * Creates a new MapPanel with the given map info DTO.
@@ -126,6 +126,7 @@ public final class MapPanel extends JPanel {
     public MapPanel(final MapInfo mapInfo, final GameView view) {
         this.mapInfo = Objects.requireNonNull(mapInfo, "Map info cannot be null");
         this.gameView = view;
+        this.misterXPosition = POSITION_NOT_SET;
         this.detectivePosition = POSITION_NOT_SET;
         this.bobbiesPositions = new ArrayList<>();
         this.possibleDestinations = new HashSet<>();

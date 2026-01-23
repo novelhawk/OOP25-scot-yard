@@ -6,6 +6,7 @@ import javax.swing.*;
 /**
  * Handles loading, caching and parsing of icon resources
  */
+@SuppressWarnings("PMD.ImplicitFunctionalInterface")
 public interface IconRegistry {
     /**
      * Gets the icon corresponding to the supplied TransportType
@@ -13,5 +14,5 @@ public interface IconRegistry {
      * @param transportType the transport type of the icon
      * @return the icon of the supplied transport type
      */
-    ImageIcon getTransportIcon(final TransportType transportType);
+    ImageIcon getTransportIcon(TransportType transportType);
 }

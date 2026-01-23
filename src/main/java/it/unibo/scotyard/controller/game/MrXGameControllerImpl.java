@@ -158,6 +158,8 @@ public final class MrXGameControllerImpl extends GameControllerImpl {
 
     /** Handles end turn button click. */
     private void onEndTurn() {
+        gameState.resetTurn();
+
         if (this.gameState.getGameStatus() != GameStatus.PLAYING) {
             return;
         }
@@ -451,11 +453,13 @@ public final class MrXGameControllerImpl extends GameControllerImpl {
     // --- GameController ---
 
     // It doesn't do anything
+    @Override
     public void destinationChosen(NodeId newPositionId) {
         // TODO : Usare questo metodo (cambiando gestione turno)?
     }
 
     // It doesn't do anything
+    @Override
     public void selectTransport(TransportType transportType) {
         // TODO : Usare questo metodo (cambiando gestione turno)?
     }
