@@ -244,38 +244,42 @@ public final class SidebarPanel extends JPanel {
         textArea.setFont(TEXT_FONT);
         textArea.setEditable(false);
         if (this.currentGameMode == GameMode.DETECTIVE) {
-            String text = "Nel gioco sono presenti : 1 detective, 1 fuggitivo (Mister X) e fino a un massimo di 3 bobby (aiutanti del detective).\n" +
-                        "L'obiettivo del detective è catturare Mister X il prima possibile. Il gioco si compone di 23 round.\n" +
-                        "La posizione di Mister X è nascosta, ma è possibile vedere quali mezzi usa nei suoi spostamenti (tranne se utilizza un\n"+
-                        "biglietto nero) e la sua posizione viene rivelata dopo i turni : 3, 8, 13.\n" + 
-                        "Il detective e i bobby possono muoversi su tre mezzi di trasporto : taxi, bus, metropolitana.\n" +
-                        "Il traghetto può essere usato solo da Mister X, con i biglietti neri. Il detective ha un numero limitato di biglietti per \n" +
-                        "ciascun mezzo; mentre i bobby no. I vari giocatori non possono trovarsi in contemporanea su una stessa posizione della \n" + 
-                        "mappa. Se questo accade con un detective e Mister X, o con un bobby e Mister X, allora il gioco termina, con la vittoria \n" +
-                        "del detective. \n" +
-                        "Il gioco, invece, termina con la vittoria di Mister X se il detective e i bobby non lo hanno preso alla fine dell'ultimo \n"+
-                        "round, oppure se il detective non può più muoversi (in un qualsiasi turno) a causa dell'esaurimento dei suoi biglietti.\n" +
-                        "\nCOME SI GIOCA\n"+ "Ciascun giocatore nel proprio turno fa un solo spostamento, cliccando su uno dei nodi evidenziati di verde.\n" +
-                        "Una volta selezionato il nodo di destinazione bisogna cliccare sul bottone \"Fine turno\".\n" +
-                        "Quando viene rivelata la posizione di Mister X, questa fa riferimento alla posizione del turno precedente, in quanto, nel\n" +
-                        "frattempo Mister X si è spostato.";
+            String text =
+                    "Nel gioco sono presenti : 1 detective, 1 fuggitivo (Mister X) e fino a un massimo di 3 bobby (aiutanti del detective).\n"
+                            + "L'obiettivo del detective è catturare Mister X il prima possibile. Il gioco si compone di 23 round.\n"
+                            + "La posizione di Mister X è nascosta, ma è possibile vedere quali mezzi usa nei suoi spostamenti (tranne se utilizza \n"
+                            + "un biglietto nero) e la sua posizione viene rivelata dopo i turni : 3, 8, 13.\n"
+                            + "Il detective e i bobby possono muoversi su tre mezzi di trasporto : taxi, bus, metropolitana.\n"
+                            + "Il traghetto può essere usato solo da Mister X, con i biglietti neri. Il detective ha un numero limitato di biglietti per \n"
+                            + "ciascun mezzo; mentre i bobby no. I vari giocatori non possono trovarsi in contemporanea su una stessa posizione della \n"
+                            + "mappa. Se questo accade con un detective e Mister X, o con un bobby e Mister X, allora il gioco termina, con la vittoria \n"
+                            + "del detective. \n"
+                            + "Il gioco, invece, termina con la vittoria di Mister X se il detective e i bobby non lo hanno preso alla fine dell'ultimo \n"
+                            + "round, oppure se il detective non può più muoversi (in un qualsiasi turno) a causa dell'esaurimento dei suoi biglietti.\n"
+                            + "\nCOME SI GIOCA\n"
+                            + "Ciascun giocatore nel proprio turno fa un solo spostamento, cliccando su uno dei nodi evidenziati di verde.\n"
+                            + "Una volta selezionato il nodo di destinazione bisogna cliccare sul bottone \"Fine turno\".\n"
+                            + "Quando viene rivelata la posizione di Mister X, questa fa riferimento alla posizione del turno precedente, in quanto, nel\n"
+                            + "frattempo Mister X si è spostato.";
             textArea.append(text);
         }
         if (this.currentGameMode == GameMode.MISTER_X) {
-            String text = "Nel gioco sono presenti : 1 detective, 1 fuggitivo (Mister X) e fino a un massimo di 3 bobby (aiutanti del detective).\n" +
-                        "L'obiettivo di Mister X è non farsi catturare dal detective o dai bobbies. Il gioco si compone di 23 round.\n" +
-                        "La posizione di Mister X è nascosta, ma l'avversario può vedere quali mezzi usa nei suoi spostamenti (tranne se utilizza un\n"+
-                        "biglietto nero) e la sua posizione viene rivelata dopo i turni : 3, 8, 13.\n" + 
-                        "Mister X può utilizzare i tre mezzi di trasporto principali (taxi, bus, metropolitana) senza limiti, dato che ha dei \n" +
-                        "biglietti infiniti per questi mezzi. Possiede, però, dei biglietti speciali : \n" +
-                        "- biglietto doppia mossa, che gli consente di fare due spostamenti (con mezzi diversi) in un unico turno\n" + 
-                        "- biglietto nero, che nasconde il mezzo utilizzato e che consente l'uso del traghetto (non usabile altrimenti)\n" +
-                        "Il gioco termina con la vittoria del detective se Mister X viene catturato entro la fine dell'ultimo round.\n" +
-                        "Altrimenti, il gioco termina con la vittoria di Mister X se non viene catturato entro la fine dell'ultimo round, oppure se\n" +
-                        "in un qualsiasi turno il detective non può più effettuare spostamenti.\n" +
-                        "\nCOME SI GIOCA\n"+ "Ciascun giocatore nel proprio turno fa un solo spostamento, cliccando su uno dei nodi evidenziati di verde.\n" +
-                        "Una volta selezionato il nodo di destinazione bisogna cliccare sul bottone \"Fine turno\".\n" +
-                        "Se si vuole effettuare una doppia mossa, bisogna cliccare sul bottone \"Doppia Mossa\" e seguire le istruzioni.";
+            String text =
+                    "Nel gioco sono presenti : 1 detective, 1 fuggitivo (Mister X) e fino a un massimo di 3 bobby (aiutanti del detective).\n"
+                            + "L'obiettivo di Mister X è non farsi catturare dal detective o dai bobbies. Il gioco si compone di 23 round.\n"
+                            + "La posizione di Mister X è nascosta, ma l'avversario può vedere quali mezzi usa nei suoi spostamenti (tranne se utilizza \n"
+                            + "un biglietto nero) e la sua posizione viene rivelata dopo i turni : 3, 8, 13.\n"
+                            + "Mister X può utilizzare i tre mezzi di trasporto principali (taxi, bus, metropolitana) senza limiti, dato che ha dei \n"
+                            + "biglietti infiniti per questi mezzi. Possiede, però, dei biglietti speciali : \n"
+                            + "- biglietto doppia mossa, che gli consente di fare due spostamenti (con mezzi diversi) in un unico turno\n"
+                            + "- biglietto nero, che nasconde il mezzo utilizzato e che consente l'uso del traghetto (non usabile altrimenti)\n"
+                            + "Il gioco termina con la vittoria del detective se Mister X viene catturato entro la fine dell'ultimo round.\n"
+                            + "Altrimenti, il gioco termina con la vittoria di Mister X se non viene catturato entro la fine dell'ultimo round, oppure se\n"
+                            + "in un qualsiasi turno il detective non può più effettuare spostamenti.\n"
+                            + "\nCOME SI GIOCA\n"
+                            + "Ciascun giocatore nel proprio turno fa un solo spostamento, cliccando su uno dei nodi evidenziati di verde.\n"
+                            + "Una volta selezionato il nodo di destinazione bisogna cliccare sul bottone \"Fine turno\".\n"
+                            + "Se si vuole effettuare una doppia mossa, bisogna cliccare sul bottone \"Doppia Mossa\" e seguire le istruzioni.";
             textArea.append(text);
         }
         textArea.setBackground(DOUBLE_MOVE_COLOR);

@@ -125,7 +125,7 @@ public class GameStateService {
         if (gameMode == GameMode.DETECTIVE) {
             return 2 - seekers;
         } else {
-            return seekers;
+            return seekers+1;
         }
     }
 }
