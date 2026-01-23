@@ -212,21 +212,9 @@ public final class MrXGameControllerImpl extends GameControllerImpl {
 
         final Player startingPlayer = this.gameState.getUserPlayer(); // Mr. X
         dispatcher.dispatch(new EndTurnCommand());
-        // TODO : eliminare stampe di prova
-        System.out.println("X : " + startingPlayer.getPosition()); 
-        System.out.println("D : " + this.gameState.getComputerPlayer().getPosition());
-        for(Bobby bobby : this.gameState.getBobbies()){
-            System.out.println("B : " + bobby.getPosition());
-        }
 
         do {
             dispatcher.dispatch(new StartTurnCommand());
-
-            // TODO : eliminare stampe di prova
-            System.out.println("D : " + this.gameState.getComputerPlayer().getPosition());
-            for(Bobby bobby : this.gameState.getBobbies()){
-                System.out.println("B : " + bobby.getPosition());
-            }
 
             // Check if game is over
             if (super.isGameOver()) {

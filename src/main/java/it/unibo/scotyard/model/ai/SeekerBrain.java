@@ -14,7 +14,6 @@ import it.unibo.scotyard.model.map.TransportType;
 import it.unibo.scotyard.model.players.Detective;
 import it.unibo.scotyard.model.players.Player;
 import it.unibo.scotyard.model.players.TicketType;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -26,16 +25,15 @@ public class SeekerBrain implements PlayerBrain {
     private final Model model;
     private final MapData map;
 
-    public SeekerBrain(
-            final Random random, final Model model, final MapData mapData) {
+    public SeekerBrain(final Random random, final Model model, final MapData mapData) {
         this.random = random;
         this.model = model;
         this.map = mapData;
     }
 
-    private TicketType convertTransportType(TransportType transportType){
-        switch(transportType){
-            case TAXI :
+    private TicketType convertTransportType(TransportType transportType) {
+        switch (transportType) {
+            case TAXI:
                 return TicketType.TAXI;
             case BUS:
                 return TicketType.BUS;
@@ -59,41 +57,46 @@ public class SeekerBrain implements PlayerBrain {
         for (MapConnection connection : this.map.getConnectionsFrom(currentPosition)) {
             possibleDestinations.add(new Pair<NodeId, TransportType>(connection.getTo(), connection.getTransport()));
         }
-        possibleDestinations = gameState.loadPossibleDestinations(possibleDestinations.stream().collect(Collectors.toSet())).stream().collect(Collectors.toList());
-        
-        switch(gameDifficulty){
+        possibleDestinations =
+                gameState.loadPossibleDestinations(possibleDestinations.stream().collect(Collectors.toSet())).stream()
+                        .collect(Collectors.toList());
+
+        Pair<NodeId, TransportType> selectedMove;
+
+        switch (gameDifficulty) {
             default:
             case EASY:
                 // Selects a random destination among the possible ones
-                Pair<NodeId, TransportType> selectedMove =
-                        possibleDestinations.get(random.nextInt(possibleDestinations.size()));
-
+                selectedMove = possibleDestinations.get(random.nextInt(possibleDestinations.size()));
                 return List.of(new MoveCommand(selectedMove.getX(), selectedMove.getY()), new EndTurnCommand());
+            case DIFFICULT:
             case MEDIUM:
-                // Selects the destination that has the closer NodeId number to the NodeId of the current position of Mister X
+                // Selects the destination that has the closer NodeId number to the NodeId of the current position of
+                // Mister X
                 NodeId misterXNodeId = gameState.getUserPlayer().getPosition();
-                Pair<NodeId, TransportType> closerNode = possibleDestinations.getFirst();
-                for(Pair<NodeId, TransportType> pair : possibleDestinations){
-                    int currentDifference = Math.abs((misterXNodeId.id())-pair.getX().id());
-                    int lowestDifference = Math.abs((misterXNodeId.id())-closerNode.getX().id());
-                    if(currentDifference<=lowestDifference){
-                        /* If the player is a Detective and the two differences are the same, 
+                selectedMove = possibleDestinations.getFirst();
+                for (Pair<NodeId, TransportType> pair : possibleDestinations) {
+                    int currentDifference =
+                            Math.abs((misterXNodeId.id()) - pair.getX().id());
+                    int lowestDifference =
+                            Math.abs((misterXNodeId.id()) - selectedMove.getX().id());
+                    if (currentDifference <= lowestDifference) {
+                        /* If the player is a Detective and the two differences are the same,
                         /* the new closerNode is selected according to the number and type of tickets possessed
-                        /* by the player : among the two possible destinations, the one selected is the one for 
+                        /* by the player : among the two possible destinations, the one selected is the one for
                         /* which the player has a bigger amount of tickets (according to the TicketType). */
-                        if(player instanceof Detective && currentDifference==lowestDifference){
-                            int ticketsPrevious = player.getNumberTickets(convertTransportType(closerNode.getY()));
+                        if (player instanceof Detective && currentDifference == lowestDifference) {
+                            int ticketsPrevious = player.getNumberTickets(convertTransportType(selectedMove.getY()));
                             int ticketsCurrent = player.getNumberTickets(convertTransportType(pair.getY()));
-                            if(ticketsPrevious<=ticketsCurrent){
-                                 closerNode = pair;
+                            if (ticketsPrevious <= ticketsCurrent) {
+                                selectedMove = pair;
                             }
-                        } else{
-                            closerNode = pair;
+                        } else {
+                            selectedMove = pair;
                         }
                     }
                 }
-                return List.of(new MoveCommand(closerNode.getX(), closerNode.getY()), new EndTurnCommand());
+                return List.of(new MoveCommand(selectedMove.getX(), selectedMove.getY()), new EndTurnCommand());
         }
-        
     }
 }

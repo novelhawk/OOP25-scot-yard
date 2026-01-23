@@ -28,7 +28,7 @@ public final class SidebarPanel extends JPanel {
     private static final int PADDING = 10;
 
     // Color scheme
-    private static final Color BACKGROUND_COLOR = new Color(48, 48, 48); // black
+    private static final Color BACKGROUND_COLOR = new Color(48, 48, 48); // dark grey
     private static final Color ACCENT_COLOR = new Color(31, 81, 255); // neon blue
     private static final Color TAXI_COLOR = new Color(255, 255, 85); // yellow
     private static final Color BUS_COLOR = new Color(58, 132, 36); // green
@@ -239,63 +239,47 @@ public final class SidebarPanel extends JPanel {
     public JPanel createRulesPanel() {
         final JPanel panel = new JPanel(new BorderLayout());
         panel.setBorder(BorderFactory.createEmptyBorder(PADDING, PADDING, PADDING, PADDING));
-        panel.setBackground(BACKGROUND_COLOR);
+        panel.setBackground(ACCENT_COLOR);
         final JTextArea textArea = new JTextArea();
         textArea.setFont(TEXT_FONT);
+        textArea.setEditable(false);
         if (this.currentGameMode == GameMode.DETECTIVE) {
-            StringBuilder stringBuilder = new StringBuilder();
-            stringBuilder.append(
-                    "Nel gioco sono presenti : 1 detective, 1 fuggitivo (Mister X) e 2 o 3 bobby (aiutanti del detective).\n");
-            stringBuilder.append(
-                    "L'obiettivo del detective è catturare Mister X il prima possibile. Il gioco si compone di 23 round.\n");
-            stringBuilder.append(
-                    "La posizione di Mister X è nascosta, ma è possibile vedere quali mezzi usa nei suoi spostamenti (tranne \n");
-            stringBuilder.append(
-                    "se utilizza un biglietto nero) e la sua posizione viene rivelata dopo i turni : 3, 8, 13.\n");
-            stringBuilder.append(
-                    "Il detective e i bobby possono muoversi su tre mezzi di trasporto : taxi, bus, metropolitana.\n");
-            stringBuilder.append(
-                    "Il traghetto può essere usato solo da Mister X, con i biglietti neri. Il detective ha un numero limitato \n");
-            stringBuilder.append(
-                    "di biglietti per ciascun mezzo; mentre i bobby no. I vari giocatori non possono trovarsi in contemporanea \n");
-            stringBuilder.append(
-                    "su una stessa posizione della mappa. Se questo accade con un detective e Mister X, o con un bobby e \n");
-            stringBuilder.append("Mister X, allora il gioco termina, con la vittoria del detective. \n");
-            stringBuilder.append(
-                    "Il gioco, invece, termina con la vittoria di Mister X se il detective e i bobby non lo hanno preso alla \n");
-            stringBuilder.append(
-                    "fine dell'ultimo round, oppure se il detective non può più muoversi (in un qualsiasi turno) a causa \n");
-            stringBuilder.append("dell'esaurimento dei suoi biglietti.");
-            textArea.append(stringBuilder.toString());
+            String text = "Nel gioco sono presenti : 1 detective, 1 fuggitivo (Mister X) e fino a un massimo di 3 bobby (aiutanti del detective).\n" +
+                        "L'obiettivo del detective è catturare Mister X il prima possibile. Il gioco si compone di 23 round.\n" +
+                        "La posizione di Mister X è nascosta, ma è possibile vedere quali mezzi usa nei suoi spostamenti (tranne se utilizza un\n"+
+                        "biglietto nero) e la sua posizione viene rivelata dopo i turni : 3, 8, 13.\n" + 
+                        "Il detective e i bobby possono muoversi su tre mezzi di trasporto : taxi, bus, metropolitana.\n" +
+                        "Il traghetto può essere usato solo da Mister X, con i biglietti neri. Il detective ha un numero limitato di biglietti per \n" +
+                        "ciascun mezzo; mentre i bobby no. I vari giocatori non possono trovarsi in contemporanea su una stessa posizione della \n" + 
+                        "mappa. Se questo accade con un detective e Mister X, o con un bobby e Mister X, allora il gioco termina, con la vittoria \n" +
+                        "del detective. \n" +
+                        "Il gioco, invece, termina con la vittoria di Mister X se il detective e i bobby non lo hanno preso alla fine dell'ultimo \n"+
+                        "round, oppure se il detective non può più muoversi (in un qualsiasi turno) a causa dell'esaurimento dei suoi biglietti.\n" +
+                        "\nCOME SI GIOCA\n"+ "Ciascun giocatore nel proprio turno fa un solo spostamento, cliccando su uno dei nodi evidenziati di verde.\n" +
+                        "Una volta selezionato il nodo di destinazione bisogna cliccare sul bottone \"Fine turno\".\n" +
+                        "Quando viene rivelata la posizione di Mister X, questa fa riferimento alla posizione del turno precedente, in quanto, nel\n" +
+                        "frattempo Mister X si è spostato.";
+            textArea.append(text);
         }
         if (this.currentGameMode == GameMode.MISTER_X) {
-            StringBuilder stringBuilder = new StringBuilder();
-            stringBuilder.append(
-                    "Nel gioco sono presenti : 1 detective, 1 fuggitivo (Mister X) e 2 o 3 bobby (aiutanti del detective).\n");
-            stringBuilder.append(
-                    "L'obiettivo di Mister X è non farsi catturare dal detective e dai bobby. Il gioco si compone di 23 round.\n");
-            stringBuilder.append(
-                    "La posizione di Mister X è nascosta ma l'avversario può vedere quali mezzi usa nei suoi spostamenti e la \n");
-            stringBuilder.append("sua posizione viene rivelata dopo i turni : 3, 8, 13.\n");
-            stringBuilder.append(
-                    "Mister X può utilizzare i tre mezzi di trasporto principali (taxi, bus, metropolitana) senza limiti, dato \n ");
-            stringBuilder.append(
-                    "che non ha dei biglietti infiniti per questi mezzi. Mister X possiede, però, dei biglietti speciali : \n");
-            stringBuilder.append(
-                    "- biglietto doppia mossa, che gli consente di fare due spostamenti (con mezzi diversi) in un unico turno\n");
-            stringBuilder.append(
-                    "- biglietto nero, che nasconde il mezzo utilizzato e che consente l'uso del traghetto\n");
-            stringBuilder.append("  (non usaebile in altro modo).\n");
-            stringBuilder.append(
-                    "Il gioco termina con la vittoria del detective se Mister X viene catturato entro la fine dell'ultimo round.\n");
-            stringBuilder.append(
-                    "Altrimenti, il gioco termina con la vittoria di Mister X se non viene catturato entro la fine dell'ultimo \n");
-            stringBuilder.append(
-                    "round, oppure se, in un qualsiasi turno il detective non può più effettuare spostamenti.");
-            textArea.setText(stringBuilder.toString());
+            String text = "Nel gioco sono presenti : 1 detective, 1 fuggitivo (Mister X) e fino a un massimo di 3 bobby (aiutanti del detective).\n" +
+                        "L'obiettivo di Mister X è non farsi catturare dal detective o dai bobbies. Il gioco si compone di 23 round.\n" +
+                        "La posizione di Mister X è nascosta, ma l'avversario può vedere quali mezzi usa nei suoi spostamenti (tranne se utilizza un\n"+
+                        "biglietto nero) e la sua posizione viene rivelata dopo i turni : 3, 8, 13.\n" + 
+                        "Mister X può utilizzare i tre mezzi di trasporto principali (taxi, bus, metropolitana) senza limiti, dato che ha dei \n" +
+                        "biglietti infiniti per questi mezzi. Possiede, però, dei biglietti speciali : \n" +
+                        "- biglietto doppia mossa, che gli consente di fare due spostamenti (con mezzi diversi) in un unico turno\n" + 
+                        "- biglietto nero, che nasconde il mezzo utilizzato e che consente l'uso del traghetto (non usabile altrimenti)\n" +
+                        "Il gioco termina con la vittoria del detective se Mister X viene catturato entro la fine dell'ultimo round.\n" +
+                        "Altrimenti, il gioco termina con la vittoria di Mister X se non viene catturato entro la fine dell'ultimo round, oppure se\n" +
+                        "in un qualsiasi turno il detective non può più effettuare spostamenti.\n" +
+                        "\nCOME SI GIOCA\n"+ "Ciascun giocatore nel proprio turno fa un solo spostamento, cliccando su uno dei nodi evidenziati di verde.\n" +
+                        "Una volta selezionato il nodo di destinazione bisogna cliccare sul bottone \"Fine turno\".\n" +
+                        "Se si vuole effettuare una doppia mossa, bisogna cliccare sul bottone \"Doppia Mossa\" e seguire le istruzioni.";
+            textArea.append(text);
         }
-        textArea.setBackground(BACKGROUND_COLOR);
-        textArea.setForeground(ACCENT_COLOR);
+        textArea.setBackground(DOUBLE_MOVE_COLOR);
+        textArea.setForeground(BACKGROUND_COLOR);
         panel.add(textArea, BorderLayout.CENTER);
         return panel;
     }

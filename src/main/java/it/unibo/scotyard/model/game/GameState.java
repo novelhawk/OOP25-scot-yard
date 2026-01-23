@@ -169,7 +169,7 @@ public interface GameState {
 
     /**
      * Retruns the difficulty of the game.
-     * 
+     *
      * @return the current difficulty
      */
     GameDifficulty getGameDifficulty();

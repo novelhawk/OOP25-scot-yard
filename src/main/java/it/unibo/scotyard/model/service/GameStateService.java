@@ -48,8 +48,7 @@ public class GameStateService {
 
         final MisterX misterX =
                 createMisterX(command.gameMode(), command.difficulty(), shuffledInitialPositions.next());
-        final Detective detective =
-                createDetective(command.gameMode(), shuffledInitialPositions.next());
+        final Detective detective = createDetective(command.gameMode(), shuffledInitialPositions.next());
 
         final List<Bobby> bobbies = Stream.generate(shuffledInitialPositions::next)
                 .limit(additionalPlayers)

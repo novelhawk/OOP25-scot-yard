@@ -281,7 +281,7 @@ public final class GameStateImpl implements GameState {
     }
 
     @Override
-    public GameDifficulty getGameDifficulty(){
+    public GameDifficulty getGameDifficulty() {
         return this.gameDifficulty;
     }
 
