@@ -75,7 +75,7 @@ public class SeekerBrain implements PlayerBrain {
             case DIFFICULT:
                 // Selects the destination that has the closer NodeId number to the NodeId of the current position of
                 // Mister X
-                if(gameDifficulty.equals(GameDifficulty.DIFFICULT)){
+                if (GameDifficulty.DIFFICULT.equals(gameDifficulty)) {
                     misterXNodeId = gameState.getUserPlayer().getPosition();
                 }
                 selectedMove = possibleDestinations.getFirst();

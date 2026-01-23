@@ -232,19 +232,19 @@ public final class GameStateImpl implements GameState {
         }
     }
 
-    private void setLastRevealedMisterXPosition(){
+    private void setLastRevealedMisterXPosition() {
         boolean reveal = Constants.REVEAL_TURNS_MISTER_X.contains(this.getGameRound());
-        if(reveal){
-            if(this.gameMode==GameMode.MISTER_X){
+        if (reveal) {
+            if (this.gameMode == GameMode.MISTER_X) {
                 this.lastRevealedMisterXPosition = this.getUserPlayer().getPosition();
-            } else{
+            } else {
                 this.lastRevealedMisterXPosition = this.getComputerPlayer().getPosition();
             }
         }
     }
 
     @Override
-    public NodeId getLastRevealedMisterXPosition(){
+    public NodeId getLastRevealedMisterXPosition() {
         this.setLastRevealedMisterXPosition();
         return this.lastRevealedMisterXPosition;
     }

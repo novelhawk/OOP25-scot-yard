@@ -108,7 +108,7 @@ public interface GameState {
 
     /**
      * Return the NodeId of the last revealed Mister X position.
-     * 
+     *
      * @return the node id of the last revealed Mister X position
      */
     NodeId getLastRevealedMisterXPosition();
