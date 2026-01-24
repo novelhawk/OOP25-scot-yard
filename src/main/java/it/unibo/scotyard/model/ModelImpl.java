@@ -9,6 +9,7 @@ import it.unibo.scotyard.model.service.RoundService;
 import it.unibo.scotyard.model.service.TurnService;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 /** model. Manages map data loading and game state. */
 public final class ModelImpl implements Model {
@@ -16,6 +17,7 @@ public final class ModelImpl implements Model {
     private final CommandDispatcher dispatcher;
     private MapData mapData;
     private GameState gameState;
+    private Random random;
     private boolean initialized;
 
     /**
@@ -32,11 +34,17 @@ public final class ModelImpl implements Model {
         try {
             final MapReader mapReader = new MapReader();
             this.mapData = mapReader.loadDefaultMap();
+            this.random = new Random(System.currentTimeMillis());
             this.initialized = true;
         } catch (final MapReader.MapLoadException e) {
             System.err.println("Errore caricamento mappa: " + e.getMessage());
             throw new IllegalStateException("Impossibile inizializzare il modello", e);
         }
+    }
+
+    @Override
+    public Random getSeededRandom() {
+        return random;
     }
 
     @Override
@@ -94,14 +102,9 @@ public final class ModelImpl implements Model {
     @Override
     public List<Pair<NodeId, TransportType>> getPossibleDestinations(NodeId idStartPosition) {
         List<Pair<NodeId, TransportType>> resultList = new ArrayList<>();
-        List<MapConnection> connections = this.getMapData().getConnections();
+        List<MapConnection> connections = this.getMapData().getConnectionsFrom(idStartPosition);
         for (MapConnection connection : connections) {
-            if (connection.getFrom() == idStartPosition) {
-                resultList.add(new Pair<>(connection.getTo(), connection.getTransport()));
-            }
-            if (connection.getTo() == idStartPosition) {
-                resultList.add(new Pair<>(connection.getFrom(), connection.getTransport()));
-            }
+            resultList.add(new Pair<>(connection.getTo(), connection.getTransport()));
         }
 
         return resultList;

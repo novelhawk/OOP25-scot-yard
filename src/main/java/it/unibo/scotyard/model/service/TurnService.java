@@ -64,6 +64,11 @@ public class TurnService {
                     gameState.computeValidMoves(this.model.getMapData(), player, turnState.getPositionHistory());
             turnState.setLegalMoves(validMoves);
         }
+
+        if (gameState.isMovableCurrentPlayer(command.targetNode(), command.transportType())) {
+            gameState.getTurnState().addMove(new MoveAction(command.targetNode(), command.transportType()));
+            gameState.moveCurrentPlayer(command.targetNode(), command.transportType());
+        }
     }
 
     /**

@@ -2,9 +2,8 @@ package it.unibo.scotyard.model.service;
 
 import it.unibo.scotyard.model.Model;
 import it.unibo.scotyard.model.ai.RunnerBrain;
-import it.unibo.scotyard.model.ai.SkipTurnBrain;
+import it.unibo.scotyard.model.ai.SeekerBrain;
 import it.unibo.scotyard.model.command.game.InitializeGameCommand;
-import it.unibo.scotyard.model.command.turn.StartTurnCommand;
 import it.unibo.scotyard.model.game.GameDifficulty;
 import it.unibo.scotyard.model.game.GameMode;
 import it.unibo.scotyard.model.game.GameStateImpl;
@@ -53,7 +52,7 @@ public class GameStateService {
 
         final List<Bobby> bobbies = Stream.generate(shuffledInitialPositions::next)
                 .limit(additionalPlayers)
-                .map(position -> new Bobby(position, new SkipTurnBrain()))
+                .map(position -> createBobby(command.gameMode(), position))
                 .collect(Collectors.toList());
 
         for (int i = 0; i < bobbies.size(); i++) {
@@ -63,10 +62,8 @@ public class GameStateService {
 
         final Players players = new Players(command.gameMode(), misterX, detective, bobbies);
 
-        final GameStateImpl gameState = new GameStateImpl(random, command.gameMode(), players);
+        final GameStateImpl gameState = new GameStateImpl(random, command.gameMode(), players, command.difficulty());
         this.model.setGameState(gameState);
-
-        this.model.getDispatcher().dispatch(new StartTurnCommand());
     }
 
     /**
@@ -91,7 +88,22 @@ public class GameStateService {
     private Detective createDetective(GameMode gameMode, NodeId initialPosition) {
         return switch (gameMode) {
             case GameMode.DETECTIVE -> new Detective(initialPosition);
-            case GameMode.MISTER_X -> new Detective(initialPosition, new SkipTurnBrain());
+            case GameMode.MISTER_X -> {
+                final SeekerBrain detectiveBrain =
+                        new SeekerBrain(this.model.getSeededRandom(), this.model.getMapData());
+                yield new Detective(initialPosition, detectiveBrain);
+            }
+        };
+    }
+
+    private Bobby createBobby(GameMode gameMode, NodeId initialPosition) {
+        return switch (gameMode) {
+            case GameMode.DETECTIVE -> new Bobby(initialPosition);
+            case GameMode.MISTER_X -> {
+                final SeekerBrain bobbyBrain =
+                        new SeekerBrain(this.model.getSeededRandom(), this.model.getMapData());
+                yield new Bobby(initialPosition, bobbyBrain);
+            }
         };
     }
 
@@ -112,7 +124,7 @@ public class GameStateService {
         if (gameMode == GameMode.DETECTIVE) {
             return 2 - seekers;
         } else {
-            return seekers;
+            return seekers + 1;
         }
     }
 }

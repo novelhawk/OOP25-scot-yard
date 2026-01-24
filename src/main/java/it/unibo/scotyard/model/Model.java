@@ -6,6 +6,7 @@ import it.unibo.scotyard.model.map.NodeId;
 import it.unibo.scotyard.model.map.TransportType;
 import it.unibo.scotyard.model.router.CommandDispatcher;
 import java.util.List;
+import java.util.Random;
 
 /** Main model interface for game data management. */
 public interface Model {
@@ -18,6 +19,12 @@ public interface Model {
      * @param levelDifficulty the selected level of difficulty
      */
     void initialize(String gameMode, String levelDifficulty);
+
+    /**
+     * 
+     * @return @return the seeded shared random instance used by all game logic
+     */
+    Random getSeededRandom();
 
     /**
      * Returns the loaded map data.

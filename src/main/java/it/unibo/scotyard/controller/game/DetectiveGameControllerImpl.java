@@ -4,6 +4,7 @@ import it.unibo.scotyard.controller.Controller;
 import it.unibo.scotyard.model.Pair;
 import it.unibo.scotyard.model.command.turn.EndTurnCommand;
 import it.unibo.scotyard.model.command.turn.MoveCommand;
+import it.unibo.scotyard.model.command.turn.StartTurnCommand;
 import it.unibo.scotyard.model.game.GameState;
 import it.unibo.scotyard.model.map.NodeId;
 import it.unibo.scotyard.model.map.TransportType;
@@ -32,8 +33,8 @@ public final class DetectiveGameControllerImpl extends GameControllerImpl {
     public void initializeGame() {
         super.initializeGame();
         this.initializePlayersPositionsView();
-        this.manageGameRound();
         this.view.getSidebar().enableEndTurnButton(false);
+        this.manageGameRound();
     }
 
     /** Initializes the positions of player in GameView (in MapPanel). */
@@ -45,18 +46,35 @@ public final class DetectiveGameControllerImpl extends GameControllerImpl {
         }
     }
 
+    /** Hides Mister X position on the map */
+    private void hideMisterXPosition() {
+        this.view.getMapPanel().setMisterXPosition(HIDDEN_POSITION);
+    }
+
     private void updatePlayerPositionView(Player currentPlayer) {
         switch (currentPlayer.getName()) {
             case "Detective":
                 this.view.getMapPanel().setDetectivePosition(currentPlayer.getPosition());
                 break;
             case "Mister X":
+                if (this.gameState.hideMisterX()) {
+                    hideMisterXPosition();
+                } else {
+                    /* The position displayed of Mr. X is the one before he makes a new move
+                     ** after the reveal turn.  */
+                    this.view.getMapPanel().setMisterXPosition(currentPlayer.getPosition());
+                }
                 break;
             default:
                 int index = Integer.parseInt(currentPlayer.getName().substring(5, 6)) - 1;
                 this.view.getMapPanel().setBobbyPosition(currentPlayer.getPosition(), index);
         }
         this.view.getMapPanel().repaint();
+    }
+
+    private void manageMisterXRound() {
+        dispatcher.dispatch(new StartTurnCommand()); // Starts IA Mister X turn (RunnerBrain)
+        this.manageGameRound();
     }
 
     /**
@@ -73,23 +91,22 @@ public final class DetectiveGameControllerImpl extends GameControllerImpl {
                     new HashSet<>(this.mainController.getPossibleDestinations(
                             this.gameState.getPositionPlayer(this.gameState.getCurrentPlayer())));
             possibleDestinations = this.gameState.loadPossibleDestinations(possibleDestinations);
-            Set<NodeId> possibleDestinationsIDs = new HashSet<>();
-            for (Pair<NodeId, TransportType> pair : possibleDestinations) {
-                possibleDestinationsIDs.add(pair.getX());
-            }
-            if ("Mister X".equals(this.gameState.getCurrentPlayer().getName())) {
-                // TODO : executeIA(), per turno di Mister X
+            if (this.gameState.getCurrentPlayer().equals(this.gameState.getComputerPlayer())) {
+                manageMisterXRound();
             } else {
+                Set<NodeId> possibleDestinationsIDs = new HashSet<>();
+                for (Pair<NodeId, TransportType> pair : possibleDestinations) {
+                    possibleDestinationsIDs.add(pair.getX());
+                }
                 this.view.getMapPanel().loadPossibleDestinations(possibleDestinationsIDs);
+                this.view.getMapPanel().repaint();
             }
-            this.view.getMapPanel().repaint();
         }
     }
 
     @Override
     public void destinationChosen(NodeId newPositionId) {
         if (this.gameState.areMultipleTransportsAvailable(newPositionId)) {
-            System.out.println(this.gameState.getAvailableTransports(newPositionId));
             this.view.loadTransportSelectionDialog(new HashSet<>(this.gameState.getAvailableTransports(newPositionId)));
             this.view.getSidebar().enableEndTurnButton(false);
         } else {
@@ -113,15 +130,13 @@ public final class DetectiveGameControllerImpl extends GameControllerImpl {
     }
 
     private void movePlayer() {
-        if (this.gameState.moveCurrentPlayer(this.selectedDestination, this.selectedTransportType)) {
+        if (this.gameState.isMovableCurrentPlayer(this.selectedDestination, this.selectedTransportType)) {
             this.view.getMapPanel().setSelectedDestination(HIDDEN_POSITION);
-            this.updatePlayerPositionView(this.gameState.getCurrentPlayer());
             this.dispatcher.dispatch(new MoveCommand(this.selectedDestination, this.selectedTransportType));
-            this.dispatcher.dispatch(new EndTurnCommand());
-            this.gameState.changeCurrentPlayer();
-            this.gameState.nextRound();
-            this.manageGameRound();
+            this.updatePlayerPositionView(this.gameState.getCurrentPlayer());
             this.view.getMapPanel().repaint();
+            this.dispatcher.dispatch(new EndTurnCommand());
+            this.manageGameRound();
         }
     }
 }
