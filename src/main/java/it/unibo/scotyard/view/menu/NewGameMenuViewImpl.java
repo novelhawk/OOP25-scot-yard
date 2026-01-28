@@ -1,11 +1,11 @@
 package it.unibo.scotyard.view.menu;
 
 import it.unibo.scotyard.commons.engine.Size;
+import it.unibo.scotyard.commons.patterns.ScotColors;
+import it.unibo.scotyard.commons.patterns.ScotFont;
 import it.unibo.scotyard.controller.menu.NewGameMenuController;
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.util.Objects;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -24,16 +24,6 @@ public final class NewGameMenuViewImpl implements NewGameMenuView {
     // Component sizes
     private static final int COMBO_WIDTH = 200;
     private static final int COMBO_HEIGHT = 30;
-
-    // Color scheme
-    private static final Color BACKGROUND_COLOR = new Color(0, 0, 0); // black
-    private static final Color ACCENT_COLOR = new Color(31, 81, 255); // neon blue
-
-    // Typography
-    private static final String MAIN_FONT_FAMILY = "Arial";
-    private static final Font LABEL_FONT = new Font(MAIN_FONT_FAMILY, Font.PLAIN, 20);
-    private static final Font BUTTON_FONT = new Font(MAIN_FONT_FAMILY, Font.BOLD, 20);
-    private static final Font USER_FONT = new Font(MAIN_FONT_FAMILY, Font.PLAIN, 16);
 
     // UI text
     private static final String PLAYER_NAME_TEXT = "Inserire nome";
@@ -101,7 +91,7 @@ public final class NewGameMenuViewImpl implements NewGameMenuView {
     private JPanel createMainPanel() {
         final JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-        panel.setBackground(BACKGROUND_COLOR);
+        panel.setBackground(ScotColors.BACKGROUND_COLOR);
         return panel;
     }
 
@@ -113,8 +103,8 @@ public final class NewGameMenuViewImpl implements NewGameMenuView {
     // Insert player name label
     private JLabel createPlayerNameLabel() {
         final JLabel label = new JLabel(PLAYER_NAME_TEXT);
-        label.setFont(LABEL_FONT);
-        label.setForeground(ACCENT_COLOR);
+        label.setFont(ScotFont.TEXT_FONT_20);
+        label.setForeground(ScotColors.ACCENT_COLOR);
         label.setAlignmentX(Component.CENTER_ALIGNMENT);
         return label;
     }
@@ -123,8 +113,8 @@ public final class NewGameMenuViewImpl implements NewGameMenuView {
     private JTextField createPlayerNameTextField() {
         final JTextField textField = new JTextField();
         textField.setMaximumSize(new Dimension(COMBO_WIDTH, COMBO_HEIGHT));
-        textField.setFont(USER_FONT);
-        textField.setForeground(BACKGROUND_COLOR);
+        textField.setFont(ScotFont.TEXT_FONT_16);
+        textField.setForeground(ScotColors.BACKGROUND_COLOR);
         textField.setAlignmentX(Component.CENTER_ALIGNMENT);
         return textField;
     }
@@ -132,8 +122,8 @@ public final class NewGameMenuViewImpl implements NewGameMenuView {
     // Selection game mode label
     private JLabel createSelectGameModeLabel() {
         final JLabel label = new JLabel(SELECT_GAME_MODE_TEXT);
-        label.setFont(LABEL_FONT);
-        label.setForeground(ACCENT_COLOR);
+        label.setFont(ScotFont.TEXT_FONT_20);
+        label.setForeground(ScotColors.ACCENT_COLOR);
         label.setAlignmentX(Component.CENTER_ALIGNMENT);
         return label;
     }
@@ -141,8 +131,8 @@ public final class NewGameMenuViewImpl implements NewGameMenuView {
     // Selection game mode combo box
     private JComboBox<?> createSelectionGameModeComboBox() {
         final JComboBox<?> comboBox = new JComboBox<>(GAME_MODES_STRINGS);
-        comboBox.setFont(USER_FONT);
-        comboBox.setForeground(BACKGROUND_COLOR);
+        comboBox.setFont(ScotFont.TEXT_FONT_16);
+        comboBox.setForeground(ScotColors.BACKGROUND_COLOR);
         comboBox.setMaximumSize(new Dimension(COMBO_WIDTH, COMBO_HEIGHT));
         return comboBox;
     }
@@ -155,8 +145,8 @@ public final class NewGameMenuViewImpl implements NewGameMenuView {
     // Selection game difficulty label
     private JLabel createSelectGameDifficultyLabel() {
         final JLabel label = new JLabel(SELECT_GAME_DIFFICULTY_TEXT);
-        label.setFont(LABEL_FONT);
-        label.setForeground(ACCENT_COLOR);
+        label.setFont(ScotFont.TEXT_FONT_20);
+        label.setForeground(ScotColors.ACCENT_COLOR);
         label.setAlignmentX(Component.CENTER_ALIGNMENT);
         return label;
     }
@@ -164,8 +154,8 @@ public final class NewGameMenuViewImpl implements NewGameMenuView {
     // Selection game mode combo box
     private JComboBox<?> createSelectionDifficultyLevelComboBox() {
         final JComboBox<?> comboBox = new JComboBox<>(DIFFICULTY_LEVELS_STRINGS);
-        comboBox.setFont(USER_FONT);
-        comboBox.setForeground(BACKGROUND_COLOR);
+        comboBox.setFont(ScotFont.TEXT_FONT_16);
+        comboBox.setForeground(ScotColors.BACKGROUND_COLOR);
         comboBox.setMaximumSize(new Dimension(COMBO_WIDTH, COMBO_HEIGHT));
         return comboBox;
     }
@@ -186,9 +176,9 @@ public final class NewGameMenuViewImpl implements NewGameMenuView {
             final JComboBox<?> difficultyLevelComboBox,
             final JTextField playerTextField) {
         final JButton button = new JButton(START_BUTTON_TEXT);
-        button.setFont(BUTTON_FONT);
-        button.setForeground(BACKGROUND_COLOR);
-        button.setBackground(ACCENT_COLOR);
+        button.setFont(ScotFont.TEXT_FONT_20);
+        button.setForeground(ScotColors.BACKGROUND_COLOR);
+        button.setBackground(ScotColors.ACCENT_COLOR);
         button.setAlignmentX(Component.CENTER_ALIGNMENT);
         button.addActionListener(e -> {
             this.controller.play(
@@ -202,9 +192,9 @@ public final class NewGameMenuViewImpl implements NewGameMenuView {
     // Go back button
     private JButton createGoBackButton() {
         final JButton button = new JButton(GO_BACK_BUTTON_TEXT);
-        button.setFont(BUTTON_FONT);
-        button.setForeground(BACKGROUND_COLOR);
-        button.setBackground(ACCENT_COLOR);
+        button.setFont(ScotFont.TEXT_FONT_20);
+        button.setForeground(ScotColors.BACKGROUND_COLOR);
+        button.setBackground(ScotColors.ACCENT_COLOR);
         button.setAlignmentX(Component.CENTER_ALIGNMENT);
         button.addActionListener(e -> {
             this.controller.mainMenu();

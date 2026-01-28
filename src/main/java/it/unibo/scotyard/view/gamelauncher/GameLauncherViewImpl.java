@@ -1,12 +1,13 @@
 package it.unibo.scotyard.view.gamelauncher;
 
 import it.unibo.scotyard.commons.engine.Size;
+import it.unibo.scotyard.commons.patterns.ScotColors;
+import it.unibo.scotyard.commons.patterns.ScotFont;
 import it.unibo.scotyard.controller.gamelauncher.GameLauncherController;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.util.List;
 import java.util.Objects;
 import javax.swing.BorderFactory;
@@ -39,17 +40,6 @@ public final class GameLauncherViewImpl extends JFrame implements GameLauncherVi
     private static final int COMBO_HEIGHT = 30;
     private static final int BUTTON_WIDTH = 200;
     private static final int BUTTON_HEIGHT = 40;
-
-    // Color scheme
-    private static final Color BACKGROUND_COLOR = new Color(0, 0, 0); // black
-    private static final Color ACCENT_COLOR = new Color(31, 81, 255); // neon blue
-    private static final Color BUTTON_TEXT_COLOR = BACKGROUND_COLOR;
-
-    // Typography
-    private static final String MAIN_FONT_FAMILY = "Arial";
-    private static final Font TITLE_FONT = new Font(MAIN_FONT_FAMILY, Font.BOLD, 24);
-    private static final Font LABEL_FONT = new Font(MAIN_FONT_FAMILY, Font.PLAIN, 14);
-    private static final Font BUTTON_FONT = new Font(MAIN_FONT_FAMILY, Font.BOLD, 16);
 
     // UI text
     private static final String TITLE_TEXT = "Scotland Yard";
@@ -108,7 +98,7 @@ public final class GameLauncherViewImpl extends JFrame implements GameLauncherVi
     private JPanel createMainPanel() {
         final JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-        panel.setBackground(BACKGROUND_COLOR);
+        panel.setBackground(ScotColors.BACKGROUND_COLOR);
         panel.setBorder(BorderFactory.createEmptyBorder(PADDING, PADDING, PADDING, PADDING));
         return panel;
     }
@@ -116,8 +106,8 @@ public final class GameLauncherViewImpl extends JFrame implements GameLauncherVi
     // Create title label
     private JLabel createTitleLabel() {
         final JLabel label = new JLabel(TITLE_TEXT);
-        label.setFont(TITLE_FONT);
-        label.setForeground(ACCENT_COLOR);
+        label.setFont(ScotFont.TEXT_FONT_24);
+        label.setForeground(ScotColors.ACCENT_COLOR);
         label.setAlignmentX(CENTER_ALIGNMENT);
         return label;
     }
@@ -126,11 +116,11 @@ public final class GameLauncherViewImpl extends JFrame implements GameLauncherVi
     private JPanel createResolutionPanel() {
         final JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
-        panel.setBackground(BACKGROUND_COLOR);
+        panel.setBackground(ScotColors.BACKGROUND_COLOR);
 
         final JLabel label = new JLabel(RESOLUTION_LABEL);
-        label.setFont(LABEL_FONT);
-        label.setForeground(ACCENT_COLOR);
+        label.setFont(ScotFont.TEXT_FONT_14);
+        label.setForeground(ScotColors.ACCENT_COLOR);
 
         final JComboBox<String> comboBox = createResolutionComboBox();
 
@@ -143,11 +133,10 @@ public final class GameLauncherViewImpl extends JFrame implements GameLauncherVi
 
     // Create resolution combo box with default selection
     private JComboBox<String> createResolutionComboBox() {
-        final List<String> resolutionStrings =
-                this.controller.getResolutions().stream().map(Size::toString).toList();
+        final List<String> resolutionStrings = this.controller.getResolutions().stream().map(Size::toString).toList();
 
         final JComboBox<String> comboBox = new JComboBox<>(resolutionStrings.toArray(String[]::new));
-        comboBox.setFont(LABEL_FONT);
+        comboBox.setFont(ScotFont.TEXT_FONT_14);
         comboBox.setMaximumSize(new Dimension(COMBO_WIDTH, COMBO_HEIGHT));
 
         final int defaultIndex = this.controller.getResolutions().size() / 2;
@@ -160,9 +149,9 @@ public final class GameLauncherViewImpl extends JFrame implements GameLauncherVi
     // Create start button with action
     private JButton createStartButton() {
         final JButton button = new JButton(START_BUTTON_TEXT);
-        button.setFont(BUTTON_FONT);
+        button.setFont(ScotFont.TEXT_FONT_16);
         button.setBackground(Color.WHITE);
-        button.setForeground(BUTTON_TEXT_COLOR);
+        button.setForeground(Color.BLACK);
         button.setFocusPainted(false);
         button.setAlignmentX(CENTER_ALIGNMENT);
         button.setMaximumSize(new Dimension(BUTTON_WIDTH, BUTTON_HEIGHT));

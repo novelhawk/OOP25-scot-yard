@@ -1,12 +1,13 @@
 package it.unibo.scotyard.view.dialogs;
 
+import it.unibo.scotyard.commons.patterns.ScotColors;
+import it.unibo.scotyard.commons.patterns.ScotFont;
 import it.unibo.scotyard.model.map.NodeId;
 import it.unibo.scotyard.model.map.TransportType;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.Font;
 import java.awt.Frame;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -29,20 +30,6 @@ import javax.swing.SwingConstants;
 public final class TransportSelectionDialog extends JDialog {
 
     private static final long serialVersionUID = 1L;
-
-    // colori tema
-    private static final Color BACKGROUND_COLOR = new Color(62, 39, 35);
-    private static final Color TEXT_COLOR = new Color(255, 255, 255);
-    private static final Color ACCENT_COLOR = new Color(200, 160, 120);
-
-    // colore traspoorti
-    private static final Color TAXI_COLOR = new Color(255, 255, 85);
-    private static final Color BUS_COLOR = new Color(58, 132, 36);
-    private static final Color UNDERGROUND_COLOR = new Color(200, 43, 29);
-    private static final Color FERRY_COLOR = new Color(128, 128, 128);
-
-    private static final Font TITLE_FONT = new Font("Arial", Font.BOLD, 16);
-    private static final Font BUTTON_FONT = new Font("Arial", Font.BOLD, 14);
 
     private TransportType selectedTransport;
 
@@ -68,7 +55,7 @@ public final class TransportSelectionDialog extends JDialog {
     private void setupDialog() {
         setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         setResizable(false);
-        getContentPane().setBackground(BACKGROUND_COLOR);
+        getContentPane().setBackground(ScotColors.BACKGROUND_COLOR);
     }
 
     /**
@@ -79,19 +66,19 @@ public final class TransportSelectionDialog extends JDialog {
      */
     private void buildContent(final NodeId nodeId, final List<TransportType> transportTypes) {
         final JPanel mainPanel = new JPanel(new BorderLayout(10, 10));
-        mainPanel.setBackground(BACKGROUND_COLOR);
+        mainPanel.setBackground(ScotColors.BACKGROUND_COLOR);
         mainPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
         // title
         final JLabel titleLabel = new JLabel("Choose transport to node " + nodeId.id());
-        titleLabel.setForeground(TEXT_COLOR);
-        titleLabel.setFont(TITLE_FONT);
+        titleLabel.setForeground(ScotColors.ACCENT_COLOR);
+        titleLabel.setFont(ScotFont.TITLE_FONT_36);
         titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
         mainPanel.add(titleLabel, BorderLayout.NORTH);
 
         // buttons panel
         final JPanel buttonsPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
-        buttonsPanel.setBackground(BACKGROUND_COLOR);
+        buttonsPanel.setBackground(ScotColors.BACKGROUND_COLOR);
 
         for (final TransportType transport : transportTypes) {
             final JButton button = createTransportButton(transport);
@@ -112,10 +99,10 @@ public final class TransportSelectionDialog extends JDialog {
     private JButton createTransportButton(final TransportType transport) {
         final JButton button = new JButton(transport.toString());
         button.setPreferredSize(new Dimension(120, 50));
-        button.setFont(BUTTON_FONT);
+        button.setFont(ScotFont.TEXT_FONT_16);
 
         button.setBackground(Color.WHITE);
-        button.setForeground(BACKGROUND_COLOR);
+        button.setForeground(Color.BLACK);
         button.setBorder(BorderFactory.createLineBorder(getTransportColor(transport), 3));
         button.setOpaque(true);
 
@@ -149,10 +136,10 @@ public final class TransportSelectionDialog extends JDialog {
      */
     private Color getTransportColor(final TransportType transport) {
         return switch (transport) {
-            case TAXI -> TAXI_COLOR;
-            case BUS -> BUS_COLOR;
-            case UNDERGROUND -> UNDERGROUND_COLOR;
-            case FERRY -> FERRY_COLOR;
+            case TAXI -> ScotColors.TAXI_COLOR;
+            case BUS -> ScotColors.BUS_COLOR;
+            case UNDERGROUND -> ScotColors.UNDERGROUND_COLOR;
+            case FERRY -> ScotColors.FERRY_COLOR;
         };
     }
 

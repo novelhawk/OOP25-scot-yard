@@ -1,6 +1,8 @@
 package it.unibo.scotyard.view.menu;
 
 import it.unibo.scotyard.commons.engine.Size;
+import it.unibo.scotyard.commons.patterns.ScotColors;
+import it.unibo.scotyard.commons.patterns.ScotFont;
 import it.unibo.scotyard.controller.menu.MainMenuController;
 import it.unibo.scotyard.model.game.record.GameRecord;
 import java.awt.BorderLayout;
@@ -8,7 +10,6 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.Font;
 import java.util.Objects;
 import java.util.Optional;
 import javax.swing.Box;
@@ -27,14 +28,6 @@ import javax.swing.table.DefaultTableModel;
  *
  */
 public final class MainMenuViewImpl implements MainMenuView {
-
-    // Color scheme
-    private static final Color BACKGROUND_COLOR = new Color(0, 0, 0); // black
-    private static final Color ACCENT_COLOR = new Color(31, 81, 255); // neon blue
-
-    // Typography
-    private static final Font TITLE_FONT = new Font("Arial", Font.BOLD, 36);
-    private static final Font BUTTON_FONT = new Font("Arial", Font.BOLD, 20);
 
     // UI text
     private static final String TITLE_TEXT = "Scotland Yard";
@@ -95,7 +88,7 @@ public final class MainMenuViewImpl implements MainMenuView {
     private JPanel createMenuPanel() {
         final JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-        panel.setBackground(BACKGROUND_COLOR);
+        panel.setBackground(ScotColors.BACKGROUND_COLOR);
         return panel;
     }
 
@@ -110,12 +103,12 @@ public final class MainMenuViewImpl implements MainMenuView {
         // panel statistiche con BoxLayout
         final JPanel statsPanel = new JPanel();
         statsPanel.setLayout(new BoxLayout(statsPanel, BoxLayout.Y_AXIS));
-        statsPanel.setBackground(BACKGROUND_COLOR);
+        statsPanel.setBackground(ScotColors.BACKGROUND_COLOR);
 
         // Titolo
         final JLabel titleLabel = new JLabel("STATISTICHE PARTITE");
-        titleLabel.setFont(new Font("Arial", Font.BOLD, 28));
-        titleLabel.setForeground(ACCENT_COLOR);
+        titleLabel.setFont(ScotFont.TEXT_FONT_28);
+        titleLabel.setForeground(ScotColors.ACCENT_COLOR);
         titleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         statsPanel.add(titleLabel);
 
@@ -152,20 +145,20 @@ public final class MainMenuViewImpl implements MainMenuView {
         };
 
         final JTable table = new JTable(tableModel);
-        table.setFont(new Font("Arial", Font.PLAIN, 16));
+        table.setFont(ScotFont.TEXT_FONT_16);
         table.setRowHeight(40);
-        table.setBackground(BACKGROUND_COLOR);
+        table.setBackground(ScotColors.BACKGROUND_COLOR);
         table.setForeground(Color.WHITE);
-        table.setGridColor(ACCENT_COLOR);
-        table.getTableHeader().setFont(new Font("Arial", Font.BOLD, 18));
-        table.getTableHeader().setBackground(ACCENT_COLOR);
-        table.getTableHeader().setForeground(BACKGROUND_COLOR);
+        table.setGridColor(ScotColors.ACCENT_COLOR);
+        table.getTableHeader().setFont(ScotFont.TEXT_FONT_18);
+        table.getTableHeader().setBackground(ScotColors.ACCENT_COLOR);
+        table.getTableHeader().setForeground(ScotColors.BACKGROUND_COLOR);
         table.getTableHeader().setReorderingAllowed(false);
 
         // Centra testo nelle celle
         final DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
         centerRenderer.setHorizontalAlignment(JLabel.CENTER);
-        centerRenderer.setBackground(BACKGROUND_COLOR);
+        centerRenderer.setBackground(ScotColors.BACKGROUND_COLOR);
         centerRenderer.setForeground(Color.WHITE);
         for (int i = 0; i < table.getColumnCount(); i++) {
             table.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
@@ -177,26 +170,26 @@ public final class MainMenuViewImpl implements MainMenuView {
         final JScrollPane scrollPane = new JScrollPane(table);
         scrollPane.setMaximumSize(new Dimension(800, 150));
         scrollPane.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 50, 30, 50));
-        scrollPane.setBackground(BACKGROUND_COLOR);
+        scrollPane.setBackground(ScotColors.BACKGROUND_COLOR);
         scrollPane.setAlignmentX(Component.CENTER_ALIGNMENT);
         statsPanel.add(scrollPane);
 
         // Pannello bottoni
         final JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 20));
-        buttonPanel.setBackground(BACKGROUND_COLOR);
+        buttonPanel.setBackground(ScotColors.BACKGROUND_COLOR);
         buttonPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         final JButton backButton = new JButton("Indietro");
-        backButton.setFont(BUTTON_FONT);
-        backButton.setBackground(ACCENT_COLOR);
-        backButton.setForeground(BACKGROUND_COLOR);
+        backButton.setFont(ScotFont.TEXT_FONT_20);
+        backButton.setBackground(ScotColors.ACCENT_COLOR);
+        backButton.setForeground(ScotColors.BACKGROUND_COLOR);
         backButton.setOpaque(true);
         backButton.setBorderPainted(false);
         backButton.addActionListener(e -> showMenu());
 
         final JButton resetButton = new JButton("Resetta Record");
-        resetButton.setFont(BUTTON_FONT);
-        resetButton.setBackground(new Color(220, 20, 20)); // rosso
+        resetButton.setFont(ScotFont.TEXT_FONT_20);
+        resetButton.setBackground(Color.RED); // rosso
         resetButton.setForeground(Color.WHITE);
         resetButton.setOpaque(true);
         resetButton.setBorderPainted(false);
@@ -278,8 +271,8 @@ public final class MainMenuViewImpl implements MainMenuView {
     // Title label
     private JLabel createTitleLabel() {
         final JLabel label = new JLabel(TITLE_TEXT);
-        label.setFont(TITLE_FONT);
-        label.setForeground(ACCENT_COLOR);
+        label.setFont(ScotFont.TITLE_FONT_36);
+        label.setForeground(ScotColors.ACCENT_COLOR);
         label.setAlignmentX(Component.CENTER_ALIGNMENT);
         return label;
     }
@@ -287,9 +280,9 @@ public final class MainMenuViewImpl implements MainMenuView {
     // New game button
     private JButton createNewGameButton() {
         final JButton button = new JButton(NEW_GAME_TEXT);
-        button.setFont(BUTTON_FONT);
-        button.setBackground(ACCENT_COLOR);
-        button.setForeground(BACKGROUND_COLOR);
+        button.setFont(ScotFont.TEXT_FONT_20);
+        button.setBackground(ScotColors.ACCENT_COLOR);
+        button.setForeground(ScotColors.BACKGROUND_COLOR);
         button.setAlignmentX(Component.CENTER_ALIGNMENT);
         button.addActionListener(e -> {
             this.controller.newGameMenu();
@@ -300,9 +293,9 @@ public final class MainMenuViewImpl implements MainMenuView {
     // Load game button
     private JButton createLoadGameButton() {
         final JButton button = new JButton(LOAD_GAME_TEXT);
-        button.setFont(BUTTON_FONT);
-        button.setBackground(ACCENT_COLOR);
-        button.setForeground(BACKGROUND_COLOR);
+        button.setFont(ScotFont.TEXT_FONT_20);
+        button.setBackground(ScotColors.ACCENT_COLOR);
+        button.setForeground(ScotColors.BACKGROUND_COLOR);
         button.setAlignmentX(Component.CENTER_ALIGNMENT);
         button.addActionListener(e -> {
             // TO DO
@@ -313,9 +306,9 @@ public final class MainMenuViewImpl implements MainMenuView {
     // Statistics button
     private JButton createStatisticsButton() {
         final JButton button = new JButton(STATISTICS_TEXT);
-        button.setFont(BUTTON_FONT);
-        button.setBackground(ACCENT_COLOR);
-        button.setForeground(BACKGROUND_COLOR);
+        button.setFont(ScotFont.TEXT_FONT_20);
+        button.setBackground(ScotColors.ACCENT_COLOR);
+        button.setForeground(ScotColors.BACKGROUND_COLOR);
         button.setAlignmentX(Component.CENTER_ALIGNMENT);
         button.addActionListener(e -> {
             this.controller.showStatistics();
@@ -326,9 +319,9 @@ public final class MainMenuViewImpl implements MainMenuView {
     // Exit button
     private JButton createExitButton() {
         final JButton button = new JButton(EXIT_TEXT);
-        button.setFont(BUTTON_FONT);
-        button.setBackground(ACCENT_COLOR);
-        button.setForeground(BACKGROUND_COLOR);
+        button.setFont(ScotFont.TEXT_FONT_20);
+        button.setBackground(ScotColors.ACCENT_COLOR);
+        button.setForeground(ScotColors.BACKGROUND_COLOR);
         button.setAlignmentX(Component.CENTER_ALIGNMENT);
         button.addActionListener(e -> {
             close();

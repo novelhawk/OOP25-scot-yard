@@ -2,6 +2,7 @@ package it.unibo.scotyard.view.map;
 
 import it.unibo.scotyard.commons.dtos.map.MapInfo;
 import it.unibo.scotyard.commons.dtos.map.Node;
+import it.unibo.scotyard.commons.patterns.ScotColors;
 import it.unibo.scotyard.model.map.NodeId;
 import it.unibo.scotyard.model.map.TransportType;
 import it.unibo.scotyard.view.game.GameView;
@@ -54,19 +55,6 @@ public final class MapPanel extends JPanel {
     // Dimensioni originali del background
     private static final int ORIGINAL_BACKGROUND_WIDTH = 2570;
     private static final int ORIGINAL_BACKGROUND_HEIGHT = 1926;
-
-    private static final Color BACKGROUND_COLOR = new Color(170, 170, 170);
-    private static final Color NODE_FILL_COLOR = new Color(255, 255, 255);
-    private static final Color NODE_TEXT_COLOR = new Color(33, 33, 33);
-    private static final Color SHADOW_COLOR = new Color(0, 0, 0, 30);
-
-    private static final Color MISTER_X_COLOR = new Color(0, 0, 0); // nero
-    private static final Color DETECTIVE_COLOR = new Color(0, 100, 200); // blu
-    private static final Color BOBBIES_COLOR = new Color(255, 140, 0); // arancione scuro
-
-    private static final Color MISTER_X_BORDER_COLOR = Color.GRAY;
-    private static final Color DETECTIVE_BORDER_COLOR = new Color(0, 150, 255); // blu chiaro
-    private static final Color BOBBIES_BORDER_COLOR = new Color(255, 200, 100); // arancione chiaro
 
     // Zoom settings
     private static final double MIN_ZOOM = 1.0;
@@ -136,7 +124,7 @@ public final class MapPanel extends JPanel {
 
     private void setupPanel() {
         setOpaque(true);
-        setBackground(BACKGROUND_COLOR);
+        setBackground(ScotColors.BACKGROUND_COLOR);
         loadBackgroundImage();
 
         addComponentListener(new ComponentAdapter() {
@@ -445,11 +433,11 @@ public final class MapPanel extends JPanel {
                 .toList();
 
         // Ombra
-        g2d.setColor(SHADOW_COLOR);
+        g2d.setColor(ScotColors.SHADOW_COLOR);
         g2d.fillOval(x - scaledRadius + 2, y - scaledRadius + 2, scaledRadius * 2, scaledRadius * 2);
 
         // Riempimento bianco
-        g2d.setColor(NODE_FILL_COLOR);
+        g2d.setColor(Color.WHITE);
         g2d.fillOval(x - scaledRadius, y - scaledRadius, scaledRadius * 2, scaledRadius * 2);
 
         // Bordo interno
@@ -489,7 +477,7 @@ public final class MapPanel extends JPanel {
         }
 
         // ID nodo
-        g2d.setColor(NODE_TEXT_COLOR);
+        g2d.setColor(Color.BLACK);
         final String label = String.valueOf(node.getId().id());
         final FontMetrics fm = g2d.getFontMetrics();
         final int textWidth = fm.stringWidth(label);
@@ -499,10 +487,10 @@ public final class MapPanel extends JPanel {
 
     private Color getTransportColor(final TransportType transport) {
         return switch (transport) {
-            case TAXI -> new Color(255, 255, 85);
-            case BUS -> new Color(58, 132, 36);
-            case UNDERGROUND -> new Color(200, 43, 29);
-            case FERRY -> new Color(0, 0, 0);
+            case TAXI -> ScotColors.TAXI_COLOR;
+            case BUS -> ScotColors.BUS_COLOR;
+            case UNDERGROUND -> ScotColors.UNDERGROUND_COLOR;
+            case FERRY -> ScotColors.FERRY_COLOR;
         };
     }
 
@@ -612,23 +600,23 @@ public final class MapPanel extends JPanel {
 
                 // Player circle
                 if (DETECTIVE_STRING.equals(playerString)) {
-                    g2d.setColor(DETECTIVE_COLOR);
+                    g2d.setColor(ScotColors.DETECTIVE_COLOR);
                 } else if (MRX_STRING.equals(playerString)) {
-                    g2d.setColor(MISTER_X_COLOR);
+                    g2d.setColor(ScotColors.MISTER_X_COLOR);
                 } else if (playerString.startsWith("B")) {
-                    g2d.setColor(BOBBIES_COLOR);
+                    g2d.setColor(ScotColors.BOBBIES_COLOR);
                 }
                 g2d.fillOval(x - scaledRadius, y - scaledRadius, scaledRadius * 2, scaledRadius * 2);
 
                 // Bordo colorato
                 if (DETECTIVE_STRING.equals(playerString)) {
-                    g2d.setColor(DETECTIVE_BORDER_COLOR);
+                    g2d.setColor(ScotColors.DETECTIVE_BORDER_COLOR);
                     g2d.setStroke(new BasicStroke(2.0f * (float) nodeZoom));
                 } else if (MRX_STRING.equals(playerString)) {
-                    g2d.setColor(MISTER_X_BORDER_COLOR);
+                    g2d.setColor(ScotColors.MISTER_X_BORDER_COLOR);
                     g2d.setStroke(new BasicStroke(3.0f * (float) nodeZoom));
                 } else if (playerString.startsWith("B")) {
-                    g2d.setColor(BOBBIES_BORDER_COLOR);
+                    g2d.setColor(ScotColors.BOBBIES_BORDER_COLOR);
                     g2d.setStroke(new BasicStroke(2.0f * (float) nodeZoom));
                 }
                 g2d.drawOval(x - scaledRadius, y - scaledRadius, scaledRadius * 2, scaledRadius * 2);

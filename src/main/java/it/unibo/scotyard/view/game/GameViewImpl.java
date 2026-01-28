@@ -3,6 +3,7 @@ package it.unibo.scotyard.view.game;
 import it.unibo.scotyard.commons.Constants;
 import it.unibo.scotyard.commons.dtos.map.MapInfo;
 import it.unibo.scotyard.commons.engine.Size;
+import it.unibo.scotyard.commons.patterns.ScotColors;
 import it.unibo.scotyard.controller.game.GameController;
 import it.unibo.scotyard.model.map.NodeId;
 import it.unibo.scotyard.model.map.TransportType;
@@ -47,12 +48,6 @@ public final class GameViewImpl implements GameView {
     private static final String BUS_TEXT = "Bus";
     private static final String UNDERGROUND_TEXT = "Metro";
     private static final String FERRY_TEXT = "Traghetto";
-
-    private static final Color BACKGROUND_COLOR = new Color(0, 0, 0); // black
-    private static final Color ACCENT_COLOR = new Color(31, 81, 255); // neon blue
-    private static final Color WHITE_COLOR = new Color(255, 255, 255);
-    private static final Color RED_COLOR = new Color(255, 0, 0); // red
-    private static final Color GREEN_COLOR = new Color(0, 255, 0);
 
     private static final Font TITLE_FONT = new Font("Arial", Font.BOLD, 36);
     private static final Font TEXT_FONT = new Font("Arial", Font.BOLD, 20);
@@ -131,24 +126,24 @@ public final class GameViewImpl implements GameView {
         final Size smallSize = Size.of(SMALL_WINDOW_WIDTH, SMALL_WINDOW_HEIGHT);
         this.gameOverPanel = new JPanel();
         this.gameOverPanel.setLayout(new BoxLayout(this.gameOverPanel, BoxLayout.Y_AXIS));
-        this.gameOverPanel.setBackground(BACKGROUND_COLOR);
+        this.gameOverPanel.setBackground(ScotColors.BACKGROUND_COLOR);
         this.gameOverPanel.add(Box.createVerticalGlue());
         JLabel titleLabel = new JLabel("GAME OVER!");
-        titleLabel.setForeground(ACCENT_COLOR);
+        titleLabel.setForeground(ScotColors.ACCENT_COLOR);
         titleLabel.setFont(TITLE_FONT);
         titleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         this.gameOverPanel.add(titleLabel);
         this.gameOverPanel.add(Box.createVerticalStrut(SMALL_SPACING));
         this.winnerLabel = new JLabel();
-        this.winnerLabel.setForeground(ACCENT_COLOR);
+        this.winnerLabel.setForeground(ScotColors.ACCENT_COLOR);
         this.winnerLabel.setFont(WINNER_FONT);
         this.winnerLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         this.gameOverPanel.add(this.winnerLabel);
         this.gameOverPanel.add(Box.createVerticalStrut(SPACING));
         JButton button = new JButton("Ritorna al menù principale");
         button.setFont(TEXT_FONT);
-        button.setBackground(ACCENT_COLOR);
-        button.setForeground(BACKGROUND_COLOR);
+        button.setBackground(ScotColors.ACCENT_COLOR);
+        button.setForeground(ScotColors.BACKGROUND_COLOR);
         button.setAlignmentX(Component.CENTER_ALIGNMENT);
         this.gameOverPanel.add(button);
         this.gameOverPanel.add(Box.createVerticalStrut(SPACING));
@@ -166,9 +161,9 @@ public final class GameViewImpl implements GameView {
     private void setResult(String result) {
         this.winnerLabel.setText(result);
         if (new String("Vittoria").equals(result)) {
-            this.winnerLabel.setForeground(GREEN_COLOR);
+            this.winnerLabel.setForeground(Color.GREEN);
         } else {
-            this.winnerLabel.setForeground(RED_COLOR);
+            this.winnerLabel.setForeground(Color.RED);
         }
     }
 
@@ -180,13 +175,13 @@ public final class GameViewImpl implements GameView {
     @Override
     public void loadTransportSelectionDialog(Set<TransportType> availableTransportTypes) {
         JDialog selectionWindow = new JDialog();
-        selectionWindow.setBackground(WHITE_COLOR);
+        selectionWindow.setBackground(Color.WHITE);
         selectionWindow.setTitle(SELECTION_JDIALOG_TITLE);
         selectionWindow.setSize(new Dimension(SMALL_WINDOW_WIDTH, SMALL_WINDOW_HEIGHT));
         selectionWindow.setLayout(new BorderLayout());
 
         JLabel textLabel = new JLabel("Selezionare mezzo di trasporto");
-        textLabel.setForeground(BACKGROUND_COLOR);
+        textLabel.setForeground(ScotColors.BACKGROUND_COLOR);
         textLabel.setFont(SMALL_TEXT_FONT);
         textLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         selectionWindow.add(textLabel, BorderLayout.NORTH);
@@ -194,7 +189,7 @@ public final class GameViewImpl implements GameView {
         JPanel buttonsPanel = new JPanel(new FlowLayout());
         for (TransportType transport : availableTransportTypes) {
             JButton button = new JButton();
-            button.setForeground(BACKGROUND_COLOR);
+            button.setForeground(ScotColors.BACKGROUND_COLOR);
             button.setFont(SMALL_TEXT_FONT);
             switch (transport) {
                 case TAXI:
