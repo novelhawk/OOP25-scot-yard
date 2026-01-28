@@ -1,6 +1,7 @@
 package it.unibo.scotyard.model.game;
 
 import it.unibo.scotyard.commons.Constants;
+import it.unibo.scotyard.commons.patterns.CommonCostants;
 import it.unibo.scotyard.model.Pair;
 import it.unibo.scotyard.model.entities.ExposedPosition;
 import it.unibo.scotyard.model.entities.MoveAction;
@@ -100,8 +101,8 @@ public final class GameStateImpl implements GameState {
 
     @Override
     public String resultGame() {
-        final String victoryString = "Vittoria";
-        final String lossString = "Sconfitta";
+        final String victoryString = CommonCostants.WINNER_TEXT;
+        final String lossString = CommonCostants.LOSER_TEXT;
 
         final NodeId runnerPosition = this.players.getMisterX().getPosition();
         final boolean found =

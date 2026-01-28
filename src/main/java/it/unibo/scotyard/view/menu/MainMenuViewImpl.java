@@ -1,6 +1,7 @@
 package it.unibo.scotyard.view.menu;
 
 import it.unibo.scotyard.commons.engine.Size;
+import it.unibo.scotyard.commons.patterns.CommonCostants;
 import it.unibo.scotyard.commons.patterns.ScotColors;
 import it.unibo.scotyard.commons.patterns.ScotFont;
 import it.unibo.scotyard.controller.menu.MainMenuController;
@@ -28,13 +29,6 @@ import javax.swing.table.DefaultTableModel;
  *
  */
 public final class MainMenuViewImpl implements MainMenuView {
-
-    // UI text
-    private static final String TITLE_TEXT = "Scotland Yard";
-    private static final String NEW_GAME_TEXT = "Nuova partita";
-    private static final String LOAD_GAME_TEXT = "Carica partita";
-    private static final String STATISTICS_TEXT = "Statistiche";
-    private static final String EXIT_TEXT = "Esci";
 
     // Layout spacing
     private static final int TITLE_SPACING = 40;
@@ -106,7 +100,7 @@ public final class MainMenuViewImpl implements MainMenuView {
         statsPanel.setBackground(ScotColors.BACKGROUND_COLOR);
 
         // Titolo
-        final JLabel titleLabel = new JLabel("STATISTICHE PARTITE");
+        final JLabel titleLabel = new JLabel(CommonCostants.STATISCS_TITLE.toUpperCase());
         titleLabel.setFont(ScotFont.TEXT_FONT_28);
         titleLabel.setForeground(ScotColors.ACCENT_COLOR);
         titleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -117,7 +111,7 @@ public final class MainMenuViewImpl implements MainMenuView {
         final Object[][] data = new Object[2][3];
 
         // Riga 1: Detective
-        data[0][0] = "DETECTIVE";
+        data[0][0] = CommonCostants.GAME_MODES_STRINGS[1];
         if (detectiveRecord.isPresent() && detectiveRecord.get().isValid()) {
             data[0][1] = formatDuration(detectiveRecord.get().getDurationMillis());
             data[0][2] = formatDate(detectiveRecord.get().getTimestamp());
@@ -127,7 +121,7 @@ public final class MainMenuViewImpl implements MainMenuView {
         }
 
         // Riga 2: Mr. X
-        data[1][0] = "MR. X";
+        data[1][0] = CommonCostants.GAME_MODES_STRINGS[0];
         if (mrxRecord.isPresent() && mrxRecord.get().isValid()) {
             data[1][1] = formatDuration(mrxRecord.get().getDurationMillis());
             data[1][2] = formatDate(mrxRecord.get().getTimestamp());
@@ -179,7 +173,7 @@ public final class MainMenuViewImpl implements MainMenuView {
         buttonPanel.setBackground(ScotColors.BACKGROUND_COLOR);
         buttonPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        final JButton backButton = new JButton("Indietro");
+        final JButton backButton = new JButton(CommonCostants.BACK);
         backButton.setFont(ScotFont.TEXT_FONT_20);
         backButton.setBackground(ScotColors.ACCENT_COLOR);
         backButton.setForeground(ScotColors.BACKGROUND_COLOR);
@@ -187,7 +181,7 @@ public final class MainMenuViewImpl implements MainMenuView {
         backButton.setBorderPainted(false);
         backButton.addActionListener(e -> showMenu());
 
-        final JButton resetButton = new JButton("Resetta Record");
+        final JButton resetButton = new JButton(CommonCostants.RESET_RECORD_TEXT);
         resetButton.setFont(ScotFont.TEXT_FONT_20);
         resetButton.setBackground(Color.RED); // rosso
         resetButton.setForeground(Color.WHITE);
@@ -270,7 +264,7 @@ public final class MainMenuViewImpl implements MainMenuView {
 
     // Title label
     private JLabel createTitleLabel() {
-        final JLabel label = new JLabel(TITLE_TEXT);
+        final JLabel label = new JLabel(CommonCostants.SCOTLAND_YARD);
         label.setFont(ScotFont.TITLE_FONT_36);
         label.setForeground(ScotColors.ACCENT_COLOR);
         label.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -279,7 +273,7 @@ public final class MainMenuViewImpl implements MainMenuView {
 
     // New game button
     private JButton createNewGameButton() {
-        final JButton button = new JButton(NEW_GAME_TEXT);
+        final JButton button = new JButton(CommonCostants.NEW_GAME_TEXT);
         button.setFont(ScotFont.TEXT_FONT_20);
         button.setBackground(ScotColors.ACCENT_COLOR);
         button.setForeground(ScotColors.BACKGROUND_COLOR);
@@ -292,7 +286,7 @@ public final class MainMenuViewImpl implements MainMenuView {
 
     // Load game button
     private JButton createLoadGameButton() {
-        final JButton button = new JButton(LOAD_GAME_TEXT);
+        final JButton button = new JButton(CommonCostants.LOAD_GAME_TEXT);
         button.setFont(ScotFont.TEXT_FONT_20);
         button.setBackground(ScotColors.ACCENT_COLOR);
         button.setForeground(ScotColors.BACKGROUND_COLOR);
@@ -305,7 +299,7 @@ public final class MainMenuViewImpl implements MainMenuView {
 
     // Statistics button
     private JButton createStatisticsButton() {
-        final JButton button = new JButton(STATISTICS_TEXT);
+        final JButton button = new JButton(CommonCostants.STATISTICS_TEXT);
         button.setFont(ScotFont.TEXT_FONT_20);
         button.setBackground(ScotColors.ACCENT_COLOR);
         button.setForeground(ScotColors.BACKGROUND_COLOR);
@@ -318,7 +312,7 @@ public final class MainMenuViewImpl implements MainMenuView {
 
     // Exit button
     private JButton createExitButton() {
-        final JButton button = new JButton(EXIT_TEXT);
+        final JButton button = new JButton(CommonCostants.EXIT_TEXT);
         button.setFont(ScotFont.TEXT_FONT_20);
         button.setBackground(ScotColors.ACCENT_COLOR);
         button.setForeground(ScotColors.BACKGROUND_COLOR);

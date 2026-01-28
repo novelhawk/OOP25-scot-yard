@@ -1,6 +1,7 @@
 package it.unibo.scotyard.view.gamelauncher;
 
 import it.unibo.scotyard.commons.engine.Size;
+import it.unibo.scotyard.commons.patterns.CommonCostants;
 import it.unibo.scotyard.commons.patterns.ScotColors;
 import it.unibo.scotyard.commons.patterns.ScotFont;
 import it.unibo.scotyard.controller.gamelauncher.GameLauncherController;
@@ -25,7 +26,6 @@ public final class GameLauncherViewImpl extends JFrame implements GameLauncherVi
     private static final long serialVersionUID = 1L;
 
     // Window properties
-    private static final String WINDOW_TITLE = "Scotland Yard - Game Launcher";
     private static final int WINDOW_WIDTH = 400;
     private static final int WINDOW_HEIGHT = 250;
 
@@ -41,11 +41,6 @@ public final class GameLauncherViewImpl extends JFrame implements GameLauncherVi
     private static final int BUTTON_WIDTH = 200;
     private static final int BUTTON_HEIGHT = 40;
 
-    // UI text
-    private static final String TITLE_TEXT = "Scotland Yard";
-    private static final String RESOLUTION_LABEL = "Select Resolution:";
-    private static final String START_BUTTON_TEXT = "Start Game";
-
     private final GameLauncherController controller;
 
     /**
@@ -55,7 +50,7 @@ public final class GameLauncherViewImpl extends JFrame implements GameLauncherVi
      * @throws NullPointerException if controller is null
      */
     public GameLauncherViewImpl(final GameLauncherController controller) {
-        super(WINDOW_TITLE);
+        super(CommonCostants.LAUNCHER);
         this.controller = Objects.requireNonNull(controller, "Controller cannot be null");
         setupWindow();
         buildUI();
@@ -105,7 +100,7 @@ public final class GameLauncherViewImpl extends JFrame implements GameLauncherVi
 
     // Create title label
     private JLabel createTitleLabel() {
-        final JLabel label = new JLabel(TITLE_TEXT);
+        final JLabel label = new JLabel(CommonCostants.SCOTLAND_YARD);
         label.setFont(ScotFont.TEXT_FONT_24);
         label.setForeground(ScotColors.ACCENT_COLOR);
         label.setAlignmentX(CENTER_ALIGNMENT);
@@ -118,7 +113,7 @@ public final class GameLauncherViewImpl extends JFrame implements GameLauncherVi
         panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
         panel.setBackground(ScotColors.BACKGROUND_COLOR);
 
-        final JLabel label = new JLabel(RESOLUTION_LABEL);
+        final JLabel label = new JLabel(CommonCostants.RESOLUTION_LABEL);
         label.setFont(ScotFont.TEXT_FONT_14);
         label.setForeground(ScotColors.ACCENT_COLOR);
 
@@ -149,7 +144,7 @@ public final class GameLauncherViewImpl extends JFrame implements GameLauncherVi
 
     // Create start button with action
     private JButton createStartButton() {
-        final JButton button = new JButton(START_BUTTON_TEXT);
+        final JButton button = new JButton(CommonCostants.START_BUTTON_TEXT);
         button.setFont(ScotFont.TEXT_FONT_16);
         button.setBackground(Color.WHITE);
         button.setForeground(Color.BLACK);

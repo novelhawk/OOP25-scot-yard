@@ -1,6 +1,7 @@
 package it.unibo.scotyard.view.menu;
 
 import it.unibo.scotyard.commons.engine.Size;
+import it.unibo.scotyard.commons.patterns.CommonCostants;
 import it.unibo.scotyard.commons.patterns.ScotColors;
 import it.unibo.scotyard.commons.patterns.ScotFont;
 import it.unibo.scotyard.controller.menu.NewGameMenuController;
@@ -24,15 +25,6 @@ public final class NewGameMenuViewImpl implements NewGameMenuView {
     // Component sizes
     private static final int COMBO_WIDTH = 200;
     private static final int COMBO_HEIGHT = 30;
-
-    // UI text
-    private static final String PLAYER_NAME_TEXT = "Inserire nome";
-    private static final String SELECT_GAME_MODE_TEXT = "Selezionare modalità";
-    private static final String SELECT_GAME_DIFFICULTY_TEXT = "Selezionare difficoltà";
-    private static final String START_BUTTON_TEXT = "Avvia gioco";
-    private static final String GO_BACK_BUTTON_TEXT = "Torna indietro";
-    private static final String[] GAME_MODES_STRINGS = {"Mister X", "Detective"};
-    private static final String[] DIFFICULTY_LEVELS_STRINGS = {"Facile", "Media", "Difficile"};
 
     // Layout spacing
     private static final int SMALL_SPACING = 20;
@@ -102,7 +94,7 @@ public final class NewGameMenuViewImpl implements NewGameMenuView {
 
     // Insert player name label
     private JLabel createPlayerNameLabel() {
-        final JLabel label = new JLabel(PLAYER_NAME_TEXT);
+        final JLabel label = new JLabel(CommonCostants.PLAYER_NAME_TEXT);
         label.setFont(ScotFont.TEXT_FONT_20);
         label.setForeground(ScotColors.ACCENT_COLOR);
         label.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -121,7 +113,7 @@ public final class NewGameMenuViewImpl implements NewGameMenuView {
 
     // Selection game mode label
     private JLabel createSelectGameModeLabel() {
-        final JLabel label = new JLabel(SELECT_GAME_MODE_TEXT);
+        final JLabel label = new JLabel(CommonCostants.SELECT_GAME_MODE_TEXT);
         label.setFont(ScotFont.TEXT_FONT_20);
         label.setForeground(ScotColors.ACCENT_COLOR);
         label.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -130,7 +122,7 @@ public final class NewGameMenuViewImpl implements NewGameMenuView {
 
     // Selection game mode combo box
     private JComboBox<?> createSelectionGameModeComboBox() {
-        final JComboBox<?> comboBox = new JComboBox<>(GAME_MODES_STRINGS);
+        final JComboBox<?> comboBox = new JComboBox<>(CommonCostants.GAME_MODES_STRINGS);
         comboBox.setFont(ScotFont.TEXT_FONT_16);
         comboBox.setForeground(ScotColors.BACKGROUND_COLOR);
         comboBox.setMaximumSize(new Dimension(COMBO_WIDTH, COMBO_HEIGHT));
@@ -144,7 +136,7 @@ public final class NewGameMenuViewImpl implements NewGameMenuView {
 
     // Selection game difficulty label
     private JLabel createSelectGameDifficultyLabel() {
-        final JLabel label = new JLabel(SELECT_GAME_DIFFICULTY_TEXT);
+        final JLabel label = new JLabel(CommonCostants.SELECT_GAME_DIFFICULTY_TEXT);
         label.setFont(ScotFont.TEXT_FONT_20);
         label.setForeground(ScotColors.ACCENT_COLOR);
         label.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -153,7 +145,7 @@ public final class NewGameMenuViewImpl implements NewGameMenuView {
 
     // Selection game mode combo box
     private JComboBox<?> createSelectionDifficultyLevelComboBox() {
-        final JComboBox<?> comboBox = new JComboBox<>(DIFFICULTY_LEVELS_STRINGS);
+        final JComboBox<?> comboBox = new JComboBox<>(CommonCostants.DIFFICULTY_LEVELS_STRINGS);
         comboBox.setFont(ScotFont.TEXT_FONT_16);
         comboBox.setForeground(ScotColors.BACKGROUND_COLOR);
         comboBox.setMaximumSize(new Dimension(COMBO_WIDTH, COMBO_HEIGHT));
@@ -175,7 +167,7 @@ public final class NewGameMenuViewImpl implements NewGameMenuView {
             final JComboBox<?> gameModeComboBox,
             final JComboBox<?> difficultyLevelComboBox,
             final JTextField playerTextField) {
-        final JButton button = new JButton(START_BUTTON_TEXT);
+        final JButton button = new JButton(CommonCostants.START_BUTTON_TEXT);
         button.setFont(ScotFont.TEXT_FONT_20);
         button.setForeground(ScotColors.BACKGROUND_COLOR);
         button.setBackground(ScotColors.ACCENT_COLOR);
@@ -191,7 +183,7 @@ public final class NewGameMenuViewImpl implements NewGameMenuView {
 
     // Go back button
     private JButton createGoBackButton() {
-        final JButton button = new JButton(GO_BACK_BUTTON_TEXT);
+        final JButton button = new JButton(CommonCostants.GO_BACK_BUTTON_TEXT);
         button.setFont(ScotFont.TEXT_FONT_20);
         button.setForeground(ScotColors.BACKGROUND_COLOR);
         button.setBackground(ScotColors.ACCENT_COLOR);

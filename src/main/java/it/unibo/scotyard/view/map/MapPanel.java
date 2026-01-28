@@ -2,6 +2,7 @@ package it.unibo.scotyard.view.map;
 
 import it.unibo.scotyard.commons.dtos.map.MapInfo;
 import it.unibo.scotyard.commons.dtos.map.Node;
+import it.unibo.scotyard.commons.patterns.CommonCostants;
 import it.unibo.scotyard.commons.patterns.ScotColors;
 import it.unibo.scotyard.model.map.NodeId;
 import it.unibo.scotyard.model.map.TransportType;
@@ -47,10 +48,6 @@ public final class MapPanel extends JPanel {
     private static final int NODE_RADIUS = 14;
     private static final int NODE_LABEL_SIZE = 10;
     private static final Font NODE_FONT = new Font("Arial", Font.BOLD, NODE_LABEL_SIZE);
-
-    private static final String MRX_STRING = "X";
-    private static final String DETECTIVE_STRING = "D";
-    private static final String BOBBIES_STRING = "B";
 
     // Dimensioni originali del background
     private static final int ORIGINAL_BACKGROUND_WIDTH = 2570;
@@ -599,9 +596,9 @@ public final class MapPanel extends JPanel {
                 final int y = (int) pos.getY();
 
                 // Player circle
-                if (DETECTIVE_STRING.equals(playerString)) {
+                if (CommonCostants.DETECTIVE_STRING.equals(playerString)) {
                     g2d.setColor(ScotColors.DETECTIVE_COLOR);
-                } else if (MRX_STRING.equals(playerString)) {
+                } else if (CommonCostants.MRX_STRING.equals(playerString)) {
                     g2d.setColor(ScotColors.MISTER_X_COLOR);
                 } else if (playerString.startsWith("B")) {
                     g2d.setColor(ScotColors.BOBBIES_COLOR);
@@ -609,10 +606,10 @@ public final class MapPanel extends JPanel {
                 g2d.fillOval(x - scaledRadius, y - scaledRadius, scaledRadius * 2, scaledRadius * 2);
 
                 // Bordo colorato
-                if (DETECTIVE_STRING.equals(playerString)) {
+                if (CommonCostants.DETECTIVE_STRING.equals(playerString)) {
                     g2d.setColor(ScotColors.DETECTIVE_BORDER_COLOR);
                     g2d.setStroke(new BasicStroke(2.0f * (float) nodeZoom));
-                } else if (MRX_STRING.equals(playerString)) {
+                } else if (CommonCostants.MRX_STRING.equals(playerString)) {
                     g2d.setColor(ScotColors.MISTER_X_BORDER_COLOR);
                     g2d.setStroke(new BasicStroke(3.0f * (float) nodeZoom));
                 } else if (playerString.startsWith("B")) {
@@ -624,7 +621,7 @@ public final class MapPanel extends JPanel {
                 // Player text (white)
                 g2d.setColor(Color.WHITE);
                 int fontSize;
-                if (MRX_STRING.equals(playerString)) {
+                if (CommonCostants.MRX_STRING.equals(playerString)) {
                     fontSize = (int) (18 * nodeZoom);
                 } else {
                     fontSize = (int) (16 * nodeZoom);
@@ -691,10 +688,11 @@ public final class MapPanel extends JPanel {
         }
 
         // Render players
-        this.drawPlayer(g2d, DETECTIVE_STRING, this.detectivePosition, scaledRadius, nodeZoom);
-        this.drawPlayer(g2d, MRX_STRING, this.misterXPosition, scaledRadius, nodeZoom);
+        this.drawPlayer(g2d, CommonCostants.DETECTIVE_STRING, this.detectivePosition, scaledRadius, nodeZoom);
+        this.drawPlayer(g2d, CommonCostants.MRX_STRING, this.misterXPosition, scaledRadius, nodeZoom);
         for (int i = 0; i < this.bobbiesPositions.size(); i++) {
-            this.drawPlayer(g2d, BOBBIES_STRING + (i + 1), this.bobbiesPositions.get(i), scaledRadius, nodeZoom);
+            this.drawPlayer(
+                    g2d, CommonCostants.BOBBIES_STRING + (i + 1), this.bobbiesPositions.get(i), scaledRadius, nodeZoom);
         }
     }
 }
