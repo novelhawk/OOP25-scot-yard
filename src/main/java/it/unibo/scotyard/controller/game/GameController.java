@@ -58,7 +58,8 @@ public interface GameController {
     int getNumberTicketsUserPlayer(TicketType ticketType);
 
     /**
-     * Updates the sidebar, whenever a new round for a player starts. This function takes as an argument the current
+     * Updates the sidebar, whenever a new round for a player starts. This function
+     * takes as an argument the current
      * player.
      *
      * @param currentPlayer
@@ -75,7 +76,8 @@ public interface GameController {
     void loadMainMenu();
 
     /**
-     * Checks if there are multiple transport types to reach destination or not. Used only in
+     * Checks if there are multiple transport types to reach destination or not.
+     * Used only in
      * DetectiveGameControllerImpl.
      *
      * @param newPositionId the id of the destination
@@ -83,7 +85,8 @@ public interface GameController {
     void destinationChosen(NodeId newPositionId);
 
     /**
-     * Sets the selcted transport type to reach destination. Used only in DetectiveGameControllerImpl.
+     * Sets the selcted transport type to reach destination. Used only in
+     * DetectiveGameControllerImpl.
      *
      * @param transportType the type of transport selected
      */

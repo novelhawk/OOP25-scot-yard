@@ -5,6 +5,8 @@ import it.unibo.scotyard.model.entities.ExposedPosition;
 import it.unibo.scotyard.model.game.GameMode;
 import it.unibo.scotyard.model.game.GameState;
 import it.unibo.scotyard.model.game.GameStateSubscriber;
+import it.unibo.scotyard.model.game.record.JsonRecordRepository;
+import it.unibo.scotyard.model.game.record.RecordRepository;
 import it.unibo.scotyard.model.map.NodeId;
 import it.unibo.scotyard.model.map.TransportType;
 import it.unibo.scotyard.model.players.Player;
@@ -13,6 +15,7 @@ import it.unibo.scotyard.model.router.CommandDispatcher;
 import it.unibo.scotyard.view.game.GameView;
 import it.unibo.scotyard.view.map.MapPanel;
 import it.unibo.scotyard.view.sidebar.SidebarPanel;
+import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
 import javax.swing.*;
@@ -30,11 +33,13 @@ public abstract class GameControllerImpl implements GameController, GameStateSub
     protected final GameView view;
     protected final Controller mainController;
 
+    private final RecordRepository recordRepository;
+
     /**
      * Creates the controller
      *
-     * @param gameState the game state
-     * @param view the view
+     * @param gameState  the game state
+     * @param view       the view
      * @param controller the controller
      */
     public GameControllerImpl(
@@ -46,6 +51,11 @@ public abstract class GameControllerImpl implements GameController, GameStateSub
         this.gameState = Objects.requireNonNull(gameState, "Game cannot be null");
         this.view = Objects.requireNonNull(view, "GameView cannot be null");
         this.mainController = Objects.requireNonNull(controller, "mainController cannot be null");
+        try {
+            this.recordRepository = JsonRecordRepository.initialize();
+        } catch (IOException e) {
+            throw new RuntimeException("Cannot init record repo", e);
+        }
     }
 
     @Override
@@ -112,7 +122,16 @@ public abstract class GameControllerImpl implements GameController, GameStateSub
 
     @Override
     public void loadGameOverWindow() {
-        this.view.displayGameOverWindow(this.gameState.resultGame());
+        final String result = this.gameState.resultGame();
+
+        // recupera dati dal model
+        final long gameDuration = this.gameState.getGameDuration();
+        final GameMode gameMode = this.gameState.getGameMode();
+        final boolean isNewRecord = this.recordRepository.updateIfBetter(gameMode, gameDuration);
+        final String currentRecord = recordRepository.getFormattedDuration(gameMode);
+
+        // passa dati alla view
+        this.view.displayGameOverWindow(result, gameDuration, gameMode, isNewRecord, currentRecord);
     }
 
     @Override
@@ -121,7 +140,8 @@ public abstract class GameControllerImpl implements GameController, GameStateSub
     }
 
     /**
-     * Checks if there are multiple transport types to reach destination or not. Used only in
+     * Checks if there are multiple transport types to reach destination or not.
+     * Used only in
      * DetectiveGameControllerImpl.
      *
      * @param newPositionId the id of the destination
@@ -130,7 +150,8 @@ public abstract class GameControllerImpl implements GameController, GameStateSub
     public abstract void destinationChosen(NodeId newPositionId);
 
     /**
-     * Sets the selected transport type to reach destination. Used only in DetectiveGameControllerImpl.
+     * Sets the selected transport type to reach destination. Used only in
+     * DetectiveGameControllerImpl.
      *
      * @param transportType the type of transport selected
      */

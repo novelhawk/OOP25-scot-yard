@@ -21,7 +21,7 @@ public interface Model {
     void initialize(String gameMode, String levelDifficulty);
 
     /**
-     * 
+     *
      * @return @return the seeded shared random instance used by all game logic
      */
     Random getSeededRandom();

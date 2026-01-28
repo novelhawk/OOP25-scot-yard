@@ -64,6 +64,8 @@ public final class GameViewImpl implements GameView {
     private final SidebarPanel sidebar;
     private final JPanel mainPanel;
     private Window gameOverWindow;
+    private JPanel gameOverPanel;
+
     private JLabel winnerLabel;
 
     private GameController observer;
@@ -127,32 +129,32 @@ public final class GameViewImpl implements GameView {
 
     public void createGameOverWindow() {
         final Size smallSize = Size.of(SMALL_WINDOW_WIDTH, SMALL_WINDOW_HEIGHT);
-        final JPanel panel = new JPanel();
-        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-        panel.setBackground(BACKGROUND_COLOR);
-        panel.add(Box.createVerticalGlue());
+        this.gameOverPanel = new JPanel();
+        this.gameOverPanel.setLayout(new BoxLayout(this.gameOverPanel, BoxLayout.Y_AXIS));
+        this.gameOverPanel.setBackground(BACKGROUND_COLOR);
+        this.gameOverPanel.add(Box.createVerticalGlue());
         JLabel titleLabel = new JLabel("GAME OVER!");
         titleLabel.setForeground(ACCENT_COLOR);
         titleLabel.setFont(TITLE_FONT);
         titleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-        panel.add(titleLabel);
-        panel.add(Box.createVerticalStrut(SMALL_SPACING));
+        this.gameOverPanel.add(titleLabel);
+        this.gameOverPanel.add(Box.createVerticalStrut(SMALL_SPACING));
         this.winnerLabel = new JLabel();
         this.winnerLabel.setForeground(ACCENT_COLOR);
         this.winnerLabel.setFont(WINNER_FONT);
         this.winnerLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-        panel.add(this.winnerLabel);
-        panel.add(Box.createVerticalStrut(SPACING));
+        this.gameOverPanel.add(this.winnerLabel);
+        this.gameOverPanel.add(Box.createVerticalStrut(SPACING));
         JButton button = new JButton("Ritorna al menù principale");
         button.setFont(TEXT_FONT);
         button.setBackground(ACCENT_COLOR);
         button.setForeground(BACKGROUND_COLOR);
         button.setAlignmentX(Component.CENTER_ALIGNMENT);
-        panel.add(button);
-        panel.add(Box.createVerticalStrut(SPACING));
-        panel.add(Box.createVerticalGlue());
+        this.gameOverPanel.add(button);
+        this.gameOverPanel.add(Box.createVerticalStrut(SPACING));
+        this.gameOverPanel.add(Box.createVerticalGlue());
 
-        this.gameOverWindow = new WindowImpl(smallSize, panel, GAME_OVER_WINDOW_TITLE);
+        this.gameOverWindow = new WindowImpl(smallSize, this.gameOverPanel, GAME_OVER_WINDOW_TITLE);
         this.gameOverWindow.setsMainFeatures(smallSize);
 
         button.addActionListener(e -> {
@@ -172,8 +174,7 @@ public final class GameViewImpl implements GameView {
 
     @Override
     public void displayGameOverWindow(String result) {
-        this.setResult(result);
-        this.gameOverWindow.display();
+        displayGameOverWindow(result, 0, null, false, null);
     }
 
     @Override
@@ -245,5 +246,97 @@ public final class GameViewImpl implements GameView {
     public void destinationChosen(NodeId destinationId) {
         this.observer.destinationChosen(destinationId);
         this.getMapPanel().repaint();
+    }
+
+    @Override
+    public void displayGameOverWindow(
+            final String result,
+            final long gameDuration,
+            final it.unibo.scotyard.model.game.GameMode gameMode,
+            final boolean isNewRecord,
+            final String currentRecord) {
+        this.setResult(result);
+
+        // rimuovi eventuali label di durata precedenti
+        Component[] components = this.gameOverPanel.getComponents();
+        for (int i = components.length - 1; i >= 0; i--) {
+            Component comp = components[i];
+            if (comp instanceof JLabel) {
+                JLabel label = (JLabel) comp;
+                String text = label.getText();
+                if (text != null && (text.contains("Durata") || text.contains("Record") || text.contains("NUOVO"))) {
+                    this.gameOverPanel.remove(comp);
+                }
+            }
+        }
+
+        // se ci sono dati di gioco, mostra il messaggio
+        if (gameDuration > 0 && gameMode != null) {
+            // formatta durata
+            final String formattedDuration = formatDuration(gameDuration);
+
+            // Riga 1: durata partita
+            final JLabel durationLabel = new JLabel("Durata partita: " + formattedDuration);
+            durationLabel.setFont(new Font("Arial", Font.PLAIN, 16));
+            durationLabel.setForeground(new Color(200, 200, 200));
+            durationLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+            addLabelAfterWinner(durationLabel);
+
+            addVerticalSpace(5);
+
+            // Riga 2: nuovo record o record esistente
+            if (isNewRecord) {
+                final JLabel recordLabel = new JLabel("🏆 NUOVO RECORD per modalità "
+                        + (gameMode == it.unibo.scotyard.model.game.GameMode.DETECTIVE ? "Detective" : "Mr. X") + "!");
+                recordLabel.setFont(new Font("Arial", Font.BOLD, 18));
+                recordLabel.setForeground(new Color(255, 215, 0)); // Gold
+                recordLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+                addLabelAfterWinner(recordLabel);
+            } else if (currentRecord != null) {
+                final JLabel recordLabel = new JLabel("Record modalità "
+                        + (gameMode == it.unibo.scotyard.model.game.GameMode.DETECTIVE ? "Detective" : "Mr. X") + ": "
+                        + currentRecord);
+                recordLabel.setFont(new Font("Arial", Font.PLAIN, 16));
+                recordLabel.setForeground(new Color(200, 200, 200));
+                recordLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+                addLabelAfterWinner(recordLabel);
+            }
+
+            this.gameOverPanel.revalidate();
+            this.gameOverPanel.repaint();
+        }
+
+        this.gameOverWindow.display();
+    }
+
+    private void addLabelAfterWinner(final JLabel label) {
+        for (int i = 0; i < this.gameOverPanel.getComponentCount(); i++) {
+            if (this.gameOverPanel.getComponent(i) == this.winnerLabel) {
+                this.gameOverPanel.add(label, i + 1);
+                return;
+            }
+        }
+        // Fallback: aggiungi comunque
+        this.gameOverPanel.add(label);
+    }
+
+    private void addVerticalSpace(final int height) {
+        for (int i = 0; i < this.gameOverPanel.getComponentCount(); i++) {
+            if (this.gameOverPanel.getComponent(i) == this.winnerLabel) {
+                this.gameOverPanel.add(Box.createVerticalStrut(height), i + 1);
+                return;
+            }
+        }
+    }
+
+    private String formatDuration(final long millis) {
+        if (millis <= 0) {
+            return "00:00:00";
+        }
+        final long seconds = millis / 1000;
+        final long hours = seconds / 3600;
+        final long minutes = (seconds % 3600) / 60;
+        final long secs = seconds % 60;
+        return String.format("%02d:%02d:%02d", hours, minutes, secs);
     }
 }

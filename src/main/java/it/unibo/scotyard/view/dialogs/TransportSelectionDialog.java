@@ -19,9 +19,11 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
 /**
- * Modal dialog for selecting transport type when multiple options are available.
+ * Modal dialog for selecting transport type when multiple options are
+ * available.
  *
- * <p>This dialog presents colored buttons for each available transport option, styled according to the game's color
+ * This dialog presents colored buttons for each available transport option,
+ * styled according to the game's color
  * scheme.
  */
 public final class TransportSelectionDialog extends JDialog {
@@ -47,8 +49,8 @@ public final class TransportSelectionDialog extends JDialog {
     /**
      * Creates a transport selection dialog.
      *
-     * @param parent the parent frame (can be null)
-     * @param nodeId the destination node ID
+     * @param parent         the parent frame (can be null)
+     * @param nodeId         the destination node ID
      * @param transportTypes the available transport types
      */
     public TransportSelectionDialog(final Frame parent, final NodeId nodeId, final List<TransportType> transportTypes) {
@@ -72,7 +74,7 @@ public final class TransportSelectionDialog extends JDialog {
     /**
      * Build dialog content.
      *
-     * @param nodeId the destination node ID
+     * @param nodeId         the destination node ID
      * @param transportTypes the available transport types
      */
     private void buildContent(final NodeId nodeId, final List<TransportType> transportTypes) {
@@ -164,7 +166,8 @@ public final class TransportSelectionDialog extends JDialog {
     }
 
     /**
-     * Shows the dialog and waits for user selection. This is a convenience method that calls setVisible(true).
+     * Shows the dialog and waits for user selection. This is a convenience method
+     * that calls setVisible(true).
      *
      * @return the selected transport, or null if cancelled
      */
