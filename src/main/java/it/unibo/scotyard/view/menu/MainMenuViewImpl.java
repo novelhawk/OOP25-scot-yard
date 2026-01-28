@@ -120,7 +120,7 @@ public final class MainMenuViewImpl implements MainMenuView {
         statsPanel.add(titleLabel);
 
         // tabella
-        final String[] columnNames = { "Modalità", "Tempo", "Data" };
+        final String[] columnNames = {"Modalità", "Tempo", "Data"};
         final Object[][] data = new Object[2][3];
 
         // Riga 1: Detective

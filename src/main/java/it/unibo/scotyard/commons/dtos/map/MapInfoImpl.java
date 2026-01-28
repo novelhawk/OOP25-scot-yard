@@ -43,7 +43,8 @@ public final class MapInfoImpl implements MapInfo {
     // extract available transports for a node
     private Node createNodeInfo(final MapNode node) {
         final Set<TransportType> transports = this.mapData.getConnections().stream()
-                .filter(c -> c.getFrom().id() == node.getId().id() || c.getTo().id() == node.getId().id())
+                .filter(c -> c.getFrom().id() == node.getId().id()
+                        || c.getTo().id() == node.getId().id())
                 .map(MapConnection::getTransport)
                 .collect(Collectors.toSet());
 
