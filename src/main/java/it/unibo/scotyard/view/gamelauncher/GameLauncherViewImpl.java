@@ -133,7 +133,8 @@ public final class GameLauncherViewImpl extends JFrame implements GameLauncherVi
 
     // Create resolution combo box with default selection
     private JComboBox<String> createResolutionComboBox() {
-        final List<String> resolutionStrings = this.controller.getResolutions().stream().map(Size::toString).toList();
+        final List<String> resolutionStrings =
+                this.controller.getResolutions().stream().map(Size::toString).toList();
 
         final JComboBox<String> comboBox = new JComboBox<>(resolutionStrings.toArray(String[]::new));
         comboBox.setFont(ScotFont.TEXT_FONT_14);
