@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 public final class GameStateImpl implements GameState {
 
     private static final int NOT_REVEALED_YET = -1;
-     private static final int ROUND_COUNT = 24;
+    private static final int FINAL_ROUND_COUNT = 24;
 
     private final Random random;
     private final List<GameStateSubscriber> subscribers = new ArrayList<>();
@@ -38,7 +38,8 @@ public final class GameStateImpl implements GameState {
 
     private final Players players;
 
-    private final Set<Pair<NodeId, TransportType>> possibleDestinations; // They refer to the current player
+    // They refer to the current player
+    private final Set<Pair<NodeId, TransportType>> possibleDestinations; 
     private final List<TransportType> availableTransports;
 
     private TurnState turnState;
@@ -73,17 +74,24 @@ public final class GameStateImpl implements GameState {
         final NodeId runnerPosition = this.players.getMisterX().getPosition();
         final boolean found =
                 this.players.getSeekers().anyMatch(it -> it.getPosition().equals(runnerPosition));
-
-        if (found || this.round > Constants.FINAL_ROUND_NUMBER) {
-            this.setGameStatus(GameStatus.PAUSE);
-            return true;
-        }
+        boolean isOver = false;
 
         if (GameMode.DETECTIVE.equals(this.gameMode)) {
-            return this.getGameRound() > 1 && this.possibleDestinations.isEmpty();
+            isOver = this.possibleDestinations.isEmpty();
+        } else{
+            if(this.getCurrentPlayer()!=this.players.getMisterX()){
+                isOver = this.possibleDestinations.isEmpty();
+            }
         }
 
-        return found;
+        if (found || this.round > FINAL_ROUND_COUNT) {
+            isOver = true;
+        }
+
+        if(isOver){
+            this.setGameStatus(GameStatus.PAUSE);
+        }
+        return isOver;
     }
 
     @Override
@@ -102,17 +110,31 @@ public final class GameStateImpl implements GameState {
 
         if (found) {
             if (this.gameMode == GameMode.MISTER_X) {
-                return lossString;
+                return lossString + " : sei stato catturato!";
             } else {
-                return victoryString;
+                return victoryString + " : Mister X catturato!";
             }
         } else {
-            if (this.gameMode == GameMode.MISTER_X) {
-                return victoryString;
-            } else {
-                return lossString;
+            if(this.possibleDestinations.isEmpty()){
+                if(this.gameMode.equals(GameMode.DETECTIVE)){
+                    return lossString + ": biglietti esauriti per le fermate raggiungibili";
+                } else{
+                    if(this.getCurrentPlayer().equals(this.players.getMisterX())){
+                        return lossString + "  : non puoi muoverti";
+                    } else{
+                        return victoryString + " : gli avversari hanno finito i biglietti per muoversi";
+                    }
+                }
+            } else{
+                if(this.round>=FINAL_ROUND_COUNT){
+                    if(this.gameMode == GameMode.MISTER_X)
+                    return victoryString + " : sei riuscito a fuggire";
+                } else{
+                    return lossString + " : Mister X non è stato catturato in tempo";
+                }
             }
         }
+        return lossString;
     }
 
     @Override
@@ -135,13 +157,13 @@ public final class GameStateImpl implements GameState {
             /* Mister X can't go where detective is. */
             if (this.gameMode == GameMode.MISTER_X
                     && this.getCurrentPlayer().equals(this.players.getUserPlayer())
-                    && pos == this.players.getComputerPlayer().getPosition()) {
+                    && pos.equals(this.players.getComputerPlayer().getPosition())) {
                 this.possibleDestinations.remove(destination);
             }
             /* Mister X can't go where detective is. */
             if (this.gameMode == GameMode.DETECTIVE
                     && this.getCurrentPlayer().equals(this.players.getComputerPlayer())
-                    && pos == this.players.getUserPlayer().getPosition()) {
+                    && pos.equals(this.players.getUserPlayer().getPosition())) {
                 this.possibleDestinations.remove(destination);
             }
             /*
@@ -152,7 +174,7 @@ public final class GameStateImpl implements GameState {
                 if (bobby.getPosition().equals(pos)
                         || (this.gameMode == GameMode.DETECTIVE
                                 && this.getCurrentPlayer().equals(bobby)
-                                && pos == this.players.getUserPlayer().getPosition())) {
+                                && pos.equals(this.players.getUserPlayer().getPosition()))) {
                     this.possibleDestinations.remove(destination);
                 }
             }
@@ -267,7 +289,7 @@ public final class GameStateImpl implements GameState {
     }
 
     @Override
-    public GameDifficulty getGameDifficulty(){
+    public GameDifficulty getGameDifficulty() {
         return this.gameDifficulty;
     }
 
@@ -387,7 +409,7 @@ public final class GameStateImpl implements GameState {
 
     @Override
     public int maxRoundCount() {
-        return ROUND_COUNT;
+        return FINAL_ROUND_COUNT;
     }
 
     @Override

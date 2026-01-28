@@ -1,5 +1,6 @@
 package it.unibo.scotyard.controller.game;
 
+import it.unibo.scotyard.model.Pair;
 import it.unibo.scotyard.model.game.GameMode;
 import it.unibo.scotyard.model.map.NodeId;
 import it.unibo.scotyard.model.map.TransportType;
@@ -7,6 +8,9 @@ import it.unibo.scotyard.model.players.Player;
 import it.unibo.scotyard.model.players.TicketType;
 import it.unibo.scotyard.view.map.MapPanel;
 import it.unibo.scotyard.view.sidebar.SidebarPanel;
+
+import java.util.Set;
+
 import javax.swing.JPanel;
 
 /**
@@ -75,6 +79,13 @@ public interface GameController {
     void loadMainMenu();
 
     /**
+     * Loads the possible destinations for the current player, from main controller.
+     * 
+     * @return a set of pairs of possible destinations
+     */
+    Set<Pair<NodeId, TransportType>> loadPossibleDestinations();
+
+    /**
      * Checks if there are multiple transport types to reach destination or not. Used only in
      * DetectiveGameControllerImpl.
      *
@@ -88,4 +99,5 @@ public interface GameController {
      * @param transportType the type of transport selected
      */
     void selectTransport(TransportType transportType);
+
 }

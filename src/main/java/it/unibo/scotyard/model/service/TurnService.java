@@ -57,7 +57,6 @@ public class TurnService {
         final GameState gameState = this.model.getGameState();
         final TurnState turnState = gameState.getTurnState();
         final Player player = gameState.getCurrentPlayer();
-        turnState.addMove(new MoveAction(command.targetNode(), command.transportType()));
 
         if (turnState.getRemainingMoves() > 0) {
             final List<MoveAction> validMoves =
@@ -108,8 +107,6 @@ public class TurnService {
         if (gameState.changeCurrentPlayer()) {
             dispatcher.dispatch(new EndRoundCommand());
         }
-
-        dispatcher.dispatch(new StartTurnCommand());
     }
 
     /**

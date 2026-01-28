@@ -163,7 +163,7 @@ public final class GameViewImpl implements GameView {
 
     private void setResult(String result) {
         this.winnerLabel.setText(result);
-        if (new String("Vittoria").equals(result)) {
+        if (result.contains("Vittoria")) {
             this.winnerLabel.setForeground(GREEN_COLOR);
         } else {
             this.winnerLabel.setForeground(RED_COLOR);

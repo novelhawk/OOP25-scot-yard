@@ -1,6 +1,7 @@
 package it.unibo.scotyard.controller.game;
 
 import it.unibo.scotyard.controller.Controller;
+import it.unibo.scotyard.model.Pair;
 import it.unibo.scotyard.model.entities.ExposedPosition;
 import it.unibo.scotyard.model.game.GameMode;
 import it.unibo.scotyard.model.game.GameState;
@@ -13,8 +14,12 @@ import it.unibo.scotyard.model.router.CommandDispatcher;
 import it.unibo.scotyard.view.game.GameView;
 import it.unibo.scotyard.view.map.MapPanel;
 import it.unibo.scotyard.view.sidebar.SidebarPanel;
+
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
+
 import javax.swing.*;
 
 /**
@@ -118,6 +123,15 @@ public abstract class GameControllerImpl implements GameController, GameStateSub
     @Override
     public void loadMainMenu() {
         this.mainController.loadMainMenu();
+    }
+
+    @Override
+    public Set<Pair<NodeId, TransportType>> loadPossibleDestinations(){
+        Set<Pair<NodeId, TransportType>> possibleDestinations =
+                    new HashSet<>(this.mainController.getPossibleDestinations(
+        this.gameState.getPositionPlayer(this.gameState.getCurrentPlayer())));
+        possibleDestinations = this.gameState.loadPossibleDestinations(possibleDestinations);
+        return possibleDestinations;
     }
 
     /**
