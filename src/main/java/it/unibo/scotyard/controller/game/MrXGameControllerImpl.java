@@ -158,7 +158,6 @@ public final class MrXGameControllerImpl extends GameControllerImpl {
 
     /** Handles end turn button click. */
     private void onEndTurn() {
-        gameState.resetTurn();
         super.loadPossibleDestinations();
 
         if (this.gameState.getGameStatus() != GameStatus.PLAYING) {

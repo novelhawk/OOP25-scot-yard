@@ -4,6 +4,7 @@ import it.unibo.scotyard.model.Model;
 import it.unibo.scotyard.model.ai.RunnerBrain;
 import it.unibo.scotyard.model.ai.SeekerBrain;
 import it.unibo.scotyard.model.command.game.InitializeGameCommand;
+import it.unibo.scotyard.model.command.round.StartRoundCommand;
 import it.unibo.scotyard.model.game.GameDifficulty;
 import it.unibo.scotyard.model.game.GameMode;
 import it.unibo.scotyard.model.game.GameStateImpl;
@@ -63,6 +64,8 @@ public class GameStateService {
 
         final GameStateImpl gameState = new GameStateImpl(random, command.gameMode(), players, command.difficulty());
         this.model.setGameState(gameState);
+
+        this.model.getDispatcher().dispatch(new StartRoundCommand());
     }
 
     /**
