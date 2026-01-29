@@ -6,8 +6,7 @@ import it.unibo.scotyard.model.game.turn.TurnManagerImpl;
 import it.unibo.scotyard.model.map.MapData;
 import it.unibo.scotyard.model.map.NodeId;
 import it.unibo.scotyard.model.map.TransportType;
-import java.util.EnumMap;
-import java.util.Map;
+import it.unibo.scotyard.model.inventory.Inventory;
 import java.util.Set;
 
 /**
@@ -15,10 +14,6 @@ import java.util.Set;
  *
  */
 public final class MisterX extends PlayerImpl {
-
-    private static final int NUMBER_TICKETS_BLACK = 5;
-    private static final int NUMBER_TICKETS_DOUBLE_MOVE = 2;
-    private static final int INFINITE = -1;
 
     /**
      * Creates a new AI Mister X player starting at the given position.
@@ -40,22 +35,11 @@ public final class MisterX extends PlayerImpl {
         this(position, null);
     }
 
-    @Override
-    public Map<TicketType, Integer> setInitialTickets() {
-        final Map<TicketType, Integer> ticketsMap = new EnumMap<>(TicketType.class);
-        ticketsMap.put(TicketType.BLACK, NUMBER_TICKETS_BLACK);
-        ticketsMap.put(TicketType.DOUBLE_MOVE, NUMBER_TICKETS_DOUBLE_MOVE);
-        ticketsMap.put(TicketType.TAXI, INFINITE);
-        ticketsMap.put(TicketType.BUS, INFINITE);
-        ticketsMap.put(TicketType.UNDERGROUND, INFINITE);
-        return ticketsMap;
-    }
-
     public void makeMove(final NodeId destination, final TransportType transport, final int turnNumber) {
         ensureInitialized();
 
         // Get ticket richiesto per questo trasporto
-        final TicketType ticketType = Player.getTicketTypeForTransport(transport);
+        final TicketType ticketType = Inventory.getTicketTypeForTransport(transport);
 
         // valida e usa il ticket
         if (!useTicket(ticketType)) {
@@ -120,7 +104,7 @@ public final class MisterX extends PlayerImpl {
             throw new IllegalStateException("Cannot perform double move: no DOUBLE_MOVE tickets available");
         }
 
-        final TicketType ticketType = Player.getTicketTypeForTransport(firstTransport);
+        final TicketType ticketType = Inventory.getTicketTypeForTransport(firstTransport);
         useTicket(ticketType);
 
         // first move
@@ -140,7 +124,7 @@ public final class MisterX extends PlayerImpl {
             final NodeId secondDestination, final TransportType secondTransport, final int turnNumber) {
         ensureInitialized();
 
-        final TicketType ticketType = Player.getTicketTypeForTransport(secondTransport);
+        final TicketType ticketType = Inventory.getTicketTypeForTransport(secondTransport);
         useTicket(ticketType);
 
         // second move

@@ -4,6 +4,7 @@ import it.unibo.scotyard.model.Model;
 import it.unibo.scotyard.model.command.round.EndRoundCommand;
 import it.unibo.scotyard.model.command.turn.*;
 import it.unibo.scotyard.model.entities.MoveAction;
+import it.unibo.scotyard.model.game.GameMode;
 import it.unibo.scotyard.model.game.GameState;
 import it.unibo.scotyard.model.game.GameStateSubscriber;
 import it.unibo.scotyard.model.game.TurnState;
@@ -66,7 +67,10 @@ public class TurnService {
 
         if (gameState.isMovableCurrentPlayer(command.targetNode(), command.transportType())) {
             gameState.getTurnState().addMove(new MoveAction(command.targetNode(), command.transportType()));
-            gameState.moveCurrentPlayer(command.targetNode(), command.transportType());
+
+            if(gameState.getGameMode().equals(GameMode.DETECTIVE) || (gameState.getGameMode().equals(GameMode.MISTER_X) && !(gameState.getCurrentPlayer() instanceof MisterX))){
+                gameState.moveCurrentPlayer(command.targetNode(), command.transportType());
+            }
         }
     }
 

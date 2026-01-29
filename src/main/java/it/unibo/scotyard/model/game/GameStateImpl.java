@@ -5,6 +5,7 @@ import it.unibo.scotyard.model.Pair;
 import it.unibo.scotyard.model.entities.ExposedPosition;
 import it.unibo.scotyard.model.entities.MoveAction;
 import it.unibo.scotyard.model.entities.RunnerTurnTrackerImpl;
+import it.unibo.scotyard.model.inventory.Inventory;
 import it.unibo.scotyard.model.map.MapConnection;
 import it.unibo.scotyard.model.map.MapData;
 import it.unibo.scotyard.model.map.NodeId;
@@ -39,7 +40,7 @@ public final class GameStateImpl implements GameState {
     private final Players players;
 
     // They refer to the current player
-    private final Set<Pair<NodeId, TransportType>> possibleDestinations; 
+    private final Set<Pair<NodeId, TransportType>> possibleDestinations;
     private final List<TransportType> availableTransports;
 
     private TurnState turnState;
@@ -78,8 +79,8 @@ public final class GameStateImpl implements GameState {
 
         if (GameMode.DETECTIVE.equals(this.gameMode)) {
             isOver = this.possibleDestinations.isEmpty();
-        } else{
-            if(this.getCurrentPlayer()!=this.players.getMisterX()){
+        } else {
+            if (this.getCurrentPlayer() != this.players.getMisterX()) {
                 isOver = this.possibleDestinations.isEmpty();
             }
         }
@@ -88,7 +89,7 @@ public final class GameStateImpl implements GameState {
             isOver = true;
         }
 
-        if(isOver){
+        if (isOver) {
             this.setGameStatus(GameStatus.PAUSE);
         }
         return isOver;
@@ -115,21 +116,20 @@ public final class GameStateImpl implements GameState {
                 return victoryString + " : Mister X catturato!";
             }
         } else {
-            if(this.possibleDestinations.isEmpty()){
-                if(this.gameMode.equals(GameMode.DETECTIVE)){
+            if (this.possibleDestinations.isEmpty()) {
+                if (GameMode.DETECTIVE.equals(this.gameMode)) {
                     return lossString + ": biglietti esauriti per le fermate raggiungibili";
-                } else{
-                    if(this.getCurrentPlayer().equals(this.players.getMisterX())){
+                } else {
+                    if (this.getCurrentPlayer().equals(this.players.getMisterX())) {
                         return lossString + "  : non puoi muoverti";
-                    } else{
+                    } else {
                         return victoryString + " : gli avversari hanno finito i biglietti per muoversi";
                     }
                 }
-            } else{
-                if(this.round>=FINAL_ROUND_COUNT){
-                    if(this.gameMode == GameMode.MISTER_X)
-                    return victoryString + " : sei riuscito a fuggire";
-                } else{
+            } else {
+                if (this.round >= FINAL_ROUND_COUNT) {
+                    if (this.gameMode == GameMode.MISTER_X) return victoryString + " : sei riuscito a fuggire";
+                } else {
                     return lossString + " : Mister X non è stato catturato in tempo";
                 }
             }
@@ -186,7 +186,7 @@ public final class GameStateImpl implements GameState {
                 this.possibleDestinations.removeIf(item -> TransportType.FERRY.equals(item.getY()));
             }
             // Removal of destinations for which current player has no tickets
-            if (this.getCurrentPlayer().getNumberTickets(Player.getTicketTypeForTransport(transport)) == 0) {
+            if (this.getCurrentPlayer().getNumberTickets(Inventory.getTicketTypeForTransport(transport)) == 0) {
                 this.possibleDestinations.remove(destination);
             }
         }
@@ -237,7 +237,7 @@ public final class GameStateImpl implements GameState {
     @Override
     public void moveCurrentPlayer(NodeId destinationId, TransportType transport) {
         this.getCurrentPlayer().setPosition(destinationId);
-        this.getCurrentPlayer().useTicket(Player.getTicketTypeForTransport(transport));
+        this.getCurrentPlayer().useTicket(Inventory.getTicketTypeForTransport(transport));
     }
 
     private void incrementsRound() {

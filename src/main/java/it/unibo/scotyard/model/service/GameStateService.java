@@ -89,8 +89,7 @@ public class GameStateService {
         return switch (gameMode) {
             case GameMode.DETECTIVE -> new Detective(initialPosition);
             case GameMode.MISTER_X -> {
-                final SeekerBrain detectiveBrain =
-                        new SeekerBrain(this.model.getSeededRandom());
+                final SeekerBrain detectiveBrain = new SeekerBrain(this.model.getSeededRandom());
                 yield new Detective(initialPosition, detectiveBrain);
             }
         };

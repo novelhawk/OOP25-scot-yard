@@ -48,7 +48,7 @@ public class SeekerBrain implements PlayerBrain {
         Player player = gameState.getCurrentPlayer();
         List<Pair<NodeId, TransportType>> possibleDestinations = new ArrayList<>();
         possibleDestinations = gameState.getPossibleDestinations().stream().toList();
-        
+
         Pair<NodeId, TransportType> selectedMove;
         NodeId misterXNodeId = gameState.getLastRevealedMisterXPosition();
 

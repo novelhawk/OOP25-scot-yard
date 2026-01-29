@@ -1,7 +1,6 @@
 package it.unibo.scotyard.controller.game;
 
 import it.unibo.scotyard.controller.Controller;
-import it.unibo.scotyard.model.Pair;
 import it.unibo.scotyard.model.command.turn.EndTurnCommand;
 import it.unibo.scotyard.model.command.turn.MoveCommand;
 import it.unibo.scotyard.model.command.turn.StartTurnCommand;
@@ -9,7 +8,6 @@ import it.unibo.scotyard.model.command.turn.UseDoubleMoveCommand;
 import it.unibo.scotyard.model.game.GameState;
 import it.unibo.scotyard.model.game.GameStatus;
 import it.unibo.scotyard.model.game.turn.TurnManagerImpl.MoveOption;
-import it.unibo.scotyard.model.map.MapConnection;
 import it.unibo.scotyard.model.map.MapData;
 import it.unibo.scotyard.model.map.NodeId;
 import it.unibo.scotyard.model.map.TransportType;
@@ -20,14 +18,9 @@ import it.unibo.scotyard.model.router.CommandDispatcher;
 import it.unibo.scotyard.view.dialogs.TransportSelectionDialog;
 import it.unibo.scotyard.view.game.GameView;
 import it.unibo.scotyard.view.sidebar.SidebarPanel;
-
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
-import java.util.stream.Collector;
-import java.util.stream.Collectors;
-
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
@@ -214,7 +207,6 @@ public final class MrXGameControllerImpl extends GameControllerImpl {
             }
         }
 
-        final Player startingPlayer = this.gameState.getUserPlayer(); // Mr. X
         // Check if game is over
         if (super.isGameOver()) {
             super.loadGameOverWindow();
@@ -224,11 +216,7 @@ public final class MrXGameControllerImpl extends GameControllerImpl {
 
         do {
             // AI turn
-            List<Pair<NodeId, TransportType>> possibleDestinations = new ArrayList<>();
-            for (MapConnection connection : this.mapData.getConnectionsFrom(gameState.getCurrentPlayer().getPosition())) {
-                possibleDestinations.add(new Pair<NodeId, TransportType>(connection.getTo(), connection.getTransport()));
-            }
-            gameState.loadPossibleDestinations(possibleDestinations.stream().collect(Collectors.toSet()));
+            super.loadPossibleDestinations();
             // Check if game is over
             if (super.isGameOver()) {
                 super.loadGameOverWindow();
@@ -236,7 +224,7 @@ public final class MrXGameControllerImpl extends GameControllerImpl {
             }
             dispatcher.dispatch(new StartTurnCommand());
             updateUI();
-        } while (this.gameState.getCurrentPlayer() != startingPlayer); // Finché non torna a Mr. X
+        } while (this.gameState.getCurrentPlayer() != mrX); // Finché non torna a Mr. X
 
         // RESET stato per il nuovo turno
         // Controlla se ha ancora ticket doppia mossa

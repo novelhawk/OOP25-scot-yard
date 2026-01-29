@@ -8,9 +8,7 @@ import it.unibo.scotyard.model.players.Player;
 import it.unibo.scotyard.model.players.TicketType;
 import it.unibo.scotyard.view.map.MapPanel;
 import it.unibo.scotyard.view.sidebar.SidebarPanel;
-
 import java.util.Set;
-
 import javax.swing.JPanel;
 
 /**
@@ -80,7 +78,7 @@ public interface GameController {
 
     /**
      * Loads the possible destinations for the current player, from main controller.
-     * 
+     *
      * @return a set of pairs of possible destinations
      */
     Set<Pair<NodeId, TransportType>> loadPossibleDestinations();
@@ -99,5 +97,4 @@ public interface GameController {
      * @param transportType the type of transport selected
      */
     void selectTransport(TransportType transportType);
-
 }

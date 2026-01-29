@@ -2,9 +2,10 @@ package it.unibo.scotyard.model.players;
 
 import it.unibo.scotyard.model.ai.PlayerBrain;
 import it.unibo.scotyard.model.game.turn.TurnManager;
+import it.unibo.scotyard.model.inventory.Inventory;
+import it.unibo.scotyard.model.inventory.InventoryImpl;
 import it.unibo.scotyard.model.map.NodeId;
 import it.unibo.scotyard.model.map.TransportType;
-import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -13,12 +14,9 @@ import java.util.Optional;
  */
 public abstract class PlayerImpl implements Player {
 
-    protected static final int NONE = 0;
-    protected static final int INFINITE = -1;
-
     private final PlayerBrain brain;
     private NodeId position;
-    protected Map<TicketType, Integer> tickets;
+    protected Inventory inventory;
     protected String name;
 
     // For Mr.X game mode turn management
@@ -32,7 +30,8 @@ public abstract class PlayerImpl implements Player {
      */
     public PlayerImpl(NodeId position, PlayerBrain brain) {
         this.position = position;
-        this.tickets = this.setInitialTickets();
+        this.inventory = new InventoryImpl();
+        this.initializeInventory();
         this.brain = brain;
     }
 
@@ -46,7 +45,9 @@ public abstract class PlayerImpl implements Player {
     }
 
     @Override
-    public abstract Map<TicketType, Integer> setInitialTickets();
+    public void initializeInventory(){
+        this.inventory.initialize(this);
+    }
 
     @Override
     public void setPosition(final NodeId newPosition) {
@@ -60,23 +61,17 @@ public abstract class PlayerImpl implements Player {
 
     @Override
     public int getNumberTickets(final TicketType ticketType) {
-        return this.tickets.get(ticketType);
+        return this.inventory.getNumberTickets(ticketType);
     }
 
     @Override
     public boolean useTicket(final TicketType ticket) {
-        if (this.tickets.containsKey(ticket)) {
-            final int currentTickets = this.tickets.get(ticket);
-            // INFINITE (-1) o > 0
-            if (currentTickets == INFINITE || currentTickets > NONE) {
-                // Decrementa solo se non infinito
-                if (currentTickets != INFINITE) {
-                    this.tickets.put(ticket, currentTickets - 1);
-                }
-                return true;
-            }
+        if(this.inventory.containsTicket(ticket)){
+            this.inventory.decrementTickets(ticket);
+            return true;
+        } else{
+            return false;
         }
-        return false;
     }
 
     @Override
@@ -105,7 +100,7 @@ public abstract class PlayerImpl implements Player {
             return true;
         }
 
-        final TicketType specificTicketType = Player.getTicketTypeForTransport(transportType);
+        final TicketType specificTicketType = Inventory.getTicketTypeForTransport(transportType);
         return getNumberTickets(specificTicketType) > 1;
     }
 
