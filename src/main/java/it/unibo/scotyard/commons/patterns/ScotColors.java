@@ -23,7 +23,17 @@ public final class ScotColors {
     public static final Color DETECTIVE_BORDER_COLOR = new Color(0, 150, 255); // blu chiaro
     public static final Color BOBBIES_BORDER_COLOR = new Color(255, 200, 100); // arancione chiaro
 
+    // Nodi
+    public static final Color VALID_NODE = new Color(0, 255, 0, 80); // verde semi-trasp
+    public static final Color SELECTED_NODE = new Color(0, 150, 255, 180); // blu semi-trasp
+
     // varie
     public static final Color SHADOW_COLOR = new Color(0, 0, 0, 30); // shadow
     public static final Color EMPTY_COLOR = new Color(66, 66, 66); // usato per il tracker
+    public static final Color LONGEST_GAME = new Color(200, 200, 200);
+    public static final Color MOUSE_HOVER = new Color(245, 245, 245);
+
+    private ScotColors() {
+        throw new AssertionError("non istanziabili le costanti Colors");
+    }
 }

@@ -33,7 +33,7 @@ public final class ControllerImpl implements Controller {
      * Creates a controller with model and view.
      *
      * @param model the game model
-     * @param view the game view
+     * @param view  the game view
      * @throws NullPointerException if any parameter is null
      */
     public ControllerImpl(final Model model, final ViewImpl view) {
@@ -65,7 +65,7 @@ public final class ControllerImpl implements Controller {
     }
 
     @Override
-    public void loadGamePanel(GameController gameController) {
+    public void loadGamePanel(final GameController gameController) {
         this.displayPanel(gameController.getMainPanel());
         this.view.forceLayoutUpdate(gameController.getMainPanel(), gameController.getMapPanel());
     }
@@ -101,7 +101,7 @@ public final class ControllerImpl implements Controller {
     }
 
     @Override
-    public List<Pair<NodeId, TransportType>> getPossibleDestinations(NodeId initialPosition) {
+    public List<Pair<NodeId, TransportType>> getPossibleDestinations(final NodeId initialPosition) {
         return this.model.getPossibleDestinations(initialPosition);
     }
 

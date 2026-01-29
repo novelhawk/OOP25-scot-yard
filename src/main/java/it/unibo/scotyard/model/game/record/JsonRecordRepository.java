@@ -15,7 +15,7 @@ import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class JsonRecordRepository implements RecordRepository {
+public final class JsonRecordRepository implements RecordRepository {
     private static final Logger LOGGER = Logger.getLogger(JsonRecordRepository.class.getName());
     private static final String RECORDS_FILENAME = "records.json";
 
@@ -23,7 +23,7 @@ public class JsonRecordRepository implements RecordRepository {
     private final Gson gson;
 
     /**
-     * Private constructr for factory mathod
+     * Private constructr for factory mathod.
      */
     private JsonRecordRepository(final String filePath, final Gson gson) {
         this.filePath = filePath;

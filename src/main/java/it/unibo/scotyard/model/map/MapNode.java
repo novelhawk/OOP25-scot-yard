@@ -2,8 +2,11 @@ package it.unibo.scotyard.model.map;
 
 import java.util.Objects;
 
-/** node (location) on the game map. unique identifier and x, y coordinates for rendering. */
-public class MapNode {
+/**
+ * node (location) on the game map. unique identifier and x, y coordinates for
+ * rendering.
+ */
+public final class MapNode {
     private final NodeId id;
     private final int x;
     private final int y;
@@ -12,8 +15,8 @@ public class MapNode {
      * Creates a new map node with the specified coordinates.
      *
      * @param id the unique identifier for this node
-     * @param x the x-coordinate for rendering
-     * @param y the y-coordinate for rendering
+     * @param x  the x-coordinate for rendering
+     * @param y  the y-coordinate for rendering
      */
     public MapNode(final NodeId id, final int x, final int y) {
         this.id = id;

@@ -28,7 +28,7 @@ public abstract class PlayerImpl implements Player {
      * Creates a new AI player starting at the given position.
      *
      * @param position the starting position
-     * @param brain the AI brain
+     * @param brain    the AI brain
      */
     public PlayerImpl(NodeId position, PlayerBrain brain) {
         this.position = position;

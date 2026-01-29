@@ -5,7 +5,7 @@ import it.unibo.scotyard.model.map.TransportType;
 import java.util.Objects;
 
 /**
- * An immutable connection
+ * An immutable connection.
  *
  */
 public record ConnectionImpl(NodeId from, NodeId to, TransportType transport) implements Connection {

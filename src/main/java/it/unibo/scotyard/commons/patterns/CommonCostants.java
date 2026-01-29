@@ -29,7 +29,8 @@ public final class CommonCostants {
     public static final String UNDERGROUND_TEXT = "Metro";
     public static final String FERRY_TEXT = "Traghetto";
 
-    public static final String SELECTION_JDIALOG_TITLE = "Seleziona mezzo di trasporto";
+    public static final String SELECTION_TRANSPORT_JDIALOG = "Seleziona mezzo di trasporto";
+    public static final String SELECTION_TRANSPORT_TITLE = "Seleziona mezzo di trasporto verso il nodo: ";
 
     public static final String RULES_WINDOW_TITLE = "Regole";
 
@@ -41,6 +42,7 @@ public final class CommonCostants {
     public static final String DOUBLE_MOVE_TICKETS_TEXT = "Biglietti doppia mossa";
     public static final String LOAD_RULES_TEXT = "Regole";
     public static final String CURRENT_PLAYER_TEXT = "Turno di : ";
+    public static final String NO_MOVES_SELECTED = "Nessuna mossa selezionata";
 
     public static final String STATISCS_TITLE = "Statistiche Partite";
     public static final String BACK = "Indietro";
@@ -50,4 +52,8 @@ public final class CommonCostants {
     public static final String BACK_MAIN_MENU = "Ritorna al menù principale";
     public static final String WINNER_TEXT = "Vittoria";
     public static final String LOSER_TEXT = "Sconfitta";
+
+    private CommonCostants() {
+        throw new AssertionError("non istanziabili le costanti Stringhe");
+    }
 }

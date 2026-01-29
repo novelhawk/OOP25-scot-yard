@@ -34,16 +34,20 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.function.Consumer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
 /**
- * The map panel
+ * The map panel.
  *
  */
 public final class MapPanel extends JPanel {
 
     private static final long serialVersionUID = 1L;
+
+    private static final Logger LOGGER = Logger.getLogger(MapPanel.class.getName());
 
     private static final int NODE_RADIUS = 14;
     private static final int NODE_LABEL_SIZE = 10;
@@ -94,11 +98,11 @@ public final class MapPanel extends JPanel {
     // Game Status
     private NodeId misterXPosition;
     private NodeId detectivePosition;
-    private List<NodeId> bobbiesPositions;
+    private final List<NodeId> bobbiesPositions;
     private Set<NodeId> possibleDestinations;
     private NodeId selectedDestination;
     private Set<it.unibo.scotyard.model.game.turn.TurnManagerImpl.MoveOption> validMoves = new HashSet<>();
-    private Consumer<NodeId> nodeClickListener = null;
+    private Consumer<NodeId> nodeClickListener;
 
     private final GameView gameView;
 
@@ -106,6 +110,7 @@ public final class MapPanel extends JPanel {
      * Creates a new MapPanel with the given map info DTO.
      *
      * @param mapInfo the map info DTO to render
+     * @param view    the game view
      * @throws NullPointerException if mapInfo is null
      */
     public MapPanel(final MapInfo mapInfo, final GameView view) {
@@ -357,10 +362,10 @@ public final class MapPanel extends JPanel {
             if (imageStream != null) {
                 backgroundImage = ImageIO.read(imageStream);
             } else {
-                System.err.println("Background image not found");
+                LOGGER.log(Level.SEVERE, "Background image not found");
             }
         } catch (final IOException e) {
-            System.err.println("Error loading background image: " + e.getMessage());
+            LOGGER.log(Level.SEVERE, "Error loading background image: " + e.getMessage());
             backgroundImage = null;
         }
     }
@@ -507,35 +512,60 @@ public final class MapPanel extends JPanel {
 
     // Detective Game Mode
 
-    /** Sets the detective position. */
-    public void setDetectivePosition(NodeId position) {
+    /**
+     * Sets the position of the Detective on the map.
+     *
+     * @param position the node ID where the Detective is located
+     */
+    public void setDetectivePosition(final NodeId position) {
         this.detectivePosition = position;
     }
 
-    /** Sets Mister X position. */
-    public void setMisterXPosition(NodeId position) {
+    /**
+     * * Sets the position of Mister X on the map.
+     *
+     * @param position the node ID where Mister X is located
+     */
+    public void setMisterXPosition(final NodeId position) {
         this.misterXPosition = position;
     }
 
-    /** Initializes bobbies list of positions. */
-    public void initializeBobbies(int numberOfBobbies) {
+    /**
+     * Initializes the Bobby positions on the map.
+     *
+     * @param numberOfBobbies the total number of bobbies in the game
+     */
+    public void initializeBobbies(final int numberOfBobbies) {
         for (int i = 0; i < numberOfBobbies; i++) {
             this.bobbiesPositions.add(i, new NodeId(-1));
         }
     }
 
-    /** Sets bobby position. */
-    public void setBobbyPosition(NodeId position, int indexBobby) {
+    /**
+     * Sets a Bobby's position at a specific index.
+     *
+     * @param position   the node ID where the Bobby should be placed
+     * @param indexBobby the index of the Bobby (0-based)
+     */
+    public void setBobbyPosition(final NodeId position, final int indexBobby) {
         this.bobbiesPositions.set(indexBobby, position);
     }
 
-    /** Loads the possible destinations for current player. */
-    public void loadPossibleDestinations(Set<NodeId> destinations) {
+    /**
+     * Loads the possible destinations for movement.
+     *
+     * @param destinations set of valid destination node IDs
+     */
+    public void loadPossibleDestinations(final Set<NodeId> destinations) {
         this.possibleDestinations = destinations;
     }
 
-    /** Sets the selected destination. */
-    public void setSelectedDestination(NodeId destination) {
+    /**
+     * Sets the currently selected destination.
+     *
+     * @param destination the node ID of the selected destination
+     */
+    public void setSelectedDestination(final NodeId destination) {
         this.selectedDestination = destination;
     }
 
@@ -576,7 +606,7 @@ public final class MapPanel extends JPanel {
                         return;
                     }
                     // Otherwise use possibleDestinations (Detective mode)
-                    for (NodeId possibleDestination : this.possibleDestinations) {
+                    for (final NodeId possibleDestination : this.possibleDestinations) {
                         if (possibleDestination.equals(node.getId())) {
                             this.setSelectedDestination(node.getId());
                             this.gameView.destinationChosen(node.getId());
@@ -587,8 +617,21 @@ public final class MapPanel extends JPanel {
         }
     }
 
-    /** Draw the player given as input on the map. */
-    private void drawPlayer(Graphics2D g2d, String playerString, NodeId position, int scaledRadius, double nodeZoom) {
+    /**
+     * Draws a player marker on the map.
+     *
+     * @param g2d          the graphics context
+     * @param playerString the player identifier string
+     * @param position     the position to draw at
+     * @param scaledRadius the radius of the marker
+     * @param nodeZoom     the zoom level for the node
+     */
+    private void drawPlayer(
+            final Graphics2D g2d,
+            final String playerString,
+            final NodeId position,
+            final int scaledRadius,
+            final double nodeZoom) {
         if (position.id() > 0) {
             final Point2D pos = scaledNodePositions.get(position);
             if (pos != null) {
@@ -620,7 +663,7 @@ public final class MapPanel extends JPanel {
 
                 // Player text (white)
                 g2d.setColor(Color.WHITE);
-                int fontSize;
+                final int fontSize;
                 if (CommonCostants.MRX_STRING.equals(playerString)) {
                     fontSize = (int) (18 * nodeZoom);
                 } else {
@@ -654,7 +697,7 @@ public final class MapPanel extends JPanel {
 
         if (nodeClickListener != null) {
             // Mr. X mode: usa validMoves
-            for (var move : validMoves) {
+            for (final var move : validMoves) {
                 validDestinations.add(move.getDestinationNode());
             }
         } else {
@@ -663,12 +706,12 @@ public final class MapPanel extends JPanel {
         }
 
         // Render green node
-        for (NodeId nodeId : validDestinations) {
+        for (final NodeId nodeId : validDestinations) {
             final Point2D pos = scaledNodePositions.get(nodeId);
             if (pos != null) {
                 final int x = (int) pos.getX();
                 final int y = (int) pos.getY();
-                g2d.setColor(new Color(0, 255, 0, 80)); // green semi-transparent
+                g2d.setColor(ScotColors.VALID_NODE); // green semi-transparent
                 g2d.fillOval(
                         x - scaledRadius - 4, y - scaledRadius - 4, (scaledRadius + 4) * 2, (scaledRadius + 4) * 2);
             }
@@ -680,7 +723,7 @@ public final class MapPanel extends JPanel {
             if (pos != null) {
                 final int x = (int) pos.getX();
                 final int y = (int) pos.getY();
-                g2d.setColor(new Color(0, 150, 255, 180)); // blu semi-transparent
+                g2d.setColor(ScotColors.SELECTED_NODE); // blu semi-transparent
                 g2d.setStroke(new BasicStroke(4.0f * (float) nodeZoom));
                 g2d.drawOval(
                         x - scaledRadius - 2, y - scaledRadius - 2, (scaledRadius + 2) * 2, (scaledRadius + 2) * 2);

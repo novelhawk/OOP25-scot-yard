@@ -12,20 +12,20 @@ import java.util.Set;
 import javax.swing.JPanel;
 
 /**
- * The game view
+ * The game view.
  *
  */
 public interface GameView {
 
     /**
-     * Set the observer, that is the GameController
+     * Set the observer, that is the GameController.
      *
      * @param gameController the observer
      */
     void setObserver(GameController gameController);
 
     /**
-     * Gets the Mister X tracker panel
+     * Gets the Mister X tracker panel.
      *
      * @return the Mister X tracker panel
      */
