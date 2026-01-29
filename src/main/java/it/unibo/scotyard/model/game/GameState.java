@@ -21,8 +21,10 @@ import java.util.function.Consumer;
 public interface GameState {
 
     /**
-     * Returns a boolean that indicates if the game is over. In particular, the game is over if the detective or one of
-     * the bobbies has captured Mister X (they're in the same position of the map) or if the maximum number of rounds
+     * Returns a boolean that indicates if the game is over. In particular, the game
+     * is over if the detective or one of
+     * the bobbies has captured Mister X (they're in the same position of the map)
+     * or if the maximum number of rounds
      * had been reached.
      *
      * @return a boolean which indicates whether the game is over (true) or not
@@ -37,14 +39,16 @@ public interface GameState {
     Random getSeededRandom();
 
     /**
-     * This method gets called when the game is over, to get the result : the user player has won or not.
+     * This method gets called when the game is over, to get the result : the user
+     * player has won or not.
      *
      * @return String, which indicates whether the user player has won or not
      */
     String resultGame();
 
     /**
-     * Loads into a specific variable the possible destinations, eventually removing some of them, according to specific
+     * Loads into a specific variable the possible destinations, eventually removing
+     * some of them, according to specific
      * conditions.
      *
      * @param inputPossibleDestinations the possible destinations loaded from Model
@@ -54,7 +58,8 @@ public interface GameState {
             Set<Pair<NodeId, TransportType>> inputPossibleDestinations);
 
     /**
-     * @return the set of possible destinations as pairs of integer and transport type
+     * @return the set of possible destinations as pairs of integer and transport
+     *         type
      */
     Set<Pair<NodeId, TransportType>> getPossibleDestinations();
 
@@ -66,17 +71,20 @@ public interface GameState {
     boolean changeCurrentPlayer();
 
     /**
-     * Return a boolean value which indicates whether there are multiple transports available for the destination id
+     * Return a boolean value which indicates whether there are multiple transports
+     * available for the destination id
      * given or not.
      *
      * @param destinationId the id of the destination
-     * @return a boolean value which indicates whether there are multiple transports available for the destination given
-     *     or not
+     * @return a boolean value which indicates whether there are multiple transports
+     *         available for the destination given
+     *         or not
      */
     boolean areMultipleTransportsAvailable(NodeId destinationId);
 
     /**
-     * Return a list of the transport types that can be used to reach the destination given.
+     * Return a list of the transport types that can be used to reach the
+     * destination given.
      *
      * @param destinationId the id of the destination
      * @return a list of transport types that can be used to reach destination
@@ -84,34 +92,45 @@ public interface GameState {
     List<TransportType> getAvailableTransports(NodeId destinationId);
 
     /**
-     * Return a boolean value which indicates whether the current player can be moved or not.
-     * This method need to be called before moveCurrentPlayer(), to check if it is possible
+     * Return a boolean value which indicates whether the current player can be
+     * moved or not.
+     * This method need to be called before moveCurrentPlayer(), to check if it is
+     * possible
      * to move the current player into the desired destination.
      *
      * @param destinationId
      * @param transport
-     * @return a boolean value which indicates whether the current player can be moved or not
+     * @return a boolean value which indicates whether the current player can be
+     *         moved or not
      */
     boolean isMovableCurrentPlayer(NodeId destinationId, TransportType transport);
 
     /**
-     * Moves the current player into the desination given in input, using the transport given in input.
-     * The tickets of current player decrement (according to the type of transport used).
+     * Moves the current player into the desination given in input, using the
+     * transport given in input.
+     * The tickets of current player decrement (according to the type of transport
+     * used).
      *
      * @param destinationId the destination id
-     * @param transport the transport type to use to reach the destination
+     * @param transport     the transport type to use to reach the destination
      */
     void moveCurrentPlayer(NodeId destinationId, TransportType transport);
 
-    /** Goes to next round by incrementing the round number, if the current player is the last bobby. */
+    /**
+     * Goes to next round by incrementing the round number, if the current player is
+     * the last bobby.
+     */
     void nextRound();
 
     /**
-     * Return a boolean inidicating if Mister X must be hidden on the map. In particular, Mister X must be hidden if the
-     * game mode is Detective and if the current game round number correspond to one of the reveal turns for Mister X
+     * Return a boolean inidicating if Mister X must be hidden on the map. In
+     * particular, Mister X must be hidden if the
+     * game mode is Detective and if the current game round number correspond to one
+     * of the reveal turns for Mister X
      * (present in the class Constants in folder commons).
      *
-     * @return a boolean indicating whether Mister X must be hidden or not on the map
+     * @return a boolean indicating whether Mister X must be hidden or not on the
+     *         map
      */
     boolean hideMisterX();
 
@@ -217,14 +236,16 @@ public interface GameState {
     void resetTurn();
 
     /**
-     * Gets the current turn's state, which will be merged with the game state at the end of the turn.
+     * Gets the current turn's state, which will be merged with the game state at
+     * the end of the turn.
      *
      * @return the current turn's state
      */
     TurnState getTurnState();
 
     /**
-     * Gets the runner turn tracker, which tracks the tickets used by MisterX during the game.
+     * Gets the runner turn tracker, which tracks the tickets used by MisterX during
+     * the game.
      *
      * @return the runner turn tracker
      */
@@ -233,8 +254,8 @@ public interface GameState {
     /**
      * Computes the legal moves of the supplied player.
      *
-     * @param mapData the map data
-     * @param player the player to move
+     * @param mapData       the map data
+     * @param player        the player to move
      * @param excludedNodes additional nodes to exclude even if valid
      * @return the legal moves of the supplied player
      */
@@ -277,4 +298,24 @@ public interface GameState {
      * Hides Mister X position from detectives.
      */
     void hideRunnerPosition();
+
+    /**
+     * get the timestamp of game init
+     */
+    long getGameStartTime();
+
+    /**
+     * get the timestamp of game end
+     */
+    long getGameEndTime();
+
+    /**
+     * get the game duration in (ms)
+     */
+    long getGameDuration();
+
+    /**
+     * get the duration in HH:mm:ss
+     */
+    String getFormattedDuration();
 }

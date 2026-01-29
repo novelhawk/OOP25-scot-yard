@@ -1,6 +1,7 @@
 package it.unibo.scotyard.view.game;
 
 import it.unibo.scotyard.controller.game.GameController;
+import it.unibo.scotyard.model.game.GameMode;
 import it.unibo.scotyard.model.map.NodeId;
 import it.unibo.scotyard.model.map.TransportType;
 import it.unibo.scotyard.view.map.MapPanel;
@@ -53,7 +54,8 @@ public interface GameView {
     MapPanel getMapPanel();
 
     /**
-     * Displays the small window which displays a summary of the game rules. This method is called
+     * Displays the small window which displays a summary of the game rules. This
+     * method is called
      * after the user has pressed the button rules in the sidebar.
      *
      * @param panel the panel of the rules window.
@@ -61,7 +63,8 @@ public interface GameView {
     void displayRulesWindow(JPanel panel);
 
     /**
-     * Displays the game over window, which contains a label inidicating the result of user player and a button that
+     * Displays the game over window, which contains a label inidicating the result
+     * of user player and a button that
      * takes the user back to the main menu.
      *
      * @param result the strind inidicating the result (win or loss)
@@ -69,18 +72,34 @@ public interface GameView {
     void displayGameOverWindow(String result);
 
     /**
-     * Load a window to make the user select the preferred transport type to reach the destination. This method gets
-     * called only if there are multiple transport types available to reach the destination.
+     * Load a window to make the user select the preferred transport type to reach
+     * the destination. This method gets
+     * called only if there are multiple transport types available to reach the
+     * destination.
      *
      * @param availableTransportTypes a set of available transport types
      */
     void loadTransportSelectionDialog(Set<TransportType> availableTransportTypes);
 
     /**
-     * Calls the method destinationChosen of the GameController by passing the destinationId, when the user has clicked
+     * Calls the method destinationChosen of the GameController by passing the
+     * destinationId, when the user has clicked
      * on one destination in the map panel.
      *
      * @param destinationId the id of the selected destination
      */
     void destinationChosen(NodeId destinationId);
+
+    /**
+     * Displays the game over window with game statistics.
+     * View layer handles presentation formatting.
+     *
+     * @param result        the game result (Vittoria/Sconfitta)
+     * @param gameDuration  the game duration in milliseconds
+     * @param gameMode      the game mode played
+     * @param isNewRecord   whether this game set a new record
+     * @param currentRecord the current/existing record for this mode
+     */
+    void displayGameOverWindow(
+            String result, long gameDuration, GameMode gameMode, boolean isNewRecord, String currentRecord);
 }

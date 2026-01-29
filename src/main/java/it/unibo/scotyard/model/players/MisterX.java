@@ -3,10 +3,10 @@ package it.unibo.scotyard.model.players;
 import it.unibo.scotyard.model.ai.PlayerBrain;
 import it.unibo.scotyard.model.game.turn.TurnManager;
 import it.unibo.scotyard.model.game.turn.TurnManagerImpl;
+import it.unibo.scotyard.model.inventory.Inventory;
 import it.unibo.scotyard.model.map.MapData;
 import it.unibo.scotyard.model.map.NodeId;
 import it.unibo.scotyard.model.map.TransportType;
-import it.unibo.scotyard.model.inventory.Inventory;
 import java.util.Set;
 
 /**

@@ -25,5 +25,4 @@ public class Detective extends PlayerImpl {
         super(position);
         this.name = "Detective";
     }
-
 }

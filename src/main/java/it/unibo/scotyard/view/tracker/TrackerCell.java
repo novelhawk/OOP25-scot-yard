@@ -1,5 +1,6 @@
 package it.unibo.scotyard.view.tracker;
 
+import it.unibo.scotyard.commons.patterns.ScotColors;
 import it.unibo.scotyard.model.map.TransportType;
 import it.unibo.scotyard.view.game.GameView;
 import java.awt.*;
@@ -9,18 +10,12 @@ import java.util.Map;
 import javax.swing.*;
 
 public final class TrackerCell extends JPanel {
-    private static final Color TAXI_COLOR = new Color(255, 255, 85);
-    private static final Color BUS_COLOR = new Color(58, 132, 36);
-    private static final Color UNDERGROUND_COLOR = new Color(200, 43, 29);
-    private static final Color FERRY_COLOR = new Color(128, 128, 128);
 
-    private static final Color EMPTY_COLOR = new Color(66, 66, 66);
-
-    private static final Map<TransportType, Color> TRANSPORT_TYPES_COLORS = Map.of(
-            TransportType.BUS, BUS_COLOR,
-            TransportType.UNDERGROUND, UNDERGROUND_COLOR,
-            TransportType.FERRY, FERRY_COLOR,
-            TransportType.TAXI, TAXI_COLOR);
+    private static final Map<TransportType, Color> TRANSPORT_TYPES_ScotColors = Map.of(
+            TransportType.BUS, ScotColors.BUS_COLOR,
+            TransportType.UNDERGROUND, ScotColors.UNDERGROUND_COLOR,
+            TransportType.FERRY, ScotColors.FERRY_COLOR,
+            TransportType.TAXI, ScotColors.TAXI_COLOR);
 
     private static final Dimension MINIMUM_SIZE = new Dimension(100, 20);
     private static final Color BACKGROUND_COLOR = new Color(48, 48, 48);
@@ -80,7 +75,7 @@ public final class TrackerCell extends JPanel {
                 new RoundRectangle2D.Float(0, 0, size.width - 1, size.height - 1, borderRadius, borderRadius);
         g2d.setClip(slot);
 
-        g2d.setColor(EMPTY_COLOR);
+        g2d.setColor(ScotColors.EMPTY_COLOR);
         g2d.fillRect(0, 0, size.width, size.height);
 
         final int sections = tickets.size();
@@ -88,7 +83,7 @@ public final class TrackerCell extends JPanel {
 
         for (int s = 0; s < sections; s++) {
             final TransportType transportType = this.tickets.get(s);
-            g2d.setColor(TRANSPORT_TYPES_COLORS.get(transportType));
+            g2d.setColor(TRANSPORT_TYPES_ScotColors.get(transportType));
             g2d.fillRect(sectionWidth * s + 1, 0, sectionWidth, size.height);
         }
 

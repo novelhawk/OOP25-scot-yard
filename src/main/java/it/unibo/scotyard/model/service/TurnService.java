@@ -68,7 +68,9 @@ public class TurnService {
         if (gameState.isMovableCurrentPlayer(command.targetNode(), command.transportType())) {
             gameState.getTurnState().addMove(new MoveAction(command.targetNode(), command.transportType()));
 
-            if(gameState.getGameMode().equals(GameMode.DETECTIVE) || (gameState.getGameMode().equals(GameMode.MISTER_X) && !(gameState.getCurrentPlayer() instanceof MisterX))){
+            if (GameMode.DETECTIVE.equals(gameState.getGameMode())
+                    || (GameMode.MISTER_X.equals(gameState.getGameMode())
+                            && !(gameState.getCurrentPlayer() instanceof MisterX))) {
                 gameState.moveCurrentPlayer(command.targetNode(), command.transportType());
             }
         }

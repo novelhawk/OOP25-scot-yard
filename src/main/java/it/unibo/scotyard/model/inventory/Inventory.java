@@ -8,11 +8,11 @@ public interface Inventory {
 
     /**
      * Initialized the inventory according to the type of player received in input.
-     * 
+     *
      * @param player the player
      */
     void initialize(Player player);
-    
+
     /**
      * @return the number of tickets possessed by the player of the type passed as a paremeter.
      */
@@ -21,7 +21,7 @@ public interface Inventory {
     /**
      * Returns a boolean whicih indicates whether the inventory contains the ticket type received
      * as input, in a quantity > 0.
-     * 
+     *
      * @param ticketType the ticket type
      * @return a boolean that indicates if the inventory contains the ticket type pssed as paremeter
      */
@@ -29,7 +29,7 @@ public interface Inventory {
 
     /**
      * Decrements the number of tickets of ticket type given in input.
-     * 
+     *
      * @param ticketType the type of ticket
      */
     void decrementTickets(TicketType ticketType);

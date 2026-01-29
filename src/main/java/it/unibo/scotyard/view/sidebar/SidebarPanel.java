@@ -1,5 +1,8 @@
 package it.unibo.scotyard.view.sidebar;
 
+import it.unibo.scotyard.commons.patterns.CommonCostants;
+import it.unibo.scotyard.commons.patterns.ScotColors;
+import it.unibo.scotyard.commons.patterns.ScotFont;
 import it.unibo.scotyard.model.game.GameMode;
 import it.unibo.scotyard.model.players.Player;
 import it.unibo.scotyard.view.game.GameView;
@@ -8,7 +11,6 @@ import it.unibo.scotyard.view.tracker.TrackerPanelImpl;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.BorderFactory;
@@ -19,7 +21,10 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
-/** Sidebar panel for game UI. Currently displays only background, ready for future content. */
+/**
+ * Sidebar panel for game UI. Currently displays only background, ready for
+ * future content.
+ */
 public final class SidebarPanel extends JPanel {
 
     private static final long serialVersionUID = 1L;
@@ -27,35 +32,11 @@ public final class SidebarPanel extends JPanel {
     private static final int SIDEBAR_WIDTH = 300;
     private static final int PADDING = 10;
 
-    // Color scheme
-    private static final Color BACKGROUND_COLOR = new Color(48, 48, 48); // dark grey
-    private static final Color ACCENT_COLOR = new Color(31, 81, 255); // neon blue
-    private static final Color TAXI_COLOR = new Color(255, 255, 85); // yellow
-    private static final Color BUS_COLOR = new Color(58, 132, 36); // green
-    private static final Color UNDERGROUND_COLOR = new Color(200, 43, 29); // red
-    private static final Color FERRY_COLOR = new Color(128, 128, 128); // grey
-    private static final Color DOUBLE_MOVE_COLOR = new Color(255, 255, 255); // white
-
     // Typography
-    private static final String BASE_FONT_FAMILY = "Arial";
-    private static final Font TITLE_FONT = new Font(BASE_FONT_FAMILY, Font.BOLD, 24);
-    private static final Font SUBTITLE_FONT = new Font(BASE_FONT_FAMILY, Font.BOLD, 18);
-    private static final Font TEXT_FONT = new Font(BASE_FONT_FAMILY, Font.PLAIN, 14);
-    private static final Font BUTTON_FONT = new Font(BASE_FONT_FAMILY, Font.BOLD, 14);
 
     // Layout spacing
     private static final int SPACING = 10;
     private static final int SMALL_SPACING = 6;
-
-    // Texts
-    private static final String INVENTORY_TEXT = "Inventario";
-    private static final String TAXI_TICKETS_TEXT = "Biglietti taxi";
-    private static final String BUS_TICKETS_TEXT = "Biglietti bus";
-    private static final String UNDERGROUND_TICKETS_TEXT = "Biglietti metro";
-    private static final String BLACK_TICKETS_TEXT = "Biglietti neri";
-    private static final String DOUBLE_MOVE_TICKETS_TEXT = "Biglietti doppia mossa";
-    private static final String LOAD_RULES_TEXT = "Regole";
-    private static final String CURRENT_PLAYER_TEXT = "Turno di : ";
 
     // Components
     private JLabel currentGameModeLabel;
@@ -98,7 +79,7 @@ public final class SidebarPanel extends JPanel {
     // Configure sidebar properties
     private void setupSidebar() {
         setPreferredSize(new Dimension(SIDEBAR_WIDTH, 0));
-        setBackground(BACKGROUND_COLOR);
+        setBackground(ScotColors.BACKGROUND_COLOR);
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         setBorder(BorderFactory.createEmptyBorder(PADDING, PADDING, PADDING, PADDING));
     }
@@ -119,19 +100,19 @@ public final class SidebarPanel extends JPanel {
 
         this.add(createInventoryLabel());
         this.add(Box.createVerticalStrut(SMALL_SPACING));
-        this.taxiTicketsLabel = createTicketLabel(TAXI_TICKETS_TEXT);
+        this.taxiTicketsLabel = createTicketLabel(CommonCostants.TAXI_TICKETS_TEXT);
         this.add(taxiTicketsLabel);
         this.add(Box.createVerticalStrut(SMALL_SPACING));
-        this.busTicketsLabel = createTicketLabel(BUS_TICKETS_TEXT);
+        this.busTicketsLabel = createTicketLabel(CommonCostants.BUS_TICKETS_TEXT);
         this.add(busTicketsLabel);
         this.add(Box.createVerticalStrut(SMALL_SPACING));
-        this.undergroundTicketsLabel = createTicketLabel(UNDERGROUND_TICKETS_TEXT);
+        this.undergroundTicketsLabel = createTicketLabel(CommonCostants.UNDERGROUND_TICKETS_TEXT);
         this.add(undergroundTicketsLabel);
         this.add(Box.createVerticalStrut(SMALL_SPACING));
-        this.blackTicketsLabel = createTicketLabel(BLACK_TICKETS_TEXT);
+        this.blackTicketsLabel = createTicketLabel(CommonCostants.BLACK_TICKETS_TEXT);
         this.add(blackTicketsLabel);
         this.add(Box.createVerticalStrut(SMALL_SPACING));
-        this.doubleMoveTicketsLabel = createTicketLabel(DOUBLE_MOVE_TICKETS_TEXT);
+        this.doubleMoveTicketsLabel = createTicketLabel(CommonCostants.DOUBLE_MOVE_TICKETS_TEXT);
         this.add(doubleMoveTicketsLabel);
         this.add(Box.createVerticalStrut(SPACING));
 
@@ -149,7 +130,7 @@ public final class SidebarPanel extends JPanel {
         // Nasconde i bottony by default (da capire)
         this.doubleMoveButton.setVisible(false);
 
-        this.loadRulesButton = createLoadRulesButton(LOAD_RULES_TEXT);
+        this.loadRulesButton = createLoadRulesButton(CommonCostants.LOAD_RULES_TEXT);
         this.add(loadRulesButton);
 
         this.add(Box.createVerticalGlue());
@@ -157,8 +138,8 @@ public final class SidebarPanel extends JPanel {
 
     private JLabel createCurrentGameModeLabel() {
         final JLabel label = new JLabel("Player");
-        label.setFont(TITLE_FONT);
-        label.setForeground(ACCENT_COLOR);
+        label.setFont(ScotFont.TEXT_FONT_24);
+        label.setForeground(ScotColors.ACCENT_COLOR);
         label.setAlignmentY(TOP_ALIGNMENT);
         label.setAlignmentX(CENTER_ALIGNMENT);
         return label;
@@ -166,17 +147,17 @@ public final class SidebarPanel extends JPanel {
 
     private JLabel createCountRoundLabel() {
         final JLabel label = new JLabel("Round : ");
-        label.setFont(SUBTITLE_FONT);
-        label.setForeground(ACCENT_COLOR);
+        label.setFont(ScotFont.TEXT_FONT_18);
+        label.setForeground(ScotColors.ACCENT_COLOR);
         label.setAlignmentY(TOP_ALIGNMENT);
         label.setAlignmentX(CENTER_ALIGNMENT);
         return label;
     }
 
     private JLabel createInventoryLabel() {
-        final JLabel label = new JLabel(INVENTORY_TEXT);
-        label.setFont(SUBTITLE_FONT);
-        label.setForeground(ACCENT_COLOR);
+        final JLabel label = new JLabel(CommonCostants.INVENTORY_TEXT);
+        label.setFont(ScotFont.TEXT_FONT_18);
+        label.setForeground(ScotColors.ACCENT_COLOR);
         label.setAlignmentY(TOP_ALIGNMENT);
         label.setAlignmentX(CENTER_ALIGNMENT);
         return label;
@@ -184,25 +165,25 @@ public final class SidebarPanel extends JPanel {
 
     private JLabel createTicketLabel(final String text) {
         final JLabel label = new JLabel(text);
-        label.setFont(TEXT_FONT);
+        label.setFont(ScotFont.TEXT_FONT_14);
         switch (text) {
-            case TAXI_TICKETS_TEXT:
-                label.setForeground(TAXI_COLOR);
+            case CommonCostants.TAXI_TICKETS_TEXT:
+                label.setForeground(ScotColors.TAXI_COLOR);
                 break;
-            case BUS_TICKETS_TEXT:
-                label.setForeground(BUS_COLOR);
+            case CommonCostants.BUS_TICKETS_TEXT:
+                label.setForeground(ScotColors.BUS_COLOR);
                 break;
-            case UNDERGROUND_TICKETS_TEXT:
-                label.setForeground(UNDERGROUND_COLOR);
+            case CommonCostants.UNDERGROUND_TICKETS_TEXT:
+                label.setForeground(ScotColors.UNDERGROUND_COLOR);
                 break;
-            case BLACK_TICKETS_TEXT:
-                label.setForeground(FERRY_COLOR);
+            case CommonCostants.BLACK_TICKETS_TEXT:
+                label.setForeground(ScotColors.FERRY_COLOR);
                 break;
-            case DOUBLE_MOVE_TICKETS_TEXT:
-                label.setForeground(DOUBLE_MOVE_COLOR);
+            case CommonCostants.DOUBLE_MOVE_TICKETS_TEXT:
+                label.setForeground(Color.WHITE);
                 break;
             default:
-                label.setForeground(ACCENT_COLOR);
+                label.setForeground(ScotColors.ACCENT_COLOR);
         }
         label.setAlignmentY(TOP_ALIGNMENT);
         label.setAlignmentX(CENTER_ALIGNMENT);
@@ -210,9 +191,9 @@ public final class SidebarPanel extends JPanel {
     }
 
     private JLabel createCurrentPlayerLabel() {
-        final JLabel label = new JLabel(CURRENT_PLAYER_TEXT);
-        label.setFont(TEXT_FONT);
-        label.setForeground(ACCENT_COLOR);
+        final JLabel label = new JLabel(CommonCostants.CURRENT_PLAYER_TEXT);
+        label.setFont(ScotFont.TEXT_FONT_14);
+        label.setForeground(ScotColors.ACCENT_COLOR);
         label.setAlignmentY(CENTER_ALIGNMENT);
         label.setAlignmentX(CENTER_ALIGNMENT);
         return label;
@@ -220,9 +201,9 @@ public final class SidebarPanel extends JPanel {
 
     private JButton createActionButton(String text) {
         final JButton button = new JButton(text);
-        button.setFont(BUTTON_FONT);
-        button.setBackground(ACCENT_COLOR);
-        button.setForeground(BACKGROUND_COLOR);
+        button.setFont(ScotFont.TEXT_FONT_14);
+        button.setBackground(ScotColors.ACCENT_COLOR);
+        button.setForeground(ScotColors.BACKGROUND_COLOR);
         button.setAlignmentY(CENTER_ALIGNMENT);
         button.setAlignmentX(CENTER_ALIGNMENT);
         button.setMaximumSize(new Dimension(SIDEBAR_WIDTH - 2 * PADDING, 40));
@@ -239,9 +220,9 @@ public final class SidebarPanel extends JPanel {
     public JPanel createRulesPanel() {
         final JPanel panel = new JPanel(new BorderLayout());
         panel.setBorder(BorderFactory.createEmptyBorder(PADDING, PADDING, PADDING, PADDING));
-        panel.setBackground(ACCENT_COLOR);
+        panel.setBackground(ScotColors.ACCENT_COLOR);
         final JTextArea textArea = new JTextArea();
-        textArea.setFont(TEXT_FONT);
+        textArea.setFont(ScotFont.TEXT_FONT_14);
         textArea.setEditable(false);
         if (this.currentGameMode == GameMode.DETECTIVE) {
             String text =
@@ -282,17 +263,17 @@ public final class SidebarPanel extends JPanel {
                             + "Se si vuole effettuare una doppia mossa, bisogna cliccare sul bottone \"Doppia Mossa\" e seguire le istruzioni.";
             textArea.append(text);
         }
-        textArea.setBackground(DOUBLE_MOVE_COLOR);
-        textArea.setForeground(BACKGROUND_COLOR);
+        textArea.setBackground(Color.WHITE);
+        textArea.setForeground(ScotColors.BACKGROUND_COLOR);
         panel.add(textArea, BorderLayout.CENTER);
         return panel;
     }
 
     private JButton createLoadRulesButton(final String text) {
         final JButton button = new JButton(text);
-        button.setFont(BUTTON_FONT);
-        button.setBackground(ACCENT_COLOR);
-        button.setForeground(BACKGROUND_COLOR);
+        button.setFont(ScotFont.TEXT_FONT_14);
+        button.setBackground(ScotColors.ACCENT_COLOR);
+        button.setForeground(ScotColors.BACKGROUND_COLOR);
         button.setAlignmentY(BOTTOM_ALIGNMENT);
         button.setAlignmentX(CENTER_ALIGNMENT);
         button.addActionListener(new ActionListener() {
@@ -319,7 +300,8 @@ public final class SidebarPanel extends JPanel {
     }
 
     /**
-     * Method which is called by the GameController when updating the sideabar displaying. Updates the
+     * Method which is called by the GameController when updating the sideabar
+     * displaying. Updates the
      * text of the roundLabel according to current roundNumber.
      *
      * @param roundNumber the current round number
@@ -329,11 +311,12 @@ public final class SidebarPanel extends JPanel {
     }
 
     /**
-     * Method which is called by the GameController when updating the sidebar displaying. Updates the text of the
+     * Method which is called by the GameController when updating the sidebar
+     * displaying. Updates the text of the
      * currentPlayerLabel according to the current player.
      */
     public void updateCurrentPlayerLabel(Player player) {
-        this.currentPlayerLabel.setText(CURRENT_PLAYER_TEXT + player.getName());
+        this.currentPlayerLabel.setText(CommonCostants.CURRENT_PLAYER_TEXT + player.getName());
     }
 
     public void showElseHideDoubleMoveButton(final boolean show) {
@@ -341,66 +324,77 @@ public final class SidebarPanel extends JPanel {
     }
 
     /**
-     * Method which is called by the GameController when updating the sidebar displaying. Updates the
-     * text of the taxiTicketsLabel according to current number of taxi tickets possessed by the user
+     * Method which is called by the GameController when updating the sidebar
+     * displaying. Updates the
+     * text of the taxiTicketsLabel according to current number of taxi tickets
+     * possessed by the user
      * player.
      *
      * @param tickets the number of tickets
      */
     public void updateTaxiTicketsLabel(final int tickets) {
-        this.taxiTicketsLabel.setText(getTicketCountLabel(TAXI_TICKETS_TEXT, tickets));
+        this.taxiTicketsLabel.setText(getTicketCountLabel(CommonCostants.TAXI_TICKETS_TEXT, tickets));
     }
 
     /**
-     * Method which is called by the GameController when updating the sideabar displaying. Updates the
-     * text of the busTicketsLabel according to current number of bus tickets possessed by the user
+     * Method which is called by the GameController when updating the sideabar
+     * displaying. Updates the
+     * text of the busTicketsLabel according to current number of bus tickets
+     * possessed by the user
      * player.
      *
      * @param tickets the number of tickets
      */
     public void updateBusTicketsLabel(final int tickets) {
-        this.busTicketsLabel.setText(getTicketCountLabel(BUS_TICKETS_TEXT, tickets));
+        this.busTicketsLabel.setText(getTicketCountLabel(CommonCostants.BUS_TICKETS_TEXT, tickets));
     }
 
     /**
-     * Method which is called by the GameController when updating the sideabar displaying. Updates the
-     * text of the undergroundTicketsLabel according to current number of underground tickets
+     * Method which is called by the GameController when updating the sideabar
+     * displaying. Updates the
+     * text of the undergroundTicketsLabel according to current number of
+     * underground tickets
      * possessed by the user player.
      *
      * @param tickets the number of tickets
      */
     public void updateUndergroundTicketsLabel(final int tickets) {
-        this.undergroundTicketsLabel.setText(getTicketCountLabel(UNDERGROUND_TICKETS_TEXT, tickets));
+        this.undergroundTicketsLabel.setText(getTicketCountLabel(CommonCostants.UNDERGROUND_TICKETS_TEXT, tickets));
     }
 
     /**
-     * Method which is called by the GameController when updating the sideabar displaying. Updates the
-     * text of the blackTicketsLabel according to current number of black tickets possessed by the
+     * Method which is called by the GameController when updating the sideabar
+     * displaying. Updates the
+     * text of the blackTicketsLabel according to current number of black tickets
+     * possessed by the
      * user player.
      *
      * @param tickets the number of tickets
      */
     public void updateBlackTicketsLabel(final int tickets) {
-        this.blackTicketsLabel.setText(getTicketCountLabel(BLACK_TICKETS_TEXT, tickets));
+        this.blackTicketsLabel.setText(getTicketCountLabel(CommonCostants.BLACK_TICKETS_TEXT, tickets));
     }
 
     /**
-     * Method which is called by the GameController when updating the sideabar displaying. Updates the
-     * text of the doubleMoveTicketsLabel according to current number of double move tickets possessed
+     * Method which is called by the GameController when updating the sideabar
+     * displaying. Updates the
+     * text of the doubleMoveTicketsLabel according to current number of double move
+     * tickets possessed
      * by the user player.
      *
      * @param tickets the number of tickets
      */
     public void updateDoubleMoveTicketsLabel(final int tickets) {
-        this.doubleMoveTicketsLabel.setText(getTicketCountLabel(DOUBLE_MOVE_TICKETS_TEXT, tickets));
+        this.doubleMoveTicketsLabel.setText(getTicketCountLabel(CommonCostants.DOUBLE_MOVE_TICKETS_TEXT, tickets));
     }
 
     /**
-     * Generates the label to display the number of tickets available with special handling of the
+     * Generates the label to display the number of tickets available with special
+     * handling of the
      * infinite amount.
      *
      * @param ticketType the description of the type of ticket
-     * @param tickets the number of tickets
+     * @param tickets    the number of tickets
      * @return the ticket label
      */
     private String getTicketCountLabel(final String ticketType, final int tickets) {
@@ -467,7 +461,7 @@ public final class SidebarPanel extends JPanel {
      * Updates the double move button state and text.
      *
      * @param enabled true to enable button
-     * @param text the button text
+     * @param text    the button text
      */
     public void updateDoubleMoveButton(boolean enabled, String text) {
         doubleMoveButton.setEnabled(enabled);

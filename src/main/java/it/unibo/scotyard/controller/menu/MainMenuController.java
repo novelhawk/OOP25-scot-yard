@@ -13,6 +13,12 @@ public interface MainMenuController {
     /** Displays new game menu. */
     void newGameMenu();
 
+    /** Shows game statistics window. */
+    void showStatistics();
+
+    /** Resets all game records. */
+    void resetRecords();
+
     /** Exits the application. */
     void exit();
 }

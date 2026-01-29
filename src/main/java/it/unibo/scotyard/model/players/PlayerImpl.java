@@ -45,7 +45,7 @@ public abstract class PlayerImpl implements Player {
     }
 
     @Override
-    public void initializeInventory(){
+    public void initializeInventory() {
         this.inventory.initialize(this);
     }
 
@@ -66,10 +66,10 @@ public abstract class PlayerImpl implements Player {
 
     @Override
     public boolean useTicket(final TicketType ticket) {
-        if(this.inventory.containsTicket(ticket)){
+        if (this.inventory.containsTicket(ticket)) {
             this.inventory.decrementTickets(ticket);
             return true;
-        } else{
+        } else {
             return false;
         }
     }
