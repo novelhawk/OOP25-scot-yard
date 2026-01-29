@@ -12,6 +12,7 @@ import it.unibo.scotyard.model.players.MisterX;
 import it.unibo.scotyard.model.players.Player;
 import it.unibo.scotyard.model.router.CommandDispatcher;
 import it.unibo.scotyard.model.router.CommandHandlerStore;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -37,6 +38,8 @@ public class TurnService {
         final GameState gameState = this.model.getGameState();
         final Player player = gameState.getCurrentPlayer();
         gameState.resetTurn();
+
+        gameState.loadPossibleDestinations(new HashSet<>(this.model.getPossibleDestinations(player.getPosition())));
 
         final List<MoveAction> legalMoves = gameState.computeValidMoves(this.model.getMapData(), player, List.of());
         gameState.getTurnState().setLegalMoves(legalMoves);
@@ -100,12 +103,18 @@ public class TurnService {
             }
         }
 
+        if (gameState.isGameOver()) {
+            gameState.notifySubscribers(GameStateSubscriber::onGameOver);
+            return;
+        }
+
         gameState.notifySubscribers(GameStateSubscriber::onTurnEnd);
 
         if (gameState.isRoundLastTurn()) {
             dispatcher.dispatch(new EndRoundCommand());
         } else {
             gameState.changeCurrentPlayer();
+            dispatcher.dispatch(new StartTurnCommand());
         }
     }
 

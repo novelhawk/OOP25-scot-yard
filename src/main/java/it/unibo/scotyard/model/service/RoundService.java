@@ -47,7 +47,12 @@ public class RoundService {
         gameState.notifySubscribers(GameStateSubscriber::onRoundEnd);
 
         gameState.nextRound();
-        dispatcher.dispatch(new StartRoundCommand());
+
+        if (gameState.isGameOver()) {
+            gameState.notifySubscribers(GameStateSubscriber::onGameOver);
+        } else {
+            dispatcher.dispatch(new StartRoundCommand());
+        }
     }
 
     /**
