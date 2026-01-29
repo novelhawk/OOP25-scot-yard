@@ -16,7 +16,6 @@ import it.unibo.scotyard.model.router.CommandDispatcher;
 import it.unibo.scotyard.view.game.GameView;
 import it.unibo.scotyard.view.map.MapPanel;
 import it.unibo.scotyard.view.sidebar.SidebarPanel;
-
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.List;

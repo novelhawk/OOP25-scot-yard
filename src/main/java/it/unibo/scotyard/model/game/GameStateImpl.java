@@ -119,26 +119,26 @@ public final class GameStateImpl implements GameState {
 
         if (found) {
             if (this.gameMode == GameMode.MISTER_X) {
-                return lossString + " : sei stato catturato!";
+                return lossString + CommonCostants.CAPTURED_MISTER_X_MODE_TEXT;
             } else {
-                return victoryString + " : Mister X catturato!";
+                return victoryString + CommonCostants.CAPTURED_DETECTIVE_MODE_TEXT;
             }
         } else {
             if (this.possibleDestinations.isEmpty()) {
                 if (GameMode.DETECTIVE.equals(this.gameMode)) {
-                    return lossString + ": biglietti esauriti per le fermate raggiungibili";
+                    return lossString + CommonCostants.NO_MORE_TICKETS_AVAILABLE_TEXT;
                 } else {
                     if (this.getCurrentPlayer().equals(this.players.getMisterX())) {
-                        return lossString + "  : non puoi muoverti";
+                        return lossString + CommonCostants.NO_MORE_MOVES_TEXT;
                     } else {
-                        return victoryString + " : gli avversari hanno finito i biglietti per muoversi";
+                        return victoryString + CommonCostants.NO_MORE_TICKETS_AI_TEXT;
                     }
                 }
             } else {
                 if (this.round >= FINAL_ROUND_COUNT) {
-                    if (this.gameMode == GameMode.MISTER_X) return victoryString + " : sei riuscito a fuggire";
+                    if (this.gameMode == GameMode.MISTER_X) return victoryString + CommonCostants.ESCAPED_MISTER_X_MODE_TEXT;
                 } else {
-                    return lossString + " : Mister X non è stato catturato in tempo";
+                    return lossString + CommonCostants.ESCAPED_DETECTIVE_MODE_TEXT;
                 }
             }
         }

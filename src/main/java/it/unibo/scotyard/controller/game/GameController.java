@@ -78,7 +78,7 @@ public interface GameController {
     void loadMainMenu();
 
     /**
-<<<<<<< HEAD
+     * <<<<<<< HEAD
      * Loads the possible destinations for the current player, from main controller.
      *
      * @return a set of pairs of possible destinations
@@ -87,10 +87,10 @@ public interface GameController {
 
     /**
      * Checks if there are multiple transport types to reach destination or not. Used only in
-=======
+     * =======
      * Checks if there are multiple transport types to reach destination or not.
      * Used only in
->>>>>>> origin/main
+     * >>>>>>> origin/main
      * DetectiveGameControllerImpl.
      *
      * @param newPositionId the id of the destination
