@@ -108,15 +108,6 @@ public class TurnService {
     }
 
     /**
-     * Handles the {@code ResetCommand}.
-     *
-     * @param command a reset command.
-     */
-    public void handleReset(final ResetCommand command) {
-        this.model.getGameState().resetTurn();
-    }
-
-    /**
      * Registers the service's command handlers to the store.
      *
      * @param store the store that contains the handler registrations
@@ -126,6 +117,5 @@ public class TurnService {
         store.register(StartTurnCommand.class, this::handleStartTurn);
         store.register(UseDoubleMoveCommand.class, this::handleDoubleMove);
         store.register(EndTurnCommand.class, this::handleEndTurn);
-        store.register(ResetCommand.class, this::handleReset);
     }
 }
