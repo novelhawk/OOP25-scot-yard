@@ -57,5 +57,4 @@ public final class CommonCostants {
     public static final String NO_MORE_TICKETS_AI_TEXT = " : gli avversari hanno finito i biglietti per muoversi";
     public static final String ESCAPED_MISTER_X_MODE_TEXT = " : sei riuscito a fuggire";
     public static final String ESCAPED_DETECTIVE_MODE_TEXT = " : Mister X non è stato catturato in tempo";
-
 }
