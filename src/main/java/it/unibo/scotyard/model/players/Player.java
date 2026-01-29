@@ -3,7 +3,6 @@ package it.unibo.scotyard.model.players;
 import it.unibo.scotyard.model.ai.PlayerBrain;
 import it.unibo.scotyard.model.map.NodeId;
 import it.unibo.scotyard.model.map.TransportType;
-import java.util.Map;
 import java.util.Optional;
 
 /*
@@ -19,9 +18,9 @@ public interface Player {
     void setPosition(NodeId nodeId);
 
     /**
-     * @return the map containing the number of tickets possessed by the player for each ticket type
+     * Intialized the inventory
      */
-    Map<TicketType, Integer> setInitialTickets();
+    void initializeInventory();
 
     /**
      * @return the current position of the player on the map
@@ -34,25 +33,11 @@ public interface Player {
     int getNumberTickets(TicketType ticketType);
 
     /**
-     * Given a transport type, returns the corresponding TicketType.
-     *
-     * @param transport the transport type
-     * @return the corresponding TicketType to the given TransportType
-     */
-    static TicketType getTicketTypeForTransport(final TransportType transport) {
-        return switch (transport) {
-            case TAXI -> TicketType.TAXI;
-            case BUS -> TicketType.BUS;
-            case UNDERGROUND -> TicketType.UNDERGROUND;
-            case FERRY -> TicketType.BLACK;
-        };
-    }
-
-    /**
      * The player uses a specific type of ticket, if it's available. The method returns a boolean
      * value, which indicates whether the operation has been successfull or not.
      *
      * @return true if the player can use the ticket (according to the availabilty), else false
+     * @param ticket the ticket type
      */
     boolean useTicket(TicketType ticket);
 

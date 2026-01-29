@@ -159,6 +159,7 @@ public final class MrXGameControllerImpl extends GameControllerImpl {
     /** Handles end turn button click. */
     private void onEndTurn() {
         gameState.resetTurn();
+        super.loadPossibleDestinations();
 
         if (this.gameState.getGameStatus() != GameStatus.PLAYING) {
             return;
@@ -206,25 +207,24 @@ public final class MrXGameControllerImpl extends GameControllerImpl {
             }
         }
 
-        // Check victory
+        // Check if game is over
         if (super.isGameOver()) {
             super.loadGameOverWindow();
             return;
         }
-
-        final Player startingPlayer = this.gameState.getUserPlayer(); // Mr. X
         dispatcher.dispatch(new EndTurnCommand());
 
         do {
-            dispatcher.dispatch(new StartTurnCommand());
-
+            // AI turn
+            super.loadPossibleDestinations();
             // Check if game is over
             if (super.isGameOver()) {
                 super.loadGameOverWindow();
                 return;
             }
-
-        } while (this.gameState.getCurrentPlayer() != startingPlayer); // Finché non torna a Mr. X
+            dispatcher.dispatch(new StartTurnCommand());
+            updateUI();
+        } while (this.gameState.getCurrentPlayer() != mrX); // Finché non torna a Mr. X
 
         // RESET stato per il nuovo turno
         // Controlla se ha ancora ticket doppia mossa
@@ -233,15 +233,6 @@ public final class MrXGameControllerImpl extends GameControllerImpl {
         } else {
             doubleMoveState = DoubleMoveState.USED;
         }
-
-        // Check if game is over after AI turns
-        if (super.isGameOver()) {
-            super.loadGameOverWindow();
-            return;
-        }
-
-        // Update UI
-        updateUI();
 
         // Update sidebar
         super.updateSidebar(this.gameState.getCurrentPlayer());

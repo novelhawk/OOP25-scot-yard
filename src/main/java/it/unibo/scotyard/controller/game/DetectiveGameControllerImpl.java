@@ -82,15 +82,12 @@ public final class DetectiveGameControllerImpl extends GameControllerImpl {
      * window, which takes back the user to the main menu.
      */
     public void manageGameRound() {
+        Set<Pair<NodeId, TransportType>> possibleDestinations = super.loadPossibleDestinations();
         if (this.gameState.isGameOver()) {
             this.loadGameOverWindow();
         } else {
             this.updateSidebar(this.gameState.getCurrentPlayer());
             this.updatePlayerPositionView(this.gameState.getCurrentPlayer());
-            Set<Pair<NodeId, TransportType>> possibleDestinations =
-                    new HashSet<>(this.mainController.getPossibleDestinations(
-                            this.gameState.getPositionPlayer(this.gameState.getCurrentPlayer())));
-            possibleDestinations = this.gameState.loadPossibleDestinations(possibleDestinations);
             if (this.gameState.getCurrentPlayer().equals(this.gameState.getComputerPlayer())) {
                 manageMisterXRound();
             } else {

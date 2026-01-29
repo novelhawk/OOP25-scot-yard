@@ -6,8 +6,6 @@ import it.unibo.scotyard.model.command.turn.EndTurnCommand;
 import it.unibo.scotyard.model.command.turn.MoveCommand;
 import it.unibo.scotyard.model.game.GameDifficulty;
 import it.unibo.scotyard.model.game.GameState;
-import it.unibo.scotyard.model.map.MapConnection;
-import it.unibo.scotyard.model.map.MapData;
 import it.unibo.scotyard.model.map.NodeId;
 import it.unibo.scotyard.model.map.TransportType;
 import it.unibo.scotyard.model.players.Detective;
@@ -16,7 +14,6 @@ import it.unibo.scotyard.model.players.TicketType;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.util.stream.Collectors;
 
 /*
  * The AI used by Detective and Bobbies
@@ -24,11 +21,9 @@ import java.util.stream.Collectors;
 public class SeekerBrain implements PlayerBrain {
 
     private final Random random;
-    private final MapData map;
 
-    public SeekerBrain(final Random random, final MapData mapData) {
+    public SeekerBrain(final Random random) {
         this.random = random;
-        this.map = mapData;
     }
 
     private TicketType convertTransportType(TransportType transportType) {
@@ -51,14 +46,8 @@ public class SeekerBrain implements PlayerBrain {
     public List<GameCommand> playTurn(GameState gameState) {
         GameDifficulty gameDifficulty = gameState.getGameDifficulty();
         Player player = gameState.getCurrentPlayer();
-        final NodeId currentPosition = player.getPosition();
         List<Pair<NodeId, TransportType>> possibleDestinations = new ArrayList<>();
-        for (MapConnection connection : this.map.getConnectionsFrom(currentPosition)) {
-            possibleDestinations.add(new Pair<NodeId, TransportType>(connection.getTo(), connection.getTransport()));
-        }
-        possibleDestinations =
-                gameState.loadPossibleDestinations(possibleDestinations.stream().collect(Collectors.toSet())).stream()
-                        .collect(Collectors.toList());
+        possibleDestinations = gameState.getPossibleDestinations().stream().toList();
 
         Pair<NodeId, TransportType> selectedMove;
         NodeId misterXNodeId = gameState.getLastRevealedMisterXPosition();

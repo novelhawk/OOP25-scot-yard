@@ -6,6 +6,7 @@ import it.unibo.scotyard.model.Pair;
 import it.unibo.scotyard.model.entities.ExposedPosition;
 import it.unibo.scotyard.model.entities.MoveAction;
 import it.unibo.scotyard.model.entities.RunnerTurnTrackerImpl;
+import it.unibo.scotyard.model.inventory.Inventory;
 import it.unibo.scotyard.model.map.MapConnection;
 import it.unibo.scotyard.model.map.MapData;
 import it.unibo.scotyard.model.map.NodeId;
@@ -24,7 +25,7 @@ import java.util.stream.Collectors;
 public final class GameStateImpl implements GameState {
 
     private static final int NOT_REVEALED_YET = -1;
-    private static final int ROUND_COUNT = 24;
+    private static final int FINAL_ROUND_COUNT = 24;
 
     private final Random random;
     private final List<GameStateSubscriber> subscribers = new ArrayList<>();
@@ -39,7 +40,8 @@ public final class GameStateImpl implements GameState {
 
     private final Players players;
 
-    private final Set<Pair<NodeId, TransportType>> possibleDestinations; // They refer to the current player
+    // They refer to the current player
+    private final Set<Pair<NodeId, TransportType>> possibleDestinations;
     private final List<TransportType> availableTransports;
 
     private TurnState turnState;
@@ -81,17 +83,24 @@ public final class GameStateImpl implements GameState {
         final NodeId runnerPosition = this.players.getMisterX().getPosition();
         final boolean found =
                 this.players.getSeekers().anyMatch(it -> it.getPosition().equals(runnerPosition));
-
-        if (found || this.round > Constants.FINAL_ROUND_NUMBER) {
-            this.setGameStatus(GameStatus.PAUSE);
-            return true;
-        }
+        boolean isOver = false;
 
         if (GameMode.DETECTIVE.equals(this.gameMode)) {
-            return this.getGameRound() > 1 && this.possibleDestinations.isEmpty();
+            isOver = this.possibleDestinations.isEmpty();
+        } else {
+            if (this.getCurrentPlayer() != this.players.getMisterX()) {
+                isOver = this.possibleDestinations.isEmpty();
+            }
         }
 
-        return found;
+        if (found || this.round > FINAL_ROUND_COUNT) {
+            isOver = true;
+        }
+
+        if (isOver) {
+            this.setGameStatus(GameStatus.PAUSE);
+        }
+        return isOver;
     }
 
     @Override
@@ -110,17 +119,30 @@ public final class GameStateImpl implements GameState {
 
         if (found) {
             if (this.gameMode == GameMode.MISTER_X) {
-                return lossString;
+                return lossString + CommonCostants.CAPTURED_MISTER_X_MODE_TEXT;
             } else {
-                return victoryString;
+                return victoryString + CommonCostants.CAPTURED_DETECTIVE_MODE_TEXT;
             }
         } else {
-            if (this.gameMode == GameMode.MISTER_X) {
-                return victoryString;
+            if (this.possibleDestinations.isEmpty()) {
+                if (GameMode.DETECTIVE.equals(this.gameMode)) {
+                    return lossString + CommonCostants.NO_MORE_TICKETS_AVAILABLE_TEXT;
+                } else {
+                    if (this.getCurrentPlayer().equals(this.players.getMisterX())) {
+                        return lossString + CommonCostants.NO_MORE_MOVES_TEXT;
+                    } else {
+                        return victoryString + CommonCostants.NO_MORE_TICKETS_AI_TEXT;
+                    }
+                }
             } else {
-                return lossString;
+                if (this.round >= FINAL_ROUND_COUNT) {
+                    if (this.gameMode == GameMode.MISTER_X) return victoryString + CommonCostants.ESCAPED_MISTER_X_MODE_TEXT;
+                } else {
+                    return lossString + CommonCostants.ESCAPED_DETECTIVE_MODE_TEXT;
+                }
             }
         }
+        return lossString;
     }
 
     @Override
@@ -143,13 +165,13 @@ public final class GameStateImpl implements GameState {
             /* Mister X can't go where detective is. */
             if (this.gameMode == GameMode.MISTER_X
                     && this.getCurrentPlayer().equals(this.players.getUserPlayer())
-                    && pos == this.players.getComputerPlayer().getPosition()) {
+                    && pos.equals(this.players.getComputerPlayer().getPosition())) {
                 this.possibleDestinations.remove(destination);
             }
             /* Mister X can't go where detective is. */
             if (this.gameMode == GameMode.DETECTIVE
                     && this.getCurrentPlayer().equals(this.players.getComputerPlayer())
-                    && pos == this.players.getUserPlayer().getPosition()) {
+                    && pos.equals(this.players.getUserPlayer().getPosition())) {
                 this.possibleDestinations.remove(destination);
             }
             /*
@@ -160,7 +182,7 @@ public final class GameStateImpl implements GameState {
                 if (bobby.getPosition().equals(pos)
                         || (this.gameMode == GameMode.DETECTIVE
                                 && this.getCurrentPlayer().equals(bobby)
-                                && pos == this.players.getUserPlayer().getPosition())) {
+                                && pos.equals(this.players.getUserPlayer().getPosition()))) {
                     this.possibleDestinations.remove(destination);
                 }
             }
@@ -173,7 +195,7 @@ public final class GameStateImpl implements GameState {
                 this.possibleDestinations.removeIf(item -> TransportType.FERRY.equals(item.getY()));
             }
             // Removal of destinations for which current player has no tickets
-            if (this.getCurrentPlayer().getNumberTickets(Player.getTicketTypeForTransport(transport)) == 0) {
+            if (this.getCurrentPlayer().getNumberTickets(Inventory.getTicketTypeForTransport(transport)) == 0) {
                 this.possibleDestinations.remove(destination);
             }
         }
@@ -224,7 +246,7 @@ public final class GameStateImpl implements GameState {
     @Override
     public void moveCurrentPlayer(NodeId destinationId, TransportType transport) {
         this.getCurrentPlayer().setPosition(destinationId);
-        this.getCurrentPlayer().useTicket(Player.getTicketTypeForTransport(transport));
+        this.getCurrentPlayer().useTicket(Inventory.getTicketTypeForTransport(transport));
     }
 
     private void incrementsRound() {
@@ -400,7 +422,7 @@ public final class GameStateImpl implements GameState {
 
     @Override
     public int maxRoundCount() {
-        return ROUND_COUNT;
+        return FINAL_ROUND_COUNT;
     }
 
     @Override

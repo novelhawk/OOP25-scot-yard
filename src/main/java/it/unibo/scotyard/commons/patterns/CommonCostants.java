@@ -50,4 +50,12 @@ public final class CommonCostants {
     public static final String BACK_MAIN_MENU = "Ritorna al menù principale";
     public static final String WINNER_TEXT = "Vittoria";
     public static final String LOSER_TEXT = "Sconfitta";
+    public static final String CAPTURED_MISTER_X_MODE_TEXT = " : sei stato catturato!";
+    public static final String CAPTURED_DETECTIVE_MODE_TEXT = " : Mister X catturato!";
+    public static final String NO_MORE_TICKETS_AVAILABLE_TEXT = " : biglietti esauriti per le fermate raggiungibili";
+    public static final String NO_MORE_MOVES_TEXT = " : non puoi muoverti";
+    public static final String NO_MORE_TICKETS_AI_TEXT = " : gli avversari hanno finito i biglietti per muoversi";
+    public static final String ESCAPED_MISTER_X_MODE_TEXT = " : sei riuscito a fuggire";
+    public static final String ESCAPED_DETECTIVE_MODE_TEXT = " : Mister X non è stato catturato in tempo";
+
 }
