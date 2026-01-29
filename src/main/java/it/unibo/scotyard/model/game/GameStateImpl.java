@@ -1,6 +1,7 @@
 package it.unibo.scotyard.model.game;
 
 import it.unibo.scotyard.commons.Constants;
+import it.unibo.scotyard.commons.patterns.CommonCostants;
 import it.unibo.scotyard.model.Pair;
 import it.unibo.scotyard.model.entities.ExposedPosition;
 import it.unibo.scotyard.model.entities.MoveAction;
@@ -23,7 +24,7 @@ import java.util.stream.Collectors;
 public final class GameStateImpl implements GameState {
 
     private static final int NOT_REVEALED_YET = -1;
-     private static final int ROUND_COUNT = 24;
+    private static final int ROUND_COUNT = 24;
 
     private final Random random;
     private final List<GameStateSubscriber> subscribers = new ArrayList<>();
@@ -45,6 +46,10 @@ public final class GameStateImpl implements GameState {
     private final RunnerTurnTrackerImpl runnerTurnTracker;
     private boolean runnerExposed = false;
 
+    private long gameStartTime;
+    private long gameEndTime;
+    private long gameDuration;
+
     private int round = 1;
 
     private NodeId lastRevealedMisterXPosition;
@@ -52,9 +57,9 @@ public final class GameStateImpl implements GameState {
     /**
      * Creates a new game state.
      *
-     * @param random the seeded random instance used the active match
+     * @param random   the seeded random instance used the active match
      * @param gameMode the game mode
-     * @param players the involved players
+     * @param players  the involved players
      */
     public GameStateImpl(Random random, GameMode gameMode, Players players, GameDifficulty gameDifficulty) {
         this.random = random;
@@ -66,6 +71,9 @@ public final class GameStateImpl implements GameState {
         this.runnerTurnTracker = new RunnerTurnTrackerImpl();
         this.gameStatus = GameStatus.PLAYING;
         lastRevealedMisterXPosition = new NodeId(NOT_REVEALED_YET);
+        this.gameStartTime = System.currentTimeMillis();
+        this.gameEndTime = 0;
+        this.gameDuration = 0;
     }
 
     @Override
@@ -93,8 +101,8 @@ public final class GameStateImpl implements GameState {
 
     @Override
     public String resultGame() {
-        final String victoryString = "Vittoria";
-        final String lossString = "Sconfitta";
+        final String victoryString = CommonCostants.WINNER_TEXT;
+        final String lossString = CommonCostants.LOSER_TEXT;
 
         final NodeId runnerPosition = this.players.getMisterX().getPosition();
         final boolean found =
@@ -156,7 +164,8 @@ public final class GameStateImpl implements GameState {
                     this.possibleDestinations.remove(destination);
                 }
             }
-            // Removal of destinations that can be reached by ferry, if player isn't Mister X
+            // Removal of destinations that can be reached by ferry, if player isn't Mister
+            // X
             if ((GameMode.DETECTIVE.equals(this.gameMode)
                             && this.getCurrentPlayer() != this.players.getComputerPlayer())
                     || (GameMode.MISTER_X.equals(this.gameMode)
@@ -267,7 +276,7 @@ public final class GameStateImpl implements GameState {
     }
 
     @Override
-    public GameDifficulty getGameDifficulty(){
+    public GameDifficulty getGameDifficulty() {
         return this.gameDifficulty;
     }
 
@@ -322,6 +331,10 @@ public final class GameStateImpl implements GameState {
 
     @Override
     public void setGameStatus(final GameStatus state) {
+        if (this.gameStatus == GameStatus.PLAYING && state == GameStatus.PAUSE) {
+            this.gameEndTime = System.currentTimeMillis();
+            this.gameDuration = this.gameEndTime - this.gameStartTime;
+        }
         this.gameStatus = state;
     }
 
@@ -399,5 +412,33 @@ public final class GameStateImpl implements GameState {
         for (final GameStateSubscriber subscriber : subscribers) {
             action.accept(subscriber);
         }
+    }
+
+    @Override
+    public long getGameStartTime() {
+        return gameStartTime;
+    }
+
+    @Override
+    public long getGameEndTime() {
+        return gameEndTime;
+    }
+
+    @Override
+    public long getGameDuration() {
+        return gameDuration;
+    }
+
+    @Override
+    public String getFormattedDuration() {
+        if (gameDuration == 0) {
+            return "00:00:00";
+        }
+        final long seconds = gameDuration / 1000;
+        final long hours = seconds / 3600;
+        final long minutes = (seconds % 3600) / 60;
+        final long secs = seconds % 60;
+
+        return String.format("%02d:%02d:%02d", hours, minutes, secs);
     }
 }

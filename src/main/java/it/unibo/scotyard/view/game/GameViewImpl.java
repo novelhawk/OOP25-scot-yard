@@ -1,8 +1,10 @@
 package it.unibo.scotyard.view.game;
 
-import it.unibo.scotyard.commons.Constants;
 import it.unibo.scotyard.commons.dtos.map.MapInfo;
 import it.unibo.scotyard.commons.engine.Size;
+import it.unibo.scotyard.commons.patterns.CommonCostants;
+import it.unibo.scotyard.commons.patterns.ScotColors;
+import it.unibo.scotyard.commons.patterns.ScotFont;
 import it.unibo.scotyard.controller.game.GameController;
 import it.unibo.scotyard.model.map.NodeId;
 import it.unibo.scotyard.model.map.TransportType;
@@ -17,7 +19,6 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Set;
@@ -40,30 +41,13 @@ public final class GameViewImpl implements GameView {
     private static final int SPACING = 50;
     private static final int SMALL_SPACING = 10;
 
-    private static final String RULES_WINDOW_TITLE = "Regole";
-    private static final String GAME_OVER_WINDOW_TITLE = "Game Over";
-    private static final String SELECTION_JDIALOG_TITLE = "Selezione mezzo di trasporto";
-    private static final String TAXI_TEXT = "Taxi";
-    private static final String BUS_TEXT = "Bus";
-    private static final String UNDERGROUND_TEXT = "Metro";
-    private static final String FERRY_TEXT = "Traghetto";
-
-    private static final Color BACKGROUND_COLOR = new Color(0, 0, 0); // black
-    private static final Color ACCENT_COLOR = new Color(31, 81, 255); // neon blue
-    private static final Color WHITE_COLOR = new Color(255, 255, 255);
-    private static final Color RED_COLOR = new Color(255, 0, 0); // red
-    private static final Color GREEN_COLOR = new Color(0, 255, 0);
-
-    private static final Font TITLE_FONT = new Font("Arial", Font.BOLD, 36);
-    private static final Font TEXT_FONT = new Font("Arial", Font.BOLD, 20);
-    private static final Font SMALL_TEXT_FONT = new Font("Arial", Font.BOLD, 14);
-    private static final Font WINNER_FONT = new Font("Arial", Font.BOLD, 28);
-
     private final IconRegistry iconRegistry;
     private final MapPanel mapPanel;
     private final SidebarPanel sidebar;
     private final JPanel mainPanel;
     private Window gameOverWindow;
+    private JPanel gameOverPanel;
+
     private JLabel winnerLabel;
 
     private GameController observer;
@@ -119,7 +103,7 @@ public final class GameViewImpl implements GameView {
     @Override
     public void displayRulesWindow(final JPanel panel) {
         final Size smallSize = Size.of(SMALL_WINDOW_WIDTH, SMALL_WINDOW_HEIGHT);
-        final Window rulesWindow = new WindowImpl(smallSize, panel, RULES_WINDOW_TITLE);
+        final Window rulesWindow = new WindowImpl(smallSize, panel, CommonCostants.RULES_WINDOW_TITLE);
         rulesWindow.setsMainFeatures(smallSize);
         rulesWindow.setHideOnClose();
         rulesWindow.display();
@@ -127,32 +111,32 @@ public final class GameViewImpl implements GameView {
 
     public void createGameOverWindow() {
         final Size smallSize = Size.of(SMALL_WINDOW_WIDTH, SMALL_WINDOW_HEIGHT);
-        final JPanel panel = new JPanel();
-        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-        panel.setBackground(BACKGROUND_COLOR);
-        panel.add(Box.createVerticalGlue());
-        JLabel titleLabel = new JLabel("GAME OVER!");
-        titleLabel.setForeground(ACCENT_COLOR);
-        titleLabel.setFont(TITLE_FONT);
+        this.gameOverPanel = new JPanel();
+        this.gameOverPanel.setLayout(new BoxLayout(this.gameOverPanel, BoxLayout.Y_AXIS));
+        this.gameOverPanel.setBackground(ScotColors.BACKGROUND_COLOR);
+        this.gameOverPanel.add(Box.createVerticalGlue());
+        JLabel titleLabel = new JLabel(CommonCostants.GAME_OVER_WINDOW_TITLE);
+        titleLabel.setForeground(ScotColors.ACCENT_COLOR);
+        titleLabel.setFont(ScotFont.TITLE_FONT_36);
         titleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-        panel.add(titleLabel);
-        panel.add(Box.createVerticalStrut(SMALL_SPACING));
+        this.gameOverPanel.add(titleLabel);
+        this.gameOverPanel.add(Box.createVerticalStrut(SMALL_SPACING));
         this.winnerLabel = new JLabel();
-        this.winnerLabel.setForeground(ACCENT_COLOR);
-        this.winnerLabel.setFont(WINNER_FONT);
+        this.winnerLabel.setForeground(ScotColors.ACCENT_COLOR);
+        this.winnerLabel.setFont(ScotFont.TEXT_FONT_28);
         this.winnerLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-        panel.add(this.winnerLabel);
-        panel.add(Box.createVerticalStrut(SPACING));
-        JButton button = new JButton("Ritorna al menù principale");
-        button.setFont(TEXT_FONT);
-        button.setBackground(ACCENT_COLOR);
-        button.setForeground(BACKGROUND_COLOR);
+        this.gameOverPanel.add(this.winnerLabel);
+        this.gameOverPanel.add(Box.createVerticalStrut(SPACING));
+        JButton button = new JButton(CommonCostants.BACK_MAIN_MENU);
+        button.setFont(ScotFont.TEXT_FONT_20);
+        button.setBackground(ScotColors.ACCENT_COLOR);
+        button.setForeground(ScotColors.BACKGROUND_COLOR);
         button.setAlignmentX(Component.CENTER_ALIGNMENT);
-        panel.add(button);
-        panel.add(Box.createVerticalStrut(SPACING));
-        panel.add(Box.createVerticalGlue());
+        this.gameOverPanel.add(button);
+        this.gameOverPanel.add(Box.createVerticalStrut(SPACING));
+        this.gameOverPanel.add(Box.createVerticalGlue());
 
-        this.gameOverWindow = new WindowImpl(smallSize, panel, GAME_OVER_WINDOW_TITLE);
+        this.gameOverWindow = new WindowImpl(smallSize, this.gameOverPanel, CommonCostants.GAME_OVER_WINDOW_TITLE);
         this.gameOverWindow.setsMainFeatures(smallSize);
 
         button.addActionListener(e -> {
@@ -163,54 +147,53 @@ public final class GameViewImpl implements GameView {
 
     private void setResult(String result) {
         this.winnerLabel.setText(result);
-        if (new String("Vittoria").equals(result)) {
-            this.winnerLabel.setForeground(GREEN_COLOR);
+        if (new String(CommonCostants.WINNER_TEXT).equals(result)) {
+            this.winnerLabel.setForeground(Color.GREEN);
         } else {
-            this.winnerLabel.setForeground(RED_COLOR);
+            this.winnerLabel.setForeground(Color.RED);
         }
     }
 
     @Override
     public void displayGameOverWindow(String result) {
-        this.setResult(result);
-        this.gameOverWindow.display();
+        displayGameOverWindow(result, 0, null, false, null);
     }
 
     @Override
     public void loadTransportSelectionDialog(Set<TransportType> availableTransportTypes) {
         JDialog selectionWindow = new JDialog();
-        selectionWindow.setBackground(WHITE_COLOR);
-        selectionWindow.setTitle(SELECTION_JDIALOG_TITLE);
+        selectionWindow.setBackground(Color.WHITE);
+        selectionWindow.setTitle(CommonCostants.SELECTION_JDIALOG_TITLE);
         selectionWindow.setSize(new Dimension(SMALL_WINDOW_WIDTH, SMALL_WINDOW_HEIGHT));
         selectionWindow.setLayout(new BorderLayout());
 
-        JLabel textLabel = new JLabel("Selezionare mezzo di trasporto");
-        textLabel.setForeground(BACKGROUND_COLOR);
-        textLabel.setFont(SMALL_TEXT_FONT);
+        JLabel textLabel = new JLabel(CommonCostants.SELECTION_JDIALOG_TITLE);
+        textLabel.setForeground(ScotColors.BACKGROUND_COLOR);
+        textLabel.setFont(ScotFont.TEXT_FONT_14);
         textLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         selectionWindow.add(textLabel, BorderLayout.NORTH);
 
         JPanel buttonsPanel = new JPanel(new FlowLayout());
         for (TransportType transport : availableTransportTypes) {
             JButton button = new JButton();
-            button.setForeground(BACKGROUND_COLOR);
-            button.setFont(SMALL_TEXT_FONT);
+            button.setForeground(ScotColors.BACKGROUND_COLOR);
+            button.setFont(ScotFont.TEXT_FONT_14);
             switch (transport) {
                 case TAXI:
-                    button.setText(TAXI_TEXT);
-                    button.setBackground(Constants.TAXI_COLOR);
+                    button.setText(CommonCostants.TAXI_TEXT);
+                    button.setBackground(ScotColors.TAXI_COLOR);
                     break;
                 case BUS:
-                    button.setText(BUS_TEXT);
-                    button.setBackground(Constants.BUS_COLOR);
+                    button.setText(CommonCostants.BUS_TEXT);
+                    button.setBackground(ScotColors.BUS_COLOR);
                     break;
                 case UNDERGROUND:
-                    button.setText(UNDERGROUND_TEXT);
-                    button.setBackground(Constants.UNDERGROUND_COLOR);
+                    button.setText(CommonCostants.UNDERGROUND_TEXT);
+                    button.setBackground(ScotColors.UNDERGROUND_COLOR);
                     break;
                 case FERRY:
-                    button.setText(FERRY_TEXT);
-                    button.setBackground(Constants.FERRY_COLOR);
+                    button.setText(CommonCostants.FERRY_TEXT);
+                    button.setBackground(ScotColors.FERRY_COLOR);
                     break;
             }
             button.addActionListener(new ActionListener() {
@@ -245,5 +228,97 @@ public final class GameViewImpl implements GameView {
     public void destinationChosen(NodeId destinationId) {
         this.observer.destinationChosen(destinationId);
         this.getMapPanel().repaint();
+    }
+
+    @Override
+    public void displayGameOverWindow(
+            final String result,
+            final long gameDuration,
+            final it.unibo.scotyard.model.game.GameMode gameMode,
+            final boolean isNewRecord,
+            final String currentRecord) {
+        this.setResult(result);
+
+        // rimuovi eventuali label di durata precedenti
+        Component[] components = this.gameOverPanel.getComponents();
+        for (int i = components.length - 1; i >= 0; i--) {
+            Component comp = components[i];
+            if (comp instanceof JLabel) {
+                JLabel label = (JLabel) comp;
+                String text = label.getText();
+                if (text != null && (text.contains("Durata") || text.contains("Record") || text.contains("NUOVO"))) {
+                    this.gameOverPanel.remove(comp);
+                }
+            }
+        }
+
+        // se ci sono dati di gioco, mostra il messaggio
+        if (gameDuration > 0 && gameMode != null) {
+            // formatta durata
+            final String formattedDuration = formatDuration(gameDuration);
+
+            // Riga 1: durata partita
+            final JLabel durationLabel = new JLabel("Durata partita: " + formattedDuration);
+            durationLabel.setFont(ScotFont.TEXT_FONT_16);
+            durationLabel.setForeground(new Color(200, 200, 200));
+            durationLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+            addLabelAfterWinner(durationLabel);
+
+            addVerticalSpace(5);
+
+            // Riga 2: nuovo record o record esistente
+            if (isNewRecord) {
+                final JLabel recordLabel = new JLabel("🏆 NUOVO RECORD per modalità "
+                        + (gameMode == it.unibo.scotyard.model.game.GameMode.DETECTIVE ? "Detective" : "Mr. X") + "!");
+                recordLabel.setFont(ScotFont.TEXT_FONT_18);
+                recordLabel.setForeground(new Color(255, 215, 0)); // Gold
+                recordLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+                addLabelAfterWinner(recordLabel);
+            } else if (currentRecord != null) {
+                final JLabel recordLabel = new JLabel("Record modalità "
+                        + (gameMode == it.unibo.scotyard.model.game.GameMode.DETECTIVE ? "Detective" : "Mr. X") + ": "
+                        + currentRecord);
+                recordLabel.setFont(ScotFont.TEXT_FONT_16);
+                recordLabel.setForeground(new Color(200, 200, 200));
+                recordLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+                addLabelAfterWinner(recordLabel);
+            }
+
+            this.gameOverPanel.revalidate();
+            this.gameOverPanel.repaint();
+        }
+
+        this.gameOverWindow.display();
+    }
+
+    private void addLabelAfterWinner(final JLabel label) {
+        for (int i = 0; i < this.gameOverPanel.getComponentCount(); i++) {
+            if (this.gameOverPanel.getComponent(i) == this.winnerLabel) {
+                this.gameOverPanel.add(label, i + 1);
+                return;
+            }
+        }
+        // Fallback: aggiungi comunque
+        this.gameOverPanel.add(label);
+    }
+
+    private void addVerticalSpace(final int height) {
+        for (int i = 0; i < this.gameOverPanel.getComponentCount(); i++) {
+            if (this.gameOverPanel.getComponent(i) == this.winnerLabel) {
+                this.gameOverPanel.add(Box.createVerticalStrut(height), i + 1);
+                return;
+            }
+        }
+    }
+
+    private String formatDuration(final long millis) {
+        if (millis <= 0) {
+            return "00:00:00";
+        }
+        final long seconds = millis / 1000;
+        final long hours = seconds / 3600;
+        final long minutes = (seconds % 3600) / 60;
+        final long secs = seconds % 60;
+        return String.format("%02d:%02d:%02d", hours, minutes, secs);
     }
 }

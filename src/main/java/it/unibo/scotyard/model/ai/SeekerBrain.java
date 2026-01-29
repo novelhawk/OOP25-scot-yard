@@ -19,8 +19,8 @@ import java.util.Random;
 import java.util.stream.Collectors;
 
 /*
-* The AI used by Detective and Bobbies
-*/
+ * The AI used by Detective and Bobbies
+ */
 public class SeekerBrain implements PlayerBrain {
 
     private final Random random;
