@@ -210,9 +210,13 @@ public final class GameStateImpl implements GameState {
     }
 
     @Override
-    public boolean changeCurrentPlayer() {
+    public boolean isRoundLastTurn() {
+        return indexCurrentPlayer == players.getPlayersCount() - 1;
+    }
+
+    @Override
+    public void changeCurrentPlayer() {
         indexCurrentPlayer = (indexCurrentPlayer + 1) % players.getPlayersCount();
-        return indexCurrentPlayer == 0;
     }
 
     private void loadAvailableTransports(NodeId destinationId) {
@@ -250,21 +254,10 @@ public final class GameStateImpl implements GameState {
         this.getCurrentPlayer().useTicket(Inventory.getTicketTypeForTransport(transport));
     }
 
-    private void incrementsRound() {
-        this.round++;
-    }
-
     @Override
     public void nextRound() {
-        if (this.gameMode == GameMode.DETECTIVE) {
-            if (this.getCurrentPlayer().equals(this.players.getComputerPlayer())) {
-                this.incrementsRound();
-            }
-        } else {
-            if (this.getCurrentPlayer().equals(this.players.getUserPlayer())) {
-                this.incrementsRound();
-            }
-        }
+        indexCurrentPlayer = 0;
+        round++;
     }
 
     @Override

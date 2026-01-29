@@ -102,8 +102,10 @@ public class TurnService {
 
         gameState.notifySubscribers(GameStateSubscriber::onTurnEnd);
 
-        if (gameState.changeCurrentPlayer()) {
+        if (gameState.isRoundLastTurn()) {
             dispatcher.dispatch(new EndRoundCommand());
+        } else {
+            gameState.changeCurrentPlayer();
         }
     }
 
