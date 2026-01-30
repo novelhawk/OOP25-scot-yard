@@ -1,12 +1,16 @@
 package it.unibo.scotyard.model;
 
 import it.unibo.scotyard.model.game.GameState;
+import it.unibo.scotyard.model.game.matchhistory.InMemoryMatchHistoryRepository;
+import it.unibo.scotyard.model.game.matchhistory.JsonMatchHistoryRepository;
+import it.unibo.scotyard.model.game.matchhistory.MatchHistoryRepository;
 import it.unibo.scotyard.model.map.*;
 import it.unibo.scotyard.model.router.CommandDispatcher;
 import it.unibo.scotyard.model.router.CommandRouter;
 import it.unibo.scotyard.model.service.GameStateService;
 import it.unibo.scotyard.model.service.RoundService;
 import it.unibo.scotyard.model.service.TurnService;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -15,6 +19,7 @@ import java.util.Random;
 public final class ModelImpl implements Model {
 
     private final CommandDispatcher dispatcher;
+    private final MatchHistoryRepository matchHistoryRepository;
     private MapData mapData;
     private GameState gameState;
     private Random random;
@@ -27,6 +32,7 @@ public final class ModelImpl implements Model {
      */
     public ModelImpl(final CommandDispatcher dispatcher) {
         this.dispatcher = dispatcher;
+        this.matchHistoryRepository = createMatchHistoryRepository();
     }
 
     @Override
@@ -108,5 +114,25 @@ public final class ModelImpl implements Model {
         }
 
         return resultList;
+    }
+
+    @Override
+    public MatchHistoryRepository getMatchHistoryRepository() {
+        return matchHistoryRepository;
+    }
+
+    /**
+     * Creates the JsonMatchHistoryRepository and falls back to the InMemory version if it fails.
+     *
+     * @return a MatchHistoryRepository
+     */
+    private static MatchHistoryRepository createMatchHistoryRepository() {
+        try {
+            return JsonMatchHistoryRepository.initialize();
+        } catch (IOException e) {
+            // Since this is not critical for the game functionalities
+            // we fall back to an in-memory version and fail quietly
+            return new InMemoryMatchHistoryRepository();
+        }
     }
 }
