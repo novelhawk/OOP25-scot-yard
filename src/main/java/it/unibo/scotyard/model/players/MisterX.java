@@ -1,5 +1,6 @@
 package it.unibo.scotyard.model.players;
 
+import it.unibo.scotyard.commons.patterns.CommonCostants;
 import it.unibo.scotyard.model.ai.PlayerBrain;
 import it.unibo.scotyard.model.game.turn.TurnManager;
 import it.unibo.scotyard.model.game.turn.TurnManagerImpl;
@@ -23,7 +24,7 @@ public final class MisterX extends PlayerImpl {
      */
     public MisterX(NodeId position, PlayerBrain brain) {
         super(position, brain);
-        this.name = "Mister X";
+        this.name = CommonCostants.MRX_FULL_STRING;
     }
 
     /**

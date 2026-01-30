@@ -56,7 +56,7 @@ public class InventoryImpl implements Inventory {
     @Override
     public void decrementTickets(TicketType ticketType) {
         final int currentTickets = this.ticketsMap.get(ticketType);
-        if (currentTickets != Constants.INFINITE && currentTickets!=Constants.NONE) {
+        if (currentTickets != Constants.INFINITE && currentTickets != Constants.NONE) {
             this.ticketsMap.put(ticketType, currentTickets - 1);
         }
     }

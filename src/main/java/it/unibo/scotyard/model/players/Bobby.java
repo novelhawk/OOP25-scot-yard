@@ -1,5 +1,6 @@
 package it.unibo.scotyard.model.players;
 
+import it.unibo.scotyard.commons.patterns.CommonCostants;
 import it.unibo.scotyard.model.ai.PlayerBrain;
 import it.unibo.scotyard.model.map.NodeId;
 
@@ -12,7 +13,7 @@ public class Bobby extends PlayerImpl {
      */
     public Bobby(NodeId position, PlayerBrain brain) {
         super(position, brain);
-        this.name = "Bobby";
+        this.name = CommonCostants.BOBBY_FULL_STRING;
     }
 
     /**

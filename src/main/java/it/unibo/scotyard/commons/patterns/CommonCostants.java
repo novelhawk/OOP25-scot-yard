@@ -23,6 +23,9 @@ public final class CommonCostants {
     public static final String MRX_STRING = "X";
     public static final String DETECTIVE_STRING = "D";
     public static final String BOBBIES_STRING = "B";
+    public static final String MRX_FULL_STRING = "Mister X";
+    public static final String DETECTIVE_FULL_STRING = "Detective";
+    public static final String BOBBY_FULL_STRING = "Bobby";
 
     public static final String TAXI_TEXT = "Taxi";
     public static final String BUS_TEXT = "Bus";

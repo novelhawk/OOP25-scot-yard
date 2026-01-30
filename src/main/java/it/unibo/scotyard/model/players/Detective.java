@@ -1,5 +1,6 @@
 package it.unibo.scotyard.model.players;
 
+import it.unibo.scotyard.commons.patterns.CommonCostants;
 import it.unibo.scotyard.model.ai.PlayerBrain;
 import it.unibo.scotyard.model.map.NodeId;
 
@@ -13,7 +14,7 @@ public class Detective extends PlayerImpl {
      */
     public Detective(NodeId position, PlayerBrain brain) {
         super(position, brain);
-        this.name = "Mister X";
+        this.name = CommonCostants.DETECTIVE_FULL_STRING;
     }
 
     /**
