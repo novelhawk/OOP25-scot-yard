@@ -72,7 +72,7 @@ public final class DetectiveGameControllerImpl extends GameControllerImpl {
     }
 
     /**
-     * Manages a round of a game. If the game is over, it calls a method of the GameView, which opens a the game over
+     * Manages a round of a game. If the game is over, it calls a method of the GameView, which opens the game over
      * window, which takes back the user to the main menu.
      */
     public void manageGameRound() {
