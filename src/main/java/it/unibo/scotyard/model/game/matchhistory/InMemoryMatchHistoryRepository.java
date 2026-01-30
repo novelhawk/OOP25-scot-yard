@@ -1,7 +1,6 @@
 package it.unibo.scotyard.model.game.matchhistory;
 
 import it.unibo.scotyard.model.game.GameMode;
-import java.io.IOException;
 import java.util.function.Function;
 
 /**
@@ -13,7 +12,7 @@ public final class InMemoryMatchHistoryRepository implements MatchHistoryReposit
     private MatchHistory current;
 
     public InMemoryMatchHistoryRepository() {
-        this.current = MatchHistory.getDefault();
+        this.current = MatchHistoryImpl.getDefault();
     }
 
     @Override
@@ -22,17 +21,17 @@ public final class InMemoryMatchHistoryRepository implements MatchHistoryReposit
     }
 
     @Override
-    public void trackWin(GameMode gameMode) throws IOException {
-        update(MatchHistory.incrementOnce(gameMode, true));
+    public void trackWin(GameMode gameMode) {
+        update(MatchHistoryImpl.incrementOnce(gameMode, true));
     }
 
     @Override
-    public void trackLose(GameMode gameMode) throws IOException {
-        update(MatchHistory.incrementOnce(gameMode, false));
+    public void trackLose(GameMode gameMode) {
+        update(MatchHistoryImpl.incrementOnce(gameMode, false));
     }
 
     @Override
-    public void update(Function<MatchHistory, MatchHistory> mutator) throws IOException {
+    public void update(Function<MatchHistory, MatchHistory> mutator) {
         final MatchHistory current = loadOrDefault();
         this.current = mutator.apply(current);
     }

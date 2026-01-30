@@ -31,18 +31,18 @@ public final class JsonMatchHistoryRepository implements MatchHistoryRepository 
         try {
             return load();
         } catch (IOException | JsonSyntaxException e) {
-            return MatchHistory.getDefault();
+            return MatchHistoryImpl.getDefault();
         }
     }
 
     @Override
     public void trackWin(GameMode gameMode) throws IOException {
-        update(MatchHistory.incrementOnce(gameMode, true));
+        update(MatchHistoryImpl.incrementOnce(gameMode, true));
     }
 
     @Override
     public void trackLose(GameMode gameMode) throws IOException {
-        update(MatchHistory.incrementOnce(gameMode, false));
+        update(MatchHistoryImpl.incrementOnce(gameMode, false));
     }
 
     @Override
@@ -60,7 +60,7 @@ public final class JsonMatchHistoryRepository implements MatchHistoryRepository 
      */
     private MatchHistory load() throws IOException {
         final String json = Files.readString(this.filePath, StandardCharsets.UTF_8);
-        return gson.fromJson(json, MatchHistory.class);
+        return gson.fromJson(json, MatchHistoryImpl.class);
     }
 
     /**
