@@ -18,17 +18,10 @@ public interface MatchHistoryRepository {
      * Updates the saved state to include a new win.
      *
      * @param gameMode the active gameMode when the game was won
+     * @param hasWon the game winning outcome
      * @throws IOException if an I/O error occurs
      */
-    void trackWin(GameMode gameMode) throws IOException;
-
-    /**
-     * Updates the saved state to include a new lose.
-     *
-     * @param gameMode the active gameMode when the game was lost
-     * @throws IOException if an I/O error occurs
-     */
-    void trackLose(GameMode gameMode) throws IOException;
+    void trackOutcome(GameMode gameMode, boolean hasWon) throws IOException;
 
     /**
      * Loads, transforms and then saves to disk a MatchHistory

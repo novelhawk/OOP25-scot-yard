@@ -36,13 +36,8 @@ public final class JsonMatchHistoryRepository implements MatchHistoryRepository 
     }
 
     @Override
-    public void trackWin(GameMode gameMode) throws IOException {
-        update(MatchHistoryImpl.incrementOnce(gameMode, true));
-    }
-
-    @Override
-    public void trackLose(GameMode gameMode) throws IOException {
-        update(MatchHistoryImpl.incrementOnce(gameMode, false));
+    public void trackOutcome(GameMode gameMode, boolean hasWon) throws IOException {
+        update(MatchHistoryImpl.incrementOnce(gameMode, hasWon));
     }
 
     @Override

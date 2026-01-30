@@ -21,13 +21,8 @@ public final class InMemoryMatchHistoryRepository implements MatchHistoryReposit
     }
 
     @Override
-    public void trackWin(GameMode gameMode) {
-        update(MatchHistoryImpl.incrementOnce(gameMode, true));
-    }
-
-    @Override
-    public void trackLose(GameMode gameMode) {
-        update(MatchHistoryImpl.incrementOnce(gameMode, false));
+    public void trackOutcome(GameMode gameMode, boolean hasWon) {
+        update(MatchHistoryImpl.incrementOnce(gameMode, hasWon));
     }
 
     @Override

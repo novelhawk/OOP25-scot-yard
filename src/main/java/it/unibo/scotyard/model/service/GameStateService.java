@@ -1,18 +1,18 @@
 package it.unibo.scotyard.model.service;
 
+import it.unibo.scotyard.commons.patterns.CommonCostants;
 import it.unibo.scotyard.model.Model;
 import it.unibo.scotyard.model.ai.RunnerBrain;
 import it.unibo.scotyard.model.ai.SeekerBrain;
+import it.unibo.scotyard.model.command.game.GameOverCommand;
 import it.unibo.scotyard.model.command.game.InitializeGameCommand;
-import it.unibo.scotyard.model.game.GameDifficulty;
-import it.unibo.scotyard.model.game.GameMode;
-import it.unibo.scotyard.model.game.GameStateImpl;
-import it.unibo.scotyard.model.game.Players;
+import it.unibo.scotyard.model.game.*;
 import it.unibo.scotyard.model.map.NodeId;
 import it.unibo.scotyard.model.players.Bobby;
 import it.unibo.scotyard.model.players.Detective;
 import it.unibo.scotyard.model.players.MisterX;
 import it.unibo.scotyard.model.router.CommandHandlerStore;
+import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -66,12 +66,32 @@ public class GameStateService {
     }
 
     /**
+     * Handles the {@code GameOverCommand}.
+     *
+     * @param command a game over command.
+     */
+    public void handleGameOver(final GameOverCommand command) {
+        final GameState gameState = model.getGameState();
+
+        gameState.notifySubscribers(GameStateSubscriber::onGameOver);
+
+        // HACK: gets whether the game was won by the user player
+        final boolean hasWon = gameState.resultGame().startsWith(CommonCostants.WINNER_TEXT);
+        try {
+            this.model.getMatchHistoryRepository().trackOutcome(gameState.getGameMode(), hasWon);
+        } catch (IOException e) {
+            // If we fail to update the match history we fail quietly
+        }
+    }
+
+    /**
      * Registers the service's command handlers to the store.
      *
      * @param store the store that contains the handler registrations
      */
     public void register(final CommandHandlerStore store) {
         store.register(InitializeGameCommand.class, this::handleInitialize);
+        store.register(GameOverCommand.class, this::handleGameOver);
     }
 
     private MisterX createMisterX(GameMode gameMode, NodeId initialPosition) {
