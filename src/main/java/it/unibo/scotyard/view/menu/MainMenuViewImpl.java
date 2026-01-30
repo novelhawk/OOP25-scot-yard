@@ -6,21 +6,11 @@ import it.unibo.scotyard.commons.patterns.ScotColors;
 import it.unibo.scotyard.commons.patterns.ScotFont;
 import it.unibo.scotyard.controller.menu.MainMenuController;
 import it.unibo.scotyard.model.game.record.GameRecord;
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
+
+import java.awt.*;
 import java.util.Objects;
 import java.util.Optional;
-import javax.swing.Box;
-import javax.swing.BoxLayout;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
+import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
@@ -94,19 +84,25 @@ public final class MainMenuViewImpl implements MainMenuView {
     @Override
     public void displayStatisticsTable(
             final Optional<GameRecord> detectiveRecord, final Optional<GameRecord> mrxRecord) {
-        // panel statistiche con BoxLayout
+        // panel statistiche con GridBagLayout
         final JPanel statsPanel = new JPanel();
-        statsPanel.setLayout(new BoxLayout(statsPanel, BoxLayout.Y_AXIS));
+        statsPanel.setLayout(new GridBagLayout());
         statsPanel.setBackground(ScotColors.BACKGROUND_COLOR);
+
+        final GridBagConstraints c = new GridBagConstraints();
+        c.gridx = 0;
+        c.gridy = 0;
+        c.insets = new Insets(0, 0, 20, 0);
+        c.fill = GridBagConstraints.NONE;
 
         // Titolo
         final JLabel titleLabel = new JLabel(CommonCostants.STATISCS_TITLE.toUpperCase());
         titleLabel.setFont(ScotFont.TEXT_FONT_28);
         titleLabel.setForeground(ScotColors.ACCENT_COLOR);
         titleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-        statsPanel.add(titleLabel);
+        statsPanel.add(titleLabel, c);
 
-        // tabella
+        // Tabella
         final String[] columnNames = {"Modalità", "Tempo", "Data"};
         final Object[][] data = new Object[2][3];
 
@@ -166,10 +162,21 @@ public final class MainMenuViewImpl implements MainMenuView {
         scrollPane.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 50, 30, 50));
         scrollPane.setBackground(ScotColors.BACKGROUND_COLOR);
         scrollPane.setAlignmentX(Component.CENTER_ALIGNMENT);
-        statsPanel.add(scrollPane);
+
+        c.gridy = 1;
+        statsPanel.add(scrollPane, c);
+
+        final JPanel blocksPanel = new JPanel(new GridLayout(1, 2, 100, 0));
+        blocksPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        blocksPanel.setBackground(ScotColors.BACKGROUND_COLOR);
+        blocksPanel.add(test());
+        blocksPanel.add(test());
+
+        c.gridy = 2;
+        statsPanel.add(blocksPanel, c);
 
         // Pannello bottoni
-        final JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 20));
+        final JPanel buttonPanel = new JPanel(new GridLayout(1, 2, 20, 0));
         buttonPanel.setBackground(ScotColors.BACKGROUND_COLOR);
         buttonPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
@@ -202,15 +209,54 @@ public final class MainMenuViewImpl implements MainMenuView {
 
         buttonPanel.add(backButton);
         buttonPanel.add(resetButton);
-        statsPanel.add(buttonPanel);
 
-        statsPanel.add(Box.createVerticalGlue());
+        c.insets = new Insets(40, 0, 0, 0);
+        c.gridy = 3;
+        statsPanel.add(buttonPanel, c);
+
+        c.gridy = 4;
+        c.weighty = 1;
+        statsPanel.add(Box.createHorizontalGlue(), c);
 
         // Sostituisci contenuto mainPanel
         mainPanel.removeAll();
         mainPanel.add(statsPanel, BorderLayout.CENTER);
         mainPanel.revalidate();
         mainPanel.repaint();
+    }
+
+    private Component test() {
+        final Box frame = Box.createVerticalBox();
+        frame.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        final JLabel title = new JLabel("Mister X games");
+        title.setAlignmentX(Component.CENTER_ALIGNMENT);
+        title.setFont(ScotFont.TEXT_FONT_16);
+        title.setForeground(ScotColors.ACCENT_COLOR);
+        frame.add(title);
+
+        frame.add(Box.createVerticalStrut(15));
+
+        final Box score = Box.createHorizontalBox();
+        score.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        final JLabel wins = new JLabel("6");
+        wins.setFont(ScotFont.TEXT_FONT_18);
+        wins.setForeground(Color.green);
+        score.add(wins);
+
+        final JLabel separator = new JLabel(" / ");
+        separator.setFont(ScotFont.TEXT_FONT_18);
+        separator.setForeground(ScotColors.ACCENT_COLOR);
+        score.add(separator);
+
+        final JLabel loses = new JLabel("3");
+        loses.setFont(ScotFont.TEXT_FONT_18);
+        loses.setForeground(Color.RED);
+        score.add(loses);
+
+        frame.add(score);
+        return frame;
     }
 
     private void showMenu() {
