@@ -136,7 +136,8 @@ public final class GameStateImpl implements GameState {
                 }
             } else {
                 if (this.round >= FINAL_ROUND_COUNT) {
-                    if (this.gameMode == GameMode.MISTER_X) return victoryString + CommonCostants.ESCAPED_MISTER_X_MODE_TEXT;
+                    if (this.gameMode == GameMode.MISTER_X)
+                        return victoryString + CommonCostants.ESCAPED_MISTER_X_MODE_TEXT;
                 } else {
                     return lossString + CommonCostants.ESCAPED_DETECTIVE_MODE_TEXT;
                 }
