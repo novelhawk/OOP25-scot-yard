@@ -146,7 +146,7 @@ public abstract class GameControllerImpl implements GameController, GameStateSub
     public Set<Pair<NodeId, TransportType>> loadPossibleDestinations() {
         Set<Pair<NodeId, TransportType>> possibleDestinations =
                 new HashSet<>(this.mainController.getPossibleDestinations(
-                        this.gameState.getPositionPlayer(this.gameState.getCurrentPlayer())));
+                        this.gameState.getCurrentPlayer().getPosition()));
         possibleDestinations = this.gameState.loadPossibleDestinations(possibleDestinations);
         return possibleDestinations;
     }
@@ -180,5 +180,10 @@ public abstract class GameControllerImpl implements GameController, GameStateSub
     public void onRunnerHidden() {
         this.view.getMapPanel().setMisterXPosition(HIDDEN_POSITION);
         SwingUtilities.invokeLater(() -> this.view.getMapPanel().repaint());
+    }
+
+    @Override
+    public void onGameOver() {
+        loadGameOverWindow();
     }
 }

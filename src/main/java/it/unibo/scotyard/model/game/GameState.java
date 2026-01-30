@@ -64,11 +64,16 @@ public interface GameState {
     Set<Pair<NodeId, TransportType>> getPossibleDestinations();
 
     /**
-     * Changes the turn to the next player.
+     * Returns whether the current turn is the last before the end of the round.
      *
-     * @return whether the turn circled back to the first player.
+     * @return whether the current turn is the last before the end of the round
      */
-    boolean changeCurrentPlayer();
+    boolean isRoundLastTurn();
+
+    /**
+     * Changes the turn to the next player.
+     */
+    void changeCurrentPlayer();
 
     /**
      * Return a boolean value which indicates whether there are multiple transports

@@ -13,7 +13,7 @@ public class Detective extends PlayerImpl {
      */
     public Detective(NodeId position, PlayerBrain brain) {
         super(position, brain);
-        this.name = "Mister X";
+        this.name = "Detective";
     }
 
     /**
