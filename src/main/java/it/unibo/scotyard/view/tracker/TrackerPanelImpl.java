@@ -1,5 +1,6 @@
 package it.unibo.scotyard.view.tracker;
 
+import it.unibo.scotyard.commons.patterns.ScotColors;
 import it.unibo.scotyard.model.map.TransportType;
 import it.unibo.scotyard.view.game.GameView;
 import java.awt.Color;
@@ -19,7 +20,6 @@ public class TrackerPanelImpl extends JPanel implements TrackerPanel {
     private static final int HORIZONTAL_GAP = 3;
 
     private static final Dimension PREFERRED_SIZE = new Dimension(0, 100);
-    private static final Color BACKGROUND_COLOR = new Color(48, 48, 48);
 
     private final List<TrackerCell> cells = new ArrayList<>();
 
@@ -46,7 +46,7 @@ public class TrackerPanelImpl extends JPanel implements TrackerPanel {
 
     @Override
     public Color getBackground() {
-        return BACKGROUND_COLOR;
+        return ScotColors.BACKGROUND_COLOR;
     }
 
     @Override
