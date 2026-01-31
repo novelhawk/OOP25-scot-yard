@@ -387,9 +387,9 @@ public final class GameStateImpl implements GameState {
     }
 
     @Override
-    public void hideRunnerPosition() {
+    public void concealRunnerPosition() {
         runnerExposed = false;
-        notifySubscribers(GameStateSubscriber::onRunnerHidden);
+        notifySubscribers(GameStateSubscriber::onConcealRunner);
     }
 
     @Override

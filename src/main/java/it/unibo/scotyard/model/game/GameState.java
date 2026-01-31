@@ -290,7 +290,7 @@ public interface GameState {
     /**
      * Hides Mister X position from detectives.
      */
-    void hideRunnerPosition();
+    void concealRunnerPosition();
 
     /**
      * get the timestamp of game init

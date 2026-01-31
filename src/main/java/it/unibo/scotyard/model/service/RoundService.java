@@ -42,7 +42,7 @@ public class RoundService {
         final GameState gameState = model.getGameState();
 
         if (gameState.isRunnerExposed() && gameState.getGameMode() != GameMode.MISTER_X) {
-            gameState.hideRunnerPosition();
+            gameState.concealRunnerPosition();
         }
 
         gameState.notifySubscribers(GameStateSubscriber::onRoundEnd);
