@@ -2,9 +2,12 @@ package it.unibo.scotyard.commons.patterns;
 
 import java.awt.Font;
 
+/**
+ * The font used in the game.
+ */
 public final class ScotFont {
 
-    private static final String ARIAL = "Arial";
+    public static final String ARIAL = "Arial";
     public static final Font TITLE_FONT_36 = new Font(ARIAL, Font.BOLD, 36);
     public static final Font TEXT_FONT_28 = new Font(ARIAL, Font.BOLD, 28);
     public static final Font TEXT_FONT_24 = new Font(ARIAL, Font.BOLD, 24);

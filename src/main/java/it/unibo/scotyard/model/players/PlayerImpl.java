@@ -28,7 +28,7 @@ public abstract class PlayerImpl implements Player {
      * @param position the starting position
      * @param brain    the AI brain
      */
-    public PlayerImpl(NodeId position, PlayerBrain brain) {
+    public PlayerImpl(final NodeId position, final PlayerBrain brain) {
         this.position = position;
         this.inventory = new InventoryImpl();
         this.initializeInventory();
@@ -40,7 +40,7 @@ public abstract class PlayerImpl implements Player {
      *
      * @param position the starting position
      */
-    public PlayerImpl(NodeId position) {
+    public PlayerImpl(final NodeId position) {
         this(position, null);
     }
 
@@ -75,7 +75,7 @@ public abstract class PlayerImpl implements Player {
     }
 
     @Override
-    public void setName(String newName) {
+    public void setName(final String newName) {
         this.name = newName;
     }
 
@@ -95,7 +95,7 @@ public abstract class PlayerImpl implements Player {
     }
 
     @Override
-    public boolean hasTransportModeTicket(TransportType transportType) {
+    public boolean hasTransportModeTicket(final TransportType transportType) {
         if (getNumberTickets(TicketType.BLACK) > 1) {
             return true;
         }

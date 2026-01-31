@@ -2,6 +2,9 @@ package it.unibo.scotyard.commons.patterns;
 
 import java.awt.Color;
 
+/**
+ * All the Colors used in the game.
+ */
 public final class ScotColors {
 
     // Colori tema

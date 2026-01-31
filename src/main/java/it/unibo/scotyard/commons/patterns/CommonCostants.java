@@ -1,5 +1,8 @@
 package it.unibo.scotyard.commons.patterns;
 
+/**
+ * All the strings used in the game.
+ */
 public final class CommonCostants {
 
     public static final String LAUNCHER = "Scotland Yard - Game Launcher";
@@ -20,9 +23,13 @@ public final class CommonCostants {
     public static final String[] GAME_MODES_STRINGS = {"Mister X", "Detective"};
     public static final String[] DIFFICULTY_LEVELS_STRINGS = {"Facile", "Media", "Difficile"};
 
-    public static final String MRX_STRING = "X";
-    public static final String DETECTIVE_STRING = "D";
-    public static final String BOBBIES_STRING = "B";
+    public static final String MRX_PAWN = "X";
+    public static final String DETECTIVE_PAWN = "D";
+    public static final String BOBBIES_PAWN = "B";
+
+    public static final String MRX_STRING = "Mister X";
+    public static final String DETECTIVE_STRING = "Detective";
+    public static final String BOBBIES_STRING = "Bobbies";
 
     public static final String TAXI_TEXT = "Taxi";
     public static final String BUS_TEXT = "Bus";

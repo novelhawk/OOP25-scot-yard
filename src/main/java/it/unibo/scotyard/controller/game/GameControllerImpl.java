@@ -21,10 +21,11 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
-import javax.swing.*;
+import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
 /**
- * The controller for all game related actions
+ * The controller for all game related actions.
  *
  */
 public abstract class GameControllerImpl implements GameController, GameStateSubscriber {
@@ -41,6 +42,7 @@ public abstract class GameControllerImpl implements GameController, GameStateSub
     /**
      * Creates the controller
      *
+     * @param dispatcher the command dispatcher
      * @param gameState  the game state
      * @param view       the view
      * @param controller the controller

@@ -108,7 +108,7 @@ public final class MainMenuViewImpl implements MainMenuView {
         final Object[][] data = new Object[2][3];
 
         // Riga 1: Detective
-        data[0][0] = CommonCostants.GAME_MODES_STRINGS[1];
+        data[0][0] = CommonCostants.DETECTIVE_STRING;
         if (detectiveRecord.isPresent() && detectiveRecord.get().isValid()) {
             data[0][1] = formatDuration(detectiveRecord.get().getDurationMillis());
             data[0][2] = formatDate(detectiveRecord.get().getTimestamp());
@@ -118,7 +118,7 @@ public final class MainMenuViewImpl implements MainMenuView {
         }
 
         // Riga 2: Mr. X
-        data[1][0] = CommonCostants.GAME_MODES_STRINGS[0];
+        data[1][0] = CommonCostants.MRX_STRING;
         if (mrxRecord.isPresent() && mrxRecord.get().isValid()) {
             data[1][1] = formatDuration(mrxRecord.get().getDurationMillis());
             data[1][2] = formatDate(mrxRecord.get().getTimestamp());

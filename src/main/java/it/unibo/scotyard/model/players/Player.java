@@ -6,7 +6,7 @@ import it.unibo.scotyard.model.map.TransportType;
 import java.util.Optional;
 
 /*
- * Player interface
+ * Player interface.
  */
 public interface Player {
 
@@ -28,15 +28,19 @@ public interface Player {
     NodeId getPosition();
 
     /**
-     * @return the number of tickets possessed by the player of the type passed as a paremeter.
+     * @param ticketType the enum of ticket
+     * @return the number of tickets possessed by the player of the type passed as a
+     *         paremeter.
      */
     int getNumberTickets(TicketType ticketType);
 
     /**
-     * The player uses a specific type of ticket, if it's available. The method returns a boolean
+     * The player uses a specific type of ticket, if it's available. The method
+     * returns a boolean
      * value, which indicates whether the operation has been successfull or not.
      *
-     * @return true if the player can use the ticket (according to the availabilty), else false
+     * @return true if the player can use the ticket (according to the availabilty),
+     *         else false
      * @param ticket the ticket type
      */
     boolean useTicket(TicketType ticket);
@@ -49,7 +53,8 @@ public interface Player {
     void setName(String newName);
 
     /**
-     * Return a String representing the name of the kind of player (detective, bobby, mister X).
+     * Return a String representing the name of the kind of player (detective,
+     * bobby, mister X).
      *
      * @return the name of the player (their kind : detective, etc.)
      */
@@ -70,7 +75,8 @@ public interface Player {
     Optional<PlayerBrain> getBrain();
 
     /**
-     * Returns whether the player has the tickets to take the supplied transport type.
+     * Returns whether the player has the tickets to take the supplied transport
+     * type.
      *
      * @param transportType the transport type
      * @return whether the user has the ticket

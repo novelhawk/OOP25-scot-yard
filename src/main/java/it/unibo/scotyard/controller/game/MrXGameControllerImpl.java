@@ -349,6 +349,8 @@ public final class MrXGameControllerImpl extends GameControllerImpl {
             case COMPLETED:
                 // Should not happen, button is disabled
                 break;
+            default:
+                break;
         }
 
         updateUI();
@@ -442,6 +444,8 @@ public final class MrXGameControllerImpl extends GameControllerImpl {
             case COMPLETED:
             case USED:
                 sidebar.showElseHideDoubleMoveButton(false);
+                break;
+            default:
                 break;
         }
     }

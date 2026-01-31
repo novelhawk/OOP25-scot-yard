@@ -153,11 +153,6 @@ public final class GameViewImpl implements GameView {
     }
 
     @Override
-    public void displayGameOverWindow(final String result) {
-        displayGameOverWindow(result, 0, null, false, null);
-    }
-
-    @Override
     public void loadTransportSelectionDialog(final Set<TransportType> availableTransportTypes) {
         final JDialog selectionWindow = new JDialog();
         selectionWindow.setBackground(Color.WHITE);
@@ -229,6 +224,11 @@ public final class GameViewImpl implements GameView {
     }
 
     @Override
+    public void displayGameOverWindow(final String result) {
+        displayGameOverWindow(result, 0, null, false, null);
+    }
+
+    @Override
     public void displayGameOverWindow(
             final String result,
             final long gameDuration,
@@ -267,7 +267,10 @@ public final class GameViewImpl implements GameView {
             // Riga 2: nuovo record o record esistente
             if (isNewRecord) {
                 final JLabel recordLabel = new JLabel("🏆 NUOVO RECORD per modalità "
-                        + (gameMode == it.unibo.scotyard.model.game.GameMode.DETECTIVE ? "Detective" : "Mr. X") + "!");
+                        + (gameMode == it.unibo.scotyard.model.game.GameMode.DETECTIVE
+                                ? CommonCostants.DETECTIVE_STRING
+                                : CommonCostants.MRX_STRING)
+                        + "!");
                 recordLabel.setFont(ScotFont.TEXT_FONT_18);
                 recordLabel.setForeground(Color.ORANGE); // Orange
                 recordLabel.setAlignmentX(Component.CENTER_ALIGNMENT);

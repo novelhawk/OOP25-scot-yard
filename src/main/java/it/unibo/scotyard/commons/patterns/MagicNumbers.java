@@ -1,5 +1,8 @@
 package it.unibo.scotyard.commons.patterns;
 
+/**
+ * All the Magic Numbers used in the game.
+ */
 public final class MagicNumbers {
 
     public static final int GAP_1 = 1;
@@ -19,4 +22,8 @@ public final class MagicNumbers {
     public static final int HEIGHT_150 = 150;
     public static final int WIDTH_700 = 700;
     public static final int WIDTH_800 = 800;
+
+    private MagicNumbers() {
+        throw new AssertionError("non istanziabili le costanti Numbers");
+    }
 }

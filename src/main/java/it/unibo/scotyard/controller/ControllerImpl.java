@@ -22,6 +22,8 @@ import it.unibo.scotyard.view.ViewImpl;
 import it.unibo.scotyard.view.game.GameView;
 import java.util.List;
 import java.util.Objects;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JPanel;
 
 /** Main controller coordinating the MVC flow. */
@@ -110,7 +112,7 @@ public final class ControllerImpl implements Controller {
 
     @Override
     public void exit() {
-        System.out.println("Uscita in corso...");
+        Logger.getLogger(ControllerImpl.class.getName()).log(Level.INFO, "Uscita in corso...");
         System.exit(0);
     }
 
