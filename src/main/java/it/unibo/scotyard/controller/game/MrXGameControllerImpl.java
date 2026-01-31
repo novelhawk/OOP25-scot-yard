@@ -4,7 +4,6 @@ import it.unibo.scotyard.commons.patterns.CommonCostants;
 import it.unibo.scotyard.controller.Controller;
 import it.unibo.scotyard.model.command.turn.EndTurnCommand;
 import it.unibo.scotyard.model.command.turn.MoveCommand;
-import it.unibo.scotyard.model.command.turn.StartTurnCommand;
 import it.unibo.scotyard.model.command.turn.UseDoubleMoveCommand;
 import it.unibo.scotyard.model.game.GameState;
 import it.unibo.scotyard.model.game.GameStatus;
@@ -164,7 +163,9 @@ public final class MrXGameControllerImpl extends GameControllerImpl {
 
     /** Handles end turn button click. */
     private void onEndTurn() {
-        gameState.resetTurn();
+        if (!this.gameState.getCurrentPlayer().isHuman()) {
+            return;
+        }
 
         if (this.gameState.getGameStatus() != GameStatus.PLAYING) {
             return;
@@ -178,7 +179,7 @@ public final class MrXGameControllerImpl extends GameControllerImpl {
             return;
         }
 
-        final MisterX mrX = (MisterX) this.gameState.getUserPlayer();
+        final MisterX mrX = this.gameState.getPlayers().getMisterX();
 
         if (doubleMoveState == DoubleMoveState.COMPLETED) {
             // La doppia mossa è già stata eseguita, non serve makeMove()
@@ -215,25 +216,19 @@ public final class MrXGameControllerImpl extends GameControllerImpl {
             }
         }
 
-        // Check victory
-        if (super.isGameOver()) {
-            super.loadGameOverWindow();
+        dispatcher.dispatch(new EndTurnCommand());
+
+        updateUI();
+    }
+
+    @Override
+    public void onRoundStart() {
+        if (!gameState.getCurrentPlayer().isHuman()) {
             return;
         }
 
-        final Player startingPlayer = this.gameState.getUserPlayer(); // Mr. X
-        dispatcher.dispatch(new EndTurnCommand());
+        final MisterX mrX = gameState.getPlayers().getMisterX();
 
-        do {
-            dispatcher.dispatch(new StartTurnCommand());
-
-            // Check if game is over
-            if (super.isGameOver()) {
-                super.loadGameOverWindow();
-                return;
-            }
-
-        } while (!this.gameState.getCurrentPlayer().equals(startingPlayer)); // Finché non torna a Mr. X
         // RESET stato per il nuovo turno
         // Controlla se ha ancora ticket doppia mossa
         if (mrX.isDoubleMoveAvailable()) {
@@ -242,17 +237,10 @@ public final class MrXGameControllerImpl extends GameControllerImpl {
             doubleMoveState = DoubleMoveState.USED;
         }
 
-        // Check if game is over after AI turns
-        if (super.isGameOver()) {
-            super.loadGameOverWindow();
-            return;
-        }
-
-        // Update UI
-        updateUI();
-
         // Update sidebar
         super.updateSidebar(this.gameState.getCurrentPlayer());
+
+        updateUI();
     }
 
     /** Handles double move button click. */
@@ -261,7 +249,7 @@ public final class MrXGameControllerImpl extends GameControllerImpl {
             return;
         }
 
-        final MisterX mrX = (MisterX) this.gameState.getUserPlayer();
+        final MisterX mrX = this.gameState.getPlayers().getMisterX();
 
         switch (doubleMoveState) {
             case AVAILABLE:
@@ -375,8 +363,7 @@ public final class MrXGameControllerImpl extends GameControllerImpl {
      */
     private MoveOption chooseTransport(final List<MoveOption> moves, final NodeId nodeId) {
 
-        final List<TransportType> transportTypes =
-                moves.stream().map(MoveOption::getTransport).toList();
+        final List<TransportType> transportTypes = moves.stream().map(MoveOption::getTransport).toList();
 
         // dialog
         final TransportSelectionDialog dialog = new TransportSelectionDialog(null, nodeId, transportTypes);

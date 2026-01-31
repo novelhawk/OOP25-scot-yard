@@ -17,8 +17,8 @@ public final class CommonCostants {
     public static final String SELECT_GAME_DIFFICULTY_TEXT = "Selezionare difficoltà";
     public static final String START_BUTTON_TEXT = "Avvia gioco";
     public static final String GO_BACK_BUTTON_TEXT = "Torna indietro";
-    public static final String[] GAME_MODES_STRINGS = {"Mister X", "Detective"};
-    public static final String[] DIFFICULTY_LEVELS_STRINGS = {"Facile", "Media", "Difficile"};
+    public static final String[] GAME_MODES_STRINGS = { "Mister X", "Detective" };
+    public static final String[] DIFFICULTY_LEVELS_STRINGS = { "Facile", "Media", "Difficile" };
 
     public static final String MRX_STRING = "X";
     public static final String DETECTIVE_STRING = "D";
@@ -52,6 +52,14 @@ public final class CommonCostants {
     public static final String BACK_MAIN_MENU = "Ritorna al menù principale";
     public static final String WINNER_TEXT = "Vittoria";
     public static final String LOSER_TEXT = "Sconfitta";
+
+    public static final String CAPTURED_MISTER_X_MODE_TEXT = " : sei stato catturato!";
+    public static final String CAPTURED_DETECTIVE_MODE_TEXT = " : Mister X catturato!";
+    public static final String NO_MORE_TICKETS_AVAILABLE_TEXT = " : biglietti esauriti per le fermate raggiungibili";
+    public static final String NO_MORE_MOVES_TEXT = " : non puoi muoverti";
+    public static final String NO_MORE_TICKETS_AI_TEXT = " : gli avversari hanno finito i biglietti per muoversi";
+    public static final String ESCAPED_MISTER_X_MODE_TEXT = " : sei riuscito a fuggire";
+    public static final String ESCAPED_DETECTIVE_MODE_TEXT = " : Mister X non è stato catturato in tempo";
 
     private CommonCostants() {
         throw new AssertionError("non istanziabili le costanti Stringhe");

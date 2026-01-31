@@ -46,8 +46,7 @@ public class GameStateService {
                 shuffleInitialPositions(random, initialPositions).iterator();
         final int additionalPlayers = getAdditionalSeekersCount(command.gameMode(), command.difficulty());
 
-        final MisterX misterX =
-                createMisterX(random, command.gameMode(), command.difficulty(), shuffledInitialPositions.next());
+        final MisterX misterX = createMisterX(command.gameMode(), shuffledInitialPositions.next());
         final Detective detective = createDetective(command.gameMode(), shuffledInitialPositions.next());
 
         final List<Bobby> bobbies = Stream.generate(shuffledInitialPositions::next)
@@ -75,10 +74,10 @@ public class GameStateService {
         store.register(InitializeGameCommand.class, this::handleInitialize);
     }
 
-    private MisterX createMisterX(Random random, GameMode gameMode, GameDifficulty difficulty, NodeId initialPosition) {
+    private MisterX createMisterX(GameMode gameMode, NodeId initialPosition) {
         return switch (gameMode) {
             case GameMode.DETECTIVE -> {
-                final RunnerBrain runnerBrain = new RunnerBrain(random, this.model.getMapData(), difficulty);
+                final RunnerBrain runnerBrain = new RunnerBrain();
                 yield new MisterX(initialPosition, runnerBrain);
             }
             case GameMode.MISTER_X -> new MisterX(initialPosition);
@@ -89,8 +88,7 @@ public class GameStateService {
         return switch (gameMode) {
             case GameMode.DETECTIVE -> new Detective(initialPosition);
             case GameMode.MISTER_X -> {
-                final SeekerBrain detectiveBrain =
-                        new SeekerBrain(this.model.getSeededRandom(), this.model.getMapData());
+                final SeekerBrain detectiveBrain = new SeekerBrain(this.model.getSeededRandom());
                 yield new Detective(initialPosition, detectiveBrain);
             }
         };
@@ -100,7 +98,7 @@ public class GameStateService {
         return switch (gameMode) {
             case GameMode.DETECTIVE -> new Bobby(initialPosition);
             case GameMode.MISTER_X -> {
-                final SeekerBrain bobbyBrain = new SeekerBrain(this.model.getSeededRandom(), this.model.getMapData());
+                final SeekerBrain bobbyBrain = new SeekerBrain(this.model.getSeededRandom());
                 yield new Bobby(initialPosition, bobbyBrain);
             }
         };

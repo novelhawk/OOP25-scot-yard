@@ -12,6 +12,7 @@ import it.unibo.scotyard.model.players.MisterX;
 import it.unibo.scotyard.model.players.Player;
 import it.unibo.scotyard.model.router.CommandDispatcher;
 import it.unibo.scotyard.model.router.CommandHandlerStore;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -37,6 +38,8 @@ public class TurnService {
         final GameState gameState = this.model.getGameState();
         final Player player = gameState.getCurrentPlayer();
         gameState.resetTurn();
+
+        gameState.loadPossibleDestinations(new HashSet<>(this.model.getPossibleDestinations(player.getPosition())));
 
         final List<MoveAction> legalMoves = gameState.computeValidMoves(this.model.getMapData(), player, List.of());
         gameState.getTurnState().setLegalMoves(legalMoves);
@@ -65,10 +68,7 @@ public class TurnService {
             turnState.setLegalMoves(validMoves);
         }
 
-        if (gameState.isMovableCurrentPlayer(command.targetNode(), command.transportType())) {
-            gameState.getTurnState().addMove(new MoveAction(command.targetNode(), command.transportType()));
-            gameState.moveCurrentPlayer(command.targetNode(), command.transportType());
-        }
+        gameState.moveCurrentPlayer(command.targetNode(), command.transportType());
     }
 
     /**
@@ -89,9 +89,9 @@ public class TurnService {
         final CommandDispatcher dispatcher = this.model.getDispatcher();
         final GameState gameState = this.model.getGameState();
         final TurnState turnState = gameState.getTurnState();
+        final Player currentPlayer = gameState.getCurrentPlayer();
 
-        // TODO: merge TurnState into GameState (update ticket counts and player positions)
-        if (gameState.getCurrentPlayer() instanceof MisterX) {
+        if (currentPlayer instanceof MisterX) {
             final List<TransportType> usedTransports =
                     turnState.getMoves().stream().map(MoveAction::transportType).collect(Collectors.toList());
 
@@ -103,22 +103,19 @@ public class TurnService {
             }
         }
 
-        gameState.notifySubscribers(GameStateSubscriber::onTurnEnd);
-
-        if (gameState.changeCurrentPlayer()) {
-            dispatcher.dispatch(new EndRoundCommand());
+        if (gameState.isGameOver()) {
+            gameState.notifySubscribers(GameStateSubscriber::onGameOver);
+            return;
         }
 
-        dispatcher.dispatch(new StartTurnCommand());
-    }
+        gameState.notifySubscribers(GameStateSubscriber::onTurnEnd);
 
-    /**
-     * Handles the {@code ResetCommand}.
-     *
-     * @param command a reset command.
-     */
-    public void handleReset(final ResetCommand command) {
-        this.model.getGameState().resetTurn();
+        if (gameState.isRoundLastTurn()) {
+            dispatcher.dispatch(new EndRoundCommand());
+        } else {
+            gameState.changeCurrentPlayer();
+            dispatcher.dispatch(new StartTurnCommand());
+        }
     }
 
     /**
@@ -131,6 +128,5 @@ public class TurnService {
         store.register(StartTurnCommand.class, this::handleStartTurn);
         store.register(UseDoubleMoveCommand.class, this::handleDoubleMove);
         store.register(EndTurnCommand.class, this::handleEndTurn);
-        store.register(ResetCommand.class, this::handleReset);
     }
 }

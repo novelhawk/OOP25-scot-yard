@@ -1,6 +1,7 @@
 package it.unibo.scotyard.controller.game;
 
 import it.unibo.scotyard.controller.Controller;
+import it.unibo.scotyard.model.Pair;
 import it.unibo.scotyard.model.entities.ExposedPosition;
 import it.unibo.scotyard.model.game.GameMode;
 import it.unibo.scotyard.model.game.GameState;
@@ -16,8 +17,10 @@ import it.unibo.scotyard.view.game.GameView;
 import it.unibo.scotyard.view.map.MapPanel;
 import it.unibo.scotyard.view.sidebar.SidebarPanel;
 import java.io.IOException;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 import javax.swing.*;
 
 /**
@@ -139,6 +142,15 @@ public abstract class GameControllerImpl implements GameController, GameStateSub
         this.mainController.loadMainMenu();
     }
 
+    @Override
+    public Set<Pair<NodeId, TransportType>> loadPossibleDestinations() {
+        Set<Pair<NodeId, TransportType>> possibleDestinations =
+                new HashSet<>(this.mainController.getPossibleDestinations(
+                        this.gameState.getCurrentPlayer().getPosition()));
+        possibleDestinations = this.gameState.loadPossibleDestinations(possibleDestinations);
+        return possibleDestinations;
+    }
+
     /**
      * Checks if there are multiple transport types to reach destination or not.
      * Used only in
@@ -168,5 +180,10 @@ public abstract class GameControllerImpl implements GameController, GameStateSub
     public void onRunnerHidden() {
         this.view.getMapPanel().setMisterXPosition(HIDDEN_POSITION);
         SwingUtilities.invokeLater(() -> this.view.getMapPanel().repaint());
+    }
+
+    @Override
+    public void onGameOver() {
+        loadGameOverWindow();
     }
 }

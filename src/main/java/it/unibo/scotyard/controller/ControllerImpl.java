@@ -13,6 +13,7 @@ import it.unibo.scotyard.controller.menu.NewGameMenuControllerImpl;
 import it.unibo.scotyard.model.Model;
 import it.unibo.scotyard.model.Pair;
 import it.unibo.scotyard.model.command.game.InitializeGameCommand;
+import it.unibo.scotyard.model.command.round.StartRoundCommand;
 import it.unibo.scotyard.model.game.GameDifficulty;
 import it.unibo.scotyard.model.game.GameMode;
 import it.unibo.scotyard.model.map.NodeId;
@@ -95,6 +96,8 @@ public final class ControllerImpl implements Controller {
         }
         gameController.initializeGame();
         gameView.setObserver(gameController);
+
+        this.model.getDispatcher().dispatch(new StartRoundCommand());
 
         // Load the game panel
         this.loadGamePanel(gameController);
