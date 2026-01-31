@@ -13,11 +13,12 @@ import it.unibo.scotyard.model.players.MisterX;
 import it.unibo.scotyard.model.players.TicketType;
 
 public class InventoryTest {
+    private final NodeId node = new NodeId(3);
 
     @Test
     public void testInitializeDetective() {
         final Inventory inventory = new InventoryImpl();
-        inventory.initialize(new Detective(new NodeId(8)));
+        inventory.initialize(new Detective(node));
         assertEquals(inventory.getNumberTickets(TicketType.TAXI), Constants.NUMBER_TICKETS_TAXI);
         assertEquals(inventory.getNumberTickets(TicketType.BUS), Constants.NUMBER_TICKETS_BUS);
         assertEquals(inventory.getNumberTickets(TicketType.UNDERGROUND), Constants.NUMBER_TICKETS_UNDERGROUND);
@@ -28,7 +29,7 @@ public class InventoryTest {
     @Test
     public void testInitializeBobby() {
         final Inventory inventory = new InventoryImpl();
-        inventory.initialize(new Bobby(new NodeId(8)));
+        inventory.initialize(new Bobby(node));
         assertEquals(inventory.getNumberTickets(TicketType.TAXI), Constants.INFINITE);
         assertEquals(inventory.getNumberTickets(TicketType.BUS), Constants.INFINITE);
         assertEquals(inventory.getNumberTickets(TicketType.UNDERGROUND), Constants.INFINITE);
@@ -39,7 +40,7 @@ public class InventoryTest {
     @Test
     public void testInitializeMisterX() {
         final Inventory inventory = new InventoryImpl();
-        inventory.initialize(new MisterX(new NodeId(8)));
+        inventory.initialize(new MisterX(node));
         assertEquals(inventory.getNumberTickets(TicketType.TAXI), Constants.INFINITE);
         assertEquals(inventory.getNumberTickets(TicketType.BUS), Constants.INFINITE);
         assertEquals(inventory.getNumberTickets(TicketType.UNDERGROUND), Constants.INFINITE);
@@ -50,7 +51,7 @@ public class InventoryTest {
     @Test
     public void testDecrementTickets() {
         final Inventory inventory = new InventoryImpl();
-        inventory.initialize(new Detective(new NodeId(8)));
+        inventory.initialize(new Detective(node));
         inventory.decrementTickets(TicketType.TAXI);
         assertEquals(inventory.getNumberTickets(TicketType.TAXI), Constants.NUMBER_TICKETS_TAXI - 1);
         inventory.decrementTickets(TicketType.BUS);
@@ -61,7 +62,7 @@ public class InventoryTest {
         assertEquals(inventory.getNumberTickets(TicketType.BLACK), Constants.NONE);
         inventory.decrementTickets(TicketType.DOUBLE_MOVE);
         assertEquals(inventory.getNumberTickets(TicketType.DOUBLE_MOVE), Constants.NONE);
-        inventory.initialize(new MisterX(new NodeId(8)));
+        inventory.initialize(new MisterX(node));
         inventory.decrementTickets(TicketType.TAXI);
         assertEquals(inventory.getNumberTickets(TicketType.TAXI), Constants.INFINITE);
     }
@@ -69,7 +70,7 @@ public class InventoryTest {
     @Test
     public void testContainsTicket() {
         final Inventory inventory = new InventoryImpl();
-        inventory.initialize(new MisterX(new NodeId(8)));
+        inventory.initialize(new MisterX(node));
         assertTrue(inventory.containsTicket(TicketType.TAXI));
         assertTrue(inventory.containsTicket(TicketType.BUS));
         assertTrue(inventory.containsTicket(TicketType.UNDERGROUND));

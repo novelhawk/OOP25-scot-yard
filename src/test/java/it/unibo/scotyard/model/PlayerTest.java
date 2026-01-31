@@ -16,9 +16,9 @@ import java.util.Optional;
 import org.junit.jupiter.api.Test;
 
 public class PlayerTest {
-    final NodeId nodeDetective = new NodeId(3);
-    final NodeId nodeMisterX = new NodeId(5);
-    final NodeId nodeBobby = new NodeId(21);
+    private final NodeId nodeDetective = new NodeId(3);
+    private final NodeId nodeMisterX = new NodeId(5);
+    private final NodeId nodeBobby = new NodeId(21);
 
     @Test
     public void testCreatePlayerWithNoBrain() {
