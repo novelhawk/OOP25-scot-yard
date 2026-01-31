@@ -3,7 +3,7 @@ package it.unibo.scotyard.commons.patterns;
 /**
  * All the strings used in the game.
  */
-public final class CommonCostants {
+public final class ViewConstants {
 
     public static final String LAUNCHER = "Scotland Yard - Game Launcher";
     public static final String SCOTLAND_YARD = "Scotland Yard";
@@ -11,7 +11,6 @@ public final class CommonCostants {
     public static final String RESOLUTION_LABEL = "Seleziona Risoluzione:";
 
     public static final String NEW_GAME_TEXT = "Nuova partita";
-    public static final String LOAD_GAME_TEXT = "Carica partita";
     public static final String STATISTICS_TEXT = "Statistiche";
     public static final String EXIT_TEXT = "Esci";
 
@@ -68,7 +67,10 @@ public final class CommonCostants {
     public static final String ESCAPED_MISTER_X_MODE_TEXT = " : sei riuscito a fuggire";
     public static final String ESCAPED_DETECTIVE_MODE_TEXT = " : Mister X non è stato catturato in tempo";
 
-    private CommonCostants() {
+    public static final String MISTERX_GAMES = "Partite da Mister X";
+    public static final String SEEKER_GAMES = "Partite da Detective";
+
+    private ViewConstants() {
         throw new AssertionError("non istanziabili le costanti Stringhe");
     }
 }

@@ -1,6 +1,7 @@
 package it.unibo.scotyard.model.service;
 
 import it.unibo.scotyard.model.Model;
+import it.unibo.scotyard.model.command.game.GameOverCommand;
 import it.unibo.scotyard.model.command.round.EndRoundCommand;
 import it.unibo.scotyard.model.command.round.StartRoundCommand;
 import it.unibo.scotyard.model.command.turn.StartTurnCommand;
@@ -49,7 +50,7 @@ public class RoundService {
         gameState.nextRound();
 
         if (gameState.isGameOver()) {
-            gameState.notifySubscribers(GameStateSubscriber::onGameOver);
+            dispatcher.dispatch(new GameOverCommand());
         } else {
             dispatcher.dispatch(new StartRoundCommand());
         }

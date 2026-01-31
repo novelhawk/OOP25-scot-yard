@@ -10,6 +10,8 @@ import it.unibo.scotyard.controller.menu.MainMenuController;
 import it.unibo.scotyard.controller.menu.MainMenuControllerImpl;
 import it.unibo.scotyard.controller.menu.NewGameMenuController;
 import it.unibo.scotyard.controller.menu.NewGameMenuControllerImpl;
+import it.unibo.scotyard.controller.menu.StatisticsController;
+import it.unibo.scotyard.controller.menu.StatisticsControllerImpl;
 import it.unibo.scotyard.model.Model;
 import it.unibo.scotyard.model.Pair;
 import it.unibo.scotyard.model.command.game.InitializeGameCommand;
@@ -20,6 +22,7 @@ import it.unibo.scotyard.model.map.NodeId;
 import it.unibo.scotyard.model.map.TransportType;
 import it.unibo.scotyard.view.ViewImpl;
 import it.unibo.scotyard.view.game.GameView;
+import it.unibo.scotyard.view.menu.MainMenuView;
 import java.util.List;
 import java.util.Objects;
 import java.util.logging.Level;
@@ -58,13 +61,20 @@ public final class ControllerImpl implements Controller {
     @Override
     public void loadMainMenu() {
         final MainMenuController menuController = new MainMenuControllerImpl(this, this.view);
-        this.displayPanel(menuController.getMainPanel());
+        final MainMenuView mainMenuView = view.showMainMenuView(menuController);
+        menuController.setView(mainMenuView);
     }
 
     @Override
     public void loadNewGameMenu() {
         final NewGameMenuController menuController = new NewGameMenuControllerImpl(this, this.view);
         this.displayPanel(menuController.getMainPanel());
+    }
+
+    @Override
+    public void loadStatistics() {
+        final StatisticsController controller = new StatisticsControllerImpl(this.model, this, this.view);
+        controller.showView();
     }
 
     @Override
