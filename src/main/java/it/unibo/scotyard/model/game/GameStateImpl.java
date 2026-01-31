@@ -55,6 +55,8 @@ public final class GameStateImpl implements GameState {
     private int round = 1;
 
     private NodeId lastRevealedMisterXPosition;
+    private boolean hasWon;
+    private String resultGameString;
 
     /**
      * Creates a new game state.
@@ -72,10 +74,17 @@ public final class GameStateImpl implements GameState {
         this.possibleDestinations = new HashSet<>();
         this.runnerTurnTracker = new RunnerTurnTrackerImpl();
         this.gameStatus = GameStatus.PLAYING;
-        lastRevealedMisterXPosition = new NodeId(NOT_REVEALED_YET);
+        this.lastRevealedMisterXPosition = new NodeId(NOT_REVEALED_YET);
         this.gameStartTime = System.currentTimeMillis();
         this.gameEndTime = 0;
         this.gameDuration = 0;
+        this.hasWon = false;
+        this.resultGameString = new String();
+    }
+
+    @Override
+    public Random getSeededRandom() {
+        return random;
     }
 
     @Override
@@ -103,13 +112,7 @@ public final class GameStateImpl implements GameState {
         return isOver;
     }
 
-    @Override
-    public Random getSeededRandom() {
-        return random;
-    }
-
-    @Override
-    public String resultGame() {
+    private void computeResultGame() {
         final String victoryString = CommonCostants.WINNER_TEXT;
         final String lossString = CommonCostants.LOSER_TEXT;
 
@@ -119,31 +122,44 @@ public final class GameStateImpl implements GameState {
 
         if (found) {
             if (this.gameMode == GameMode.MISTER_X) {
-                return lossString + CommonCostants.CAPTURED_MISTER_X_MODE_TEXT;
+                this.resultGameString = lossString + CommonCostants.CAPTURED_MISTER_X_MODE_TEXT;
             } else {
-                return victoryString + CommonCostants.CAPTURED_DETECTIVE_MODE_TEXT;
+                this.resultGameString = victoryString + CommonCostants.CAPTURED_DETECTIVE_MODE_TEXT;
             }
         } else {
             if (this.possibleDestinations.isEmpty()) {
                 if (GameMode.DETECTIVE.equals(this.gameMode)) {
-                    return lossString + CommonCostants.NO_MORE_TICKETS_AVAILABLE_TEXT;
+                    this.resultGameString = lossString + CommonCostants.NO_MORE_TICKETS_AVAILABLE_TEXT;
                 } else {
                     if (this.getCurrentPlayer().equals(this.players.getMisterX())) {
-                        return lossString + CommonCostants.NO_MORE_MOVES_TEXT;
+                        this.resultGameString = lossString + CommonCostants.NO_MORE_MOVES_TEXT;
                     } else {
-                        return victoryString + CommonCostants.NO_MORE_TICKETS_AI_TEXT;
+                        this.resultGameString = victoryString + CommonCostants.NO_MORE_TICKETS_AI_TEXT;
                     }
                 }
             } else {
                 if (this.round >= FINAL_ROUND_COUNT) {
                     if (this.gameMode == GameMode.MISTER_X)
-                        return victoryString + CommonCostants.ESCAPED_MISTER_X_MODE_TEXT;
+                        this.resultGameString = victoryString + CommonCostants.ESCAPED_MISTER_X_MODE_TEXT;
                 } else {
-                    return lossString + CommonCostants.ESCAPED_DETECTIVE_MODE_TEXT;
+                    this.resultGameString = lossString + CommonCostants.ESCAPED_DETECTIVE_MODE_TEXT;
                 }
             }
         }
-        return lossString;
+        
+        this.hasWon = this.resultGameString.contains(CommonCostants.WINNER_TEXT);
+    }
+
+    @Override
+    public boolean hasUserWon(){
+        this.computeResultGame();
+        return this.hasWon;
+    }
+
+    @Override
+    public String getResultGameString(){
+        this.computeResultGame();
+        return this.resultGameString;
     }
 
     @Override

@@ -127,7 +127,7 @@ public abstract class GameControllerImpl implements GameController, GameStateSub
 
     @Override
     public void loadGameOverWindow() {
-        final String result = this.gameState.resultGame();
+        final String result = this.gameState.getResultGameString();
 
         // recupera dati dal model
         final long gameDuration = this.gameState.getGameDuration();
