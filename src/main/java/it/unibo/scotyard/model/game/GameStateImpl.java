@@ -1,6 +1,5 @@
 package it.unibo.scotyard.model.game;
 
-import it.unibo.scotyard.commons.Constants;
 import it.unibo.scotyard.commons.patterns.MagicNumbers;
 import it.unibo.scotyard.commons.patterns.ViewConstants;
 import it.unibo.scotyard.model.Pair;
@@ -31,6 +30,8 @@ public final class GameStateImpl implements GameState {
     private final GameMode gameMode;
     private final GameDifficulty gameDifficulty;
 
+    private final List<ExposedPosition> exposedPositions;
+
     /**
      * It is used to keep track of the current player in the turn order.
      */
@@ -52,7 +53,6 @@ public final class GameStateImpl implements GameState {
 
     private int round = 1;
 
-    private NodeId lastRevealedMisterXPosition;
     private boolean hasWon;
     private String resultGameString;
 
@@ -72,12 +72,12 @@ public final class GameStateImpl implements GameState {
         this.possibleDestinations = new HashSet<>();
         this.runnerTurnTracker = new RunnerTurnTrackerImpl();
         this.gameStatus = GameStatus.PLAYING;
-        this.lastRevealedMisterXPosition = new NodeId(MagicNumbers.NOT_REVEALED_YET);
         this.gameStartTime = System.currentTimeMillis();
         this.gameEndTime = 0;
         this.gameDuration = 0;
         this.hasWon = false;
         this.resultGameString = new String();
+        this.exposedPositions = new ArrayList<>();
     }
 
     @Override
@@ -275,29 +275,12 @@ public final class GameStateImpl implements GameState {
     }
 
     @Override
-    public boolean hideMisterX() {
-        if (this.gameMode == GameMode.DETECTIVE) {
-            return !Constants.REVEAL_TURNS_MISTER_X.contains(this.getGameRound());
-        } else {
-            return false;
-        }
-    }
-
-    private void setLastRevealedMisterXPosition() {
-        boolean reveal = Constants.REVEAL_TURNS_MISTER_X.contains(this.getGameRound());
-        if (reveal) {
-            if (this.gameMode == GameMode.MISTER_X) {
-                this.lastRevealedMisterXPosition = this.getUserPlayer().getPosition();
-            } else {
-                this.lastRevealedMisterXPosition = this.getComputerPlayer().getPosition();
-            }
-        }
-    }
-
-    @Override
     public NodeId getLastRevealedMisterXPosition() {
-        this.setLastRevealedMisterXPosition();
-        return this.lastRevealedMisterXPosition;
+        if (this.exposedPositions.isEmpty()) {
+            return new NodeId(NOT_REVEALED_YET);
+        }
+
+        return this.exposedPositions.getLast().position();
     }
 
     @Override
@@ -413,14 +396,15 @@ public final class GameStateImpl implements GameState {
     public void exposeRunnerPosition() {
         final NodeId position = players.getMisterX().getPosition();
         final ExposedPosition exposed = new ExposedPosition(position, round);
+        exposedPositions.add(exposed);
         runnerExposed = true;
         notifySubscribers(it -> it.onExposedPosition(exposed));
     }
 
     @Override
-    public void hideRunnerPosition() {
+    public void concealRunnerPosition() {
         runnerExposed = false;
-        notifySubscribers(GameStateSubscriber::onRunnerHidden);
+        notifySubscribers(GameStateSubscriber::onConcealRunner);
     }
 
     @Override

@@ -174,13 +174,13 @@ public abstract class GameControllerImpl implements GameController, GameStateSub
 
     @Override
     public void onExposedPosition(ExposedPosition exposedPosition) {
-        this.view.getMapPanel().setMisterXPosition(exposedPosition.position());
+        this.view.getMapPanel().setLastExposedPosition(exposedPosition);
         SwingUtilities.invokeLater(() -> this.view.getMapPanel().repaint());
     }
 
     @Override
-    public void onRunnerHidden() {
-        this.view.getMapPanel().setMisterXPosition(HIDDEN_POSITION);
+    public void onConcealRunner() {
+        this.view.getMapPanel().hideExposedPosition();
         SwingUtilities.invokeLater(() -> this.view.getMapPanel().repaint());
     }
 
