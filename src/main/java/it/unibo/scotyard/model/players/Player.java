@@ -1,8 +1,8 @@
 package it.unibo.scotyard.model.players;
 
 import it.unibo.scotyard.model.ai.PlayerBrain;
+import it.unibo.scotyard.model.inventory.Inventory;
 import it.unibo.scotyard.model.map.NodeId;
-import it.unibo.scotyard.model.map.TransportType;
 import java.util.Optional;
 
 /*
@@ -75,11 +75,9 @@ public interface Player {
     Optional<PlayerBrain> getBrain();
 
     /**
-     * Returns whether the player has the tickets to take the supplied transport
-     * type.
+     * Gets the player's inventory.
      *
-     * @param transportType the transport type
-     * @return whether the user has the ticket
+     * @return the player's inventory
      */
-    boolean hasTransportModeTicket(TransportType transportType);
+    Inventory getInventory();
 }
