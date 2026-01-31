@@ -2,9 +2,9 @@ package it.unibo.scotyard.view.map;
 
 import it.unibo.scotyard.commons.dtos.map.MapInfo;
 import it.unibo.scotyard.commons.dtos.map.Node;
-import it.unibo.scotyard.commons.patterns.CommonCostants;
 import it.unibo.scotyard.commons.patterns.ScotColors;
 import it.unibo.scotyard.commons.patterns.ScotFont;
+import it.unibo.scotyard.commons.patterns.ViewConstants;
 import it.unibo.scotyard.model.map.NodeId;
 import it.unibo.scotyard.model.map.TransportType;
 import it.unibo.scotyard.view.game.GameView;
@@ -640,9 +640,9 @@ public final class MapPanel extends JPanel {
                 final int y = (int) pos.getY();
 
                 // Player circle
-                if (CommonCostants.DETECTIVE_PAWN.equals(playerString)) {
+                if (ViewConstants.DETECTIVE_PAWN.equals(playerString)) {
                     g2d.setColor(ScotColors.DETECTIVE_COLOR);
-                } else if (CommonCostants.MRX_PAWN.equals(playerString)) {
+                } else if (ViewConstants.MRX_PAWN.equals(playerString)) {
                     g2d.setColor(ScotColors.MISTER_X_COLOR);
                 } else if (playerString.startsWith("B")) {
                     g2d.setColor(ScotColors.BOBBIES_COLOR);
@@ -650,10 +650,10 @@ public final class MapPanel extends JPanel {
                 g2d.fillOval(x - scaledRadius, y - scaledRadius, scaledRadius * 2, scaledRadius * 2);
 
                 // Bordo colorato
-                if (CommonCostants.DETECTIVE_PAWN.equals(playerString)) {
+                if (ViewConstants.DETECTIVE_PAWN.equals(playerString)) {
                     g2d.setColor(ScotColors.DETECTIVE_BORDER_COLOR);
                     g2d.setStroke(new BasicStroke(2.0f * (float) nodeZoom));
-                } else if (CommonCostants.MRX_PAWN.equals(playerString)) {
+                } else if (ViewConstants.MRX_PAWN.equals(playerString)) {
                     g2d.setColor(ScotColors.MISTER_X_BORDER_COLOR);
                     g2d.setStroke(new BasicStroke(3.0f * (float) nodeZoom));
                 } else if (playerString.startsWith("B")) {
@@ -665,7 +665,7 @@ public final class MapPanel extends JPanel {
                 // Player text (white)
                 g2d.setColor(Color.WHITE);
                 final int fontSize;
-                if (CommonCostants.MRX_PAWN.equals(playerString)) {
+                if (ViewConstants.MRX_PAWN.equals(playerString)) {
                     fontSize = (int) (18 * nodeZoom);
                 } else {
                     fontSize = (int) (16 * nodeZoom);
@@ -732,11 +732,11 @@ public final class MapPanel extends JPanel {
         }
 
         // Render players
-        this.drawPlayer(g2d, CommonCostants.DETECTIVE_PAWN, this.detectivePosition, scaledRadius, nodeZoom);
-        this.drawPlayer(g2d, CommonCostants.MRX_PAWN, this.misterXPosition, scaledRadius, nodeZoom);
+        this.drawPlayer(g2d, ViewConstants.DETECTIVE_PAWN, this.detectivePosition, scaledRadius, nodeZoom);
+        this.drawPlayer(g2d, ViewConstants.MRX_PAWN, this.misterXPosition, scaledRadius, nodeZoom);
         for (int i = 0; i < this.bobbiesPositions.size(); i++) {
             this.drawPlayer(
-                    g2d, CommonCostants.BOBBIES_PAWN + (i + 1), this.bobbiesPositions.get(i), scaledRadius, nodeZoom);
+                    g2d, ViewConstants.BOBBIES_PAWN + (i + 1), this.bobbiesPositions.get(i), scaledRadius, nodeZoom);
         }
     }
 }

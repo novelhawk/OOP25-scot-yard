@@ -27,6 +27,11 @@ public interface Controller {
     void loadNewGameMenu();
 
     /**
+     * Loads the statistics view.
+     */
+    void loadStatistics();
+
+    /**
      * Loads the game panel and initializes the view with map data.
      *
      * @param gameController the Controller relative to the game

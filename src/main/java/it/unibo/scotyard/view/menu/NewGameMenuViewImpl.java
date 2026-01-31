@@ -1,9 +1,9 @@
 package it.unibo.scotyard.view.menu;
 
 import it.unibo.scotyard.commons.engine.Size;
-import it.unibo.scotyard.commons.patterns.CommonCostants;
 import it.unibo.scotyard.commons.patterns.ScotColors;
 import it.unibo.scotyard.commons.patterns.ScotFont;
+import it.unibo.scotyard.commons.patterns.ViewConstants;
 import it.unibo.scotyard.controller.menu.NewGameMenuController;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -94,7 +94,7 @@ public final class NewGameMenuViewImpl implements NewGameMenuView {
 
     // Insert player name label
     private JLabel createPlayerNameLabel() {
-        final JLabel label = new JLabel(CommonCostants.PLAYER_NAME_TEXT);
+        final JLabel label = new JLabel(ViewConstants.PLAYER_NAME_TEXT);
         label.setFont(ScotFont.TEXT_FONT_20);
         label.setForeground(ScotColors.ACCENT_COLOR);
         label.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -113,7 +113,7 @@ public final class NewGameMenuViewImpl implements NewGameMenuView {
 
     // Selection game mode label
     private JLabel createSelectGameModeLabel() {
-        final JLabel label = new JLabel(CommonCostants.SELECT_GAME_MODE_TEXT);
+        final JLabel label = new JLabel(ViewConstants.SELECT_GAME_MODE_TEXT);
         label.setFont(ScotFont.TEXT_FONT_20);
         label.setForeground(ScotColors.ACCENT_COLOR);
         label.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -122,7 +122,7 @@ public final class NewGameMenuViewImpl implements NewGameMenuView {
 
     // Selection game mode combo box
     private JComboBox<?> createSelectionGameModeComboBox() {
-        final JComboBox<?> comboBox = new JComboBox<>(CommonCostants.GAME_MODES_STRINGS);
+        final JComboBox<?> comboBox = new JComboBox<>(ViewConstants.GAME_MODES_STRINGS);
         comboBox.setFont(ScotFont.TEXT_FONT_16);
         comboBox.setForeground(ScotColors.BACKGROUND_COLOR);
         comboBox.setMaximumSize(new Dimension(COMBO_WIDTH, COMBO_HEIGHT));
@@ -136,7 +136,7 @@ public final class NewGameMenuViewImpl implements NewGameMenuView {
 
     // Selection game difficulty label
     private JLabel createSelectGameDifficultyLabel() {
-        final JLabel label = new JLabel(CommonCostants.SELECT_GAME_DIFFICULTY_TEXT);
+        final JLabel label = new JLabel(ViewConstants.SELECT_GAME_DIFFICULTY_TEXT);
         label.setFont(ScotFont.TEXT_FONT_20);
         label.setForeground(ScotColors.ACCENT_COLOR);
         label.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -145,7 +145,7 @@ public final class NewGameMenuViewImpl implements NewGameMenuView {
 
     // Selection game mode combo box
     private JComboBox<?> createSelectionDifficultyLevelComboBox() {
-        final JComboBox<?> comboBox = new JComboBox<>(CommonCostants.DIFFICULTY_LEVELS_STRINGS);
+        final JComboBox<?> comboBox = new JComboBox<>(ViewConstants.DIFFICULTY_LEVELS_STRINGS);
         comboBox.setFont(ScotFont.TEXT_FONT_16);
         comboBox.setForeground(ScotColors.BACKGROUND_COLOR);
         comboBox.setMaximumSize(new Dimension(COMBO_WIDTH, COMBO_HEIGHT));
@@ -167,7 +167,7 @@ public final class NewGameMenuViewImpl implements NewGameMenuView {
             final JComboBox<?> gameModeComboBox,
             final JComboBox<?> difficultyLevelComboBox,
             final JTextField playerTextField) {
-        final JButton button = new JButton(CommonCostants.START_BUTTON_TEXT);
+        final JButton button = new JButton(ViewConstants.START_BUTTON_TEXT);
         button.setFont(ScotFont.TEXT_FONT_20);
         button.setForeground(ScotColors.BACKGROUND_COLOR);
         button.setBackground(ScotColors.ACCENT_COLOR);
@@ -183,7 +183,7 @@ public final class NewGameMenuViewImpl implements NewGameMenuView {
 
     // Go back button
     private JButton createGoBackButton() {
-        final JButton button = new JButton(CommonCostants.GO_BACK_BUTTON_TEXT);
+        final JButton button = new JButton(ViewConstants.GO_BACK_BUTTON_TEXT);
         button.setFont(ScotFont.TEXT_FONT_20);
         button.setForeground(ScotColors.BACKGROUND_COLOR);
         button.setBackground(ScotColors.ACCENT_COLOR);

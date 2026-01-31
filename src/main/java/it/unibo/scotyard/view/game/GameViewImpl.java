@@ -2,10 +2,10 @@ package it.unibo.scotyard.view.game;
 
 import it.unibo.scotyard.commons.dtos.map.MapInfo;
 import it.unibo.scotyard.commons.engine.Size;
-import it.unibo.scotyard.commons.patterns.CommonCostants;
 import it.unibo.scotyard.commons.patterns.MagicNumbers;
 import it.unibo.scotyard.commons.patterns.ScotColors;
 import it.unibo.scotyard.commons.patterns.ScotFont;
+import it.unibo.scotyard.commons.patterns.ViewConstants;
 import it.unibo.scotyard.controller.game.GameController;
 import it.unibo.scotyard.model.map.NodeId;
 import it.unibo.scotyard.model.map.TransportType;
@@ -101,7 +101,7 @@ public final class GameViewImpl implements GameView {
     @Override
     public void displayRulesWindow(final JPanel panel) {
         final Size smallSize = Size.of(SMALL_WINDOW_WIDTH, MagicNumbers.HEIGHT_100);
-        final Window rulesWindow = new WindowImpl(smallSize, panel, CommonCostants.RULES_WINDOW_TITLE);
+        final Window rulesWindow = new WindowImpl(smallSize, panel, ViewConstants.RULES_WINDOW_TITLE);
         rulesWindow.setsMainFeatures(smallSize);
         rulesWindow.setHideOnClose();
         rulesWindow.display();
@@ -113,7 +113,7 @@ public final class GameViewImpl implements GameView {
         this.gameOverPanel.setLayout(new BoxLayout(this.gameOverPanel, BoxLayout.Y_AXIS));
         this.gameOverPanel.setBackground(ScotColors.BACKGROUND_COLOR);
         this.gameOverPanel.add(Box.createVerticalGlue());
-        final JLabel titleLabel = new JLabel(CommonCostants.GAME_OVER_WINDOW_TITLE);
+        final JLabel titleLabel = new JLabel(ViewConstants.GAME_OVER_WINDOW_TITLE);
         titleLabel.setForeground(ScotColors.ACCENT_COLOR);
         titleLabel.setFont(ScotFont.TITLE_FONT_36);
         titleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -125,7 +125,7 @@ public final class GameViewImpl implements GameView {
         this.winnerLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         this.gameOverPanel.add(this.winnerLabel);
         this.gameOverPanel.add(Box.createVerticalStrut(MagicNumbers.GAP_50));
-        final JButton button = new JButton(CommonCostants.BACK_MAIN_MENU);
+        final JButton button = new JButton(ViewConstants.BACK_MAIN_MENU);
         button.setFont(ScotFont.TEXT_FONT_20);
         button.setBackground(ScotColors.ACCENT_COLOR);
         button.setForeground(ScotColors.BACKGROUND_COLOR);
@@ -134,7 +134,7 @@ public final class GameViewImpl implements GameView {
         this.gameOverPanel.add(Box.createVerticalStrut(MagicNumbers.GAP_50));
         this.gameOverPanel.add(Box.createVerticalGlue());
 
-        this.gameOverWindow = new WindowImpl(smallSize, this.gameOverPanel, CommonCostants.GAME_OVER_WINDOW_TITLE);
+        this.gameOverWindow = new WindowImpl(smallSize, this.gameOverPanel, ViewConstants.GAME_OVER_WINDOW_TITLE);
         this.gameOverWindow.setsMainFeatures(smallSize);
 
         button.addActionListener(e -> {
@@ -156,11 +156,11 @@ public final class GameViewImpl implements GameView {
     public void loadTransportSelectionDialog(final Set<TransportType> availableTransportTypes) {
         final JDialog selectionWindow = new JDialog();
         selectionWindow.setBackground(Color.WHITE);
-        selectionWindow.setTitle(CommonCostants.SELECTION_TRANSPORT_JDIALOG);
+        selectionWindow.setTitle(ViewConstants.SELECTION_TRANSPORT_JDIALOG);
         selectionWindow.setSize(new Dimension(SMALL_WINDOW_WIDTH, MagicNumbers.HEIGHT_100));
         selectionWindow.setLayout(new BorderLayout());
 
-        final JLabel textLabel = new JLabel(CommonCostants.SELECTION_TRANSPORT_JDIALOG);
+        final JLabel textLabel = new JLabel(ViewConstants.SELECTION_TRANSPORT_JDIALOG);
         textLabel.setForeground(ScotColors.BACKGROUND_COLOR);
         textLabel.setFont(ScotFont.TEXT_FONT_14);
         textLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -173,19 +173,19 @@ public final class GameViewImpl implements GameView {
             button.setFont(ScotFont.TEXT_FONT_14);
             switch (transport) {
                 case TAXI:
-                    button.setText(CommonCostants.TAXI_TEXT);
+                    button.setText(ViewConstants.TAXI_TEXT);
                     button.setBackground(ScotColors.TAXI_COLOR);
                     break;
                 case BUS:
-                    button.setText(CommonCostants.BUS_TEXT);
+                    button.setText(ViewConstants.BUS_TEXT);
                     button.setBackground(ScotColors.BUS_COLOR);
                     break;
                 case UNDERGROUND:
-                    button.setText(CommonCostants.UNDERGROUND_TEXT);
+                    button.setText(ViewConstants.UNDERGROUND_TEXT);
                     button.setBackground(ScotColors.UNDERGROUND_COLOR);
                     break;
                 case FERRY:
-                    button.setText(CommonCostants.FERRY_TEXT);
+                    button.setText(ViewConstants.FERRY_TEXT);
                     button.setBackground(ScotColors.FERRY_COLOR);
                     break;
             }
@@ -268,8 +268,8 @@ public final class GameViewImpl implements GameView {
             if (isNewRecord) {
                 final JLabel recordLabel = new JLabel("🏆 NUOVO RECORD per modalità "
                         + (gameMode == it.unibo.scotyard.model.game.GameMode.DETECTIVE
-                                ? CommonCostants.DETECTIVE_STRING
-                                : CommonCostants.MRX_STRING)
+                                ? ViewConstants.DETECTIVE_STRING
+                                : ViewConstants.MRX_STRING)
                         + "!");
                 recordLabel.setFont(ScotFont.TEXT_FONT_18);
                 recordLabel.setForeground(Color.ORANGE); // Orange

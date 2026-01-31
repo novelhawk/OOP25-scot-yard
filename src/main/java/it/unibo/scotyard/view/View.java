@@ -3,7 +3,13 @@ package it.unibo.scotyard.view;
 import it.unibo.scotyard.commons.dtos.map.MapInfo;
 import it.unibo.scotyard.commons.engine.Size;
 import it.unibo.scotyard.controller.gamelauncher.GameLauncherController;
+import it.unibo.scotyard.controller.menu.MainMenuController;
+import it.unibo.scotyard.controller.menu.StatisticsController;
+import it.unibo.scotyard.model.game.matchhistory.MatchHistory;
+import it.unibo.scotyard.model.game.record.GameRecord;
 import it.unibo.scotyard.view.game.GameView;
+import it.unibo.scotyard.view.menu.MainMenuView;
+import it.unibo.scotyard.view.menu.StatisticsView;
 import javax.swing.JPanel;
 
 /** view interface coordinating all UI components. */
@@ -54,4 +60,21 @@ public interface View {
      * @return the maximum resolution
      */
     Size getMaxResolution();
+
+    /**
+     * Creates and returns the MainMenu view
+     *
+     * @param controller the MainMenu controller
+     * @return the MainMenu view
+     */
+    MainMenuView showMainMenuView(MainMenuController controller);
+
+    /**
+     * Shows the static statistics page.
+     */
+    StatisticsView showStatisticsView(
+            StatisticsController controller,
+            GameRecord mrxRecord,
+            GameRecord detectiveRecord,
+            MatchHistory matchHistory);
 }

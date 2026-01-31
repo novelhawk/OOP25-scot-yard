@@ -1,7 +1,7 @@
 package it.unibo.scotyard.model.game;
 
 import it.unibo.scotyard.commons.Constants;
-import it.unibo.scotyard.commons.patterns.CommonCostants;
+import it.unibo.scotyard.commons.patterns.ViewConstants;
 import it.unibo.scotyard.model.Pair;
 import it.unibo.scotyard.model.entities.ExposedPosition;
 import it.unibo.scotyard.model.entities.MoveAction;
@@ -113,8 +113,8 @@ public final class GameStateImpl implements GameState {
     }
 
     private void computeResultGame() {
-        final String victoryString = CommonCostants.WINNER_TEXT;
-        final String lossString = CommonCostants.LOSER_TEXT;
+        final String victoryString = ViewConstants.WINNER_TEXT;
+        final String lossString = ViewConstants.LOSER_TEXT;
 
         final NodeId runnerPosition = this.players.getMisterX().getPosition();
         final boolean found =
@@ -122,32 +122,32 @@ public final class GameStateImpl implements GameState {
 
         if (found) {
             if (this.gameMode == GameMode.MISTER_X) {
-                this.resultGameString = lossString + CommonCostants.CAPTURED_MISTER_X_MODE_TEXT;
+                this.resultGameString = lossString + ViewConstants.CAPTURED_MISTER_X_MODE_TEXT;
             } else {
-                this.resultGameString = victoryString + CommonCostants.CAPTURED_DETECTIVE_MODE_TEXT;
+                this.resultGameString = victoryString + ViewConstants.CAPTURED_DETECTIVE_MODE_TEXT;
             }
         } else {
             if (this.possibleDestinations.isEmpty()) {
                 if (GameMode.DETECTIVE.equals(this.gameMode)) {
-                    this.resultGameString = lossString + CommonCostants.NO_MORE_TICKETS_AVAILABLE_TEXT;
+                    this.resultGameString = lossString + ViewConstants.NO_MORE_TICKETS_AVAILABLE_TEXT;
                 } else {
                     if (this.getCurrentPlayer().equals(this.players.getMisterX())) {
-                        this.resultGameString = lossString + CommonCostants.NO_MORE_MOVES_TEXT;
+                        this.resultGameString = lossString + ViewConstants.NO_MORE_MOVES_TEXT;
                     } else {
-                        this.resultGameString = victoryString + CommonCostants.NO_MORE_TICKETS_AI_TEXT;
+                        this.resultGameString = victoryString + ViewConstants.NO_MORE_TICKETS_AI_TEXT;
                     }
                 }
             } else {
                 if (this.round >= FINAL_ROUND_COUNT) {
                     if (this.gameMode == GameMode.MISTER_X)
-                        this.resultGameString = victoryString + CommonCostants.ESCAPED_MISTER_X_MODE_TEXT;
+                        this.resultGameString = victoryString + ViewConstants.ESCAPED_MISTER_X_MODE_TEXT;
                 } else {
-                    this.resultGameString = lossString + CommonCostants.ESCAPED_DETECTIVE_MODE_TEXT;
+                    this.resultGameString = lossString + ViewConstants.ESCAPED_DETECTIVE_MODE_TEXT;
                 }
             }
         }
 
-        this.hasWon = this.resultGameString.contains(CommonCostants.WINNER_TEXT);
+        this.hasWon = this.resultGameString.contains(ViewConstants.WINNER_TEXT);
     }
 
     @Override

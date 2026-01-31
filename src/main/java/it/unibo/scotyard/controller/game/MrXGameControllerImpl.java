@@ -1,6 +1,6 @@
 package it.unibo.scotyard.controller.game;
 
-import it.unibo.scotyard.commons.patterns.CommonCostants;
+import it.unibo.scotyard.commons.patterns.ViewConstants;
 import it.unibo.scotyard.controller.Controller;
 import it.unibo.scotyard.model.command.turn.EndTurnCommand;
 import it.unibo.scotyard.model.command.turn.MoveCommand;
@@ -192,7 +192,7 @@ public final class MrXGameControllerImpl extends GameControllerImpl {
                 JOptionPane.showMessageDialog(
                         null,
                         "Seleziona la prima destinazione!",
-                        CommonCostants.NO_MOVES_SELECTED,
+                        ViewConstants.NO_MOVES_SELECTED,
                         JOptionPane.WARNING_MESSAGE);
                 return;
             }
@@ -280,7 +280,7 @@ public final class MrXGameControllerImpl extends GameControllerImpl {
                     JOptionPane.showMessageDialog(
                             null,
                             "Please select your first destination!",
-                            CommonCostants.NO_MOVES_SELECTED,
+                            ViewConstants.NO_MOVES_SELECTED,
                             JOptionPane.WARNING_MESSAGE);
                     return;
                 }
@@ -316,7 +316,7 @@ public final class MrXGameControllerImpl extends GameControllerImpl {
                     JOptionPane.showMessageDialog(
                             null,
                             "Please select your second destination!",
-                            CommonCostants.NO_MOVES_SELECTED,
+                            ViewConstants.NO_MOVES_SELECTED,
                             JOptionPane.WARNING_MESSAGE);
                     return;
                 }

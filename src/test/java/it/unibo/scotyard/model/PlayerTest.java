@@ -3,7 +3,7 @@ package it.unibo.scotyard.model;
 import static org.junit.jupiter.api.Assertions.*;
 
 import it.unibo.scotyard.commons.Constants;
-import it.unibo.scotyard.commons.patterns.CommonCostants;
+import it.unibo.scotyard.commons.patterns.ViewConstants;
 import it.unibo.scotyard.model.ai.PlayerBrain;
 import it.unibo.scotyard.model.ai.SkipTurnBrain;
 import it.unibo.scotyard.model.map.NodeId;
@@ -24,21 +24,21 @@ public class PlayerTest {
     public void testCreatePlayerWithNoBrain() {
         final Player detective = new Detective(nodeDetective);
         assertTrue(detective.isHuman());
-        assertEquals(detective.getName(), CommonCostants.DETECTIVE_FULL_STRING);
+        assertEquals(detective.getName(), ViewConstants.DETECTIVE_STRING);
         assertEquals(detective.getPosition(), nodeDetective);
         assertNotEquals(detective.getPosition(), nodeMisterX);
         assertNotEquals(detective.getPosition(), nodeBobby);
 
         final Player misterX = new MisterX(nodeMisterX);
         assertTrue(misterX.isHuman());
-        assertEquals(misterX.getName(), CommonCostants.MRX_FULL_STRING);
+        assertEquals(misterX.getName(), ViewConstants.MRX_STRING);
         assertEquals(misterX.getPosition(), nodeMisterX);
         assertNotEquals(misterX.getPosition(), nodeDetective);
         assertNotEquals(misterX.getPosition(), nodeBobby);
 
         final Player bobby = new Bobby(nodeBobby);
         assertTrue(bobby.isHuman());
-        assertEquals(bobby.getName(), CommonCostants.BOBBY_FULL_STRING);
+        assertEquals(bobby.getName(), ViewConstants.BOBBY_STRING);
         assertEquals(bobby.getPosition(), nodeBobby);
         assertNotEquals(bobby.getPosition(), nodeDetective);
         assertNotEquals(bobby.getPosition(), nodeMisterX);
@@ -51,7 +51,7 @@ public class PlayerTest {
         final Player detective = new Detective(nodeDetective, brain);
         assertFalse(detective.isHuman());
         assertEquals(detective.getBrain(), Optional.ofNullable(brain));
-        assertEquals(detective.getName(), CommonCostants.DETECTIVE_STRING);
+        assertEquals(detective.getName(), ViewConstants.DETECTIVE_STRING);
         assertEquals(detective.getPosition(), nodeDetective);
         assertNotEquals(detective.getPosition(), nodeMisterX);
         assertNotEquals(detective.getPosition(), nodeBobby);
@@ -59,7 +59,7 @@ public class PlayerTest {
         final Player misterX = new MisterX(nodeMisterX);
         assertTrue(misterX.isHuman());
         assertEquals(misterX.getBrain(), Optional.empty());
-        assertEquals(misterX.getName(), CommonCostants.MRX_STRING);
+        assertEquals(misterX.getName(), ViewConstants.MRX_STRING);
         assertEquals(misterX.getPosition(), nodeMisterX);
         assertNotEquals(misterX.getPosition(), nodeDetective);
         assertNotEquals(misterX.getPosition(), nodeBobby);
@@ -67,7 +67,7 @@ public class PlayerTest {
         final Player bobby = new Bobby(nodeBobby, brain);
         assertFalse(bobby.isHuman());
         assertEquals(bobby.getBrain(), Optional.ofNullable(brain));
-        assertEquals(bobby.getName(), CommonCostants.BOBBY_STRING);
+        assertEquals(bobby.getName(), ViewConstants.BOBBY_STRING);
         assertEquals(bobby.getPosition(), nodeBobby);
         assertNotEquals(bobby.getPosition(), nodeDetective);
         assertNotEquals(bobby.getPosition(), nodeMisterX);
@@ -95,10 +95,10 @@ public class PlayerTest {
     @Test
     public void testChangeNamePlayer() {
         final Player player = new Bobby(nodeBobby);
-        assertEquals(player.getName(), CommonCostants.BOBBY__STRING);
-        player.setName(CommonCostants.BOBBIES_PAWN);
-        assertEquals(player.getName(), CommonCostants.BOBBIES_PAWN);
-        assertNotEquals(player.getName(), CommonCostants.BOBBY_STRING);
+        assertEquals(player.getName(), ViewConstants.BOBBY_STRING);
+        player.setName(ViewConstants.BOBBIES_PAWN);
+        assertEquals(player.getName(), ViewConstants.BOBBIES_PAWN);
+        assertNotEquals(player.getName(), ViewConstants.BOBBY_STRING);
     }
 
     @Test

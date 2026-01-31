@@ -15,7 +15,7 @@ public final class ScotColors {
     public static final Color TAXI_COLOR = new Color(255, 255, 85); // giallo
     public static final Color BUS_COLOR = new Color(85, 165, 150); // verde/blu
     public static final Color UNDERGROUND_COLOR = new Color(200, 43, 29); // rosso
-    public static final Color FERRY_COLOR = new Color(0, 0, 0); // nero
+    public static final Color FERRY_COLOR = new Color(33, 33, 33); // nero
 
     // Colori pedine
     public static final Color MISTER_X_COLOR = new Color(0, 0, 0); // nero

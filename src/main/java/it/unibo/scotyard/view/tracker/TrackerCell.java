@@ -18,7 +18,6 @@ public final class TrackerCell extends JPanel {
             TransportType.TAXI, ScotColors.TAXI_COLOR);
 
     private static final Dimension MINIMUM_SIZE = new Dimension(100, 20);
-    private static final Color BACKGROUND_COLOR = new Color(48, 48, 48);
 
     private final GameView gameView;
     private List<TransportType> tickets;
@@ -58,7 +57,7 @@ public final class TrackerCell extends JPanel {
 
     @Override
     public Color getBackground() {
-        return BACKGROUND_COLOR;
+        return ScotColors.BACKGROUND_COLOR;
     }
 
     @Override

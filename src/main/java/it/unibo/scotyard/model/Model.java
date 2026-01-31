@@ -1,6 +1,7 @@
 package it.unibo.scotyard.model;
 
 import it.unibo.scotyard.model.game.GameState;
+import it.unibo.scotyard.model.game.matchhistory.MatchHistoryRepository;
 import it.unibo.scotyard.model.map.MapData;
 import it.unibo.scotyard.model.map.NodeId;
 import it.unibo.scotyard.model.map.TransportType;
@@ -70,4 +71,11 @@ public interface Model {
      * @return the global command dispatcher
      */
     CommandDispatcher getDispatcher();
+
+    /**
+     * Gets the singleton instance of MatchHistory repository.
+     *
+     * @return the MatchHistory repository
+     */
+    MatchHistoryRepository getMatchHistoryRepository();
 }
