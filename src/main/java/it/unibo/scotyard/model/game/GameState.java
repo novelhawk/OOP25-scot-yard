@@ -128,18 +128,6 @@ public interface GameState {
     void nextRound();
 
     /**
-     * Return a boolean inidicating if Mister X must be hidden on the map. In
-     * particular, Mister X must be hidden if the
-     * game mode is Detective and if the current game round number correspond to one
-     * of the reveal turns for Mister X
-     * (present in the class Constants in folder commons).
-     *
-     * @return a boolean indicating whether Mister X must be hidden or not on the
-     *         map
-     */
-    boolean hideMisterX();
-
-    /**
      * Return the NodeId of the last revealed Mister X position.
      *
      * @return the node id of the last revealed Mister X position
@@ -302,7 +290,7 @@ public interface GameState {
     /**
      * Hides Mister X position from detectives.
      */
-    void hideRunnerPosition();
+    void concealRunnerPosition();
 
     /**
      * get the timestamp of game init
