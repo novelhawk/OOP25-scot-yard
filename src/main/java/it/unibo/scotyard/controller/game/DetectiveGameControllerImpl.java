@@ -59,8 +59,6 @@ public final class DetectiveGameControllerImpl extends GameControllerImpl {
                 if (this.gameState.hideMisterX()) {
                     hideMisterXPosition();
                 } else {
-                    /* The position displayed of Mr. X is the one before he makes a new move
-                     ** after the reveal turn.  */
                     this.view.getMapPanel().setMisterXPosition(currentPlayer.getPosition());
                 }
                 break;

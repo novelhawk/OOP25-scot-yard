@@ -1,6 +1,7 @@
 package it.unibo.scotyard.model.game;
 
 import it.unibo.scotyard.commons.Constants;
+import it.unibo.scotyard.commons.patterns.MagicNumbers;
 import it.unibo.scotyard.commons.patterns.ViewConstants;
 import it.unibo.scotyard.model.Pair;
 import it.unibo.scotyard.model.entities.ExposedPosition;
@@ -23,9 +24,6 @@ import java.util.stream.Collectors;
  *
  */
 public final class GameStateImpl implements GameState {
-
-    private static final int NOT_REVEALED_YET = -1;
-    private static final int FINAL_ROUND_COUNT = 24;
 
     private final Random random;
     private final List<GameStateSubscriber> subscribers = new ArrayList<>();
@@ -74,7 +72,7 @@ public final class GameStateImpl implements GameState {
         this.possibleDestinations = new HashSet<>();
         this.runnerTurnTracker = new RunnerTurnTrackerImpl();
         this.gameStatus = GameStatus.PLAYING;
-        this.lastRevealedMisterXPosition = new NodeId(NOT_REVEALED_YET);
+        this.lastRevealedMisterXPosition = new NodeId(MagicNumbers.NOT_REVEALED_YET);
         this.gameStartTime = System.currentTimeMillis();
         this.gameEndTime = 0;
         this.gameDuration = 0;
@@ -102,7 +100,7 @@ public final class GameStateImpl implements GameState {
             }
         }
 
-        if (found || this.round > FINAL_ROUND_COUNT) {
+        if (found || this.round > MagicNumbers.FINAL_ROUND_COUNT) {
             isOver = true;
         }
 
@@ -138,7 +136,7 @@ public final class GameStateImpl implements GameState {
                     }
                 }
             } else {
-                if (this.round >= FINAL_ROUND_COUNT) {
+                if (this.round >= MagicNumbers.FINAL_ROUND_COUNT) {
                     if (this.gameMode == GameMode.MISTER_X)
                         this.resultGameString = victoryString + ViewConstants.ESCAPED_MISTER_X_MODE_TEXT;
                 } else {
@@ -432,7 +430,7 @@ public final class GameStateImpl implements GameState {
 
     @Override
     public int maxRoundCount() {
-        return FINAL_ROUND_COUNT;
+        return MagicNumbers.FINAL_ROUND_COUNT;
     }
 
     @Override
