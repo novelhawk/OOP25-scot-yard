@@ -33,7 +33,7 @@ public class RunnerBrain implements PlayerBrain {
         return switch (gameState.getGameDifficulty()) {
             case EASY -> movingRandomly(gameState);
             case MEDIUM -> moveFurthestAway(gameState, 0.6f);
-            case DIFFICULT -> moveFurthestAway(gameState, 0f);
+            case DIFFICULT -> moveFurthestAway(gameState, 0.2f);
         };
     }
 
