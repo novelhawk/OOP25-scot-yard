@@ -3,11 +3,19 @@ package it.unibo.scotyard.view;
 import it.unibo.scotyard.commons.dtos.map.MapInfo;
 import it.unibo.scotyard.commons.engine.Size;
 import it.unibo.scotyard.controller.gamelauncher.GameLauncherController;
+import it.unibo.scotyard.controller.menu.MainMenuController;
+import it.unibo.scotyard.controller.menu.StatisticsController;
+import it.unibo.scotyard.model.game.matchhistory.MatchHistory;
+import it.unibo.scotyard.model.game.record.GameRecord;
 import it.unibo.scotyard.view.game.GameView;
 import it.unibo.scotyard.view.game.GameViewImpl;
 import it.unibo.scotyard.view.gamelauncher.GameLauncherView;
 import it.unibo.scotyard.view.gamelauncher.GameLauncherViewImpl;
 import it.unibo.scotyard.view.map.MapPanel;
+import it.unibo.scotyard.view.menu.MainMenuView;
+import it.unibo.scotyard.view.menu.MainMenuViewImpl;
+import it.unibo.scotyard.view.menu.StatisticsView;
+import it.unibo.scotyard.view.menu.StatisticsViewImpl;
 import it.unibo.scotyard.view.resources.IconRegistry;
 import it.unibo.scotyard.view.resources.IconRegistryImpl;
 import it.unibo.scotyard.view.window.Window;
@@ -57,6 +65,25 @@ public final class ViewImpl implements View {
     public GameView createGameView(final MapInfo mapInfo) {
         Objects.requireNonNull(mapInfo, "MapInfo cannot be null");
         return new GameViewImpl(iconRegistry, mapInfo);
+    }
+
+    @Override
+    public MainMenuView showMainMenuView(MainMenuController controller) {
+        final MainMenuView mainMenu = new MainMenuViewImpl(controller);
+        displayPanel(mainMenu.getMainPanel());
+        return mainMenu;
+    }
+
+    @Override
+    public StatisticsView showStatisticsView(
+            StatisticsController controller,
+            GameRecord mrxRecord,
+            GameRecord detectiveRecord,
+            MatchHistory matchHistory) {
+        final StatisticsViewImpl statisticsView =
+                new StatisticsViewImpl(controller, mrxRecord, detectiveRecord, matchHistory);
+        displayPanel(statisticsView);
+        return statisticsView;
     }
 
     @Override

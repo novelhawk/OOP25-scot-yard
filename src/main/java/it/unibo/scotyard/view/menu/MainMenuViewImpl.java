@@ -1,6 +1,5 @@
 package it.unibo.scotyard.view.menu;
 
-import it.unibo.scotyard.commons.engine.Size;
 import it.unibo.scotyard.commons.patterns.ScotColors;
 import it.unibo.scotyard.commons.patterns.ScotFont;
 import it.unibo.scotyard.commons.patterns.ViewConstants;
@@ -27,14 +26,10 @@ public final class MainMenuViewImpl implements MainMenuView {
      * Creates the main menu view.
      *
      * @param controller the main menu controller
-     * @param resolution the window size
      * @throws NullPointerException if any parameter is null
      */
-    public MainMenuViewImpl(final MainMenuController controller, final Size resolution) {
-        // super(WINDOW_TITLE);
+    public MainMenuViewImpl(final MainMenuController controller) {
         this.controller = Objects.requireNonNull(controller, "Controller cannot be null");
-        // this.resolution = Objects.requireNonNull(resolution, "Resolution cannot be
-        // null");
 
         this.mainPanel = new JPanel(new BorderLayout());
         this.menuPanel = createMenuPanel();
@@ -53,8 +48,6 @@ public final class MainMenuViewImpl implements MainMenuView {
         menuPanel.add(createTitleLabel());
         menuPanel.add(Box.createVerticalStrut(TITLE_SPACING));
         menuPanel.add(createNewGameButton());
-        menuPanel.add(Box.createVerticalStrut(BUTTONS_SPACING));
-        menuPanel.add(createLoadGameButton());
         menuPanel.add(Box.createVerticalStrut(BUTTONS_SPACING));
         menuPanel.add(createStatisticsButton());
         menuPanel.add(Box.createVerticalStrut(BUTTONS_SPACING));
@@ -76,19 +69,6 @@ public final class MainMenuViewImpl implements MainMenuView {
         return this.mainPanel;
     }
 
-    @Override
-    public void showResetConfirmation() {
-        JOptionPane.showMessageDialog(
-                mainPanel, "Tutti i record sono stati resettati!", "Reset Completato", JOptionPane.INFORMATION_MESSAGE);
-        // Ricarica statistiche per mostrare dati aggiornati
-        this.controller.showStatistics();
-    }
-
-    @Override
-    public void showError(final String errorMessage) {
-        JOptionPane.showMessageDialog(null, errorMessage, "Errore", JOptionPane.ERROR_MESSAGE);
-    }
-
     // Title label
     private JLabel createTitleLabel() {
         final JLabel label = new JLabel(ViewConstants.SCOTLAND_YARD);
@@ -107,19 +87,6 @@ public final class MainMenuViewImpl implements MainMenuView {
         button.setAlignmentX(Component.CENTER_ALIGNMENT);
         button.addActionListener(e -> {
             this.controller.newGameMenu();
-        });
-        return button;
-    }
-
-    // Load game button
-    private JButton createLoadGameButton() {
-        final JButton button = new JButton(ViewConstants.LOAD_GAME_TEXT);
-        button.setFont(ScotFont.TEXT_FONT_20);
-        button.setBackground(ScotColors.ACCENT_COLOR);
-        button.setForeground(ScotColors.BACKGROUND_COLOR);
-        button.setAlignmentX(Component.CENTER_ALIGNMENT);
-        button.addActionListener(e -> {
-            // TO DO
         });
         return button;
     }
