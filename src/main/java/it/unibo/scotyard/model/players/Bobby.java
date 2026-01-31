@@ -28,9 +28,9 @@ public class Bobby extends AbstractPlayerImpl {
         this.name = "Bobby";
     }
 
-    public void initializeInventory(){
+    public void initializeInventory() {
         this.inventory = new InventoryImpl() {
-            public void initialize(){
+            public void initialize() {
                 this.addTicket(TicketType.TAXI, MagicNumbers.NUMBER_TICKETS_TAXI);
                 this.addTicket(TicketType.BUS, MagicNumbers.NUMBER_TICKETS_BUS);
                 this.addTicket(TicketType.UNDERGROUND, MagicNumbers.NUMBER_TICKETS_UNDERGROUND);

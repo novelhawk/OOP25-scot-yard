@@ -43,7 +43,7 @@ public abstract class AbstractPlayerImpl implements Player {
     }
 
     @Override
-    abstract public void initializeInventory();
+    public abstract void initializeInventory();
 
     @Override
     public void setPosition(final NodeId newPosition) {

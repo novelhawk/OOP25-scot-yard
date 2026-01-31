@@ -7,15 +7,15 @@ public interface Inventory {
 
     /**
      * Initialized the inventory.
-     * This method gets called in the method initializeInventory() of the classes that extend from 
-     * AbstractPlayerImpl. 
+     * This method gets called in the method initializeInventory() of the classes that extend from
+     * AbstractPlayerImpl.
      */
-    abstract void initialize();
+    void initialize();
 
     /**
      * Adds the TikcetType of ticket received and its quantity, both paremeters of this method,
      * to the inventory.
-     *  
+     *
      * @param ticketType the type of ticket
      * @param numberTickets the number of tickets to add
      */

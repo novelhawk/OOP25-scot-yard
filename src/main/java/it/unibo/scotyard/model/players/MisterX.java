@@ -39,9 +39,9 @@ public final class MisterX extends AbstractPlayerImpl {
     }
 
     @Override
-    public void initializeInventory(){
+    public void initializeInventory() {
         this.inventory = new InventoryImpl() {
-            public void initialize(){
+            public void initialize() {
                 super.addTicket(TicketType.TAXI, MagicNumbers.INFINITE);
                 super.addTicket(TicketType.BUS, MagicNumbers.INFINITE);
                 super.addTicket(TicketType.UNDERGROUND, MagicNumbers.INFINITE);

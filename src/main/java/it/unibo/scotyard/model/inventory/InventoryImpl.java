@@ -14,13 +14,12 @@ public abstract class InventoryImpl implements Inventory {
     }
 
     @Override
-    abstract public void initialize();
+    public abstract void initialize();
 
     @Override
-    public void addTicket(TicketType ticketType, int numberTickets){
+    public void addTicket(TicketType ticketType, int numberTickets) {
         this.ticketsMap.put(ticketType, numberTickets);
     }
-
 
     @Override
     public int getNumberTickets(TicketType ticketType) {
