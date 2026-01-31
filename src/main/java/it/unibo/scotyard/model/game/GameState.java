@@ -27,7 +27,6 @@ public interface GameState {
      */
     Random getSeededRandom();
 
-
     /**
      * Returns a boolean that indicates if the game is over. In particular, the game
      * is over if the detective or one of
@@ -41,11 +40,11 @@ public interface GameState {
 
     /**
      * Returns a boolean that inidcates if the current user player has won
-     * 
+     *
      * @return a boolean which indicates wheteher the user player has won or not
      */
     boolean hasUserWon();
-    
+
     /**
      * This method gets called when the game is over, to get the result : the user
      * player has won or not.

@@ -146,18 +146,18 @@ public final class GameStateImpl implements GameState {
                 }
             }
         }
-        
+
         this.hasWon = this.resultGameString.contains(CommonCostants.WINNER_TEXT);
     }
 
     @Override
-    public boolean hasUserWon(){
+    public boolean hasUserWon() {
         this.computeResultGame();
         return this.hasWon;
     }
 
     @Override
-    public String getResultGameString(){
+    public String getResultGameString() {
         this.computeResultGame();
         return this.resultGameString;
     }

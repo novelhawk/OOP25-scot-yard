@@ -1,7 +1,6 @@
 package it.unibo.scotyard.model;
 
 import static org.junit.jupiter.api.Assertions.*;
-import org.junit.jupiter.api.Test;
 
 import it.unibo.scotyard.commons.Constants;
 import it.unibo.scotyard.model.inventory.Inventory;
@@ -11,6 +10,7 @@ import it.unibo.scotyard.model.players.Bobby;
 import it.unibo.scotyard.model.players.Detective;
 import it.unibo.scotyard.model.players.MisterX;
 import it.unibo.scotyard.model.players.TicketType;
+import org.junit.jupiter.api.Test;
 
 public class InventoryTest {
     private final NodeId node = new NodeId(3);
