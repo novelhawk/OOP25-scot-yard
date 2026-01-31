@@ -1,17 +1,25 @@
 package it.unibo.scotyard.model.inventory;
 
 import it.unibo.scotyard.model.map.TransportType;
-import it.unibo.scotyard.model.players.Player;
 import it.unibo.scotyard.model.players.TicketType;
 
 public interface Inventory {
 
     /**
-     * Initialized the inventory according to the type of player received in input.
-     *
-     * @param player the player
+     * Initialized the inventory.
+     * This method gets called in the method initializeInventory() of the classes that extend from 
+     * AbstractPlayerImpl. 
      */
-    void initialize(Player player);
+    abstract void initialize();
+
+    /**
+     * Adds the TikcetType of ticket received and its quantity, both paremeters of this method,
+     * to the inventory.
+     *  
+     * @param ticketType the type of ticket
+     * @param numberTickets the number of tickets to add
+     */
+    void addTicket(TicketType ticketType, int numberTickets);
 
     /**
      * @return the number of tickets possessed by the player of the type passed as a paremeter.

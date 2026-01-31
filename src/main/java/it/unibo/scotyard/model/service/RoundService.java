@@ -5,7 +5,6 @@ import it.unibo.scotyard.model.command.game.GameOverCommand;
 import it.unibo.scotyard.model.command.round.EndRoundCommand;
 import it.unibo.scotyard.model.command.round.StartRoundCommand;
 import it.unibo.scotyard.model.command.turn.StartTurnCommand;
-import it.unibo.scotyard.model.game.GameMode;
 import it.unibo.scotyard.model.game.GameState;
 import it.unibo.scotyard.model.game.GameStateSubscriber;
 import it.unibo.scotyard.model.router.CommandDispatcher;
@@ -41,8 +40,8 @@ public class RoundService {
         final CommandDispatcher dispatcher = model.getDispatcher();
         final GameState gameState = model.getGameState();
 
-        if (gameState.isRunnerExposed() && gameState.getGameMode() != GameMode.MISTER_X) {
-            gameState.hideRunnerPosition();
+        if (gameState.isRunnerExposed()) {
+            gameState.concealRunnerPosition();
         }
 
         gameState.notifySubscribers(GameStateSubscriber::onRoundEnd);

@@ -45,22 +45,12 @@ public final class DetectiveGameControllerImpl extends GameControllerImpl {
         }
     }
 
-    /** Hides Mister X position on the map */
-    private void hideMisterXPosition() {
-        this.view.getMapPanel().setMisterXPosition(HIDDEN_POSITION);
-    }
-
     private void updatePlayerPositionView(Player currentPlayer) {
         switch (currentPlayer.getName()) {
             case "Detective":
                 this.view.getMapPanel().setDetectivePosition(currentPlayer.getPosition());
                 break;
             case "Mister X":
-                if (this.gameState.hideMisterX()) {
-                    hideMisterXPosition();
-                } else {
-                    this.view.getMapPanel().setMisterXPosition(currentPlayer.getPosition());
-                }
                 break;
             default:
                 int index = Integer.parseInt(currentPlayer.getName().substring(5, 6)) - 1;

@@ -2,7 +2,7 @@ package it.unibo.scotyard.model;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import it.unibo.scotyard.commons.Constants;
+import it.unibo.scotyard.commons.patterns.MagicNumbers;
 import it.unibo.scotyard.commons.patterns.ViewConstants;
 import it.unibo.scotyard.model.ai.PlayerBrain;
 import it.unibo.scotyard.model.ai.SkipTurnBrain;
@@ -76,11 +76,11 @@ public class PlayerTest {
     @Test
     public void testInitializeInventoryPlayer() {
         final Player player = new Detective(nodeDetective);
-        assertEquals(player.getNumberTickets(TicketType.TAXI), Constants.NUMBER_TICKETS_TAXI);
-        assertEquals(player.getNumberTickets(TicketType.BUS), Constants.NUMBER_TICKETS_BUS);
-        assertEquals(player.getNumberTickets(TicketType.UNDERGROUND), Constants.NUMBER_TICKETS_UNDERGROUND);
-        assertEquals(player.getNumberTickets(TicketType.BLACK), Constants.NONE);
-        assertEquals(player.getNumberTickets(TicketType.DOUBLE_MOVE), Constants.NONE);
+        assertEquals(player.getNumberTickets(TicketType.TAXI), MagicNumbers.NUMBER_TICKETS_TAXI);
+        assertEquals(player.getNumberTickets(TicketType.BUS), MagicNumbers.NUMBER_TICKETS_BUS);
+        assertEquals(player.getNumberTickets(TicketType.UNDERGROUND), MagicNumbers.NUMBER_TICKETS_UNDERGROUND);
+        assertEquals(player.getNumberTickets(TicketType.BLACK), MagicNumbers.NONE);
+        assertEquals(player.getNumberTickets(TicketType.DOUBLE_MOVE), MagicNumbers.NONE);
     }
 
     @Test
@@ -105,22 +105,22 @@ public class PlayerTest {
     public void testUseTicket() {
         final Player detective = new Detective(nodeDetective);
         // Finite number of tickets (taxi for Detective)
-        assertEquals(detective.getNumberTickets(TicketType.TAXI), Constants.NUMBER_TICKETS_TAXI);
+        assertEquals(detective.getNumberTickets(TicketType.TAXI), MagicNumbers.NUMBER_TICKETS_TAXI);
         assertTrue(detective.useTicket(TicketType.TAXI));
-        assertEquals(detective.getNumberTickets(TicketType.TAXI), Constants.NUMBER_TICKETS_TAXI - 1);
+        assertEquals(detective.getNumberTickets(TicketType.TAXI), MagicNumbers.NUMBER_TICKETS_TAXI - 1);
         // No tickets (double move for Detective)
         assertFalse(detective.useTicket(TicketType.DOUBLE_MOVE));
-        assertEquals(detective.getNumberTickets(TicketType.DOUBLE_MOVE), Constants.NONE);
+        assertEquals(detective.getNumberTickets(TicketType.DOUBLE_MOVE), MagicNumbers.NONE);
 
         final Player misterX = new MisterX(nodeBobby);
         // Infinite tickets (taxi for Mister X)
-        assertEquals(misterX.getNumberTickets(TicketType.TAXI), Constants.INFINITE);
+        assertEquals(misterX.getNumberTickets(TicketType.TAXI), MagicNumbers.INFINITE);
         assertTrue(misterX.useTicket(TicketType.TAXI));
-        assertEquals(misterX.getNumberTickets(TicketType.TAXI), Constants.INFINITE);
+        assertEquals(misterX.getNumberTickets(TicketType.TAXI), MagicNumbers.INFINITE);
         // Finite number of tickets (double move for Mister X)
-        assertEquals(misterX.getNumberTickets(TicketType.DOUBLE_MOVE), Constants.NUMBER_TICKETS_DOUBLE_MOVE);
+        assertEquals(misterX.getNumberTickets(TicketType.DOUBLE_MOVE), MagicNumbers.NUMBER_TICKETS_DOUBLE_MOVE);
         assertTrue(misterX.useTicket(TicketType.DOUBLE_MOVE));
-        assertEquals(misterX.getNumberTickets(TicketType.DOUBLE_MOVE), Constants.NUMBER_TICKETS_DOUBLE_MOVE - 1);
+        assertEquals(misterX.getNumberTickets(TicketType.DOUBLE_MOVE), MagicNumbers.NUMBER_TICKETS_DOUBLE_MOVE - 1);
     }
 
     // TODO : test per hasTransportModeTransport()

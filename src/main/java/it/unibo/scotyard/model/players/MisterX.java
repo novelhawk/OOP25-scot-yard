@@ -1,10 +1,12 @@
 package it.unibo.scotyard.model.players;
 
+import it.unibo.scotyard.commons.patterns.MagicNumbers;
 import it.unibo.scotyard.commons.patterns.ViewConstants;
 import it.unibo.scotyard.model.ai.PlayerBrain;
 import it.unibo.scotyard.model.game.turn.TurnManager;
 import it.unibo.scotyard.model.game.turn.TurnManagerImpl;
 import it.unibo.scotyard.model.inventory.Inventory;
+import it.unibo.scotyard.model.inventory.InventoryImpl;
 import it.unibo.scotyard.model.map.MapData;
 import it.unibo.scotyard.model.map.NodeId;
 import it.unibo.scotyard.model.map.TransportType;
@@ -14,7 +16,7 @@ import java.util.Set;
  * The mister X player entity.
  *
  */
-public final class MisterX extends PlayerImpl {
+public final class MisterX extends AbstractPlayerImpl {
 
     /**
      * Creates a new AI Mister X player starting at the given position.
@@ -34,6 +36,20 @@ public final class MisterX extends PlayerImpl {
      */
     public MisterX(final NodeId position) {
         this(position, null);
+    }
+
+    @Override
+    public void initializeInventory(){
+        this.inventory = new InventoryImpl() {
+            public void initialize(){
+                super.addTicket(TicketType.TAXI, MagicNumbers.INFINITE);
+                super.addTicket(TicketType.BUS, MagicNumbers.INFINITE);
+                super.addTicket(TicketType.UNDERGROUND, MagicNumbers.INFINITE);
+                super.addTicket(TicketType.BLACK, MagicNumbers.NUMBER_TICKETS_BLACK);
+                super.addTicket(TicketType.DOUBLE_MOVE, MagicNumbers.NUMBER_TICKETS_DOUBLE_MOVE);
+            }
+        };
+        this.inventory.initialize();
     }
 
     public void makeMove(final NodeId destination, final TransportType transport, final int turnNumber) {

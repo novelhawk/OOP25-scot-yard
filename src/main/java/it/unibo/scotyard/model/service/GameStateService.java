@@ -94,7 +94,7 @@ public class GameStateService {
     private MisterX createMisterX(GameMode gameMode, NodeId initialPosition) {
         return switch (gameMode) {
             case GameMode.DETECTIVE -> {
-                final RunnerBrain runnerBrain = new RunnerBrain();
+                final RunnerBrain runnerBrain = new RunnerBrain(model.getMapData());
                 yield new MisterX(initialPosition, runnerBrain);
             }
             case GameMode.MISTER_X -> new MisterX(initialPosition);
