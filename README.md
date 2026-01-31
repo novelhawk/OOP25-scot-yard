@@ -5,7 +5,7 @@ Progetto universitario per il corso di Programmazione ad Oggetti dell'Universit√
 ## Requisiti
 
 - Java 21
-- Gradle ??
+- Gradle 9.1.0
 
 #Map render REF.(commit: 6cf70ea)
 
