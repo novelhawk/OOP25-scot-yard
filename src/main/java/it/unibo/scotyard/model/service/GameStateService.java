@@ -1,6 +1,5 @@
 package it.unibo.scotyard.model.service;
 
-import it.unibo.scotyard.commons.patterns.ViewConstants;
 import it.unibo.scotyard.model.Model;
 import it.unibo.scotyard.model.ai.RunnerBrain;
 import it.unibo.scotyard.model.ai.SeekerBrain;
@@ -75,10 +74,8 @@ public class GameStateService {
 
         gameState.notifySubscribers(GameStateSubscriber::onGameOver);
 
-        // HACK: gets whether the game was won by the user player
-        final boolean hasWon = gameState.resultGame().startsWith(ViewConstants.WINNER_TEXT);
         try {
-            this.model.getMatchHistoryRepository().trackOutcome(gameState.getGameMode(), hasWon);
+            this.model.getMatchHistoryRepository().trackOutcome(gameState.getGameMode(), gameState.hasUserWon());
         } catch (IOException e) {
             // If we fail to update the match history we fail quietly
         }

@@ -21,6 +21,13 @@ import java.util.function.Consumer;
 public interface GameState {
 
     /**
+     * Gets the Random instance shared for the current game session.
+     *
+     * @return the seeded shared random instance used by all game logic
+     */
+    Random getSeededRandom();
+
+    /**
      * Returns a boolean that indicates if the game is over. In particular, the game
      * is over if the detective or one of
      * the bobbies has captured Mister X (they're in the same position of the map)
@@ -32,11 +39,11 @@ public interface GameState {
     boolean isGameOver();
 
     /**
-     * Gets the Random instance shared for the current game session.
+     * Returns a boolean that inidcates if the current user player has won
      *
-     * @return the seeded shared random instance used by all game logic
+     * @return a boolean which indicates wheteher the user player has won or not
      */
-    Random getSeededRandom();
+    boolean hasUserWon();
 
     /**
      * This method gets called when the game is over, to get the result : the user
@@ -44,7 +51,7 @@ public interface GameState {
      *
      * @return String, which indicates whether the user player has won or not
      */
-    String resultGame();
+    String getResultGameString();
 
     /**
      * Loads into a specific variable the possible destinations, eventually removing

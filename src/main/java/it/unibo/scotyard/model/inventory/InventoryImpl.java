@@ -1,5 +1,6 @@
 package it.unibo.scotyard.model.inventory;
 
+import it.unibo.scotyard.commons.patterns.MagicNumbers;
 import it.unibo.scotyard.model.players.Bobby;
 import it.unibo.scotyard.model.players.Detective;
 import it.unibo.scotyard.model.players.MisterX;
@@ -10,14 +11,6 @@ import java.util.Map;
 
 public class InventoryImpl implements Inventory {
 
-    protected static final int NONE = 0;
-    protected static final int INFINITE = -1;
-    private static final int NUMBER_TICKETS_TAXI = 11;
-    private static final int NUMBER_TICKETS_BUS = 8;
-    private static final int NUMBER_TIKCETS_UNDERGROUND = 4;
-    private static final int NUMBER_TICKETS_BLACK = 5;
-    private static final int NUMBER_TICKETS_DOUBLE_MOVE = 2;
-
     protected Map<TicketType, Integer> ticketsMap;
 
     public InventoryImpl() {
@@ -27,25 +20,25 @@ public class InventoryImpl implements Inventory {
     @Override
     public void initialize(Player player) {
         if (player instanceof Detective) {
-            this.ticketsMap.put(TicketType.TAXI, NUMBER_TICKETS_TAXI);
-            this.ticketsMap.put(TicketType.BUS, NUMBER_TICKETS_BUS);
-            this.ticketsMap.put(TicketType.UNDERGROUND, NUMBER_TIKCETS_UNDERGROUND);
-            this.ticketsMap.put(TicketType.BLACK, NONE);
-            this.ticketsMap.put(TicketType.DOUBLE_MOVE, NONE);
+            this.ticketsMap.put(TicketType.TAXI, MagicNumbers.NUMBER_TICKETS_TAXI);
+            this.ticketsMap.put(TicketType.BUS, MagicNumbers.NUMBER_TICKETS_BUS);
+            this.ticketsMap.put(TicketType.UNDERGROUND, MagicNumbers.NUMBER_TICKETS_UNDERGROUND);
+            this.ticketsMap.put(TicketType.BLACK, MagicNumbers.NONE);
+            this.ticketsMap.put(TicketType.DOUBLE_MOVE, MagicNumbers.NONE);
         }
         if (player instanceof Bobby) {
-            this.ticketsMap.put(TicketType.TAXI, INFINITE);
-            this.ticketsMap.put(TicketType.BUS, INFINITE);
-            this.ticketsMap.put(TicketType.UNDERGROUND, INFINITE);
-            this.ticketsMap.put(TicketType.BLACK, NONE);
-            this.ticketsMap.put(TicketType.DOUBLE_MOVE, NONE);
+            this.ticketsMap.put(TicketType.TAXI, MagicNumbers.INFINITE);
+            this.ticketsMap.put(TicketType.BUS, MagicNumbers.INFINITE);
+            this.ticketsMap.put(TicketType.UNDERGROUND, MagicNumbers.INFINITE);
+            this.ticketsMap.put(TicketType.BLACK, MagicNumbers.NONE);
+            this.ticketsMap.put(TicketType.DOUBLE_MOVE, MagicNumbers.NONE);
         }
         if (player instanceof MisterX) {
-            this.ticketsMap.put(TicketType.TAXI, INFINITE);
-            this.ticketsMap.put(TicketType.BUS, INFINITE);
-            this.ticketsMap.put(TicketType.UNDERGROUND, INFINITE);
-            this.ticketsMap.put(TicketType.BLACK, NUMBER_TICKETS_BLACK);
-            this.ticketsMap.put(TicketType.DOUBLE_MOVE, NUMBER_TICKETS_DOUBLE_MOVE);
+            this.ticketsMap.put(TicketType.TAXI, MagicNumbers.INFINITE);
+            this.ticketsMap.put(TicketType.BUS, MagicNumbers.INFINITE);
+            this.ticketsMap.put(TicketType.UNDERGROUND, MagicNumbers.INFINITE);
+            this.ticketsMap.put(TicketType.BLACK, MagicNumbers.NUMBER_TICKETS_BLACK);
+            this.ticketsMap.put(TicketType.DOUBLE_MOVE, MagicNumbers.NUMBER_TICKETS_DOUBLE_MOVE);
         }
     }
 
@@ -57,16 +50,13 @@ public class InventoryImpl implements Inventory {
     @Override
     public boolean containsTicket(TicketType ticketType) {
         return this.ticketsMap.containsKey(ticketType)
-                && (this.ticketsMap.get(ticketType) > 0 || this.ticketsMap.get(ticketType) == INFINITE);
+                && (this.ticketsMap.get(ticketType) > 0 || this.ticketsMap.get(ticketType) == MagicNumbers.INFINITE);
     }
 
     @Override
     public void decrementTickets(TicketType ticketType) {
         final int currentTickets = this.ticketsMap.get(ticketType);
-        if (TicketType.BLACK.equals(ticketType)) {
-            System.out.println(currentTickets);
-        }
-        if (currentTickets != INFINITE) {
+        if (currentTickets != MagicNumbers.INFINITE && currentTickets != MagicNumbers.NONE) {
             this.ticketsMap.put(ticketType, currentTickets - 1);
         }
     }

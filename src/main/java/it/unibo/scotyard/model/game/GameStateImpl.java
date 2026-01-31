@@ -1,5 +1,6 @@
 package it.unibo.scotyard.model.game;
 
+import it.unibo.scotyard.commons.patterns.MagicNumbers;
 import it.unibo.scotyard.commons.patterns.ViewConstants;
 import it.unibo.scotyard.model.Pair;
 import it.unibo.scotyard.model.entities.ExposedPosition;
@@ -22,9 +23,6 @@ import java.util.stream.Collectors;
  *
  */
 public final class GameStateImpl implements GameState {
-
-    private static final int NOT_REVEALED_YET = -1;
-    private static final int FINAL_ROUND_COUNT = 24;
 
     private final Random random;
     private final List<GameStateSubscriber> subscribers = new ArrayList<>();
@@ -55,6 +53,9 @@ public final class GameStateImpl implements GameState {
 
     private int round = 1;
 
+    private boolean hasWon;
+    private String resultGameString;
+
     /**
      * Creates a new game state.
      *
@@ -74,7 +75,14 @@ public final class GameStateImpl implements GameState {
         this.gameStartTime = System.currentTimeMillis();
         this.gameEndTime = 0;
         this.gameDuration = 0;
+        this.hasWon = false;
+        this.resultGameString = new String();
         this.exposedPositions = new ArrayList<>();
+    }
+
+    @Override
+    public Random getSeededRandom() {
+        return random;
     }
 
     @Override
@@ -92,7 +100,7 @@ public final class GameStateImpl implements GameState {
             }
         }
 
-        if (found || this.round > FINAL_ROUND_COUNT) {
+        if (found || this.round > MagicNumbers.FINAL_ROUND_COUNT) {
             isOver = true;
         }
 
@@ -102,13 +110,7 @@ public final class GameStateImpl implements GameState {
         return isOver;
     }
 
-    @Override
-    public Random getSeededRandom() {
-        return random;
-    }
-
-    @Override
-    public String resultGame() {
+    private void computeResultGame() {
         final String victoryString = ViewConstants.WINNER_TEXT;
         final String lossString = ViewConstants.LOSER_TEXT;
 
@@ -118,31 +120,44 @@ public final class GameStateImpl implements GameState {
 
         if (found) {
             if (this.gameMode == GameMode.MISTER_X) {
-                return lossString + ViewConstants.CAPTURED_MISTER_X_MODE_TEXT;
+                this.resultGameString = lossString + ViewConstants.CAPTURED_MISTER_X_MODE_TEXT;
             } else {
-                return victoryString + ViewConstants.CAPTURED_DETECTIVE_MODE_TEXT;
+                this.resultGameString = victoryString + ViewConstants.CAPTURED_DETECTIVE_MODE_TEXT;
             }
         } else {
             if (this.possibleDestinations.isEmpty()) {
                 if (GameMode.DETECTIVE.equals(this.gameMode)) {
-                    return lossString + ViewConstants.NO_MORE_TICKETS_AVAILABLE_TEXT;
+                    this.resultGameString = lossString + ViewConstants.NO_MORE_TICKETS_AVAILABLE_TEXT;
                 } else {
                     if (this.getCurrentPlayer().equals(this.players.getMisterX())) {
-                        return lossString + ViewConstants.NO_MORE_MOVES_TEXT;
+                        this.resultGameString = lossString + ViewConstants.NO_MORE_MOVES_TEXT;
                     } else {
-                        return victoryString + ViewConstants.NO_MORE_TICKETS_AI_TEXT;
+                        this.resultGameString = victoryString + ViewConstants.NO_MORE_TICKETS_AI_TEXT;
                     }
                 }
             } else {
-                if (this.round >= FINAL_ROUND_COUNT) {
+                if (this.round >= MagicNumbers.FINAL_ROUND_COUNT) {
                     if (this.gameMode == GameMode.MISTER_X)
-                        return victoryString + ViewConstants.ESCAPED_MISTER_X_MODE_TEXT;
+                        this.resultGameString = victoryString + ViewConstants.ESCAPED_MISTER_X_MODE_TEXT;
                 } else {
-                    return lossString + ViewConstants.ESCAPED_DETECTIVE_MODE_TEXT;
+                    this.resultGameString = lossString + ViewConstants.ESCAPED_DETECTIVE_MODE_TEXT;
                 }
             }
         }
-        return lossString;
+
+        this.hasWon = this.resultGameString.contains(ViewConstants.WINNER_TEXT);
+    }
+
+    @Override
+    public boolean hasUserWon() {
+        this.computeResultGame();
+        return this.hasWon;
+    }
+
+    @Override
+    public String getResultGameString() {
+        this.computeResultGame();
+        return this.resultGameString;
     }
 
     @Override
@@ -399,7 +414,7 @@ public final class GameStateImpl implements GameState {
 
     @Override
     public int maxRoundCount() {
-        return FINAL_ROUND_COUNT;
+        return MagicNumbers.FINAL_ROUND_COUNT;
     }
 
     @Override
