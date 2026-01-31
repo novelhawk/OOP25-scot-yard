@@ -387,7 +387,7 @@ public final class GameStateImpl implements GameState {
         return connections.stream()
                 .filter(it -> !invalidPositions.contains(it.getTo())
                         && !excludedNodes.contains(it.getTo())
-                        && player.hasTransportModeTicket(it.getTransport()))
+                        && player.getInventory().containsTicket(Inventory.getTicketTypeForTransport(it.getTransport())))
                 .map(it -> new MoveAction(it.getTo(), it.getTransport()))
                 .toList();
     }
