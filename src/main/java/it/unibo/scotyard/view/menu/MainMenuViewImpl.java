@@ -6,7 +6,6 @@ import it.unibo.scotyard.commons.patterns.ScotColors;
 import it.unibo.scotyard.commons.patterns.ScotFont;
 import it.unibo.scotyard.controller.menu.MainMenuController;
 import it.unibo.scotyard.model.game.record.GameRecord;
-
 import java.awt.*;
 import java.util.Objects;
 import java.util.Optional;

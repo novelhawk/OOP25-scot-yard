@@ -96,10 +96,6 @@ public abstract class PlayerImpl implements Player {
 
     @Override
     public boolean hasTransportModeTicket(TransportType transportType) {
-        if (getNumberTickets(TicketType.BLACK) > 1) {
-            return true;
-        }
-
         final TicketType specificTicketType = Inventory.getTicketTypeForTransport(transportType);
         return getNumberTickets(specificTicketType) > 1;
     }
