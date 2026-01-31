@@ -180,7 +180,8 @@ public abstract class GameControllerImpl implements GameController, GameStateSub
 
     @Override
     public void onConcealRunner() {
-        this.view.getMapPanel().hideExposedPosition();
+        final boolean keepRunnerVisible = gameState.getGameMode() == GameMode.MISTER_X;
+        this.view.getMapPanel().hideExposedPosition(keepRunnerVisible);
         SwingUtilities.invokeLater(() -> this.view.getMapPanel().repaint());
     }
 

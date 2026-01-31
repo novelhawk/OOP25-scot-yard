@@ -277,7 +277,7 @@ public final class GameStateImpl implements GameState {
     @Override
     public NodeId getLastRevealedMisterXPosition() {
         if (this.exposedPositions.isEmpty()) {
-            return new NodeId(NOT_REVEALED_YET);
+            return new NodeId(MagicNumbers.NOT_REVEALED_YET);
         }
 
         return this.exposedPositions.getLast().position();
