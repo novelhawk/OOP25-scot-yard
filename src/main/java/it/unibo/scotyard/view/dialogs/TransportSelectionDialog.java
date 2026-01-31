@@ -1,8 +1,8 @@
 package it.unibo.scotyard.view.dialogs;
 
-import it.unibo.scotyard.commons.patterns.CommonCostants;
 import it.unibo.scotyard.commons.patterns.ScotColors;
 import it.unibo.scotyard.commons.patterns.ScotFont;
+import it.unibo.scotyard.commons.patterns.ViewConstants;
 import it.unibo.scotyard.model.map.NodeId;
 import it.unibo.scotyard.model.map.TransportType;
 import java.awt.BorderLayout;
@@ -42,7 +42,7 @@ public final class TransportSelectionDialog extends JDialog {
      * @param transportTypes the available transport types
      */
     public TransportSelectionDialog(final Frame parent, final NodeId nodeId, final List<TransportType> transportTypes) {
-        super(parent, CommonCostants.SELECTION_JDIALOG_TITLE, true);
+        super(parent, ViewConstants.SELECTION_JDIALOG_TITLE, true);
 
         selectedTransport = null;
 
@@ -71,7 +71,7 @@ public final class TransportSelectionDialog extends JDialog {
         mainPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
         // title
-        final JLabel titleLabel = new JLabel(CommonCostants.SELECTION_JDIALOG_TITLE + nodeId.id());
+        final JLabel titleLabel = new JLabel(ViewConstants.SELECTION_JDIALOG_TITLE + nodeId.id());
         titleLabel.setForeground(ScotColors.ACCENT_COLOR);
         titleLabel.setFont(ScotFont.TITLE_FONT_36);
         titleLabel.setHorizontalAlignment(SwingConstants.CENTER);

@@ -1,8 +1,8 @@
 package it.unibo.scotyard.view.menu;
 
-import it.unibo.scotyard.commons.patterns.CommonCostants;
 import it.unibo.scotyard.commons.patterns.ScotColors;
 import it.unibo.scotyard.commons.patterns.ScotFont;
+import it.unibo.scotyard.commons.patterns.ViewConstants;
 import it.unibo.scotyard.model.game.matchhistory.MatchHistory;
 import it.unibo.scotyard.model.game.record.GameRecord;
 import java.awt.*;
@@ -52,7 +52,7 @@ public class StatisticsView extends JPanel {
     }
 
     private Component pageTitleComponent() {
-        final JLabel titleLabel = new JLabel(CommonCostants.STATISCS_TITLE.toUpperCase());
+        final JLabel titleLabel = new JLabel(ViewConstants.STATISCS_TITLE.toUpperCase());
         titleLabel.setFont(ScotFont.TEXT_FONT_28);
         titleLabel.setForeground(ScotColors.ACCENT_COLOR);
         titleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -98,7 +98,7 @@ public class StatisticsView extends JPanel {
         final Object[][] data = new Object[2][3];
 
         // Riga 1: Detective
-        data[0][0] = CommonCostants.GAME_MODES_STRINGS[1];
+        data[0][0] = ViewConstants.GAME_MODES_STRINGS[1];
         if (detectiveRecord != null && detectiveRecord.isValid()) {
             data[0][1] = formatDuration(detectiveRecord.getDurationMillis());
             data[0][2] = formatDate(detectiveRecord.getTimestamp());
@@ -108,7 +108,7 @@ public class StatisticsView extends JPanel {
         }
 
         // Riga 2: Mr. X
-        data[1][0] = CommonCostants.GAME_MODES_STRINGS[0];
+        data[1][0] = ViewConstants.GAME_MODES_STRINGS[0];
         if (mrxRecord != null && mrxRecord.isValid()) {
             data[1][1] = formatDuration(mrxRecord.getDurationMillis());
             data[1][2] = formatDate(mrxRecord.getTimestamp());
@@ -172,7 +172,7 @@ public class StatisticsView extends JPanel {
         buttonPanel.setBackground(ScotColors.BACKGROUND_COLOR);
         buttonPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        final JButton backButton = new JButton(CommonCostants.BACK);
+        final JButton backButton = new JButton(ViewConstants.BACK);
         backButton.setFont(ScotFont.TEXT_FONT_20);
         backButton.setBackground(ScotColors.ACCENT_COLOR);
         backButton.setForeground(ScotColors.BACKGROUND_COLOR);
@@ -180,25 +180,24 @@ public class StatisticsView extends JPanel {
         backButton.setBorderPainted(false);
         backButton.addActionListener(e -> showMenu());
 
-        final JButton resetButton = new JButton(CommonCostants.RESET_RECORD_TEXT);
+        final JButton resetButton = new JButton(ViewConstants.RESET_RECORD_TEXT);
         resetButton.setFont(ScotFont.TEXT_FONT_20);
         resetButton.setBackground(Color.RED); // rosso
         resetButton.setForeground(Color.WHITE);
         resetButton.setOpaque(true);
         resetButton.setBorderPainted(false);
-        //        resetButton.addActionListener(e -> {
-        //            final int confirm = JOptionPane.showConfirmDialog(
-        //                    mainPanel,
-        //                    "Sei sicuro di voler resettare tutti i record?\nQuesta operazione non può essere
-        // annullata!",
-        //                    "Conferma Reset",
-        //                    JOptionPane.YES_NO_OPTION,
-        //                    JOptionPane.WARNING_MESSAGE);
-        //
-        //            if (confirm == JOptionPane.YES_OPTION) {
-        //                this.controller.resetRecords();
-        //            }
-        //        });
+//        resetButton.addActionListener(e -> {
+//            final int confirm = JOptionPane.showConfirmDialog(
+//                    mainPanel,
+//                    "Sei sicuro di voler resettare tutti i record?\nQuesta operazione non può essere annullata!",
+//                    "Conferma Reset",
+//                    JOptionPane.YES_NO_OPTION,
+//                    JOptionPane.WARNING_MESSAGE);
+//
+//            if (confirm == JOptionPane.YES_OPTION) {
+//                this.controller.resetRecords();
+//            }
+//        });
 
         buttonPanel.add(backButton);
         buttonPanel.add(resetButton);
@@ -235,21 +234,23 @@ public class StatisticsView extends JPanel {
 
     private void showMenu() {
         // Torna al menu principale
-        //        mainPanel.removeAll();
-        //        mainPanel.add(menuPanel, BorderLayout.CENTER);
-        //        mainPanel.revalidate();
-        //        mainPanel.repaint();
+//        mainPanel.removeAll();
+//        mainPanel.add(menuPanel, BorderLayout.CENTER);
+//        mainPanel.revalidate();
+//        mainPanel.repaint();
     }
 
-    //    @Override
+
+//    @Override
     public void displayStatisticsTable(
             final Optional<GameRecord> detectiveRecord, final Optional<GameRecord> mrxRecord) {
 
-        //        // Sostituisci contenuto mainPanel
-        //        mainPanel.removeAll();
-        //        mainPanel.add(statsPanel, BorderLayout.CENTER);
-        //        mainPanel.revalidate();
-        //        mainPanel.repaint();
+
+//        // Sostituisci contenuto mainPanel
+//        mainPanel.removeAll();
+//        mainPanel.add(statsPanel, BorderLayout.CENTER);
+//        mainPanel.revalidate();
+//        mainPanel.repaint();
     }
 
     @Override

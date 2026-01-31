@@ -1,8 +1,8 @@
 package it.unibo.scotyard.view.sidebar;
 
-import it.unibo.scotyard.commons.patterns.CommonCostants;
 import it.unibo.scotyard.commons.patterns.ScotColors;
 import it.unibo.scotyard.commons.patterns.ScotFont;
+import it.unibo.scotyard.commons.patterns.ViewConstants;
 import it.unibo.scotyard.model.game.GameMode;
 import it.unibo.scotyard.model.players.Player;
 import it.unibo.scotyard.view.game.GameView;
@@ -100,19 +100,19 @@ public final class SidebarPanel extends JPanel {
 
         this.add(createInventoryLabel());
         this.add(Box.createVerticalStrut(SMALL_SPACING));
-        this.taxiTicketsLabel = createTicketLabel(CommonCostants.TAXI_TICKETS_TEXT);
+        this.taxiTicketsLabel = createTicketLabel(ViewConstants.TAXI_TICKETS_TEXT);
         this.add(taxiTicketsLabel);
         this.add(Box.createVerticalStrut(SMALL_SPACING));
-        this.busTicketsLabel = createTicketLabel(CommonCostants.BUS_TICKETS_TEXT);
+        this.busTicketsLabel = createTicketLabel(ViewConstants.BUS_TICKETS_TEXT);
         this.add(busTicketsLabel);
         this.add(Box.createVerticalStrut(SMALL_SPACING));
-        this.undergroundTicketsLabel = createTicketLabel(CommonCostants.UNDERGROUND_TICKETS_TEXT);
+        this.undergroundTicketsLabel = createTicketLabel(ViewConstants.UNDERGROUND_TICKETS_TEXT);
         this.add(undergroundTicketsLabel);
         this.add(Box.createVerticalStrut(SMALL_SPACING));
-        this.blackTicketsLabel = createTicketLabel(CommonCostants.BLACK_TICKETS_TEXT);
+        this.blackTicketsLabel = createTicketLabel(ViewConstants.BLACK_TICKETS_TEXT);
         this.add(blackTicketsLabel);
         this.add(Box.createVerticalStrut(SMALL_SPACING));
-        this.doubleMoveTicketsLabel = createTicketLabel(CommonCostants.DOUBLE_MOVE_TICKETS_TEXT);
+        this.doubleMoveTicketsLabel = createTicketLabel(ViewConstants.DOUBLE_MOVE_TICKETS_TEXT);
         this.add(doubleMoveTicketsLabel);
         this.add(Box.createVerticalStrut(SPACING));
 
@@ -130,7 +130,7 @@ public final class SidebarPanel extends JPanel {
         // Nasconde i bottony by default (da capire)
         this.doubleMoveButton.setVisible(false);
 
-        this.loadRulesButton = createLoadRulesButton(CommonCostants.LOAD_RULES_TEXT);
+        this.loadRulesButton = createLoadRulesButton(ViewConstants.LOAD_RULES_TEXT);
         this.add(loadRulesButton);
 
         this.add(Box.createVerticalGlue());
@@ -155,7 +155,7 @@ public final class SidebarPanel extends JPanel {
     }
 
     private JLabel createInventoryLabel() {
-        final JLabel label = new JLabel(CommonCostants.INVENTORY_TEXT);
+        final JLabel label = new JLabel(ViewConstants.INVENTORY_TEXT);
         label.setFont(ScotFont.TEXT_FONT_18);
         label.setForeground(ScotColors.ACCENT_COLOR);
         label.setAlignmentY(TOP_ALIGNMENT);
@@ -167,19 +167,19 @@ public final class SidebarPanel extends JPanel {
         final JLabel label = new JLabel(text);
         label.setFont(ScotFont.TEXT_FONT_14);
         switch (text) {
-            case CommonCostants.TAXI_TICKETS_TEXT:
+            case ViewConstants.TAXI_TICKETS_TEXT:
                 label.setForeground(ScotColors.TAXI_COLOR);
                 break;
-            case CommonCostants.BUS_TICKETS_TEXT:
+            case ViewConstants.BUS_TICKETS_TEXT:
                 label.setForeground(ScotColors.BUS_COLOR);
                 break;
-            case CommonCostants.UNDERGROUND_TICKETS_TEXT:
+            case ViewConstants.UNDERGROUND_TICKETS_TEXT:
                 label.setForeground(ScotColors.UNDERGROUND_COLOR);
                 break;
-            case CommonCostants.BLACK_TICKETS_TEXT:
+            case ViewConstants.BLACK_TICKETS_TEXT:
                 label.setForeground(ScotColors.FERRY_COLOR);
                 break;
-            case CommonCostants.DOUBLE_MOVE_TICKETS_TEXT:
+            case ViewConstants.DOUBLE_MOVE_TICKETS_TEXT:
                 label.setForeground(Color.WHITE);
                 break;
             default:
@@ -191,7 +191,7 @@ public final class SidebarPanel extends JPanel {
     }
 
     private JLabel createCurrentPlayerLabel() {
-        final JLabel label = new JLabel(CommonCostants.CURRENT_PLAYER_TEXT);
+        final JLabel label = new JLabel(ViewConstants.CURRENT_PLAYER_TEXT);
         label.setFont(ScotFont.TEXT_FONT_14);
         label.setForeground(ScotColors.ACCENT_COLOR);
         label.setAlignmentY(CENTER_ALIGNMENT);
@@ -316,7 +316,7 @@ public final class SidebarPanel extends JPanel {
      * currentPlayerLabel according to the current player.
      */
     public void updateCurrentPlayerLabel(Player player) {
-        this.currentPlayerLabel.setText(CommonCostants.CURRENT_PLAYER_TEXT + player.getName());
+        this.currentPlayerLabel.setText(ViewConstants.CURRENT_PLAYER_TEXT + player.getName());
     }
 
     public void showElseHideDoubleMoveButton(final boolean show) {
@@ -333,7 +333,7 @@ public final class SidebarPanel extends JPanel {
      * @param tickets the number of tickets
      */
     public void updateTaxiTicketsLabel(final int tickets) {
-        this.taxiTicketsLabel.setText(getTicketCountLabel(CommonCostants.TAXI_TICKETS_TEXT, tickets));
+        this.taxiTicketsLabel.setText(getTicketCountLabel(ViewConstants.TAXI_TICKETS_TEXT, tickets));
     }
 
     /**
@@ -346,7 +346,7 @@ public final class SidebarPanel extends JPanel {
      * @param tickets the number of tickets
      */
     public void updateBusTicketsLabel(final int tickets) {
-        this.busTicketsLabel.setText(getTicketCountLabel(CommonCostants.BUS_TICKETS_TEXT, tickets));
+        this.busTicketsLabel.setText(getTicketCountLabel(ViewConstants.BUS_TICKETS_TEXT, tickets));
     }
 
     /**
@@ -359,7 +359,7 @@ public final class SidebarPanel extends JPanel {
      * @param tickets the number of tickets
      */
     public void updateUndergroundTicketsLabel(final int tickets) {
-        this.undergroundTicketsLabel.setText(getTicketCountLabel(CommonCostants.UNDERGROUND_TICKETS_TEXT, tickets));
+        this.undergroundTicketsLabel.setText(getTicketCountLabel(ViewConstants.UNDERGROUND_TICKETS_TEXT, tickets));
     }
 
     /**
@@ -372,7 +372,7 @@ public final class SidebarPanel extends JPanel {
      * @param tickets the number of tickets
      */
     public void updateBlackTicketsLabel(final int tickets) {
-        this.blackTicketsLabel.setText(getTicketCountLabel(CommonCostants.BLACK_TICKETS_TEXT, tickets));
+        this.blackTicketsLabel.setText(getTicketCountLabel(ViewConstants.BLACK_TICKETS_TEXT, tickets));
     }
 
     /**
@@ -385,7 +385,7 @@ public final class SidebarPanel extends JPanel {
      * @param tickets the number of tickets
      */
     public void updateDoubleMoveTicketsLabel(final int tickets) {
-        this.doubleMoveTicketsLabel.setText(getTicketCountLabel(CommonCostants.DOUBLE_MOVE_TICKETS_TEXT, tickets));
+        this.doubleMoveTicketsLabel.setText(getTicketCountLabel(ViewConstants.DOUBLE_MOVE_TICKETS_TEXT, tickets));
     }
 
     /**

@@ -1,9 +1,9 @@
 package it.unibo.scotyard.view.menu;
 
 import it.unibo.scotyard.commons.engine.Size;
-import it.unibo.scotyard.commons.patterns.CommonCostants;
 import it.unibo.scotyard.commons.patterns.ScotColors;
 import it.unibo.scotyard.commons.patterns.ScotFont;
+import it.unibo.scotyard.commons.patterns.ViewConstants;
 import it.unibo.scotyard.controller.menu.MainMenuController;
 import java.awt.*;
 import java.util.Objects;
@@ -91,7 +91,7 @@ public final class MainMenuViewImpl implements MainMenuView {
 
     // Title label
     private JLabel createTitleLabel() {
-        final JLabel label = new JLabel(CommonCostants.SCOTLAND_YARD);
+        final JLabel label = new JLabel(ViewConstants.SCOTLAND_YARD);
         label.setFont(ScotFont.TITLE_FONT_36);
         label.setForeground(ScotColors.ACCENT_COLOR);
         label.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -100,7 +100,7 @@ public final class MainMenuViewImpl implements MainMenuView {
 
     // New game button
     private JButton createNewGameButton() {
-        final JButton button = new JButton(CommonCostants.NEW_GAME_TEXT);
+        final JButton button = new JButton(ViewConstants.NEW_GAME_TEXT);
         button.setFont(ScotFont.TEXT_FONT_20);
         button.setBackground(ScotColors.ACCENT_COLOR);
         button.setForeground(ScotColors.BACKGROUND_COLOR);
@@ -113,7 +113,7 @@ public final class MainMenuViewImpl implements MainMenuView {
 
     // Load game button
     private JButton createLoadGameButton() {
-        final JButton button = new JButton(CommonCostants.LOAD_GAME_TEXT);
+        final JButton button = new JButton(ViewConstants.LOAD_GAME_TEXT);
         button.setFont(ScotFont.TEXT_FONT_20);
         button.setBackground(ScotColors.ACCENT_COLOR);
         button.setForeground(ScotColors.BACKGROUND_COLOR);
@@ -126,7 +126,7 @@ public final class MainMenuViewImpl implements MainMenuView {
 
     // Statistics button
     private JButton createStatisticsButton() {
-        final JButton button = new JButton(CommonCostants.STATISTICS_TEXT);
+        final JButton button = new JButton(ViewConstants.STATISTICS_TEXT);
         button.setFont(ScotFont.TEXT_FONT_20);
         button.setBackground(ScotColors.ACCENT_COLOR);
         button.setForeground(ScotColors.BACKGROUND_COLOR);
@@ -139,7 +139,7 @@ public final class MainMenuViewImpl implements MainMenuView {
 
     // Exit button
     private JButton createExitButton() {
-        final JButton button = new JButton(CommonCostants.EXIT_TEXT);
+        final JButton button = new JButton(ViewConstants.EXIT_TEXT);
         button.setFont(ScotFont.TEXT_FONT_20);
         button.setBackground(ScotColors.ACCENT_COLOR);
         button.setForeground(ScotColors.BACKGROUND_COLOR);
