@@ -6,16 +6,15 @@ import it.unibo.scotyard.commons.patterns.ViewConstants;
 import it.unibo.scotyard.model.game.matchhistory.MatchHistory;
 import it.unibo.scotyard.model.game.record.GameRecord;
 import java.awt.*;
-import java.util.Optional;
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
 public class StatisticsView extends JPanel {
 
-    private GameRecord detectiveRecord;
-    private GameRecord mrxRecord;
-    private MatchHistory matchHistory;
+    private final GameRecord detectiveRecord;
+    private final GameRecord mrxRecord;
+    private final MatchHistory matchHistory;
 
     public StatisticsView(GameRecord detectiveRecord, GameRecord mrxRecord, MatchHistory matchHistory) {
         this.detectiveRecord = detectiveRecord;
@@ -161,9 +160,9 @@ public class StatisticsView extends JPanel {
         blocksPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
         blocksPanel.setBackground(ScotColors.BACKGROUND_COLOR);
         blocksPanel.add(
-                gameRecapComponent("Partite da Mister X", matchHistory.runnerWins(), matchHistory.runnerLoses()));
+                gameRecapComponent(ViewConstants.MISTERX_GAMES, matchHistory.runnerWins(), matchHistory.runnerLoses()));
         blocksPanel.add(
-                gameRecapComponent("Partite da Detective", matchHistory.seekerWins(), matchHistory.seekerLoses()));
+                gameRecapComponent(ViewConstants.SEEKER_GAMES, matchHistory.seekerWins(), matchHistory.seekerLoses()));
         return blocksPanel;
     }
 
@@ -186,18 +185,19 @@ public class StatisticsView extends JPanel {
         resetButton.setForeground(Color.WHITE);
         resetButton.setOpaque(true);
         resetButton.setBorderPainted(false);
-//        resetButton.addActionListener(e -> {
-//            final int confirm = JOptionPane.showConfirmDialog(
-//                    mainPanel,
-//                    "Sei sicuro di voler resettare tutti i record?\nQuesta operazione non può essere annullata!",
-//                    "Conferma Reset",
-//                    JOptionPane.YES_NO_OPTION,
-//                    JOptionPane.WARNING_MESSAGE);
-//
-//            if (confirm == JOptionPane.YES_OPTION) {
-//                this.controller.resetRecords();
-//            }
-//        });
+        //        resetButton.addActionListener(e -> {
+        //            final int confirm = JOptionPane.showConfirmDialog(
+        //                    mainPanel,
+        //                    "Sei sicuro di voler resettare tutti i record?\nQuesta operazione non può essere
+        // annullata!",
+        //                    "Conferma Reset",
+        //                    JOptionPane.YES_NO_OPTION,
+        //                    JOptionPane.WARNING_MESSAGE);
+        //
+        //            if (confirm == JOptionPane.YES_OPTION) {
+        //                this.controller.resetRecords();
+        //            }
+        //        });
 
         buttonPanel.add(backButton);
         buttonPanel.add(resetButton);
@@ -234,31 +234,9 @@ public class StatisticsView extends JPanel {
 
     private void showMenu() {
         // Torna al menu principale
-//        mainPanel.removeAll();
-//        mainPanel.add(menuPanel, BorderLayout.CENTER);
-//        mainPanel.revalidate();
-//        mainPanel.repaint();
-    }
-
-
-//    @Override
-    public void displayStatisticsTable(
-            final Optional<GameRecord> detectiveRecord, final Optional<GameRecord> mrxRecord) {
-
-
-//        // Sostituisci contenuto mainPanel
-//        mainPanel.removeAll();
-//        mainPanel.add(statsPanel, BorderLayout.CENTER);
-//        mainPanel.revalidate();
-//        mainPanel.repaint();
-    }
-
-    @Override
-    public void showStatistics(GameRecord detectiveRecord, GameRecord mrxRecord, MatchHistory matchHistory) {
-        this.detectiveRecord = detectiveRecord;
-        this.mrxRecord = mrxRecord;
-
-        removeAll();
-        buildContent();
+        //        mainPanel.removeAll();
+        //        mainPanel.add(menuPanel, BorderLayout.CENTER);
+        //        mainPanel.revalidate();
+        //        mainPanel.repaint();
     }
 }
