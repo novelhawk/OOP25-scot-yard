@@ -1,5 +1,8 @@
 package it.unibo.scotyard.commons.patterns;
 
+/**
+ * All the strings used in the game.
+ */
 public final class ViewConstants {
 
     public static final String LAUNCHER = "Scotland Yard - Game Launcher";
@@ -19,16 +22,21 @@ public final class ViewConstants {
     public static final String[] GAME_MODES_STRINGS = {"Mister X", "Detective"};
     public static final String[] DIFFICULTY_LEVELS_STRINGS = {"Facile", "Media", "Difficile"};
 
-    public static final String MRX_STRING = "X";
-    public static final String DETECTIVE_STRING = "D";
-    public static final String BOBBIES_STRING = "B";
+    public static final String MRX_PAWN = "X";
+    public static final String DETECTIVE_PAWN = "D";
+    public static final String BOBBIES_PAWN = "B";
+
+    public static final String MRX_STRING = "Mister X";
+    public static final String DETECTIVE_STRING = "Detective";
+    public static final String BOBBIES_STRING = "Bobbies";
 
     public static final String TAXI_TEXT = "Taxi";
     public static final String BUS_TEXT = "Bus";
     public static final String UNDERGROUND_TEXT = "Metro";
     public static final String FERRY_TEXT = "Traghetto";
 
-    public static final String SELECTION_JDIALOG_TITLE = "Seleziona mezzo di trasporto";
+    public static final String SELECTION_TRANSPORT_JDIALOG = "Seleziona mezzo di trasporto";
+    public static final String SELECTION_TRANSPORT_TITLE = "Seleziona mezzo di trasporto verso il nodo: ";
 
     public static final String RULES_WINDOW_TITLE = "Regole";
 
@@ -40,6 +48,7 @@ public final class ViewConstants {
     public static final String DOUBLE_MOVE_TICKETS_TEXT = "Biglietti doppia mossa";
     public static final String LOAD_RULES_TEXT = "Regole";
     public static final String CURRENT_PLAYER_TEXT = "Turno di : ";
+    public static final String NO_MOVES_SELECTED = "Nessuna mossa selezionata";
 
     public static final String STATISCS_TITLE = "Statistiche Partite";
     public static final String BACK = "Indietro";
@@ -49,6 +58,7 @@ public final class ViewConstants {
     public static final String BACK_MAIN_MENU = "Ritorna al menù principale";
     public static final String WINNER_TEXT = "Vittoria";
     public static final String LOSER_TEXT = "Sconfitta";
+
     public static final String CAPTURED_MISTER_X_MODE_TEXT = " : sei stato catturato!";
     public static final String CAPTURED_DETECTIVE_MODE_TEXT = " : Mister X catturato!";
     public static final String NO_MORE_TICKETS_AVAILABLE_TEXT = " : biglietti esauriti per le fermate raggiungibili";
@@ -59,4 +69,8 @@ public final class ViewConstants {
 
     public static final String MISTERX_GAMES = "Partite da Mister X";
     public static final String SEEKER_GAMES = "Partite da Detective";
+
+    private ViewConstants() {
+        throw new AssertionError("non istanziabili le costanti Stringhe");
+    }
 }

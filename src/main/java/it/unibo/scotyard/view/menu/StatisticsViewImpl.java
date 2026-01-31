@@ -1,5 +1,6 @@
 package it.unibo.scotyard.view.menu;
 
+import it.unibo.scotyard.commons.patterns.MagicNumbers;
 import it.unibo.scotyard.commons.patterns.ScotColors;
 import it.unibo.scotyard.commons.patterns.ScotFont;
 import it.unibo.scotyard.commons.patterns.ViewConstants;
@@ -117,7 +118,7 @@ public class StatisticsViewImpl extends JPanel implements StatisticsView {
         final Object[][] data = new Object[2][3];
 
         // Riga 1: Detective
-        data[0][0] = ViewConstants.GAME_MODES_STRINGS[1];
+        data[0][0] = ViewConstants.DETECTIVE_STRING;
         if (detectiveRecord != null && detectiveRecord.isValid()) {
             data[0][1] = formatDuration(detectiveRecord.getDurationMillis());
             data[0][2] = formatDate(detectiveRecord.getTimestamp());
@@ -127,7 +128,7 @@ public class StatisticsViewImpl extends JPanel implements StatisticsView {
         }
 
         // Riga 2: Mr. X
-        data[1][0] = ViewConstants.GAME_MODES_STRINGS[0];
+        data[1][0] = ViewConstants.MRX_STRING;
         if (mrxRecord != null && mrxRecord.isValid()) {
             data[1][1] = formatDuration(mrxRecord.getDurationMillis());
             data[1][2] = formatDate(mrxRecord.getTimestamp());
@@ -139,14 +140,14 @@ public class StatisticsViewImpl extends JPanel implements StatisticsView {
         // model non editabile
         final DefaultTableModel tableModel = new DefaultTableModel(data, columnNames) {
             @Override
-            public boolean isCellEditable(int row, int column) {
+            public boolean isCellEditable(final int row, final int column) {
                 return false;
             }
         };
 
         final JTable table = new JTable(tableModel);
         table.setFont(ScotFont.TEXT_FONT_16);
-        table.setRowHeight(40);
+        table.setRowHeight(MagicNumbers.GAP_40);
         table.setBackground(ScotColors.BACKGROUND_COLOR);
         table.setForeground(Color.WHITE);
         table.setGridColor(ScotColors.ACCENT_COLOR);
@@ -165,11 +166,12 @@ public class StatisticsViewImpl extends JPanel implements StatisticsView {
         }
 
         // Limita dimensione table
-        table.setPreferredScrollableViewportSize(new Dimension(700, 100));
+        table.setPreferredScrollableViewportSize(new Dimension(MagicNumbers.WIDTH_700, MagicNumbers.HEIGHT_100));
 
         final JScrollPane scrollPane = new JScrollPane(table);
-        scrollPane.setMaximumSize(new Dimension(800, 150));
-        scrollPane.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 50, 30, 50));
+        scrollPane.setMaximumSize(new Dimension(MagicNumbers.WIDTH_800, MagicNumbers.HEIGHT_150));
+        scrollPane.setBorder(javax.swing.BorderFactory.createEmptyBorder(
+                MagicNumbers.GAP_10, MagicNumbers.GAP_50, MagicNumbers.GAP_30, MagicNumbers.GAP_50));
         scrollPane.setBackground(ScotColors.BACKGROUND_COLOR);
         scrollPane.setAlignmentX(Component.CENTER_ALIGNMENT);
         return scrollPane;
@@ -187,7 +189,7 @@ public class StatisticsViewImpl extends JPanel implements StatisticsView {
     }
 
     private Component createActionButtonComponent() {
-        final JPanel buttonPanel = new JPanel(new GridLayout(1, 2, 20, 0));
+        final JPanel buttonPanel = new JPanel(new GridLayout(1, 2, MagicNumbers.GAP_20, 0));
         buttonPanel.setBackground(ScotColors.BACKGROUND_COLOR);
         buttonPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
@@ -229,7 +231,7 @@ public class StatisticsViewImpl extends JPanel implements StatisticsView {
         }
         final long seconds = millis / 1000;
         final long hours = seconds / 3600;
-        final long minutes = (seconds % 3600) / 60;
+        final long minutes = seconds % 3600 / 60;
         final long secs = seconds % 60;
         return String.format("%02d:%02d:%02d", hours, minutes, secs);
     }

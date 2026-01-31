@@ -25,6 +25,8 @@ import it.unibo.scotyard.view.game.GameView;
 import it.unibo.scotyard.view.menu.MainMenuView;
 import java.util.List;
 import java.util.Objects;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JPanel;
 
 /** Main controller coordinating the MVC flow. */
@@ -37,7 +39,7 @@ public final class ControllerImpl implements Controller {
      * Creates a controller with model and view.
      *
      * @param model the game model
-     * @param view the game view
+     * @param view  the game view
      * @throws NullPointerException if any parameter is null
      */
     public ControllerImpl(final Model model, final ViewImpl view) {
@@ -76,7 +78,7 @@ public final class ControllerImpl implements Controller {
     }
 
     @Override
-    public void loadGamePanel(GameController gameController) {
+    public void loadGamePanel(final GameController gameController) {
         this.displayPanel(gameController.getMainPanel());
         this.view.forceLayoutUpdate(gameController.getMainPanel(), gameController.getMapPanel());
     }
@@ -114,13 +116,13 @@ public final class ControllerImpl implements Controller {
     }
 
     @Override
-    public List<Pair<NodeId, TransportType>> getPossibleDestinations(NodeId initialPosition) {
+    public List<Pair<NodeId, TransportType>> getPossibleDestinations(final NodeId initialPosition) {
         return this.model.getPossibleDestinations(initialPosition);
     }
 
     @Override
     public void exit() {
-        System.out.println("Uscita in corso...");
+        Logger.getLogger(ControllerImpl.class.getName()).log(Level.INFO, "Uscita in corso...");
         System.exit(0);
     }
 

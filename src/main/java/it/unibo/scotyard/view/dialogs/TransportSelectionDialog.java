@@ -1,5 +1,6 @@
 package it.unibo.scotyard.view.dialogs;
 
+import it.unibo.scotyard.commons.patterns.MagicNumbers;
 import it.unibo.scotyard.commons.patterns.ScotColors;
 import it.unibo.scotyard.commons.patterns.ScotFont;
 import it.unibo.scotyard.commons.patterns.ViewConstants;
@@ -23,7 +24,6 @@ import javax.swing.SwingConstants;
 /**
  * Modal dialog for selecting transport type when multiple options are
  * available.
- *
  * This dialog presents colored buttons for each available transport option,
  * styled according to the game's color
  * scheme.
@@ -42,7 +42,7 @@ public final class TransportSelectionDialog extends JDialog {
      * @param transportTypes the available transport types
      */
     public TransportSelectionDialog(final Frame parent, final NodeId nodeId, final List<TransportType> transportTypes) {
-        super(parent, ViewConstants.SELECTION_JDIALOG_TITLE, true);
+        super(parent, ViewConstants.SELECTION_TRANSPORT_JDIALOG, true);
 
         selectedTransport = null;
 
@@ -54,7 +54,6 @@ public final class TransportSelectionDialog extends JDialog {
 
     /** Setup dialog properties. */
     private void setupDialog() {
-        setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         setResizable(false);
         getContentPane().setBackground(ScotColors.BACKGROUND_COLOR);
     }
@@ -66,19 +65,21 @@ public final class TransportSelectionDialog extends JDialog {
      * @param transportTypes the available transport types
      */
     private void buildContent(final NodeId nodeId, final List<TransportType> transportTypes) {
-        final JPanel mainPanel = new JPanel(new BorderLayout(10, 10));
+        final JPanel mainPanel = new JPanel(new BorderLayout(MagicNumbers.GAP_10, MagicNumbers.GAP_10));
         mainPanel.setBackground(ScotColors.BACKGROUND_COLOR);
-        mainPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+        mainPanel.setBorder(BorderFactory.createEmptyBorder(
+                MagicNumbers.GAP_20, MagicNumbers.GAP_20, MagicNumbers.GAP_20, MagicNumbers.GAP_20));
 
         // title
-        final JLabel titleLabel = new JLabel(ViewConstants.SELECTION_JDIALOG_TITLE + nodeId.id());
+        final JLabel titleLabel = new JLabel(ViewConstants.SELECTION_TRANSPORT_TITLE + nodeId.id());
         titleLabel.setForeground(ScotColors.ACCENT_COLOR);
-        titleLabel.setFont(ScotFont.TITLE_FONT_36);
+        titleLabel.setFont(ScotFont.TEXT_FONT_20);
         titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
         mainPanel.add(titleLabel, BorderLayout.NORTH);
 
         // buttons panel
-        final JPanel buttonsPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
+        final JPanel buttonsPanel =
+                new JPanel(new FlowLayout(FlowLayout.CENTER, MagicNumbers.GAP_10, MagicNumbers.GAP_10));
         buttonsPanel.setBackground(ScotColors.BACKGROUND_COLOR);
 
         for (final TransportType transport : transportTypes) {
@@ -99,7 +100,7 @@ public final class TransportSelectionDialog extends JDialog {
      */
     private JButton createTransportButton(final TransportType transport) {
         final JButton button = new JButton(transport.toString());
-        button.setPreferredSize(new Dimension(120, 50));
+        button.setPreferredSize(new Dimension(MagicNumbers.WIDTH_120, MagicNumbers.HEIGHT_50));
         button.setFont(ScotFont.TEXT_FONT_16);
 
         button.setBackground(Color.WHITE);
@@ -111,7 +112,7 @@ public final class TransportSelectionDialog extends JDialog {
         button.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(final MouseEvent e) {
-                button.setBackground(new Color(245, 245, 245));
+                button.setBackground(ScotColors.MOUSE_HOVER);
             }
 
             @Override

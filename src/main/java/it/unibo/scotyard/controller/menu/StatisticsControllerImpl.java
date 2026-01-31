@@ -44,7 +44,7 @@ public class StatisticsControllerImpl implements StatisticsController {
             // delega alla view esistente la presentazione (formattazione tabella)
             this.statisticsView =
                     view.showStatisticsView(this, mrxRecord.orElse(null), detectiveRecord.orElse(null), matchHistory);
-        } catch (IOException e) {
+        } catch (final IOException e) {
             Logger.getLogger(MainMenuControllerImpl.class.getName()).log(Level.SEVERE, "Failed to load statistics", e);
             // delega alla view anche l'errore
             if (this.statisticsView != null) {
@@ -71,7 +71,7 @@ public class StatisticsControllerImpl implements StatisticsController {
                 this.statisticsView.showResetConfirmation();
             }
 
-        } catch (IOException e) {
+        } catch (final IOException e) {
             Logger.getLogger(MainMenuControllerImpl.class.getName()).log(Level.SEVERE, "Failed to reset records", e);
             if (this.statisticsView != null) {
                 this.statisticsView.showError("Errore durante il reset dei record");

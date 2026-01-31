@@ -4,7 +4,11 @@ import it.unibo.scotyard.model.game.GameState;
 import it.unibo.scotyard.model.game.matchhistory.InMemoryMatchHistoryRepository;
 import it.unibo.scotyard.model.game.matchhistory.JsonMatchHistoryRepository;
 import it.unibo.scotyard.model.game.matchhistory.MatchHistoryRepository;
-import it.unibo.scotyard.model.map.*;
+import it.unibo.scotyard.model.map.MapConnection;
+import it.unibo.scotyard.model.map.MapData;
+import it.unibo.scotyard.model.map.MapReader;
+import it.unibo.scotyard.model.map.NodeId;
+import it.unibo.scotyard.model.map.TransportType;
 import it.unibo.scotyard.model.router.CommandDispatcher;
 import it.unibo.scotyard.model.router.CommandRouter;
 import it.unibo.scotyard.model.service.GameStateService;
@@ -14,10 +18,13 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /** model. Manages map data loading and game state. */
 public final class ModelImpl implements Model {
 
+    private static final Logger LOGGER = Logger.getLogger(ModelImpl.class.getName());
     private final CommandDispatcher dispatcher;
     private final MatchHistoryRepository matchHistoryRepository;
     private MapData mapData;
@@ -43,7 +50,7 @@ public final class ModelImpl implements Model {
             this.random = new Random(System.currentTimeMillis());
             this.initialized = true;
         } catch (final MapReader.MapLoadException e) {
-            System.err.println("Errore caricamento mappa: " + e.getMessage());
+            LOGGER.log(Level.SEVERE, "Errore caricamento mappa: " + e.getMessage());
             throw new IllegalStateException("Impossibile inizializzare il modello", e);
         }
     }
@@ -62,7 +69,7 @@ public final class ModelImpl implements Model {
     }
 
     @Override
-    public void setGameState(GameState gameState) {
+    public void setGameState(final GameState gameState) {
         this.gameState = gameState;
     }
 
@@ -106,10 +113,10 @@ public final class ModelImpl implements Model {
     }
 
     @Override
-    public List<Pair<NodeId, TransportType>> getPossibleDestinations(NodeId idStartPosition) {
-        List<Pair<NodeId, TransportType>> resultList = new ArrayList<>();
-        List<MapConnection> connections = this.getMapData().getConnectionsFrom(idStartPosition);
-        for (MapConnection connection : connections) {
+    public List<Pair<NodeId, TransportType>> getPossibleDestinations(final NodeId idStartPosition) {
+        final List<Pair<NodeId, TransportType>> resultList = new ArrayList<>();
+        final List<MapConnection> connections = this.getMapData().getConnectionsFrom(idStartPosition);
+        for (final MapConnection connection : connections) {
             resultList.add(new Pair<>(connection.getTo(), connection.getTransport()));
         }
 

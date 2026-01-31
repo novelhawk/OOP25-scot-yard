@@ -1,5 +1,6 @@
 package it.unibo.scotyard.view.tracker;
 
+import it.unibo.scotyard.commons.patterns.MagicNumbers;
 import it.unibo.scotyard.commons.patterns.ScotColors;
 import it.unibo.scotyard.model.map.TransportType;
 import it.unibo.scotyard.view.game.GameView;
@@ -15,9 +16,6 @@ public class TrackerPanelImpl extends JPanel implements TrackerPanel {
     private final GameView gameView;
 
     private static final int COLUMNS = 3;
-
-    private static final int VERTICAL_GAP = 3;
-    private static final int HORIZONTAL_GAP = 3;
 
     private static final Dimension PREFERRED_SIZE = new Dimension(0, 100);
 
@@ -56,8 +54,8 @@ public class TrackerPanelImpl extends JPanel implements TrackerPanel {
 
     private GridLayout createGridLayout(int count) {
         final GridLayout grid = new GridLayout(count / COLUMNS, COLUMNS);
-        grid.setHgap(HORIZONTAL_GAP);
-        grid.setVgap(VERTICAL_GAP);
+        grid.setHgap(MagicNumbers.GAP_3);
+        grid.setVgap(MagicNumbers.GAP_3);
         return grid;
     }
 }

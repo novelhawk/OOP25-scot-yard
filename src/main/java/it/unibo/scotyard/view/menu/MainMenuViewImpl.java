@@ -1,5 +1,6 @@
 package it.unibo.scotyard.view.menu;
 
+import it.unibo.scotyard.commons.patterns.MagicNumbers;
 import it.unibo.scotyard.commons.patterns.ScotColors;
 import it.unibo.scotyard.commons.patterns.ScotFont;
 import it.unibo.scotyard.commons.patterns.ViewConstants;
@@ -9,14 +10,9 @@ import java.util.Objects;
 import javax.swing.*;
 
 /**
- * The main menu view
- *
+ * The main menu view.
  */
 public final class MainMenuViewImpl implements MainMenuView {
-
-    // Layout spacing
-    private static final int TITLE_SPACING = 40;
-    private static final int BUTTONS_SPACING = 20;
 
     private final MainMenuController controller;
     private final JPanel mainPanel;
@@ -46,13 +42,13 @@ public final class MainMenuViewImpl implements MainMenuView {
     private void buildUI() {
         menuPanel.add(Box.createVerticalGlue());
         menuPanel.add(createTitleLabel());
-        menuPanel.add(Box.createVerticalStrut(TITLE_SPACING));
+        menuPanel.add(Box.createVerticalStrut(MagicNumbers.GAP_40));
         menuPanel.add(createNewGameButton());
-        menuPanel.add(Box.createVerticalStrut(BUTTONS_SPACING));
+        menuPanel.add(Box.createVerticalStrut(MagicNumbers.GAP_20));
         menuPanel.add(createStatisticsButton());
-        menuPanel.add(Box.createVerticalStrut(BUTTONS_SPACING));
+        menuPanel.add(Box.createVerticalStrut(MagicNumbers.GAP_20));
         menuPanel.add(createExitButton());
-        menuPanel.add(Box.createVerticalStrut(BUTTONS_SPACING));
+        menuPanel.add(Box.createVerticalStrut(MagicNumbers.GAP_20));
         menuPanel.add(Box.createVerticalGlue());
     }
 

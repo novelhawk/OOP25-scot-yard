@@ -6,7 +6,7 @@ import it.unibo.scotyard.view.menu.MainMenuView;
 import java.util.Objects;
 
 /**
- * The controller used by the MainMenu view
+ * The controller used by the MainMenu view.
  *
  */
 public final class MainMenuControllerImpl implements MainMenuController {
