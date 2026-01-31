@@ -31,12 +31,16 @@ public class Detective extends AbstractPlayerImpl {
 
     public void initializeInventory() {
         this.inventory = new InventoryImpl() {
-            public void initialize() {
-                this.addTicket(TicketType.TAXI, MagicNumbers.NUMBER_TICKETS_TAXI);
-                this.addTicket(TicketType.BUS, MagicNumbers.NUMBER_TICKETS_BUS);
-                this.addTicket(TicketType.UNDERGROUND, MagicNumbers.NUMBER_TICKETS_UNDERGROUND);
-                this.addTicket(TicketType.BLACK, MagicNumbers.NONE);
-                this.addTicket(TicketType.DOUBLE_MOVE, MagicNumbers.NONE);
+            public int getInitialTickets(TicketType ticket){
+                switch (ticket) {
+                    case TAXI: return MagicNumbers.NUMBER_TICKETS_TAXI;
+                    case BUS: return MagicNumbers.NUMBER_TICKETS_BUS;
+                    case UNDERGROUND: return MagicNumbers.NUMBER_TICKETS_UNDERGROUND;
+                    case BLACK :
+                    case DOUBLE_MOVE :
+                    default :
+                        return MagicNumbers.NONE;
+                }
             }
         };
         this.inventory.initialize();

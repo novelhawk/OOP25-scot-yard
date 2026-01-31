@@ -13,13 +13,12 @@ public interface Inventory {
     void initialize();
 
     /**
-     * Adds the TikcetType of ticket received and its quantity, both paremeters of this method,
-     * to the inventory.
-     *
-     * @param ticketType the type of ticket
-     * @param numberTickets the number of tickets to add
+     * Returns the initial number of tickets of the specific type passed as paremeter.
+     * 
+     * @param ticket the ticket type
+     * @return the number of initial tickets of the TicketType received in input
      */
-    void addTicket(TicketType ticketType, int numberTickets);
+    public abstract int getInitialTickets(TicketType ticket);
 
     /**
      * @return the number of tickets possessed by the player of the type passed as a paremeter.

@@ -20,7 +20,7 @@ public interface Player {
     /**
      * Intialized the inventory
      */
-    abstract void initializeInventory();
+    void initializeInventory();
 
     /**
      * @return the current position of the player on the map

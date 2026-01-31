@@ -14,18 +14,22 @@ public abstract class InventoryImpl implements Inventory {
     }
 
     @Override
-    public abstract void initialize();
-
-    @Override
-    public void addTicket(TicketType ticketType, int numberTickets) {
-        this.ticketsMap.put(ticketType, numberTickets);
+    public void initialize(){
+        this.ticketsMap.put(TicketType.TAXI, getInitialTickets(TicketType.TAXI));
+        this.ticketsMap.put(TicketType.BUS, getInitialTickets(TicketType.BUS));
+        this.ticketsMap.put(TicketType.UNDERGROUND, getInitialTickets(TicketType.UNDERGROUND));
+        this.ticketsMap.put(TicketType.BLACK, getInitialTickets(TicketType.BLACK));
+        this.ticketsMap.put(TicketType.DOUBLE_MOVE, getInitialTickets(TicketType.DOUBLE_MOVE));
     }
+    
+    @Override
+    public abstract int getInitialTickets(TicketType ticket);
 
     @Override
     public int getNumberTickets(TicketType ticketType) {
         return this.ticketsMap.get(ticketType);
     }
-
+ 
     @Override
     public boolean containsTicket(TicketType ticketType) {
         return this.ticketsMap.containsKey(ticketType)
