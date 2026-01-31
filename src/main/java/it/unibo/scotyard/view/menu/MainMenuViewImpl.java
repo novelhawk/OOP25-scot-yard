@@ -169,8 +169,8 @@ public final class MainMenuViewImpl implements MainMenuView {
         final JPanel blocksPanel = new JPanel(new GridLayout(1, 2, 100, 0));
         blocksPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
         blocksPanel.setBackground(ScotColors.BACKGROUND_COLOR);
-        blocksPanel.add(test());
-        blocksPanel.add(test());
+        blocksPanel.add(gameRecapComponent("Partite da Mister X", 3, 5));
+        blocksPanel.add(gameRecapComponent("Partite da Detective", 7, 1));
 
         c.gridy = 2;
         statsPanel.add(blocksPanel, c);
@@ -225,22 +225,22 @@ public final class MainMenuViewImpl implements MainMenuView {
         mainPanel.repaint();
     }
 
-    private Component test() {
+    private Component gameRecapComponent(final String title, final int winCount, final int loseCount) {
         final Box frame = Box.createVerticalBox();
         frame.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        final JLabel title = new JLabel("Mister X games");
-        title.setAlignmentX(Component.CENTER_ALIGNMENT);
-        title.setFont(ScotFont.TEXT_FONT_16);
-        title.setForeground(ScotColors.ACCENT_COLOR);
-        frame.add(title);
+        final JLabel titleLabel = new JLabel(title);
+        titleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        titleLabel.setFont(ScotFont.TEXT_FONT_16);
+        titleLabel.setForeground(ScotColors.ACCENT_COLOR);
+        frame.add(titleLabel);
 
         frame.add(Box.createVerticalStrut(15));
 
         final Box score = Box.createHorizontalBox();
         score.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        final JLabel wins = new JLabel("6");
+        final JLabel wins = new JLabel(String.valueOf(winCount));
         wins.setFont(ScotFont.TEXT_FONT_18);
         wins.setForeground(Color.green);
         score.add(wins);
@@ -250,7 +250,7 @@ public final class MainMenuViewImpl implements MainMenuView {
         separator.setForeground(ScotColors.ACCENT_COLOR);
         score.add(separator);
 
-        final JLabel loses = new JLabel("3");
+        final JLabel loses = new JLabel(String.valueOf(loseCount));
         loses.setFont(ScotFont.TEXT_FONT_18);
         loses.setForeground(Color.RED);
         score.add(loses);
