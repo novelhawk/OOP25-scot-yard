@@ -104,16 +104,26 @@ public final class MrXGameControllerImpl extends GameControllerImpl {
     }
 
     /**
-     * Converts legal moves from Model format (MoveAction) to Controller format
-     * (MoveOption).
-     * Gets legal moves from TurnState which already filters occupied positions.
+     * Calculates occupied positions (Detective + all Bobbies).
+     * Mr. X cannot move to these positions.
      *
      * @return set of occupied node IDs
+     *
      */
-    private Set<MoveOption> getValidMoves() {
-        return this.gameState.getTurnState().getLegalMoves().stream()
-                .map(moveAction -> new MoveOption(moveAction.destination(), moveAction.transportType()))
-                .collect(java.util.stream.Collectors.toSet());
+    private Set<NodeId> getOccupiedPositions() {
+        final Set<NodeId> occupied = new java.util.HashSet<>();
+
+        // Add detective position
+        if (this.gameState.getDetective() != null) {
+            occupied.add(this.gameState.getDetective().getPosition());
+        }
+
+        // Add all bobby positions
+        for (final Bobby bobby : this.gameState.getBobbies()) {
+            occupied.add(bobby.getPosition());
+        }
+
+        return occupied;
     }
 
     /**
@@ -143,7 +153,7 @@ public final class MrXGameControllerImpl extends GameControllerImpl {
             return;
         }
 
-        final Set<MoveOption> validMoves = getValidMoves();
+        final Set<MoveOption> validMoves = mrX.getValidMoves(getOccupiedPositions());
 
         final List<MoveOption> movesToNode = validMoves.stream()
                 .filter(move -> move.getDestinationNode().equals(nodeId))
@@ -395,7 +405,7 @@ public final class MrXGameControllerImpl extends GameControllerImpl {
             if (doubleMoveState == DoubleMoveState.COMPLETED) {
                 this.getMapPanel().setValidMoves(Set.of()); // Empty set
             } else {
-                this.getMapPanel().setValidMoves(getValidMoves());
+                this.getMapPanel().setValidMoves(mrX.getValidMoves(getOccupiedPositions()));
             }
 
             this.getMapPanel().repaint();
@@ -434,12 +444,12 @@ public final class MrXGameControllerImpl extends GameControllerImpl {
     // It doesn't do anything
     @Override
     public void destinationChosen(final NodeId newPositionId) {
-        // TODO : Usare questo metodo (cambiando gestione turno)?
+        //
     }
 
     // It doesn't do anything
     @Override
     public void selectTransport(final TransportType transportType) {
-        // TODO : Usare questo metodo (cambiando gestione turno)?
+        //
     }
 }

@@ -10,6 +10,7 @@ import it.unibo.scotyard.model.inventory.InventoryImpl;
 import it.unibo.scotyard.model.map.MapData;
 import it.unibo.scotyard.model.map.NodeId;
 import it.unibo.scotyard.model.map.TransportType;
+import java.util.Set;
 
 /**
  * The mister X player entity.
@@ -165,5 +166,16 @@ public final class MisterX extends AbstractPlayerImpl {
     public boolean isDoubleMoveAvailable() {
         ensureInitialized();
         return getTurnManagerImpl().isDoubleMoveAvailable();
+    }
+
+    /**
+     * Gets all valid moves from the current position.
+     *
+     * @param occupiedPositions set of positions occupied by other players
+     * @return set of valid move options
+     */
+    public Set<TurnManagerImpl.MoveOption> getValidMoves(final Set<NodeId> occupiedPositions) {
+        ensureInitialized();
+        return getTurnManagerImpl().getValidMoves(this.getPosition(), occupiedPositions);
     }
 }
