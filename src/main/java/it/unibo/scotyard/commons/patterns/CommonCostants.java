@@ -17,8 +17,8 @@ public final class CommonCostants {
     public static final String SELECT_GAME_DIFFICULTY_TEXT = "Selezionare difficoltà";
     public static final String START_BUTTON_TEXT = "Avvia gioco";
     public static final String GO_BACK_BUTTON_TEXT = "Torna indietro";
-    public static final String[] GAME_MODES_STRINGS = { "Mister X", "Detective" };
-    public static final String[] DIFFICULTY_LEVELS_STRINGS = { "Facile", "Media", "Difficile" };
+    public static final String[] GAME_MODES_STRINGS = {"Mister X", "Detective"};
+    public static final String[] DIFFICULTY_LEVELS_STRINGS = {"Facile", "Media", "Difficile"};
 
     public static final String MRX_STRING = "X";
     public static final String DETECTIVE_STRING = "D";

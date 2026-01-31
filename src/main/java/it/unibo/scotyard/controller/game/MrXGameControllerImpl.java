@@ -363,7 +363,8 @@ public final class MrXGameControllerImpl extends GameControllerImpl {
      */
     private MoveOption chooseTransport(final List<MoveOption> moves, final NodeId nodeId) {
 
-        final List<TransportType> transportTypes = moves.stream().map(MoveOption::getTransport).toList();
+        final List<TransportType> transportTypes =
+                moves.stream().map(MoveOption::getTransport).toList();
 
         // dialog
         final TransportSelectionDialog dialog = new TransportSelectionDialog(null, nodeId, transportTypes);
