@@ -4,7 +4,6 @@ import it.unibo.scotyard.model.Model;
 import it.unibo.scotyard.model.command.round.EndRoundCommand;
 import it.unibo.scotyard.model.command.turn.*;
 import it.unibo.scotyard.model.entities.MoveAction;
-import it.unibo.scotyard.model.game.GameMode;
 import it.unibo.scotyard.model.game.GameState;
 import it.unibo.scotyard.model.game.GameStateSubscriber;
 import it.unibo.scotyard.model.game.TurnState;
@@ -13,6 +12,7 @@ import it.unibo.scotyard.model.players.MisterX;
 import it.unibo.scotyard.model.players.Player;
 import it.unibo.scotyard.model.router.CommandDispatcher;
 import it.unibo.scotyard.model.router.CommandHandlerStore;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -39,6 +39,8 @@ public class TurnService {
         final Player player = gameState.getCurrentPlayer();
         gameState.resetTurn();
 
+        gameState.loadPossibleDestinations(new HashSet<>(this.model.getPossibleDestinations(player.getPosition())));
+
         final List<MoveAction> legalMoves = gameState.computeValidMoves(this.model.getMapData(), player, List.of());
         gameState.getTurnState().setLegalMoves(legalMoves);
 
@@ -58,6 +60,7 @@ public class TurnService {
         final GameState gameState = this.model.getGameState();
         final TurnState turnState = gameState.getTurnState();
         final Player player = gameState.getCurrentPlayer();
+        turnState.addMove(new MoveAction(command.targetNode(), command.transportType()));
 
         if (turnState.getRemainingMoves() > 0) {
             final List<MoveAction> validMoves =
@@ -65,15 +68,7 @@ public class TurnService {
             turnState.setLegalMoves(validMoves);
         }
 
-        if (gameState.isMovableCurrentPlayer(command.targetNode(), command.transportType())) {
-            gameState.getTurnState().addMove(new MoveAction(command.targetNode(), command.transportType()));
-
-            if (GameMode.DETECTIVE.equals(gameState.getGameMode())
-                    || (GameMode.MISTER_X.equals(gameState.getGameMode())
-                            && !(gameState.getCurrentPlayer() instanceof MisterX))) {
-                gameState.moveCurrentPlayer(command.targetNode(), command.transportType());
-            }
-        }
+        gameState.moveCurrentPlayer(command.targetNode(), command.transportType());
     }
 
     /**
@@ -94,9 +89,9 @@ public class TurnService {
         final CommandDispatcher dispatcher = this.model.getDispatcher();
         final GameState gameState = this.model.getGameState();
         final TurnState turnState = gameState.getTurnState();
+        final Player currentPlayer = gameState.getCurrentPlayer();
 
-        // TODO: merge TurnState into GameState (update ticket counts and player positions)
-        if (gameState.getCurrentPlayer() instanceof MisterX) {
+        if (currentPlayer instanceof MisterX) {
             final List<TransportType> usedTransports =
                     turnState.getMoves().stream().map(MoveAction::transportType).collect(Collectors.toList());
 
@@ -108,20 +103,19 @@ public class TurnService {
             }
         }
 
+        if (gameState.isGameOver()) {
+            gameState.notifySubscribers(GameStateSubscriber::onGameOver);
+            return;
+        }
+
         gameState.notifySubscribers(GameStateSubscriber::onTurnEnd);
 
-        if (gameState.changeCurrentPlayer()) {
+        if (gameState.isRoundLastTurn()) {
             dispatcher.dispatch(new EndRoundCommand());
+        } else {
+            gameState.changeCurrentPlayer();
+            dispatcher.dispatch(new StartTurnCommand());
         }
-    }
-
-    /**
-     * Handles the {@code ResetCommand}.
-     *
-     * @param command a reset command.
-     */
-    public void handleReset(final ResetCommand command) {
-        this.model.getGameState().resetTurn();
     }
 
     /**
@@ -134,6 +128,5 @@ public class TurnService {
         store.register(StartTurnCommand.class, this::handleStartTurn);
         store.register(UseDoubleMoveCommand.class, this::handleDoubleMove);
         store.register(EndTurnCommand.class, this::handleEndTurn);
-        store.register(ResetCommand.class, this::handleReset);
     }
 }

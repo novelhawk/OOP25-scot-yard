@@ -20,11 +20,11 @@ public final class MisterX extends PlayerImpl {
      * Creates a new AI Mister X player starting at the given position.
      *
      * @param position the starting position
-     * @param brain the AI brain
+     * @param brain    the AI brain
      */
-    public MisterX(NodeId position, PlayerBrain brain) {
+    public MisterX(final NodeId position, final PlayerBrain brain) {
         super(position, brain);
-        this.name = CommonCostants.MRX_FULL_STRING;
+        this.name = CommonCostants.MRX_STRING;
     }
 
     /**
@@ -32,7 +32,7 @@ public final class MisterX extends PlayerImpl {
      *
      * @param position the starting position
      */
-    public MisterX(NodeId position) {
+    public MisterX(final NodeId position) {
         this(position, null);
     }
 
@@ -53,7 +53,8 @@ public final class MisterX extends PlayerImpl {
     }
 
     /**
-     * Initializes the player with turn manager. This must be called before using turn-related methods.
+     * Initializes the player with turn manager. This must be called before using
+     * turn-related methods.
      *
      * @param mapData the map data for move validation
      */
@@ -62,7 +63,8 @@ public final class MisterX extends PlayerImpl {
     }
 
     /**
-     * Factory method for creating player-specific turn manager. Subclasses override this to provide their specific turn
+     * Factory method for creating player-specific turn manager. Subclasses override
+     * this to provide their specific turn
      * manager implementation.
      *
      * @param mapData the map data
@@ -92,8 +94,8 @@ public final class MisterX extends PlayerImpl {
      * Starts a double move sequence with the first move.
      *
      * @param firstDestination the first move destination
-     * @param firstTransport the first move transport
-     * @param turnNumber the current turn number
+     * @param firstTransport   the first move transport
+     * @param turnNumber       the current turn number
      * @throws IllegalStateException if DOUBLE_MOVE ticket not available
      */
     public void startDoubleMove(
@@ -118,8 +120,8 @@ public final class MisterX extends PlayerImpl {
      * Completes a double move sequence with the second move.
      *
      * @param secondDestination the second move destination
-     * @param secondTransport the second move transport
-     * @param turnNumber the current turn number
+     * @param secondTransport   the second move transport
+     * @param turnNumber        the current turn number
      */
     public void completeDoubleMove(
             final NodeId secondDestination, final TransportType secondTransport, final int turnNumber) {

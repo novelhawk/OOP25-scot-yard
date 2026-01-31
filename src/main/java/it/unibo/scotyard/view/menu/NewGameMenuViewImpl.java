@@ -17,7 +17,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 /**
- * Start menu view
+ * Start menu view.
  *
  */
 public final class NewGameMenuViewImpl implements NewGameMenuView {

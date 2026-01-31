@@ -9,11 +9,11 @@ public class Bobby extends PlayerImpl {
      * Creates a new AI Bobby player starting at the given position.
      *
      * @param position the starting position
-     * @param brain the AI brain
+     * @param brain    the AI brain
      */
-    public Bobby(NodeId position, PlayerBrain brain) {
+    public Bobby(final NodeId position, final PlayerBrain brain) {
         super(position, brain);
-        this.name = CommonCostants.BOBBY_FULL_STRING;
+        this.name = CommonCostants.BOBBY_STRING;
     }
 
     /**
@@ -21,7 +21,7 @@ public class Bobby extends PlayerImpl {
      *
      * @param position the starting position
      */
-    public Bobby(NodeId position) {
+    public Bobby(final NodeId position) {
         super(position);
         this.name = "Bobby";
     }

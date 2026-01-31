@@ -4,7 +4,6 @@ import it.unibo.scotyard.controller.Controller;
 import it.unibo.scotyard.model.Pair;
 import it.unibo.scotyard.model.command.turn.EndTurnCommand;
 import it.unibo.scotyard.model.command.turn.MoveCommand;
-import it.unibo.scotyard.model.command.turn.StartTurnCommand;
 import it.unibo.scotyard.model.game.GameState;
 import it.unibo.scotyard.model.map.NodeId;
 import it.unibo.scotyard.model.map.TransportType;
@@ -13,6 +12,7 @@ import it.unibo.scotyard.model.router.CommandDispatcher;
 import it.unibo.scotyard.view.game.GameView;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public final class DetectiveGameControllerImpl extends GameControllerImpl {
 
@@ -40,9 +40,8 @@ public final class DetectiveGameControllerImpl extends GameControllerImpl {
     /** Initializes the positions of player in GameView (in MapPanel). */
     public void initializePlayersPositionsView() {
         this.view.getMapPanel().initializeBobbies(this.gameState.getNumberOfPlayers());
-        for (int i = 0; i < this.gameState.getNumberOfPlayers(); i++) {
-            this.updatePlayerPositionView(this.gameState.getCurrentPlayer());
-            this.gameState.changeCurrentPlayer();
+        for (final Player player : gameState.getPlayers().getTurnOrder()) {
+            this.updatePlayerPositionView(player);
         }
     }
 
@@ -72,33 +71,29 @@ public final class DetectiveGameControllerImpl extends GameControllerImpl {
         this.view.getMapPanel().repaint();
     }
 
-    private void manageMisterXRound() {
-        dispatcher.dispatch(new StartTurnCommand()); // Starts IA Mister X turn (RunnerBrain)
-        this.manageGameRound();
-    }
-
     /**
      * Manages a round of a game. If the game is over, it calls a method of the GameView, which opens a the game over
      * window, which takes back the user to the main menu.
      */
     public void manageGameRound() {
-        Set<Pair<NodeId, TransportType>> possibleDestinations = super.loadPossibleDestinations();
-        if (this.gameState.isGameOver()) {
-            this.loadGameOverWindow();
-        } else {
-            this.updateSidebar(this.gameState.getCurrentPlayer());
-            this.updatePlayerPositionView(this.gameState.getCurrentPlayer());
-            if (this.gameState.getCurrentPlayer().equals(this.gameState.getComputerPlayer())) {
-                manageMisterXRound();
-            } else {
-                Set<NodeId> possibleDestinationsIDs = new HashSet<>();
-                for (Pair<NodeId, TransportType> pair : possibleDestinations) {
-                    possibleDestinationsIDs.add(pair.getX());
-                }
-                this.view.getMapPanel().loadPossibleDestinations(possibleDestinationsIDs);
-                this.view.getMapPanel().repaint();
-            }
+        if (!gameState.getCurrentPlayer().isHuman()) {
+            return;
         }
+
+        this.updateSidebar(this.gameState.getCurrentPlayer());
+
+        final Set<NodeId> destinationNodes = this.gameState.getPossibleDestinations().stream()
+                .map(Pair::getX)
+                .collect(Collectors.toSet());
+
+        this.view.getMapPanel().loadPossibleDestinations(destinationNodes);
+        this.view.getMapPanel().repaint();
+    }
+
+    @Override
+    public void onTurnStart() {
+        this.updatePlayerPositionView(this.gameState.getCurrentPlayer());
+        manageGameRound();
     }
 
     @Override

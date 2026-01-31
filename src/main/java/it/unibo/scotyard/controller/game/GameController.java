@@ -12,7 +12,7 @@ import java.util.Set;
 import javax.swing.JPanel;
 
 /**
- * The controller for all game related actions
+ * The controller for all game related actions.
  *
  */
 public interface GameController {
@@ -64,11 +64,13 @@ public interface GameController {
      * takes as an argument the current
      * player.
      *
-     * @param currentPlayer
+     * @param currentPlayer the player that have the turn
      */
     void updateSidebar(Player currentPlayer);
 
-    /** @return a boolean value which indicates whether the game is over or not */
+    /**
+     * @return a boolean value which indicates whether the game is over or not
+     */
     boolean isGameOver();
 
     /** Load the game over window. */
@@ -78,7 +80,6 @@ public interface GameController {
     void loadMainMenu();
 
     /**
-     * <<<<<<< HEAD
      * Loads the possible destinations for the current player, from main controller.
      *
      * @return a set of pairs of possible destinations
@@ -86,12 +87,7 @@ public interface GameController {
     Set<Pair<NodeId, TransportType>> loadPossibleDestinations();
 
     /**
-     * Checks if there are multiple transport types to reach destination or not. Used only in
-     * =======
      * Checks if there are multiple transport types to reach destination or not.
-     * Used only in
-     * >>>>>>> origin/main
-     * DetectiveGameControllerImpl.
      *
      * @param newPositionId the id of the destination
      */

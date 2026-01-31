@@ -3,6 +3,7 @@ package it.unibo.scotyard.model.service;
 import it.unibo.scotyard.model.Model;
 import it.unibo.scotyard.model.command.round.EndRoundCommand;
 import it.unibo.scotyard.model.command.round.StartRoundCommand;
+import it.unibo.scotyard.model.command.turn.StartTurnCommand;
 import it.unibo.scotyard.model.game.GameMode;
 import it.unibo.scotyard.model.game.GameState;
 import it.unibo.scotyard.model.game.GameStateSubscriber;
@@ -23,8 +24,11 @@ public class RoundService {
      * @param command a start round command.
      */
     public void handleStartRound(final StartRoundCommand command) {
+        final CommandDispatcher dispatcher = model.getDispatcher();
         final GameState gameState = model.getGameState();
         gameState.notifySubscribers(GameStateSubscriber::onRoundStart);
+
+        dispatcher.dispatch(new StartTurnCommand());
     }
 
     /**
@@ -43,7 +47,12 @@ public class RoundService {
         gameState.notifySubscribers(GameStateSubscriber::onRoundEnd);
 
         gameState.nextRound();
-        dispatcher.dispatch(new StartRoundCommand());
+
+        if (gameState.isGameOver()) {
+            gameState.notifySubscribers(GameStateSubscriber::onGameOver);
+        } else {
+            dispatcher.dispatch(new StartRoundCommand());
+        }
     }
 
     /**

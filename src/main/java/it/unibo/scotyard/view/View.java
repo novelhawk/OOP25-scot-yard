@@ -25,7 +25,8 @@ public interface View {
     void displayLauncher(GameLauncherController controller);
 
     /**
-     * Sets window main features (default close operation, size, location by platform). To be called
+     * Sets window main features (default close operation, size, location by
+     * platform). To be called
      * before first window display.
      *
      * @param resolution the window resolution

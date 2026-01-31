@@ -1,7 +1,7 @@
 package it.unibo.scotyard.view.gamelauncher;
 
 /**
- * View interface
+ * View interface.
  *
  */
 public interface GameLauncherView {

@@ -12,20 +12,20 @@ import java.util.Set;
 import javax.swing.JPanel;
 
 /**
- * The game view
+ * The game view.
  *
  */
 public interface GameView {
 
     /**
-     * Set the observer, that is the GameController
+     * Set the observer, that is the GameController.
      *
      * @param gameController the observer
      */
     void setObserver(GameController gameController);
 
     /**
-     * Gets the Mister X tracker panel
+     * Gets the Mister X tracker panel.
      *
      * @return the Mister X tracker panel
      */
@@ -54,24 +54,6 @@ public interface GameView {
     MapPanel getMapPanel();
 
     /**
-     * Displays the small window which displays a summary of the game rules. This
-     * method is called
-     * after the user has pressed the button rules in the sidebar.
-     *
-     * @param panel the panel of the rules window.
-     */
-    void displayRulesWindow(JPanel panel);
-
-    /**
-     * Displays the game over window, which contains a label inidicating the result
-     * of user player and a button that
-     * takes the user back to the main menu.
-     *
-     * @param result the strind inidicating the result (win or loss)
-     */
-    void displayGameOverWindow(String result);
-
-    /**
      * Load a window to make the user select the preferred transport type to reach
      * the destination. This method gets
      * called only if there are multiple transport types available to reach the
@@ -89,6 +71,24 @@ public interface GameView {
      * @param destinationId the id of the selected destination
      */
     void destinationChosen(NodeId destinationId);
+
+    /**
+     * Displays the small window which displays a summary of the game rules.
+     * This method is called after the user has pressed the button rules in the
+     * sidebar.
+     *
+     * @param panel the panel of the rules window.
+     */
+    void displayRulesWindow(JPanel panel);
+
+    /**
+     * Displays the game over window, which contains a label inidicating the result
+     * of user player and a button that
+     * takes the user back to the main menu.
+     *
+     * @param result the strind inidicating the result (win or loss)
+     */
+    void displayGameOverWindow(String result);
 
     /**
      * Displays the game over window with game statistics.

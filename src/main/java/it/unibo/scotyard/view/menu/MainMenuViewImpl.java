@@ -2,6 +2,7 @@ package it.unibo.scotyard.view.menu;
 
 import it.unibo.scotyard.commons.engine.Size;
 import it.unibo.scotyard.commons.patterns.CommonCostants;
+import it.unibo.scotyard.commons.patterns.MagicNumbers;
 import it.unibo.scotyard.commons.patterns.ScotColors;
 import it.unibo.scotyard.commons.patterns.ScotFont;
 import it.unibo.scotyard.controller.menu.MainMenuController;
@@ -25,14 +26,10 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
 /**
- * The main menu view
+ * The main menu view.
  *
  */
 public final class MainMenuViewImpl implements MainMenuView {
-
-    // Layout spacing
-    private static final int TITLE_SPACING = 40;
-    private static final int BUTTONS_SPACING = 20;
 
     private final MainMenuController controller;
     private final JPanel mainPanel;
@@ -66,15 +63,15 @@ public final class MainMenuViewImpl implements MainMenuView {
     private void buildUI() {
         menuPanel.add(Box.createVerticalGlue());
         menuPanel.add(createTitleLabel());
-        menuPanel.add(Box.createVerticalStrut(TITLE_SPACING));
+        menuPanel.add(Box.createVerticalStrut(MagicNumbers.GAP_40));
         menuPanel.add(createNewGameButton());
-        menuPanel.add(Box.createVerticalStrut(BUTTONS_SPACING));
+        menuPanel.add(Box.createVerticalStrut(MagicNumbers.GAP_20));
         menuPanel.add(createLoadGameButton());
-        menuPanel.add(Box.createVerticalStrut(BUTTONS_SPACING));
+        menuPanel.add(Box.createVerticalStrut(MagicNumbers.GAP_20));
         menuPanel.add(createStatisticsButton());
-        menuPanel.add(Box.createVerticalStrut(BUTTONS_SPACING));
+        menuPanel.add(Box.createVerticalStrut(MagicNumbers.GAP_20));
         menuPanel.add(createExitButton());
-        menuPanel.add(Box.createVerticalStrut(BUTTONS_SPACING));
+        menuPanel.add(Box.createVerticalStrut(MagicNumbers.GAP_20));
         menuPanel.add(Box.createVerticalGlue());
     }
 
@@ -111,7 +108,7 @@ public final class MainMenuViewImpl implements MainMenuView {
         final Object[][] data = new Object[2][3];
 
         // Riga 1: Detective
-        data[0][0] = CommonCostants.GAME_MODES_STRINGS[1];
+        data[0][0] = CommonCostants.DETECTIVE_STRING;
         if (detectiveRecord.isPresent() && detectiveRecord.get().isValid()) {
             data[0][1] = formatDuration(detectiveRecord.get().getDurationMillis());
             data[0][2] = formatDate(detectiveRecord.get().getTimestamp());
@@ -121,7 +118,7 @@ public final class MainMenuViewImpl implements MainMenuView {
         }
 
         // Riga 2: Mr. X
-        data[1][0] = CommonCostants.GAME_MODES_STRINGS[0];
+        data[1][0] = CommonCostants.MRX_STRING;
         if (mrxRecord.isPresent() && mrxRecord.get().isValid()) {
             data[1][1] = formatDuration(mrxRecord.get().getDurationMillis());
             data[1][2] = formatDate(mrxRecord.get().getTimestamp());
@@ -133,14 +130,14 @@ public final class MainMenuViewImpl implements MainMenuView {
         // model non editabile
         final DefaultTableModel tableModel = new DefaultTableModel(data, columnNames) {
             @Override
-            public boolean isCellEditable(int row, int column) {
+            public boolean isCellEditable(final int row, final int column) {
                 return false;
             }
         };
 
         final JTable table = new JTable(tableModel);
         table.setFont(ScotFont.TEXT_FONT_16);
-        table.setRowHeight(40);
+        table.setRowHeight(MagicNumbers.GAP_40);
         table.setBackground(ScotColors.BACKGROUND_COLOR);
         table.setForeground(Color.WHITE);
         table.setGridColor(ScotColors.ACCENT_COLOR);
@@ -159,17 +156,19 @@ public final class MainMenuViewImpl implements MainMenuView {
         }
 
         // Limita dimensione table
-        table.setPreferredScrollableViewportSize(new Dimension(700, 100));
+        table.setPreferredScrollableViewportSize(new Dimension(MagicNumbers.WIDTH_700, MagicNumbers.HEIGHT_100));
 
         final JScrollPane scrollPane = new JScrollPane(table);
-        scrollPane.setMaximumSize(new Dimension(800, 150));
-        scrollPane.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 50, 30, 50));
+        scrollPane.setMaximumSize(new Dimension(MagicNumbers.WIDTH_800, MagicNumbers.HEIGHT_150));
+        scrollPane.setBorder(javax.swing.BorderFactory.createEmptyBorder(
+                MagicNumbers.GAP_10, MagicNumbers.GAP_50, MagicNumbers.GAP_30, MagicNumbers.GAP_50));
         scrollPane.setBackground(ScotColors.BACKGROUND_COLOR);
         scrollPane.setAlignmentX(Component.CENTER_ALIGNMENT);
         statsPanel.add(scrollPane);
 
         // Pannello bottoni
-        final JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 20));
+        final JPanel buttonPanel =
+                new JPanel(new FlowLayout(FlowLayout.CENTER, MagicNumbers.GAP_20, MagicNumbers.GAP_20));
         buttonPanel.setBackground(ScotColors.BACKGROUND_COLOR);
         buttonPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
@@ -227,7 +226,7 @@ public final class MainMenuViewImpl implements MainMenuView {
         }
         final long seconds = millis / 1000;
         final long hours = seconds / 3600;
-        final long minutes = (seconds % 3600) / 60;
+        final long minutes = seconds % 3600 / 60;
         final long secs = seconds % 60;
         return String.format("%02d:%02d:%02d", hours, minutes, secs);
     }

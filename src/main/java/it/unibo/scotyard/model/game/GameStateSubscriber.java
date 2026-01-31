@@ -14,4 +14,6 @@ public interface GameStateSubscriber {
     default void onExposedPosition(ExposedPosition exposedPosition) {}
 
     default void onRunnerHidden() {}
+
+    default void onGameOver() {}
 }

@@ -6,12 +6,12 @@ final class SizeImpl implements Size {
     private final int width;
     private final int height;
 
-    public SizeImpl(final int width, final int height) {
+    SizeImpl(final int width, final int height) {
         this.width = width;
         this.height = height;
     }
 
-    public SizeImpl(final Size size) {
+    SizeImpl(final Size size) {
         this.width = size.getWidth();
         this.height = size.getHeight();
     }
