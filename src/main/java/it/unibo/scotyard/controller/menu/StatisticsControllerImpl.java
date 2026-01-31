@@ -64,6 +64,9 @@ public class StatisticsControllerImpl implements StatisticsController {
             final RecordRepository repository = JsonRecordRepository.initialize();
             repository.resetAllRecords();
 
+            final MatchHistoryRepository matchHistoryRepository = model.getMatchHistoryRepository();
+            matchHistoryRepository.resetTracking();
+
             if (this.statisticsView != null) {
                 this.statisticsView.showResetConfirmation();
             }

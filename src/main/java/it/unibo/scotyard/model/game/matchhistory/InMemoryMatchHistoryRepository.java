@@ -1,6 +1,7 @@
 package it.unibo.scotyard.model.game.matchhistory;
 
 import it.unibo.scotyard.model.game.GameMode;
+import java.io.IOException;
 import java.util.function.Function;
 
 /**
@@ -23,6 +24,11 @@ public final class InMemoryMatchHistoryRepository implements MatchHistoryReposit
     @Override
     public void trackOutcome(GameMode gameMode, boolean hasWon) {
         update(MatchHistoryImpl.incrementOnce(gameMode, hasWon));
+    }
+
+    @Override
+    public void resetTracking() throws IOException {
+        update(it -> MatchHistoryImpl.getDefault());
     }
 
     @Override

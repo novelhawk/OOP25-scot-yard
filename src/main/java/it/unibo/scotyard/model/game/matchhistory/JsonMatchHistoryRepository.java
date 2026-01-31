@@ -41,6 +41,11 @@ public final class JsonMatchHistoryRepository implements MatchHistoryRepository 
     }
 
     @Override
+    public void resetTracking() throws IOException {
+        update(it -> MatchHistoryImpl.getDefault());
+    }
+
+    @Override
     public void update(Function<MatchHistory, MatchHistory> mutator) throws IOException {
         final MatchHistory current = loadOrDefault();
         final MatchHistory updated = mutator.apply(current);

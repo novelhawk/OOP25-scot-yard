@@ -24,6 +24,13 @@ public interface MatchHistoryRepository {
     void trackOutcome(GameMode gameMode, boolean hasWon) throws IOException;
 
     /**
+     * Resets the saved state to the initial state.
+     *
+     * @throws IOException if an I/O error occurs
+     */
+    void resetTracking() throws IOException;
+
+    /**
      * Loads, transforms and then saves to disk a MatchHistory
      *
      * @param mutator the mutator to apply
