@@ -21,10 +21,11 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
-import javax.swing.*;
+import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
 /**
- * The controller for all game related actions
+ * The controller for all game related actions.
  *
  */
 public abstract class GameControllerImpl implements GameController, GameStateSubscriber {
@@ -41,6 +42,7 @@ public abstract class GameControllerImpl implements GameController, GameStateSub
     /**
      * Creates the controller
      *
+     * @param dispatcher the command dispatcher
      * @param gameState  the game state
      * @param view       the view
      * @param controller the controller
@@ -56,7 +58,7 @@ public abstract class GameControllerImpl implements GameController, GameStateSub
         this.mainController = Objects.requireNonNull(controller, "mainController cannot be null");
         try {
             this.recordRepository = JsonRecordRepository.initialize();
-        } catch (IOException e) {
+        } catch (final IOException e) {
             throw new RuntimeException("Cannot init record repo", e);
         }
     }
@@ -69,7 +71,7 @@ public abstract class GameControllerImpl implements GameController, GameStateSub
         this.gameState.subscribe(this);
     }
 
-    private void syncRunnerTurns(List<List<TransportType>> turns) {
+    private void syncRunnerTurns(final List<List<TransportType>> turns) {
         for (int i = 0; i < turns.size(); i++) {
             this.view.getTrackerPanel().setTransportModes(i, turns.get(i));
         }
@@ -106,7 +108,7 @@ public abstract class GameControllerImpl implements GameController, GameStateSub
     }
 
     @Override
-    public void updateSidebar(Player currentPlayer) {
+    public void updateSidebar(final Player currentPlayer) {
         final SidebarPanel sidebar = this.getSidebarPanel();
         sidebar.setGameModeLabel(this.getGameMode());
         sidebar.updateRoundLabel(this.getNumberRound());

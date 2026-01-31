@@ -9,9 +9,9 @@ public class Detective extends PlayerImpl {
      * Creates a new AI Detective player starting at the given position.
      *
      * @param position the starting position
-     * @param brain the AI brain
+     * @param brain    the AI brain
      */
-    public Detective(NodeId position, PlayerBrain brain) {
+    public Detective(final NodeId position, final PlayerBrain brain) {
         super(position, brain);
         this.name = "Detective";
     }
@@ -21,7 +21,7 @@ public class Detective extends PlayerImpl {
      *
      * @param position the starting position
      */
-    public Detective(NodeId position) {
+    public Detective(final NodeId position) {
         super(position);
         this.name = "Detective";
     }

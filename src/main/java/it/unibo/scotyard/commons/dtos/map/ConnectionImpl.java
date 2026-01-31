@@ -5,8 +5,11 @@ import it.unibo.scotyard.model.map.TransportType;
 import java.util.Objects;
 
 /**
- * An immutable connection
+ * An immutable connection.
  *
+ * @param from      the starting node
+ * @param to        the ending node
+ * @param transport the type of transport that link the 2 nodes
  */
 public record ConnectionImpl(NodeId from, NodeId to, TransportType transport) implements Connection {
 

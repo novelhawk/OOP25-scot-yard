@@ -1,5 +1,6 @@
 package it.unibo.scotyard.controller.game;
 
+import it.unibo.scotyard.commons.patterns.CommonCostants;
 import it.unibo.scotyard.controller.Controller;
 import it.unibo.scotyard.model.command.turn.EndTurnCommand;
 import it.unibo.scotyard.model.command.turn.MoveCommand;
@@ -24,10 +25,13 @@ import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
 /**
- * Controller implementation for Mr. X gameplay. Manages game initialization, turn logic, and UI updates.
+ * Controller implementation for Mr. X gameplay. Manages game initialization,
+ * turn logic, and UI updates.
  *
- * <p>Double move state machine Node click handling Transport selection when multiple options available UI
- * synchronization
+ * <p>
+ * Double move state machine Node click handling Transport selection when
+ * multiple options available UI
+ * synchronization.
  */
 public final class MrXGameControllerImpl extends GameControllerImpl {
 
@@ -48,9 +52,11 @@ public final class MrXGameControllerImpl extends GameControllerImpl {
     /**
      * Creates a new Mr. X game controller.
      *
-     * @param game the game instance
-     * @param mapData the map data
-     * @param gameView the game view
+     * @param dispatcher the command dispatcher
+     * @param game       the game instance
+     * @param mapData    the map data
+     * @param gameView   the game view
+     * @param controller the controller
      * @throws NullPointerException if any parameter is null
      */
     public MrXGameControllerImpl(
@@ -184,7 +190,10 @@ public final class MrXGameControllerImpl extends GameControllerImpl {
             // Mossa normale (può farla se è AVAILABLE o USED)
             if (selectedMove == null) {
                 JOptionPane.showMessageDialog(
-                        null, "Seleziona la prima destinazione!", "No Move Selected", JOptionPane.WARNING_MESSAGE);
+                        null,
+                        "Seleziona la prima destinazione!",
+                        CommonCostants.NO_MOVES_SELECTED,
+                        JOptionPane.WARNING_MESSAGE);
                 return;
             }
 
@@ -271,7 +280,7 @@ public final class MrXGameControllerImpl extends GameControllerImpl {
                     JOptionPane.showMessageDialog(
                             null,
                             "Please select your first destination!",
-                            "No Move Selected",
+                            CommonCostants.NO_MOVES_SELECTED,
                             JOptionPane.WARNING_MESSAGE);
                     return;
                 }
@@ -307,7 +316,7 @@ public final class MrXGameControllerImpl extends GameControllerImpl {
                     JOptionPane.showMessageDialog(
                             null,
                             "Please select your second destination!",
-                            "No Move Selected",
+                            CommonCostants.NO_MOVES_SELECTED,
                             JOptionPane.WARNING_MESSAGE);
                     return;
                 }
@@ -340,6 +349,8 @@ public final class MrXGameControllerImpl extends GameControllerImpl {
             case COMPLETED:
                 // Should not happen, button is disabled
                 break;
+            default:
+                break;
         }
 
         updateUI();
@@ -348,7 +359,7 @@ public final class MrXGameControllerImpl extends GameControllerImpl {
     /**
      * Shows transport selection dialog when multiple options available.
      *
-     * @param moves the list of possible moves to the same destination
+     * @param moves  the list of possible moves to the same destination
      * @param nodeId the destination node ID
      * @return the selected move option, or null if cancelled
      */
@@ -412,7 +423,7 @@ public final class MrXGameControllerImpl extends GameControllerImpl {
         });
     }
 
-    /** Updates double move UI */
+    /** Updates double move UI. */
     private void updateDoubleMoveButtonUI() {
         final MisterX mrX = (MisterX) this.gameState.getUserPlayer();
         final SidebarPanel sidebar = this.view.getSidebar();
@@ -434,6 +445,8 @@ public final class MrXGameControllerImpl extends GameControllerImpl {
             case USED:
                 sidebar.showElseHideDoubleMoveButton(false);
                 break;
+            default:
+                break;
         }
     }
 
@@ -441,13 +454,13 @@ public final class MrXGameControllerImpl extends GameControllerImpl {
 
     // It doesn't do anything
     @Override
-    public void destinationChosen(NodeId newPositionId) {
+    public void destinationChosen(final NodeId newPositionId) {
         // TODO : Usare questo metodo (cambiando gestione turno)?
     }
 
     // It doesn't do anything
     @Override
-    public void selectTransport(TransportType transportType) {
+    public void selectTransport(final TransportType transportType) {
         // TODO : Usare questo metodo (cambiando gestione turno)?
     }
 }

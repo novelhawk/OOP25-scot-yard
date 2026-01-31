@@ -3,6 +3,7 @@ package it.unibo.scotyard.view.game;
 import it.unibo.scotyard.commons.dtos.map.MapInfo;
 import it.unibo.scotyard.commons.engine.Size;
 import it.unibo.scotyard.commons.patterns.CommonCostants;
+import it.unibo.scotyard.commons.patterns.MagicNumbers;
 import it.unibo.scotyard.commons.patterns.ScotColors;
 import it.unibo.scotyard.commons.patterns.ScotFont;
 import it.unibo.scotyard.controller.game.GameController;
@@ -30,16 +31,12 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 /**
- * The game view
+ * The game view.
  *
  */
 public final class GameViewImpl implements GameView {
 
     private static final int SMALL_WINDOW_WIDTH = 300;
-    private static final int SMALL_WINDOW_HEIGHT = 100;
-
-    private static final int SPACING = 50;
-    private static final int SMALL_SPACING = 10;
 
     private final IconRegistry iconRegistry;
     private final MapPanel mapPanel;
@@ -55,9 +52,10 @@ public final class GameViewImpl implements GameView {
     private TransportType selectedTransportType;
 
     /**
-     * Creates a new game view
+     * Creates a new game view.
      *
-     * @param mapInfo the game map
+     * @param iconRegistry
+     * @param mapInfo      the game map
      */
     public GameViewImpl(final IconRegistry iconRegistry, final MapInfo mapInfo) {
         this.iconRegistry = iconRegistry;
@@ -71,7 +69,7 @@ public final class GameViewImpl implements GameView {
     }
 
     @Override
-    public void setObserver(GameController gameController) {
+    public void setObserver(final GameController gameController) {
         this.observer = gameController;
     }
 
@@ -102,7 +100,7 @@ public final class GameViewImpl implements GameView {
 
     @Override
     public void displayRulesWindow(final JPanel panel) {
-        final Size smallSize = Size.of(SMALL_WINDOW_WIDTH, SMALL_WINDOW_HEIGHT);
+        final Size smallSize = Size.of(SMALL_WINDOW_WIDTH, MagicNumbers.HEIGHT_100);
         final Window rulesWindow = new WindowImpl(smallSize, panel, CommonCostants.RULES_WINDOW_TITLE);
         rulesWindow.setsMainFeatures(smallSize);
         rulesWindow.setHideOnClose();
@@ -110,30 +108,30 @@ public final class GameViewImpl implements GameView {
     }
 
     public void createGameOverWindow() {
-        final Size smallSize = Size.of(SMALL_WINDOW_WIDTH, SMALL_WINDOW_HEIGHT);
+        final Size smallSize = Size.of(SMALL_WINDOW_WIDTH, MagicNumbers.HEIGHT_100);
         this.gameOverPanel = new JPanel();
         this.gameOverPanel.setLayout(new BoxLayout(this.gameOverPanel, BoxLayout.Y_AXIS));
         this.gameOverPanel.setBackground(ScotColors.BACKGROUND_COLOR);
         this.gameOverPanel.add(Box.createVerticalGlue());
-        JLabel titleLabel = new JLabel(CommonCostants.GAME_OVER_WINDOW_TITLE);
+        final JLabel titleLabel = new JLabel(CommonCostants.GAME_OVER_WINDOW_TITLE);
         titleLabel.setForeground(ScotColors.ACCENT_COLOR);
         titleLabel.setFont(ScotFont.TITLE_FONT_36);
         titleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         this.gameOverPanel.add(titleLabel);
-        this.gameOverPanel.add(Box.createVerticalStrut(SMALL_SPACING));
+        this.gameOverPanel.add(Box.createVerticalStrut(MagicNumbers.GAP_10));
         this.winnerLabel = new JLabel();
         this.winnerLabel.setForeground(ScotColors.ACCENT_COLOR);
         this.winnerLabel.setFont(ScotFont.TEXT_FONT_28);
         this.winnerLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         this.gameOverPanel.add(this.winnerLabel);
-        this.gameOverPanel.add(Box.createVerticalStrut(SPACING));
-        JButton button = new JButton(CommonCostants.BACK_MAIN_MENU);
+        this.gameOverPanel.add(Box.createVerticalStrut(MagicNumbers.GAP_50));
+        final JButton button = new JButton(CommonCostants.BACK_MAIN_MENU);
         button.setFont(ScotFont.TEXT_FONT_20);
         button.setBackground(ScotColors.ACCENT_COLOR);
         button.setForeground(ScotColors.BACKGROUND_COLOR);
         button.setAlignmentX(Component.CENTER_ALIGNMENT);
         this.gameOverPanel.add(button);
-        this.gameOverPanel.add(Box.createVerticalStrut(SPACING));
+        this.gameOverPanel.add(Box.createVerticalStrut(MagicNumbers.GAP_50));
         this.gameOverPanel.add(Box.createVerticalGlue());
 
         this.gameOverWindow = new WindowImpl(smallSize, this.gameOverPanel, CommonCostants.GAME_OVER_WINDOW_TITLE);
@@ -145,7 +143,7 @@ public final class GameViewImpl implements GameView {
         });
     }
 
-    private void setResult(String result) {
+    private void setResult(final String result) {
         this.winnerLabel.setText(result);
         if (result.contains("Vittoria")) {
             this.winnerLabel.setForeground(Color.GREEN);
@@ -155,27 +153,22 @@ public final class GameViewImpl implements GameView {
     }
 
     @Override
-    public void displayGameOverWindow(String result) {
-        displayGameOverWindow(result, 0, null, false, null);
-    }
-
-    @Override
-    public void loadTransportSelectionDialog(Set<TransportType> availableTransportTypes) {
-        JDialog selectionWindow = new JDialog();
+    public void loadTransportSelectionDialog(final Set<TransportType> availableTransportTypes) {
+        final JDialog selectionWindow = new JDialog();
         selectionWindow.setBackground(Color.WHITE);
-        selectionWindow.setTitle(CommonCostants.SELECTION_JDIALOG_TITLE);
-        selectionWindow.setSize(new Dimension(SMALL_WINDOW_WIDTH, SMALL_WINDOW_HEIGHT));
+        selectionWindow.setTitle(CommonCostants.SELECTION_TRANSPORT_JDIALOG);
+        selectionWindow.setSize(new Dimension(SMALL_WINDOW_WIDTH, MagicNumbers.HEIGHT_100));
         selectionWindow.setLayout(new BorderLayout());
 
-        JLabel textLabel = new JLabel(CommonCostants.SELECTION_JDIALOG_TITLE);
+        final JLabel textLabel = new JLabel(CommonCostants.SELECTION_TRANSPORT_JDIALOG);
         textLabel.setForeground(ScotColors.BACKGROUND_COLOR);
         textLabel.setFont(ScotFont.TEXT_FONT_14);
         textLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         selectionWindow.add(textLabel, BorderLayout.NORTH);
 
-        JPanel buttonsPanel = new JPanel(new FlowLayout());
-        for (TransportType transport : availableTransportTypes) {
-            JButton button = new JButton();
+        final JPanel buttonsPanel = new JPanel(new FlowLayout());
+        for (final TransportType transport : availableTransportTypes) {
+            final JButton button = new JButton();
             button.setForeground(ScotColors.BACKGROUND_COLOR);
             button.setFont(ScotFont.TEXT_FONT_14);
             switch (transport) {
@@ -198,7 +191,7 @@ public final class GameViewImpl implements GameView {
             }
             button.addActionListener(new ActionListener() {
                 @Override
-                public void actionPerformed(ActionEvent e) {
+                public void actionPerformed(final ActionEvent e) {
                     switch (transport) {
                         case TAXI:
                             selectedTransportType = TransportType.TAXI;
@@ -225,9 +218,14 @@ public final class GameViewImpl implements GameView {
     }
 
     @Override
-    public void destinationChosen(NodeId destinationId) {
+    public void destinationChosen(final NodeId destinationId) {
         this.observer.destinationChosen(destinationId);
         this.getMapPanel().repaint();
+    }
+
+    @Override
+    public void displayGameOverWindow(final String result) {
+        displayGameOverWindow(result, 0, null, false, null);
     }
 
     @Override
@@ -240,12 +238,12 @@ public final class GameViewImpl implements GameView {
         this.setResult(result);
 
         // rimuovi eventuali label di durata precedenti
-        Component[] components = this.gameOverPanel.getComponents();
+        final Component[] components = this.gameOverPanel.getComponents();
         for (int i = components.length - 1; i >= 0; i--) {
-            Component comp = components[i];
+            final Component comp = components[i];
             if (comp instanceof JLabel) {
-                JLabel label = (JLabel) comp;
-                String text = label.getText();
+                final JLabel label = (JLabel) comp;
+                final String text = label.getText();
                 if (text != null && (text.contains("Durata") || text.contains("Record") || text.contains("NUOVO"))) {
                     this.gameOverPanel.remove(comp);
                 }
@@ -260,18 +258,21 @@ public final class GameViewImpl implements GameView {
             // Riga 1: durata partita
             final JLabel durationLabel = new JLabel("Durata partita: " + formattedDuration);
             durationLabel.setFont(ScotFont.TEXT_FONT_16);
-            durationLabel.setForeground(new Color(200, 200, 200));
+            durationLabel.setForeground(ScotColors.LONGEST_GAME); // gray
             durationLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
             addLabelAfterWinner(durationLabel);
 
-            addVerticalSpace(5);
+            addVerticalSpace(MagicNumbers.GAP_5);
 
             // Riga 2: nuovo record o record esistente
             if (isNewRecord) {
                 final JLabel recordLabel = new JLabel("🏆 NUOVO RECORD per modalità "
-                        + (gameMode == it.unibo.scotyard.model.game.GameMode.DETECTIVE ? "Detective" : "Mr. X") + "!");
+                        + (gameMode == it.unibo.scotyard.model.game.GameMode.DETECTIVE
+                                ? CommonCostants.DETECTIVE_STRING
+                                : CommonCostants.MRX_STRING)
+                        + "!");
                 recordLabel.setFont(ScotFont.TEXT_FONT_18);
-                recordLabel.setForeground(new Color(255, 215, 0)); // Gold
+                recordLabel.setForeground(Color.ORANGE); // Orange
                 recordLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
                 addLabelAfterWinner(recordLabel);
             } else if (currentRecord != null) {
@@ -279,7 +280,7 @@ public final class GameViewImpl implements GameView {
                         + (gameMode == it.unibo.scotyard.model.game.GameMode.DETECTIVE ? "Detective" : "Mr. X") + ": "
                         + currentRecord);
                 recordLabel.setFont(ScotFont.TEXT_FONT_16);
-                recordLabel.setForeground(new Color(200, 200, 200));
+                recordLabel.setForeground(ScotColors.LONGEST_GAME);
                 recordLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
                 addLabelAfterWinner(recordLabel);
             }
@@ -293,7 +294,7 @@ public final class GameViewImpl implements GameView {
 
     private void addLabelAfterWinner(final JLabel label) {
         for (int i = 0; i < this.gameOverPanel.getComponentCount(); i++) {
-            if (this.gameOverPanel.getComponent(i) == this.winnerLabel) {
+            if (this.gameOverPanel.getComponent(i).equals(this.winnerLabel)) {
                 this.gameOverPanel.add(label, i + 1);
                 return;
             }
@@ -304,7 +305,7 @@ public final class GameViewImpl implements GameView {
 
     private void addVerticalSpace(final int height) {
         for (int i = 0; i < this.gameOverPanel.getComponentCount(); i++) {
-            if (this.gameOverPanel.getComponent(i) == this.winnerLabel) {
+            if (this.gameOverPanel.getComponent(i).equals(this.winnerLabel)) {
                 this.gameOverPanel.add(Box.createVerticalStrut(height), i + 1);
                 return;
             }
@@ -317,7 +318,7 @@ public final class GameViewImpl implements GameView {
         }
         final long seconds = millis / 1000;
         final long hours = seconds / 3600;
-        final long minutes = (seconds % 3600) / 60;
+        final long minutes = seconds % 3600 / 60;
         final long secs = seconds % 60;
         return String.format("%02d:%02d:%02d", hours, minutes, secs);
     }

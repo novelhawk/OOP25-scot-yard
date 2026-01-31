@@ -13,7 +13,7 @@ import java.util.logging.Logger;
 import javax.swing.JPanel;
 
 /**
- * The controller used by the MainMenu view
+ * The controller used by the MainMenu view.
  *
  */
 public final class MainMenuControllerImpl implements MainMenuController {
@@ -64,7 +64,7 @@ public final class MainMenuControllerImpl implements MainMenuController {
                 this.menuView.displayStatisticsTable(detectiveRecord, mrxRecord);
             }
 
-        } catch (IOException e) {
+        } catch (final IOException e) {
             Logger.getLogger(MainMenuControllerImpl.class.getName()).log(Level.SEVERE, "Failed to load statistics", e);
             // delega alla view anche l'errore
             if (this.menuView != null) {
@@ -83,7 +83,7 @@ public final class MainMenuControllerImpl implements MainMenuController {
                 this.menuView.showResetConfirmation();
             }
 
-        } catch (IOException e) {
+        } catch (final IOException e) {
             Logger.getLogger(MainMenuControllerImpl.class.getName()).log(Level.SEVERE, "Failed to reset records", e);
             if (this.menuView != null) {
                 this.menuView.showError("Errore durante il reset dei record");

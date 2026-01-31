@@ -15,7 +15,7 @@ import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class JsonRecordRepository implements RecordRepository {
+public final class JsonRecordRepository implements RecordRepository {
     private static final Logger LOGGER = Logger.getLogger(JsonRecordRepository.class.getName());
     private static final String RECORDS_FILENAME = "records.json";
 
@@ -23,7 +23,10 @@ public class JsonRecordRepository implements RecordRepository {
     private final Gson gson;
 
     /**
-     * Private constructr for factory mathod
+     * Private constructr for factory mathod.
+     *
+     * @param filepath the file path
+     * @param gson     serialization/deserialization
      */
     private JsonRecordRepository(final String filePath, final Gson gson) {
         this.filePath = filePath;
@@ -101,6 +104,9 @@ public class JsonRecordRepository implements RecordRepository {
 
     /**
      * Formats a duration in milliseconds as HH:mm:ss.
+     *
+     * @param millis the time in (ms)
+     * @return the duration string formatted
      */
     public static String formatDuration(final long millis) {
         if (millis <= 0) {
@@ -109,7 +115,7 @@ public class JsonRecordRepository implements RecordRepository {
 
         final long seconds = millis / 1000;
         final long hours = seconds / 3600;
-        final long minutes = (seconds % 3600) / 60;
+        final long minutes = seconds % 3600 / 60;
         final long secs = seconds % 60;
 
         return String.format("%02d:%02d:%02d", hours, minutes, secs);

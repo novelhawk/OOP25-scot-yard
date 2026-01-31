@@ -14,15 +14,14 @@ public interface Model {
     /**
      * Initializes the model by loading required data.
      *
-     * @throws IllegalStateException if initialization fails
-     * @param gameMode the selected game mode
+     * @param gameMode        the selected game mode
      * @param levelDifficulty the selected level of difficulty
+     * @throws IllegalStateException if initialization fails
      */
     void initialize(String gameMode, String levelDifficulty);
 
     /**
-     *
-     * @return @return the seeded shared random instance used by all game logic
+     * @return the seeded shared random instance used by all game logic
      */
     Random getSeededRandom();
 
@@ -50,12 +49,14 @@ public interface Model {
     /**
      * Return list of initial positions of players, taken from MapData.
      *
-     * @return list of integers representing the possible initial positions of players
+     * @return list of integers representing the possible initial positions of
+     *         players
      */
     List<NodeId> getInitialPositions();
 
     /**
-     * Return list of pairs of integer (representing the id) and TransportType of possible destinations, given the id of
+     * Return list of pairs of integer (representing the id) and TransportType of
+     * possible destinations, given the id of
      * the starting position.
      *
      * @param idStartPosition the id of the starting position

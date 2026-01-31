@@ -12,7 +12,8 @@ public class Players {
     private final List<Bobby> bobbies;
     private final List<Player> turnOrder;
 
-    public Players(GameMode gameMode, MisterX misterX, Detective detective, List<Bobby> bobbies) {
+    public Players(
+            final GameMode gameMode, final MisterX misterX, final Detective detective, final List<Bobby> bobbies) {
         this.gameMode = gameMode;
         this.misterX = misterX;
         this.detective = detective;
@@ -60,7 +61,8 @@ public class Players {
         return turnOrder.size();
     }
 
-    private static List<Player> createTurnOrder(MisterX misterX, Detective detective, List<Bobby> bobbies) {
+    private static List<Player> createTurnOrder(
+            final MisterX misterX, final Detective detective, final List<Bobby> bobbies) {
         return Stream.concat(Stream.of(misterX, detective), bobbies.stream()).collect(Collectors.toList());
     }
 }

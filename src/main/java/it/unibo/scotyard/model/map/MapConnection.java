@@ -3,8 +3,11 @@ package it.unibo.scotyard.model.map;
 import java.util.Objects;
 import java.util.Optional;
 
-/** connection between two nodes on the game map. each connection has a transport type. */
-public class MapConnection {
+/**
+ * connection between two nodes on the game map. each connection has a transport
+ * type.
+ */
+public final class MapConnection {
     private final Integer id;
     private final NodeId from;
     private final NodeId to;
@@ -13,8 +16,8 @@ public class MapConnection {
     /**
      * Creates a connection without an ID.
      *
-     * @param from the starting node ID
-     * @param to the destination node ID
+     * @param from      the starting node ID
+     * @param to        the destination node ID
      * @param transport the transport type for this connection
      * @throws NullPointerException if transport is null
      */
@@ -25,9 +28,9 @@ public class MapConnection {
     /**
      * Creates a connection with full details.
      *
-     * @param id the optional connection ID
-     * @param from the starting node ID
-     * @param to the destination node ID
+     * @param id        the optional connection ID
+     * @param from      the starting node ID
+     * @param to        the destination node ID
      * @param transport the transport type for this connection
      * @throws NullPointerException if transport is null
      */

@@ -28,16 +28,28 @@ public final class GameRecord {
         this(0, "");
     }
 
+    /**
+     * Get the duration of the game.
+     *
+     * @return the ms of the duration
+     */
     public long getDurationMillis() {
         return durationMillis;
     }
 
+    /**
+     * Get the time stamp of the record.
+     *
+     * @return the timestamp
+     */
     public String getTimestamp() {
         return timestamp;
     }
 
     /**
      * Checks if this record is valid.
+     *
+     * @return true if the duration if >0, else otherwhise
      */
     public boolean isValid() {
         return durationMillis > 0;
