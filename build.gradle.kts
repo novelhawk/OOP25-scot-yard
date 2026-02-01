@@ -10,7 +10,6 @@ plugins {
     application
 
     id("com.diffplug.spotless") version "8.1.0"
-    id("org.danilopianini.gradle-java-qa") version "1.159.0"
     id("com.gradleup.shadow") version "9.3.1"
 }
 
