@@ -14,17 +14,18 @@ public class CommandRouter implements CommandDispatcher, CommandHandlerStore {
 
     public CommandRouter() {}
 
+    /**
+     * Registers a new handler for the GameCommand removing any previous registered handlers.
+     *
+     * @param type the GameCommand associated with the handler
+     * @param handler the registered handler
+     * @param <T> the type of the GameCommand associated with the handler
+     */
     @Override
     public <T extends GameCommand> void register(final Class<T> type, final Consumer<T> handler) {
         handlers.put(type, handler);
     }
 
-    /**
-     * Registers a new handler for the GameCommand removing any previous registered handlers.
-     *
-     * @param command the command to dispatch
-     * @param <T> the type of the command to dispatch
-     */
     @SuppressWarnings("unchecked")
     @Override
     public <T extends GameCommand> void dispatch(final T command) {
