@@ -18,14 +18,21 @@ public interface Player {
     void setPosition(NodeId nodeId);
 
     /**
-     * Intialized the inventory
-     */
-    void initializeInventory();
-
-    /**
      * @return the current position of the player on the map
      */
     NodeId getPosition();
+
+    /**
+     * Intialized the inventory
+     */
+    abstract void initializeInventory();
+
+     /**
+     * Gets the player's inventory.
+     *
+     * @return the player's inventory
+     */
+    Inventory getInventory();
 
     /**
      * @param ticketType the enum of ticket
@@ -73,11 +80,4 @@ public interface Player {
      * @return the AI brain
      */
     Optional<PlayerBrain> getBrain();
-
-    /**
-     * Gets the player's inventory.
-     *
-     * @return the player's inventory
-     */
-    Inventory getInventory();
 }
