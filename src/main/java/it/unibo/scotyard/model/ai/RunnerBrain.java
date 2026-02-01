@@ -10,6 +10,7 @@ import it.unibo.scotyard.model.map.MapData;
 import it.unibo.scotyard.model.map.NodeId;
 import it.unibo.scotyard.model.map.TransportType;
 import it.unibo.scotyard.model.players.Player;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.LinkedList;
@@ -97,6 +98,14 @@ public class RunnerBrain implements PlayerBrain {
         // We allocate for one more node to allow direct indexing with the 1-based node ids
         final boolean[] visited = new boolean[mapData.getNodeCount() + 1];
         final int[] distance = new int[mapData.getNodeCount() + 1];
+
+        // High value for unreachable nodes
+        Arrays.fill(distance, 200);
+
+        // Set to zero the distances to the seekers current position
+        for (final NodeId node : seekerPositions) {
+            distance[node.id()] = 0;
+        }
 
         Queue<NodeId> queue = new LinkedList<>(seekerPositions);
         while (!queue.isEmpty()) {
