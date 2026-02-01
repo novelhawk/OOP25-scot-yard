@@ -6,6 +6,8 @@ import it.unibo.scotyard.model.Pair;
 import it.unibo.scotyard.model.entities.ExposedPosition;
 import it.unibo.scotyard.model.entities.MoveAction;
 import it.unibo.scotyard.model.entities.RunnerTurnTrackerImpl;
+import it.unibo.scotyard.model.game.turn.TurnState;
+import it.unibo.scotyard.model.game.turn.TurnStateImpl;
 import it.unibo.scotyard.model.inventory.Inventory;
 import it.unibo.scotyard.model.map.MapConnection;
 import it.unibo.scotyard.model.map.MapData;
@@ -364,7 +366,7 @@ public final class GameStateImpl implements GameState {
     @Override
     public void resetTurn() {
         final Player player = getCurrentPlayer();
-        this.turnState = new TurnState(player.getPosition());
+        this.turnState = new TurnStateImpl(player.getPosition());
     }
 
     @Override

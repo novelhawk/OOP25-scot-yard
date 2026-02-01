@@ -11,7 +11,7 @@ import it.unibo.scotyard.model.router.CommandDispatcher;
 import it.unibo.scotyard.model.router.CommandHandlerStore;
 import java.util.Objects;
 
-public class RoundService {
+public class RoundService implements Service {
     private final Model model;
 
     public RoundService(final Model model) {
@@ -55,11 +55,7 @@ public class RoundService {
         }
     }
 
-    /**
-     * Registers the service's command handlers to the store.
-     *
-     * @param store the store that contains the handler registrations
-     */
+    @Override
     public void register(final CommandHandlerStore store) {
         store.register(StartRoundCommand.class, this::handleStartRound);
         store.register(EndRoundCommand.class, this::handleEndRound);

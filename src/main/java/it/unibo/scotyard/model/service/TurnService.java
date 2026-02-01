@@ -7,7 +7,7 @@ import it.unibo.scotyard.model.command.turn.*;
 import it.unibo.scotyard.model.entities.MoveAction;
 import it.unibo.scotyard.model.game.GameState;
 import it.unibo.scotyard.model.game.GameStateSubscriber;
-import it.unibo.scotyard.model.game.TurnState;
+import it.unibo.scotyard.model.game.turn.TurnState;
 import it.unibo.scotyard.model.map.TransportType;
 import it.unibo.scotyard.model.players.MisterX;
 import it.unibo.scotyard.model.players.Player;
@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
  * The service responsible for handling the commands regarding a game round.
  *
  */
-public class TurnService {
+public class TurnService implements Service {
     private final Model model;
 
     public TurnService(final Model model) {
@@ -119,11 +119,7 @@ public class TurnService {
         }
     }
 
-    /**
-     * Registers the service's command handlers to the store.
-     *
-     * @param store the store that contains the handler registrations
-     */
+    @Override
     public void register(final CommandHandlerStore store) {
         store.register(MoveCommand.class, this::handleMove);
         store.register(StartTurnCommand.class, this::handleStartTurn);
