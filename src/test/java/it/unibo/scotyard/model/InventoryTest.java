@@ -4,7 +4,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import it.unibo.scotyard.commons.patterns.MagicNumbers;
 import it.unibo.scotyard.model.inventory.Inventory;
-import it.unibo.scotyard.model.inventory.InventoryImpl;
 import it.unibo.scotyard.model.map.NodeId;
 import it.unibo.scotyard.model.players.Bobby;
 import it.unibo.scotyard.model.players.Detective;
