@@ -26,7 +26,7 @@ public class Detective extends AbstractPlayerImpl {
      */
     public Detective(final NodeId position) {
         super(position);
-        this.name = "Detective";
+        this.name = ViewConstants.DETECTIVE_STRING;
     }
 
     public void initializeInventory() {
