@@ -122,8 +122,4 @@ public class PlayerTest {
         assertTrue(misterX.useTicket(TicketType.DOUBLE_MOVE));
         assertEquals(misterX.getNumberTickets(TicketType.DOUBLE_MOVE), MagicNumbers.NUMBER_TICKETS_DOUBLE_MOVE - 1);
     }
-
-    // TODO : test per hasTransportModeTransport()
-    /* Questo metodo può essere tolto : già useTicket() fa questo controllo
-     */
 }
