@@ -14,11 +14,11 @@ public interface Inventory {
 
     /**
      * Returns the initial number of tickets of the specific type passed as paremeter.
-     * 
+     *
      * @param ticket the ticket type
      * @return the number of initial tickets of the TicketType received in input
      */
-    public abstract int getInitialTickets(TicketType ticket);
+    int getInitialTickets(TicketType ticket);
 
     /**
      * @return the number of tickets possessed by the player of the type passed as a paremeter.

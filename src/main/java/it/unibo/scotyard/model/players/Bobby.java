@@ -30,15 +30,15 @@ public class Bobby extends AbstractPlayerImpl {
 
     public void initializeInventory() {
         this.inventory = new InventoryImpl() {
-            public int getInitialTickets(TicketType ticket){
+            public int getInitialTickets(TicketType ticket) {
                 switch (ticket) {
-                    case TAXI: 
+                    case TAXI:
                     case BUS:
                     case UNDERGROUND:
                         return MagicNumbers.INFINITE;
-                    case BLACK : 
-                    case DOUBLE_MOVE : 
-                    default :
+                    case BLACK:
+                    case DOUBLE_MOVE:
+                    default:
                         return MagicNumbers.NONE;
                 }
             }

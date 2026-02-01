@@ -14,14 +14,14 @@ public abstract class InventoryImpl implements Inventory {
     }
 
     @Override
-    public void initialize(){
+    public void initialize() {
         this.ticketsMap.put(TicketType.TAXI, getInitialTickets(TicketType.TAXI));
         this.ticketsMap.put(TicketType.BUS, getInitialTickets(TicketType.BUS));
         this.ticketsMap.put(TicketType.UNDERGROUND, getInitialTickets(TicketType.UNDERGROUND));
         this.ticketsMap.put(TicketType.BLACK, getInitialTickets(TicketType.BLACK));
         this.ticketsMap.put(TicketType.DOUBLE_MOVE, getInitialTickets(TicketType.DOUBLE_MOVE));
     }
-    
+
     @Override
     public abstract int getInitialTickets(TicketType ticket);
 
@@ -29,7 +29,7 @@ public abstract class InventoryImpl implements Inventory {
     public int getNumberTickets(TicketType ticketType) {
         return this.ticketsMap.get(ticketType);
     }
- 
+
     @Override
     public boolean containsTicket(TicketType ticketType) {
         return this.ticketsMap.containsKey(ticketType)
