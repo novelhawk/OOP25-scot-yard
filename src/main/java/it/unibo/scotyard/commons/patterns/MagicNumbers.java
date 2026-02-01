@@ -34,7 +34,7 @@ public final class MagicNumbers {
     public static final int NUMBER_TICKETS_BUS = 8;
     public static final int NUMBER_TICKETS_UNDERGROUND = 4;
     public static final int NUMBER_TICKETS_BLACK = 5;
-    public static final int NUMBER_TICKETS_DOUBLE_MOVE = 2;
+    public static final int NUMBER_TICKETS_DOUBLE_MOVE = 1;
 
     private MagicNumbers() {
         throw new AssertionError("non istanziabili le costanti Numbers");
