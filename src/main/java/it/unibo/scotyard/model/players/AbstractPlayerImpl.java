@@ -11,11 +11,11 @@ import java.util.Optional;
  * The default player entity implementation.
  *
  */
-public abstract class PlayerImpl implements Player {
+public abstract class AbstractPlayerImpl implements Player {
 
     private final PlayerBrain brain;
     private NodeId position;
-    protected Inventory inventory;
+    protected InventoryImpl inventory;
     protected String name;
 
     // For Mr.X game mode turn management
@@ -27,9 +27,8 @@ public abstract class PlayerImpl implements Player {
      * @param position the starting position
      * @param brain    the AI brain
      */
-    public PlayerImpl(final NodeId position, final PlayerBrain brain) {
+    public AbstractPlayerImpl(final NodeId position, final PlayerBrain brain) {
         this.position = position;
-        this.inventory = new InventoryImpl();
         this.initializeInventory();
         this.brain = brain;
     }
@@ -39,14 +38,12 @@ public abstract class PlayerImpl implements Player {
      *
      * @param position the starting position
      */
-    public PlayerImpl(final NodeId position) {
+    public AbstractPlayerImpl(final NodeId position) {
         this(position, null);
     }
 
     @Override
-    public void initializeInventory() {
-        this.inventory.initialize(this);
-    }
+    public abstract void initializeInventory();
 
     @Override
     public void setPosition(final NodeId newPosition) {
