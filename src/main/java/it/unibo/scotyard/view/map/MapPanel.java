@@ -5,6 +5,7 @@ import it.unibo.scotyard.commons.dtos.map.Node;
 import it.unibo.scotyard.commons.patterns.ScotColors;
 import it.unibo.scotyard.commons.patterns.ScotFont;
 import it.unibo.scotyard.commons.patterns.ViewConstants;
+import it.unibo.scotyard.model.entities.ExposedPosition;
 import it.unibo.scotyard.model.map.NodeId;
 import it.unibo.scotyard.model.map.TransportType;
 import it.unibo.scotyard.view.game.GameView;
@@ -104,6 +105,7 @@ public final class MapPanel extends JPanel {
     private NodeId selectedDestination;
     private Set<it.unibo.scotyard.model.game.turn.TurnManagerImpl.MoveOption> validMoves = new HashSet<>();
     private Consumer<NodeId> nodeClickListener;
+    private boolean isExposed;
 
     private final GameView gameView;
 
@@ -523,6 +525,27 @@ public final class MapPanel extends JPanel {
     }
 
     /**
+     * Exposes Mister X position for everyone.
+     *
+     * @param exposedPosition the last exposed position of Mister X
+     */
+    public void setLastExposedPosition(final ExposedPosition exposedPosition) {
+        this.misterXPosition = exposedPosition.position();
+        this.isExposed = true;
+    }
+
+    /**
+     * No longer exposes Mister X position to everyone.
+     */
+    public void hideExposedPosition(boolean keepVisible) {
+        if (!keepVisible) {
+            this.misterXPosition = POSITION_NOT_SET;
+        }
+
+        this.isExposed = false;
+    }
+
+    /**
      * * Sets the position of Mister X on the map.
      *
      * @param position the node ID where Mister X is located
@@ -642,8 +665,10 @@ public final class MapPanel extends JPanel {
                 // Player circle
                 if (ViewConstants.DETECTIVE_PAWN.equals(playerString)) {
                     g2d.setColor(ScotColors.DETECTIVE_COLOR);
-                } else if (ViewConstants.MRX_PAWN.equals(playerString)) {
+                } else if (ViewConstants.MRX_PAWN.equals(playerString) && !isExposed) {
                     g2d.setColor(ScotColors.MISTER_X_COLOR);
+                } else if (ViewConstants.MRX_PAWN.equals(playerString)) {
+                    g2d.setColor(ScotColors.MISTER_X_EXPOSED_COLOR);
                 } else if (playerString.startsWith("B")) {
                     g2d.setColor(ScotColors.BOBBIES_COLOR);
                 }

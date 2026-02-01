@@ -3,6 +3,7 @@ package it.unibo.scotyard.model.game;
 import it.unibo.scotyard.model.Pair;
 import it.unibo.scotyard.model.entities.MoveAction;
 import it.unibo.scotyard.model.entities.RunnerTurnTracker;
+import it.unibo.scotyard.model.game.turn.TurnState;
 import it.unibo.scotyard.model.map.MapData;
 import it.unibo.scotyard.model.map.NodeId;
 import it.unibo.scotyard.model.map.TransportType;
@@ -21,6 +22,13 @@ import java.util.function.Consumer;
 public interface GameState {
 
     /**
+     * Gets the Random instance shared for the current game session.
+     *
+     * @return the seeded shared random instance used by all game logic
+     */
+    Random getSeededRandom();
+
+    /**
      * Returns a boolean that indicates if the game is over. In particular, the game
      * is over if the detective or one of
      * the bobbies has captured Mister X (they're in the same position of the map)
@@ -32,11 +40,11 @@ public interface GameState {
     boolean isGameOver();
 
     /**
-     * Gets the Random instance shared for the current game session.
+     * Returns a boolean that inidcates if the current user player has won
      *
-     * @return the seeded shared random instance used by all game logic
+     * @return a boolean which indicates wheteher the user player has won or not
      */
-    Random getSeededRandom();
+    boolean hasUserWon();
 
     /**
      * This method gets called when the game is over, to get the result : the user
@@ -44,7 +52,7 @@ public interface GameState {
      *
      * @return String, which indicates whether the user player has won or not
      */
-    String resultGame();
+    String getResultGameString();
 
     /**
      * Loads into a specific variable the possible destinations, eventually removing
@@ -126,18 +134,6 @@ public interface GameState {
      * the last bobby.
      */
     void nextRound();
-
-    /**
-     * Return a boolean inidicating if Mister X must be hidden on the map. In
-     * particular, Mister X must be hidden if the
-     * game mode is Detective and if the current game round number correspond to one
-     * of the reveal turns for Mister X
-     * (present in the class Constants in folder commons).
-     *
-     * @return a boolean indicating whether Mister X must be hidden or not on the
-     *         map
-     */
-    boolean hideMisterX();
 
     /**
      * Return the NodeId of the last revealed Mister X position.
@@ -302,7 +298,7 @@ public interface GameState {
     /**
      * Hides Mister X position from detectives.
      */
-    void hideRunnerPosition();
+    void concealRunnerPosition();
 
     /**
      * get the timestamp of game init

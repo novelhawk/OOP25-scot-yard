@@ -1,7 +1,12 @@
 package it.unibo.scotyard.model.command.turn;
 
 import it.unibo.scotyard.model.command.GameCommand;
+import it.unibo.scotyard.model.entities.MoveAction;
 import it.unibo.scotyard.model.map.NodeId;
 import it.unibo.scotyard.model.map.TransportType;
 
-public record MoveCommand(NodeId targetNode, TransportType transportType) implements GameCommand {}
+public record MoveCommand(NodeId targetNode, TransportType transportType) implements GameCommand {
+    public static MoveCommand fromMoveAction(MoveAction moveAction) {
+        return new MoveCommand(moveAction.destination(), moveAction.transportType());
+    }
+}

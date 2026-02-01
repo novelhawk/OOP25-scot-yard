@@ -5,7 +5,6 @@ import it.unibo.scotyard.model.game.turn.TurnManager;
 import it.unibo.scotyard.model.inventory.Inventory;
 import it.unibo.scotyard.model.inventory.InventoryImpl;
 import it.unibo.scotyard.model.map.NodeId;
-import it.unibo.scotyard.model.map.TransportType;
 import java.util.Optional;
 
 /**
@@ -95,9 +94,8 @@ public abstract class PlayerImpl implements Player {
     }
 
     @Override
-    public boolean hasTransportModeTicket(final TransportType transportType) {
-        final TicketType specificTicketType = Inventory.getTicketTypeForTransport(transportType);
-        return getNumberTickets(specificTicketType) > 1;
+    public Inventory getInventory() {
+        return inventory;
     }
 
     /**

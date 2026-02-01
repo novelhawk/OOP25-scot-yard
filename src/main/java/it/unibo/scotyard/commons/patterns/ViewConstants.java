@@ -29,6 +29,7 @@ public final class ViewConstants {
     public static final String MRX_STRING = "Mister X";
     public static final String DETECTIVE_STRING = "Detective";
     public static final String BOBBIES_STRING = "Bobbies";
+    public static final String BOBBY_STRING = "Bobby";
 
     public static final String TAXI_TEXT = "Taxi";
     public static final String BUS_TEXT = "Bus";

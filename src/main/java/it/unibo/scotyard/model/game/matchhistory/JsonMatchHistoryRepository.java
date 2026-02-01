@@ -80,7 +80,7 @@ public final class JsonMatchHistoryRepository implements MatchHistoryRepository 
      * @return an initialized JsonMatchHistoryRepository
      * @throws IOException if an I/O error occurs
      */
-    public static MatchHistoryRepository initialize() throws IOException {
+    public static JsonMatchHistoryRepository initialize() throws IOException {
         final Gson gson = new GsonBuilder().setPrettyPrinting().create();
         final Path directory = Path.of(Constants.DATA_GAME_FOLDER);
         final Path fullPath = directory.resolve(FILE_NAME);

@@ -23,6 +23,19 @@ public final class MagicNumbers {
     public static final int WIDTH_700 = 700;
     public static final int WIDTH_800 = 800;
 
+    // GameState
+    public static final int NOT_REVEALED_YET = -1;
+    public static final int FINAL_ROUND_COUNT = 24;
+
+    // Inventory constants
+    public static final int NONE = 0;
+    public static final int INFINITE = -1;
+    public static final int NUMBER_TICKETS_TAXI = 11;
+    public static final int NUMBER_TICKETS_BUS = 8;
+    public static final int NUMBER_TICKETS_UNDERGROUND = 4;
+    public static final int NUMBER_TICKETS_BLACK = 5;
+    public static final int NUMBER_TICKETS_DOUBLE_MOVE = 2;
+
     private MagicNumbers() {
         throw new AssertionError("non istanziabili le costanti Numbers");
     }

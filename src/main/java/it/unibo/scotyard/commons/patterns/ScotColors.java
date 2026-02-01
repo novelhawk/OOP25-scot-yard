@@ -19,6 +19,7 @@ public final class ScotColors {
 
     // Colori pedine
     public static final Color MISTER_X_COLOR = new Color(0, 0, 0); // nero
+    public static final Color MISTER_X_EXPOSED_COLOR = new Color(239, 16, 35); // rosso
     public static final Color DETECTIVE_COLOR = new Color(0, 100, 200); // blu
     public static final Color BOBBIES_COLOR = new Color(255, 140, 0); // arancione scuro
     // bordi

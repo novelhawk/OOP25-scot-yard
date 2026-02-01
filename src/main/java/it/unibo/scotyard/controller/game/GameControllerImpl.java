@@ -127,7 +127,7 @@ public abstract class GameControllerImpl implements GameController, GameStateSub
 
     @Override
     public void loadGameOverWindow() {
-        final String result = this.gameState.resultGame();
+        final String result = this.gameState.getResultGameString();
 
         // recupera dati dal model
         final long gameDuration = this.gameState.getGameDuration();
@@ -174,13 +174,14 @@ public abstract class GameControllerImpl implements GameController, GameStateSub
 
     @Override
     public void onExposedPosition(ExposedPosition exposedPosition) {
-        this.view.getMapPanel().setMisterXPosition(exposedPosition.position());
+        this.view.getMapPanel().setLastExposedPosition(exposedPosition);
         SwingUtilities.invokeLater(() -> this.view.getMapPanel().repaint());
     }
 
     @Override
-    public void onRunnerHidden() {
-        this.view.getMapPanel().setMisterXPosition(HIDDEN_POSITION);
+    public void onConcealRunner() {
+        final boolean keepRunnerVisible = gameState.getGameMode() == GameMode.MISTER_X;
+        this.view.getMapPanel().hideExposedPosition(keepRunnerVisible);
         SwingUtilities.invokeLater(() -> this.view.getMapPanel().repaint());
     }
 
