@@ -94,7 +94,7 @@ public class RunnerBrain implements PlayerBrain {
      * @param seekerPositions the position of all seeker players
      * @return an array where the i-th index contains the distance between the seekers and the node with id i
      */
-    public int[] seekerMinimumDistance(final Collection<NodeId> seekerPositions) {
+    private int[] seekerMinimumDistance(final Collection<NodeId> seekerPositions) {
         // We allocate for one more node to allow direct indexing with the 1-based node ids
         final boolean[] visited = new boolean[mapData.getNodeCount() + 1];
         final int[] distance = new int[mapData.getNodeCount() + 1];

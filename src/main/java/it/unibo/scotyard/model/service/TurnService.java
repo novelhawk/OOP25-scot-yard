@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
  * The service responsible for handling the commands regarding a game round.
  *
  */
-public class TurnService {
+public class TurnService implements Service {
     private final Model model;
 
     public TurnService(final Model model) {
@@ -119,11 +119,7 @@ public class TurnService {
         }
     }
 
-    /**
-     * Registers the service's command handlers to the store.
-     *
-     * @param store the store that contains the handler registrations
-     */
+    @Override
     public void register(final CommandHandlerStore store) {
         store.register(MoveCommand.class, this::handleMove);
         store.register(StartTurnCommand.class, this::handleStartTurn);
