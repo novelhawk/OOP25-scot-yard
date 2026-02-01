@@ -43,9 +43,6 @@ public abstract class AbstractPlayerImpl implements Player {
     }
 
     @Override
-    public abstract void initializeInventory();
-
-    @Override
     public void setPosition(final NodeId newPosition) {
         this.position = newPosition;
     }
@@ -53,6 +50,14 @@ public abstract class AbstractPlayerImpl implements Player {
     @Override
     public NodeId getPosition() {
         return this.position;
+    }
+
+    @Override
+    public abstract void initializeInventory();
+
+    @Override
+    public Inventory getInventory() {
+        return inventory;
     }
 
     @Override
@@ -88,11 +93,6 @@ public abstract class AbstractPlayerImpl implements Player {
     @Override
     public Optional<PlayerBrain> getBrain() {
         return Optional.ofNullable(brain);
-    }
-
-    @Override
-    public Inventory getInventory() {
-        return inventory;
     }
 
     /**
