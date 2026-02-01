@@ -1,10 +1,12 @@
 package it.unibo.scotyard.model.players;
 
+import it.unibo.scotyard.commons.patterns.MagicNumbers;
 import it.unibo.scotyard.commons.patterns.ViewConstants;
 import it.unibo.scotyard.model.ai.PlayerBrain;
+import it.unibo.scotyard.model.inventory.InventoryImpl;
 import it.unibo.scotyard.model.map.NodeId;
 
-public class Bobby extends PlayerImpl {
+public class Bobby extends AbstractPlayerImpl {
     /**
      * Creates a new AI Bobby player starting at the given position.
      *
@@ -24,5 +26,23 @@ public class Bobby extends PlayerImpl {
     public Bobby(final NodeId position) {
         super(position);
         this.name = "Bobby";
+    }
+
+    public void initializeInventory() {
+        this.inventory = new InventoryImpl() {
+            public int getInitialTickets(TicketType ticket){
+                switch (ticket) {
+                    case TAXI: 
+                    case BUS:
+                    case UNDERGROUND:
+                        return MagicNumbers.INFINITE;
+                    case BLACK : 
+                    case DOUBLE_MOVE : 
+                    default :
+                        return MagicNumbers.NONE;
+                }
+            }
+        };
+        this.inventory.initialize();
     }
 }
