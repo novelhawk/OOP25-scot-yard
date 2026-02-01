@@ -21,7 +21,7 @@ import java.util.stream.Stream;
  * game state.
  *
  */
-public class GameStateService {
+public class GameStateService implements Service {
     private final Model model;
 
     /**
@@ -81,11 +81,7 @@ public class GameStateService {
         }
     }
 
-    /**
-     * Registers the service's command handlers to the store.
-     *
-     * @param store the store that contains the handler registrations
-     */
+    @Override
     public void register(final CommandHandlerStore store) {
         store.register(InitializeGameCommand.class, this::handleInitialize);
         store.register(GameOverCommand.class, this::handleGameOver);
