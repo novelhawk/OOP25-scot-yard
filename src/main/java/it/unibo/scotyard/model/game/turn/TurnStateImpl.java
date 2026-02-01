@@ -19,7 +19,12 @@ public class TurnStateImpl implements TurnState {
 
     @Override
     public void addMove(MoveAction moveAction) {
+        if (remainingMoves <= 0) {
+            throw new IllegalStateException("No moves available");
+        }
+
         moves.add(moveAction);
+        positionHistory.add(moveAction.destination());
         remainingMoves -= 1;
     }
 
