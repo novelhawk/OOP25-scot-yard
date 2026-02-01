@@ -47,9 +47,9 @@ public final class GameStateImpl implements GameState {
 
     private TurnState turnState;
     private final RunnerTurnTrackerImpl runnerTurnTracker;
-    private boolean runnerExposed = false;
+    private boolean runnerExposed;
 
-    private long gameStartTime;
+    private final long gameStartTime;
     private long gameEndTime;
     private long gameDuration;
 
@@ -65,7 +65,8 @@ public final class GameStateImpl implements GameState {
      * @param gameMode the game mode
      * @param players  the involved players
      */
-    public GameStateImpl(Random random, GameMode gameMode, Players players, GameDifficulty gameDifficulty) {
+    public GameStateImpl(
+            final Random random, final GameMode gameMode, final Players players, final GameDifficulty gameDifficulty) {
         this.random = random;
         this.gameMode = gameMode;
         this.players = players;
@@ -78,7 +79,7 @@ public final class GameStateImpl implements GameState {
         this.gameEndTime = 0;
         this.gameDuration = 0;
         this.hasWon = false;
-        this.resultGameString = new String();
+        this.resultGameString = "";
         this.exposedPositions = new ArrayList<>();
     }
 
@@ -94,7 +95,7 @@ public final class GameStateImpl implements GameState {
                 this.players.getSeekers().anyMatch(it -> it.getPosition().equals(runnerPosition));
         boolean isOver = false;
 
-        if (GameMode.DETECTIVE.equals(this.gameMode)) {
+        if (GameMode.DETECTIVE == this.gameMode) {
             isOver = this.possibleDestinations.isEmpty();
         } else {
             if (this.getCurrentPlayer() != this.players.getMisterX()) {
@@ -128,7 +129,7 @@ public final class GameStateImpl implements GameState {
             }
         } else {
             if (this.possibleDestinations.isEmpty()) {
-                if (GameMode.DETECTIVE.equals(this.gameMode)) {
+                if (GameMode.DETECTIVE == this.gameMode) {
                     this.resultGameString = lossString + ViewConstants.NO_MORE_TICKETS_AVAILABLE_TEXT;
                 } else {
                     if (this.getCurrentPlayer().equals(this.players.getMisterX())) {
@@ -165,7 +166,7 @@ public final class GameStateImpl implements GameState {
 
     @Override
     public Set<Pair<NodeId, TransportType>> loadPossibleDestinations(
-            Set<Pair<NodeId, TransportType>> inputPossibleDestinations) {
+            final Set<Pair<NodeId, TransportType>> inputPossibleDestinations) {
         this.possibleDestinations.clear();
 
         /*
@@ -176,7 +177,7 @@ public final class GameStateImpl implements GameState {
          * - Detective can't go where other bobbies are
          * - Bobbies can't go where detective is
          */
-        for (Pair<NodeId, TransportType> destination : inputPossibleDestinations) {
+        for (final Pair<NodeId, TransportType> destination : inputPossibleDestinations) {
             final NodeId pos = destination.getX();
             final TransportType transport = destination.getY();
             this.possibleDestinations.add(destination);
@@ -196,7 +197,7 @@ public final class GameStateImpl implements GameState {
              * No player can go where other bobbies are.
              * Bobbies can't go where detective is.
              */
-            for (Player bobby : this.players.getBobbies()) {
+            for (final Player bobby : this.players.getBobbies()) {
                 if (bobby.getPosition().equals(pos)
                         || (this.gameMode == GameMode.DETECTIVE
                                 && this.getCurrentPlayer().equals(bobby)
@@ -210,7 +211,7 @@ public final class GameStateImpl implements GameState {
                             && this.getCurrentPlayer() != this.players.getComputerPlayer())
                     || (GameMode.MISTER_X.equals(this.gameMode)
                             && this.getCurrentPlayer() != this.players.getUserPlayer())) {
-                this.possibleDestinations.removeIf(item -> TransportType.FERRY.equals(item.getY()));
+                this.possibleDestinations.removeIf(item -> TransportType.FERRY == item.getY());
             }
             // Removal of destinations for which current player has no tickets
             if (this.getCurrentPlayer().getNumberTickets(Inventory.getTicketTypeForTransport(transport)) == 0) {
@@ -236,9 +237,9 @@ public final class GameStateImpl implements GameState {
         indexCurrentPlayer = (indexCurrentPlayer + 1) % players.getPlayersCount();
     }
 
-    private void loadAvailableTransports(NodeId destinationId) {
+    private void loadAvailableTransports(final NodeId destinationId) {
         this.availableTransports.clear();
-        for (Pair<NodeId, TransportType> item : this.possibleDestinations) {
+        for (final Pair<NodeId, TransportType> item : this.possibleDestinations) {
             if (item.getX().equals(destinationId)) {
                 this.availableTransports.add(item.getY());
             }
@@ -246,7 +247,7 @@ public final class GameStateImpl implements GameState {
     }
 
     @Override
-    public boolean areMultipleTransportsAvailable(NodeId destinationId) {
+    public boolean areMultipleTransportsAvailable(final NodeId destinationId) {
         this.loadAvailableTransports(destinationId);
         return this.availableTransports.size() > 1;
     }
@@ -257,16 +258,12 @@ public final class GameStateImpl implements GameState {
     }
 
     @Override
-    public boolean isMovableCurrentPlayer(NodeId destinationId, TransportType transport) {
-        if (this.possibleDestinations.contains(new Pair<>(destinationId, transport))) {
-            return true;
-        } else {
-            return false;
-        }
+    public boolean isMovableCurrentPlayer(final NodeId destinationId, final TransportType transport) {
+        return this.possibleDestinations.contains(new Pair<>(destinationId, transport));
     }
 
     @Override
-    public void moveCurrentPlayer(NodeId destinationId, TransportType transport) {
+    public void moveCurrentPlayer(final NodeId destinationId, final TransportType transport) {
         this.getCurrentPlayer().setPosition(destinationId);
         this.getCurrentPlayer().useTicket(Inventory.getTicketTypeForTransport(transport));
     }
@@ -321,7 +318,7 @@ public final class GameStateImpl implements GameState {
     }
 
     @Override
-    public NodeId getPositionPlayer(Player player) {
+    public NodeId getPositionPlayer(final Player player) {
         return player.getPosition();
     }
 
@@ -381,7 +378,8 @@ public final class GameStateImpl implements GameState {
     }
 
     @Override
-    public List<MoveAction> computeValidMoves(MapData mapData, Player player, List<NodeId> excludedNodes) {
+    public List<MoveAction> computeValidMoves(
+            final MapData mapData, final Player player, final List<NodeId> excludedNodes) {
         final NodeId startingPosition = player.getPosition();
         final List<MapConnection> connections = mapData.getConnectionsFrom(startingPosition);
         final Set<NodeId> invalidPositions =
@@ -421,11 +419,12 @@ public final class GameStateImpl implements GameState {
     }
 
     @Override
-    public void subscribe(GameStateSubscriber subscriber) {
+    public void subscribe(final GameStateSubscriber subscriber) {
         subscribers.add(subscriber);
     }
 
-    public void notifySubscribers(Consumer<GameStateSubscriber> action) {
+    @Override
+    public void notifySubscribers(final Consumer<GameStateSubscriber> action) {
         for (final GameStateSubscriber subscriber : subscribers) {
             action.accept(subscriber);
         }
@@ -453,7 +452,7 @@ public final class GameStateImpl implements GameState {
         }
         final long seconds = gameDuration / 1000;
         final long hours = seconds / 3600;
-        final long minutes = (seconds % 3600) / 60;
+        final long minutes = seconds % 3600 / 60;
         final long secs = seconds % 60;
 
         return String.format("%02d:%02d:%02d", hours, minutes, secs);

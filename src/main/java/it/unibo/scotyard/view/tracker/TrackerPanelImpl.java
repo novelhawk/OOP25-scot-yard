@@ -26,7 +26,7 @@ public class TrackerPanelImpl extends JPanel implements TrackerPanel {
     }
 
     @Override
-    public void createGrid(int count) {
+    public void createGrid(final int count) {
         removeAll();
         setLayout(createGridLayout(count));
 
@@ -48,11 +48,11 @@ public class TrackerPanelImpl extends JPanel implements TrackerPanel {
     }
 
     @Override
-    public void setTransportModes(int index, List<TransportType> transportTypes) {
+    public void setTransportModes(final int index, final List<TransportType> transportTypes) {
         cells.get(index).setTickets(transportTypes);
     }
 
-    private GridLayout createGridLayout(int count) {
+    private GridLayout createGridLayout(final int count) {
         final GridLayout grid = new GridLayout(count / COLUMNS, COLUMNS);
         grid.setHgap(MagicNumbers.GAP_3);
         grid.setVgap(MagicNumbers.GAP_3);

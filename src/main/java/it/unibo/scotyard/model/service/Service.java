@@ -5,6 +5,8 @@ import it.unibo.scotyard.model.router.CommandHandlerStore;
 /**
  * A class that contains the Handlers for some GameCommands.
  */
+// Justification: Not meant to be used as a functional interface
+@SuppressWarnings("PMD.ImplicitFunctionalInterface")
 public interface Service {
 
     /**

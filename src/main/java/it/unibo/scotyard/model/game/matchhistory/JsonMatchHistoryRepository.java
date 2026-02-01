@@ -36,7 +36,7 @@ public final class JsonMatchHistoryRepository implements MatchHistoryRepository 
     }
 
     @Override
-    public void trackOutcome(GameMode gameMode, boolean hasWon) throws IOException {
+    public void trackOutcome(final GameMode gameMode, final boolean hasWon) throws IOException {
         update(MatchHistoryImpl.incrementOnce(gameMode, hasWon));
     }
 
@@ -46,7 +46,7 @@ public final class JsonMatchHistoryRepository implements MatchHistoryRepository 
     }
 
     @Override
-    public void update(Function<MatchHistory, MatchHistory> mutator) throws IOException {
+    public void update(final Function<MatchHistory, MatchHistory> mutator) throws IOException {
         final MatchHistory current = loadOrDefault();
         final MatchHistory updated = mutator.apply(current);
         save(updated);
@@ -69,7 +69,7 @@ public final class JsonMatchHistoryRepository implements MatchHistoryRepository 
      * @param matchHistory the MatchHistory to save
      * @throws IOException if an I/O error occurs
      */
-    private void save(MatchHistory matchHistory) throws IOException {
+    private void save(final MatchHistory matchHistory) throws IOException {
         final String json = gson.toJson(matchHistory);
         Files.writeString(this.filePath, json, StandardCharsets.UTF_8);
     }

@@ -11,7 +11,7 @@ import it.unibo.scotyard.model.map.NodeId;
 import it.unibo.scotyard.model.map.TransportType;
 import org.junit.jupiter.api.Test;
 
-public class MisterXTest {
+class MisterXTest {
 
     @Test
     void testCreateMisterX() {

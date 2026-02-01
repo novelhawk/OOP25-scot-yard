@@ -22,7 +22,7 @@ public final class InMemoryMatchHistoryRepository implements MatchHistoryReposit
     }
 
     @Override
-    public void trackOutcome(GameMode gameMode, boolean hasWon) {
+    public void trackOutcome(final GameMode gameMode, final boolean hasWon) {
         update(MatchHistoryImpl.incrementOnce(gameMode, hasWon));
     }
 
@@ -32,7 +32,7 @@ public final class InMemoryMatchHistoryRepository implements MatchHistoryReposit
     }
 
     @Override
-    public void update(Function<MatchHistory, MatchHistory> mutator) {
+    public void update(final Function<MatchHistory, MatchHistory> mutator) {
         final MatchHistory current = loadOrDefault();
         this.current = mutator.apply(current);
     }

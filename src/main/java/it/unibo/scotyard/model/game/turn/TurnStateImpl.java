@@ -9,16 +9,16 @@ public class TurnStateImpl implements TurnState {
     private List<MoveAction> legalMoves;
     private final List<MoveAction> moves = new ArrayList<>();
     private final List<NodeId> positionHistory;
-    private boolean usedDoubleMove = false;
+    private boolean usedDoubleMove;
     private int remainingMoves = 1;
 
-    public TurnStateImpl(NodeId startingPosition) {
+    public TurnStateImpl(final NodeId startingPosition) {
         this.positionHistory = new ArrayList<>();
         this.positionHistory.add(startingPosition);
     }
 
     @Override
-    public void addMove(MoveAction moveAction) {
+    public void addMove(final MoveAction moveAction) {
         if (remainingMoves <= 0) {
             throw new IllegalStateException("No moves available");
         }
@@ -55,7 +55,7 @@ public class TurnStateImpl implements TurnState {
     }
 
     @Override
-    public void setLegalMoves(List<MoveAction> legalMoves) {
+    public void setLegalMoves(final List<MoveAction> legalMoves) {
         this.legalMoves = legalMoves;
     }
 

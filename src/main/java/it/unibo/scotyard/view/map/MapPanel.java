@@ -537,7 +537,7 @@ public final class MapPanel extends JPanel {
     /**
      * No longer exposes Mister X position to everyone.
      */
-    public void hideExposedPosition(boolean keepVisible) {
+    public void hideExposedPosition(final boolean keepVisible) {
         if (!keepVisible) {
             this.misterXPosition = POSITION_NOT_SET;
         }

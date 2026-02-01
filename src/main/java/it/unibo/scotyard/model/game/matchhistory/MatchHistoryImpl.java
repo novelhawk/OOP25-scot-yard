@@ -22,7 +22,7 @@ public record MatchHistoryImpl(int runnerWins, int runnerLoses, int seekerWins, 
      * @param hasWon the win status to match
      * @return a MatchHistory mutator that increments the matching component by one
      */
-    public static Function<MatchHistory, MatchHistory> incrementOnce(GameMode gameMode, boolean hasWon) {
+    public static Function<MatchHistory, MatchHistory> incrementOnce(final GameMode gameMode, final boolean hasWon) {
         final var componentMatcher = componentMatcher(gameMode, hasWon, it -> it + 1);
         return mergeComponentMutators(
                 componentMatcher.apply(GameMode.MISTER_X, true),
@@ -41,7 +41,7 @@ public record MatchHistoryImpl(int runnerWins, int runnerLoses, int seekerWins, 
      * @return a component matcher that returns the mutator to apply based on the component
      */
     private static BiFunction<GameMode, Boolean, Function<Integer, Integer>> componentMatcher(
-            GameMode gameMode, boolean hasWon, Function<Integer, Integer> mutator) {
+            final GameMode gameMode, final boolean hasWon, final Function<Integer, Integer> mutator) {
         return (componentGameMode, componentHasWon) -> {
             if (componentGameMode == gameMode && componentHasWon == hasWon) {
                 return mutator;
@@ -61,10 +61,10 @@ public record MatchHistoryImpl(int runnerWins, int runnerLoses, int seekerWins, 
      * @return the MatchHistory mutator that applies the respective mutator to each of its components.
      */
     private static Function<MatchHistory, MatchHistory> mergeComponentMutators(
-            Function<Integer, Integer> runnerWinsMutator,
-            Function<Integer, Integer> runnerLosesMutator,
-            Function<Integer, Integer> seekerWinsMutator,
-            Function<Integer, Integer> seekerLosesMutator) {
+            final Function<Integer, Integer> runnerWinsMutator,
+            final Function<Integer, Integer> runnerLosesMutator,
+            final Function<Integer, Integer> seekerWinsMutator,
+            final Function<Integer, Integer> seekerLosesMutator) {
         return it -> new MatchHistoryImpl(
                 runnerWinsMutator.apply(it.runnerWins()),
                 runnerLosesMutator.apply(it.runnerLoses()),

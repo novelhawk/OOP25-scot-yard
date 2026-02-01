@@ -54,7 +54,7 @@ public class GameStateService implements Service {
                 .collect(Collectors.toList());
 
         for (int i = 0; i < bobbies.size(); i++) {
-            Bobby bobby = bobbies.get(i);
+            final Bobby bobby = bobbies.get(i);
             bobby.setName("Bobby" + (i + 1));
         }
 
@@ -76,7 +76,7 @@ public class GameStateService implements Service {
 
         try {
             this.model.getMatchHistoryRepository().trackOutcome(gameState.getGameMode(), gameState.hasUserWon());
-        } catch (IOException e) {
+        } catch (final IOException e) {
             // If we fail to update the match history we fail quietly
         }
     }
@@ -87,7 +87,7 @@ public class GameStateService implements Service {
         store.register(GameOverCommand.class, this::handleGameOver);
     }
 
-    private MisterX createMisterX(GameMode gameMode, NodeId initialPosition) {
+    private MisterX createMisterX(final GameMode gameMode, final NodeId initialPosition) {
         return switch (gameMode) {
             case GameMode.DETECTIVE -> {
                 final RunnerBrain runnerBrain = new RunnerBrain(model.getMapData());
@@ -97,7 +97,7 @@ public class GameStateService implements Service {
         };
     }
 
-    private Detective createDetective(GameMode gameMode, NodeId initialPosition) {
+    private Detective createDetective(final GameMode gameMode, final NodeId initialPosition) {
         return switch (gameMode) {
             case GameMode.DETECTIVE -> new Detective(initialPosition);
             case GameMode.MISTER_X -> {
@@ -107,7 +107,7 @@ public class GameStateService implements Service {
         };
     }
 
-    private Bobby createBobby(GameMode gameMode, NodeId initialPosition) {
+    private Bobby createBobby(final GameMode gameMode, final NodeId initialPosition) {
         return switch (gameMode) {
             case GameMode.DETECTIVE -> new Bobby(initialPosition);
             case GameMode.MISTER_X -> {
@@ -123,7 +123,7 @@ public class GameStateService implements Service {
         return copy;
     }
 
-    private int getAdditionalSeekersCount(GameMode gameMode, GameDifficulty difficulty) {
+    private int getAdditionalSeekersCount(final GameMode gameMode, final GameDifficulty difficulty) {
         final int seekers =
                 switch (difficulty) {
                     case GameDifficulty.EASY -> 0;

@@ -11,7 +11,7 @@ import javax.swing.*;
 
 public final class TrackerCell extends JPanel {
 
-    private static final Map<TransportType, Color> TRANSPORT_TYPES_ScotColors = Map.of(
+    private static final Map<TransportType, Color> TRANSPORT_TYPES = Map.of(
             TransportType.BUS, ScotColors.BUS_COLOR,
             TransportType.UNDERGROUND, ScotColors.UNDERGROUND_COLOR,
             TransportType.FERRY, ScotColors.FERRY_COLOR,
@@ -45,7 +45,7 @@ public final class TrackerCell extends JPanel {
         revalidate();
     }
 
-    private Component createTicketIcon(TransportType transportType) {
+    private Component createTicketIcon(final TransportType transportType) {
         final ImageIcon icon = gameView.getIconRegistry().getTransportIcon(transportType);
         return new JLabel(icon);
     }
@@ -82,7 +82,7 @@ public final class TrackerCell extends JPanel {
 
         for (int s = 0; s < sections; s++) {
             final TransportType transportType = this.tickets.get(s);
-            g2d.setColor(TRANSPORT_TYPES_ScotColors.get(transportType));
+            g2d.setColor(TRANSPORT_TYPES.get(transportType));
             g2d.fillRect(sectionWidth * s + 1, 0, sectionWidth, size.height);
         }
 

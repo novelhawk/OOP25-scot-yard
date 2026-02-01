@@ -12,7 +12,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
-public class InMemoryMatchHistoryRepositoryTest {
+class InMemoryMatchHistoryRepositoryTest {
     private final InMemoryMatchHistoryRepository matchHistoryRepository = new InMemoryMatchHistoryRepository();
     private final boolean WON = true;
     private final boolean LOST = false;

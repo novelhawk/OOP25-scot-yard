@@ -1,15 +1,13 @@
-package it.unibo.scotyard.model;
+package it.unibo.scotyard.model.router;
 
 import static org.mockito.Mockito.*;
 
 import it.unibo.scotyard.model.command.turn.EndTurnCommand;
 import it.unibo.scotyard.model.command.turn.StartTurnCommand;
-import it.unibo.scotyard.model.router.CommandRouter;
 import java.util.function.Consumer;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 
-public class CommandRouterTest {
+class CommandRouterTest {
     private final CommandRouter commandRouter = new CommandRouter();
 
     @Test
@@ -50,7 +48,7 @@ public class CommandRouterTest {
 
     private <T> Consumer<T> mockConsumer() {
         @SuppressWarnings("unchecked")
-        final Consumer<T> handler = Mockito.mock(Consumer.class);
+        final Consumer<T> handler = mock(Consumer.class);
         return handler;
     }
 }

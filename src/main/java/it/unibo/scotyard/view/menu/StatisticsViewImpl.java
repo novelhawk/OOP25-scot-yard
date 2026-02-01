@@ -20,10 +20,10 @@ public class StatisticsViewImpl extends JPanel implements StatisticsView {
     private final MatchHistory matchHistory;
 
     public StatisticsViewImpl(
-            StatisticsController controller,
-            GameRecord mrxRecord,
-            GameRecord detectiveRecord,
-            MatchHistory matchHistory) {
+            final StatisticsController controller,
+            final GameRecord mrxRecord,
+            final GameRecord detectiveRecord,
+            final MatchHistory matchHistory) {
         this.controller = controller;
         this.mrxRecord = mrxRecord;
         this.detectiveRecord = detectiveRecord;
@@ -75,16 +75,16 @@ public class StatisticsViewImpl extends JPanel implements StatisticsView {
         final JLabel titleLabel = new JLabel(ViewConstants.STATISCS_TITLE.toUpperCase());
         titleLabel.setFont(ScotFont.TEXT_FONT_28);
         titleLabel.setForeground(ScotColors.ACCENT_COLOR);
-        titleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        titleLabel.setAlignmentX(CENTER_ALIGNMENT);
         return titleLabel;
     }
 
     private Component gameRecapComponent(final String title, final int winCount, final int loseCount) {
         final Box frame = Box.createVerticalBox();
-        frame.setAlignmentX(Component.CENTER_ALIGNMENT);
+        frame.setAlignmentX(CENTER_ALIGNMENT);
 
         final JLabel titleLabel = new JLabel(title);
-        titleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        titleLabel.setAlignmentX(CENTER_ALIGNMENT);
         titleLabel.setFont(ScotFont.TEXT_FONT_16);
         titleLabel.setForeground(ScotColors.ACCENT_COLOR);
         frame.add(titleLabel);
@@ -92,7 +92,7 @@ public class StatisticsViewImpl extends JPanel implements StatisticsView {
         frame.add(Box.createVerticalStrut(15));
 
         final Box score = Box.createHorizontalBox();
-        score.setAlignmentX(Component.CENTER_ALIGNMENT);
+        score.setAlignmentX(CENTER_ALIGNMENT);
 
         final JLabel wins = new JLabel(String.valueOf(winCount));
         wins.setFont(ScotFont.TEXT_FONT_18);
@@ -173,13 +173,13 @@ public class StatisticsViewImpl extends JPanel implements StatisticsView {
         scrollPane.setBorder(javax.swing.BorderFactory.createEmptyBorder(
                 MagicNumbers.GAP_10, MagicNumbers.GAP_50, MagicNumbers.GAP_30, MagicNumbers.GAP_50));
         scrollPane.setBackground(ScotColors.BACKGROUND_COLOR);
-        scrollPane.setAlignmentX(Component.CENTER_ALIGNMENT);
+        scrollPane.setAlignmentX(CENTER_ALIGNMENT);
         return scrollPane;
     }
 
     private Component createMatchHistoryComponent() {
         final JPanel blocksPanel = new JPanel(new GridLayout(1, 2, 100, 0));
-        blocksPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        blocksPanel.setAlignmentX(CENTER_ALIGNMENT);
         blocksPanel.setBackground(ScotColors.BACKGROUND_COLOR);
         blocksPanel.add(
                 gameRecapComponent(ViewConstants.MISTERX_GAMES, matchHistory.runnerWins(), matchHistory.runnerLoses()));
@@ -191,7 +191,7 @@ public class StatisticsViewImpl extends JPanel implements StatisticsView {
     private Component createActionButtonComponent() {
         final JPanel buttonPanel = new JPanel(new GridLayout(1, 2, MagicNumbers.GAP_20, 0));
         buttonPanel.setBackground(ScotColors.BACKGROUND_COLOR);
-        buttonPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        buttonPanel.setAlignmentX(CENTER_ALIGNMENT);
 
         final JButton backButton = new JButton(ViewConstants.BACK);
         backButton.setFont(ScotFont.TEXT_FONT_20);
@@ -247,7 +247,7 @@ public class StatisticsViewImpl extends JPanel implements StatisticsView {
             if (parts.length >= 5) {
                 return parts[1] + " " + parts[2] + ", " + parts[5] + " " + parts[3].substring(0, 5);
             }
-        } catch (Exception e) {
+        } catch (final Exception e) {
             // Fallback: ritorna timestamp completo
         }
         return timestamp;

@@ -48,11 +48,10 @@ public final class SidebarPanel extends JPanel {
     private JLabel blackTicketsLabel;
     private JLabel doubleMoveTicketsLabel;
     private JButton endTurnButton;
-    private JButton loadRulesButton;
     private JButton doubleMoveButton;
     private final TrackerPanelImpl trackerPanel;
 
-    private GameView gameView;
+    private final GameView gameView;
     private GameMode currentGameMode;
 
     /**
@@ -130,7 +129,7 @@ public final class SidebarPanel extends JPanel {
         // Nasconde i bottony by default (da capire)
         this.doubleMoveButton.setVisible(false);
 
-        this.loadRulesButton = createLoadRulesButton(ViewConstants.LOAD_RULES_TEXT);
+        final JButton loadRulesButton = createLoadRulesButton(ViewConstants.LOAD_RULES_TEXT);
         this.add(loadRulesButton);
 
         this.add(Box.createVerticalGlue());
@@ -199,7 +198,7 @@ public final class SidebarPanel extends JPanel {
         return label;
     }
 
-    private JButton createActionButton(String text) {
+    private JButton createActionButton(final String text) {
         final JButton button = new JButton(text);
         button.setFont(ScotFont.TEXT_FONT_14);
         button.setBackground(ScotColors.ACCENT_COLOR);
@@ -225,7 +224,7 @@ public final class SidebarPanel extends JPanel {
         textArea.setFont(ScotFont.TEXT_FONT_14);
         textArea.setEditable(false);
         if (this.currentGameMode == GameMode.DETECTIVE) {
-            String text =
+            final String text =
                     "Nel gioco sono presenti : 1 detective, 1 fuggitivo (Mister X) e fino a un massimo di 3 bobby (aiutanti del detective).\n"
                             + "L'obiettivo del detective è catturare Mister X il prima possibile. Il gioco si compone di 23 round.\n"
                             + "La posizione di Mister X è nascosta, ma è possibile vedere quali mezzi usa nei suoi spostamenti (tranne se utilizza \n"
@@ -245,7 +244,7 @@ public final class SidebarPanel extends JPanel {
             textArea.append(text);
         }
         if (this.currentGameMode == GameMode.MISTER_X) {
-            String text =
+            final String text =
                     "Nel gioco sono presenti : 1 detective, 1 fuggitivo (Mister X) e fino a un massimo di 3 bobby (aiutanti del detective).\n"
                             + "L'obiettivo di Mister X è non farsi catturare dal detective o dai bobbies. Il gioco si compone di 23 round.\n"
                             + "La posizione di Mister X è nascosta, ma l'avversario può vedere quali mezzi usa nei suoi spostamenti (tranne se utilizza \n"
@@ -315,7 +314,7 @@ public final class SidebarPanel extends JPanel {
      * displaying. Updates the text of the
      * currentPlayerLabel according to the current player.
      */
-    public void updateCurrentPlayerLabel(Player player) {
+    public void updateCurrentPlayerLabel(final Player player) {
         this.currentPlayerLabel.setText(ViewConstants.CURRENT_PLAYER_TEXT + player.getName());
     }
 
@@ -413,9 +412,9 @@ public final class SidebarPanel extends JPanel {
      *
      * @param listener the action listener
      */
-    public void setEndTurnListener(ActionListener listener) {
+    public void setEndTurnListener(final ActionListener listener) {
         // rimuove tutti i listener
-        for (ActionListener al : endTurnButton.getActionListeners()) {
+        for (final ActionListener al : endTurnButton.getActionListeners()) {
             endTurnButton.removeActionListener(al);
         }
         endTurnButton.addActionListener(listener);
@@ -426,11 +425,11 @@ public final class SidebarPanel extends JPanel {
      *
      * @param enabled true to enable button
      */
-    public void updateEndTurnButton(boolean enabled) {
+    public void updateEndTurnButton(final boolean enabled) {
         endTurnButton.setEnabled(enabled);
     }
 
-    public void enableEndTurnButton(boolean value) {
+    public void enableEndTurnButton(final boolean value) {
         this.endTurnButton.setEnabled(value);
     }
 
@@ -439,9 +438,9 @@ public final class SidebarPanel extends JPanel {
      *
      * @param listener the action listener
      */
-    public void setDoubleMoveListener(ActionListener listener) {
+    public void setDoubleMoveListener(final ActionListener listener) {
         // rimuove tutti i listener
-        for (ActionListener al : doubleMoveButton.getActionListeners()) {
+        for (final ActionListener al : doubleMoveButton.getActionListeners()) {
             doubleMoveButton.removeActionListener(al);
         }
         doubleMoveButton.addActionListener(listener);
@@ -452,7 +451,7 @@ public final class SidebarPanel extends JPanel {
      *
      * @param visible true to show buttons, false to hide
      */
-    public void setActionButtonsVisible(boolean visible) {
+    public void setActionButtonsVisible(final boolean visible) {
         endTurnButton.setVisible(visible);
         doubleMoveButton.setVisible(visible);
     }
@@ -463,7 +462,7 @@ public final class SidebarPanel extends JPanel {
      * @param enabled true to enable button
      * @param text    the button text
      */
-    public void updateDoubleMoveButton(boolean enabled, String text) {
+    public void updateDoubleMoveButton(final boolean enabled, final String text) {
         doubleMoveButton.setEnabled(enabled);
         doubleMoveButton.setText(text);
     }
