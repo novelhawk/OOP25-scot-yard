@@ -107,5 +107,4 @@ public class RecordStorageTest {
                 storage.get(GameMode.DETECTIVE).getDurationMillis(),
                 "Modifying returned map should not affect internal storage");
     }
-
 }

@@ -78,5 +78,4 @@ public class MapInfoImplTest {
         assertTrue(node.getAvailableTransports().contains(TransportType.TAXI));
         assertTrue(node.getAvailableTransports().contains(TransportType.BUS));
     }
-
 }

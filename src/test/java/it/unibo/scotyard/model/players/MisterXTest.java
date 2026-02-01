@@ -9,7 +9,6 @@ import it.unibo.scotyard.commons.patterns.MagicNumbers;
 import it.unibo.scotyard.commons.patterns.ViewConstants;
 import it.unibo.scotyard.model.map.NodeId;
 import it.unibo.scotyard.model.map.TransportType;
-
 import org.junit.jupiter.api.Test;
 
 public class MisterXTest {
@@ -70,15 +69,9 @@ public class MisterXTest {
     void testUninitializedOperationsThrow() {
         final MisterX mrX = new MisterX(new NodeId(1));
 
-        assertThrows(
-                IllegalStateException.class,
-                () -> mrX.makeMove(new NodeId(2), TransportType.TAXI, 1));
-        assertThrows(
-                IllegalStateException.class,
-                () -> mrX.startDoubleMove(new NodeId(2), TransportType.TAXI, 1));
-        assertThrows(
-                IllegalStateException.class,
-                () -> mrX.completeDoubleMove(new NodeId(3), TransportType.BUS, 1));
+        assertThrows(IllegalStateException.class, () -> mrX.makeMove(new NodeId(2), TransportType.TAXI, 1));
+        assertThrows(IllegalStateException.class, () -> mrX.startDoubleMove(new NodeId(2), TransportType.TAXI, 1));
+        assertThrows(IllegalStateException.class, () -> mrX.completeDoubleMove(new NodeId(3), TransportType.BUS, 1));
         assertThrows(IllegalStateException.class, mrX::isDoubleMoveAvailable);
         assertThrows(IllegalStateException.class, () -> mrX.getValidMoves(java.util.Set.of()));
     }

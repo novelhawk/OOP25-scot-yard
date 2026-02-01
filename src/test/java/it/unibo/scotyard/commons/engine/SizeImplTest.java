@@ -24,5 +24,4 @@ public class SizeImplTest {
         assertEquals(original.getHeight(), copy.getHeight());
         assertNotSame(original, copy);
     }
-
 }

@@ -139,9 +139,9 @@ public final class GameStateImpl implements GameState {
                 }
             } else {
                 if (this.round >= MagicNumbers.FINAL_ROUND_COUNT) {
-                    if (this.gameMode == GameMode.MISTER_X){
+                    if (this.gameMode == GameMode.MISTER_X) {
                         this.resultGameString = victoryString + ViewConstants.ESCAPED_MISTER_X_MODE_TEXT;
-                    } else{
+                    } else {
                         this.resultGameString = lossString + ViewConstants.ESCAPED_DETECTIVE_MODE_TEXT;
                     }
                 }

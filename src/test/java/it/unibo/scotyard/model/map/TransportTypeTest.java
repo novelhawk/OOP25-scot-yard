@@ -13,5 +13,4 @@ public class TransportTypeTest {
         assertNotNull(TransportType.UNDERGROUND);
         assertNotNull(TransportType.FERRY);
     }
-
 }

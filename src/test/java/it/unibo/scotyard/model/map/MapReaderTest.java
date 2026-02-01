@@ -73,14 +73,14 @@ public class MapReaderTest {
 
         assertTrue(
                 connectionsFrom1.stream()
-                        .anyMatch(conn -> new NodeId(2).equals(conn.getTo())
-                                && conn.supportsTransport(TransportType.TAXI)),
+                        .anyMatch(conn ->
+                                new NodeId(2).equals(conn.getTo()) && conn.supportsTransport(TransportType.TAXI)),
                 "Should have taxi connection from 1 to 2");
 
         assertTrue(
                 connectionsFrom2.stream()
-                        .anyMatch(conn -> new NodeId(1).equals(conn.getTo())
-                                && conn.supportsTransport(TransportType.TAXI)),
+                        .anyMatch(conn ->
+                                new NodeId(1).equals(conn.getTo()) && conn.supportsTransport(TransportType.TAXI)),
                 "Should have taxi connection from 2 to 1 (bidirectional)");
     }
 
@@ -100,8 +100,8 @@ public class MapReaderTest {
     void loadTestMapParsesUndergroundConnections() throws MapLoadException {
         final MapData mapData = mapReader.loadMap(MAP_TEST);
 
-        final List<MapConnection> undergroundConnections = mapData.getConnectionsFrom(new NodeId(2),
-                TransportType.UNDERGROUND);
+        final List<MapConnection> undergroundConnections =
+                mapData.getConnectionsFrom(new NodeId(2), TransportType.UNDERGROUND);
 
         assertFalse(undergroundConnections.isEmpty());
         assertTrue(
