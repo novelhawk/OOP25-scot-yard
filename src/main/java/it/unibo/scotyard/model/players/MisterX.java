@@ -41,15 +41,17 @@ public final class MisterX extends AbstractPlayerImpl {
     @Override
     public void initializeInventory() {
         this.inventory = new InventoryImpl() {
-            public int getInitialTickets(TicketType ticket){
+            public int getInitialTickets(TicketType ticket) {
                 switch (ticket) {
                     default:
-                    case TAXI: 
+                    case TAXI:
                     case BUS:
                     case UNDERGROUND:
                         return MagicNumbers.INFINITE;
-                    case BLACK : return MagicNumbers.NUMBER_TICKETS_BLACK;
-                    case DOUBLE_MOVE : return MagicNumbers.NUMBER_TICKETS_DOUBLE_MOVE;
+                    case BLACK:
+                        return MagicNumbers.NUMBER_TICKETS_BLACK;
+                    case DOUBLE_MOVE:
+                        return MagicNumbers.NUMBER_TICKETS_DOUBLE_MOVE;
                 }
             }
         };

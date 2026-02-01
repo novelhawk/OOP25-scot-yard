@@ -12,5 +12,5 @@ public interface Service {
      *
      * @param store the store that contains the handler registrations
      */
-     void register(final CommandHandlerStore store);
+    void register(final CommandHandlerStore store);
 }
