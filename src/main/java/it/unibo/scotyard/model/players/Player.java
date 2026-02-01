@@ -25,9 +25,9 @@ public interface Player {
     /**
      * Intialized the inventory
      */
-    abstract void initializeInventory();
+    void initializeInventory();
 
-     /**
+    /**
      * Gets the player's inventory.
      *
      * @return the player's inventory
