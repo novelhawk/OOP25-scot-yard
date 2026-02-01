@@ -45,6 +45,11 @@ public class TurnService implements Service {
         final List<MoveAction> legalMoves = gameState.computeValidMoves(this.model.getMapData(), player, List.of());
         gameState.getTurnState().setLegalMoves(legalMoves);
 
+        if (gameState.isGameOver()) {
+            dispatcher.dispatch(new GameOverCommand());
+            return;
+        }
+
         gameState.notifySubscribers(GameStateSubscriber::onTurnStart);
 
         player.getBrain().map(it -> it.playTurn(gameState)).stream()
