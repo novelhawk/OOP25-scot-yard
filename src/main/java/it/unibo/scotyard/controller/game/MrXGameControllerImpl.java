@@ -21,8 +21,6 @@ import it.unibo.scotyard.view.sidebar.SidebarPanel;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
-import javax.swing.JOptionPane;
-import javax.swing.SwingUtilities;
 
 /**
  * Controller implementation for Mr. X gameplay. Manages game initialization,
@@ -106,6 +104,29 @@ public final class MrXGameControllerImpl extends GameControllerImpl {
     }
 
     /**
+     * Calculates occupied positions (Detective + all Bobbies).
+     * Mr. X cannot move to these positions.
+     *
+     * @return set of occupied node IDs
+     *
+     */
+    private Set<NodeId> getOccupiedPositions() {
+        final Set<NodeId> occupied = new java.util.HashSet<>();
+
+        // Add detective position
+        if (this.gameState.getDetective() != null) {
+            occupied.add(this.gameState.getDetective().getPosition());
+        }
+
+        // Add all bobby positions
+        for (final Bobby bobby : this.gameState.getBobbies()) {
+            occupied.add(bobby.getPosition());
+        }
+
+        return occupied;
+    }
+
+    /**
      * Handles node click events.
      *
      * @param nodeId the clicked node ID
@@ -117,11 +138,8 @@ public final class MrXGameControllerImpl extends GameControllerImpl {
 
         // Se la doppia mossa è completata, blocca selezione nodi
         if (doubleMoveState == DoubleMoveState.COMPLETED) {
-            JOptionPane.showMessageDialog(
-                    null,
-                    "Doppia mossa completata!\n\nClicca 'Fine Turno' per terminare il tuo turno.",
-                    "Turno Completato",
-                    JOptionPane.INFORMATION_MESSAGE);
+            this.view.showInfoDialog(
+                    "Doppia mossa completata!\n\nClicca 'Fine Turno' per terminare il tuo turno.", "Turno Completato");
             return;
         }
 
@@ -135,7 +153,7 @@ public final class MrXGameControllerImpl extends GameControllerImpl {
             return;
         }
 
-        final Set<MoveOption> validMoves = mrX.getValidMoves(Set.of());
+        final Set<MoveOption> validMoves = mrX.getValidMoves(getOccupiedPositions());
 
         final List<MoveOption> movesToNode = validMoves.stream()
                 .filter(move -> move.getDestinationNode().equals(nodeId))
@@ -143,11 +161,8 @@ public final class MrXGameControllerImpl extends GameControllerImpl {
 
         if (movesToNode.isEmpty()) {
             // mossa non valida
-            JOptionPane.showMessageDialog(
-                    null,
-                    "Mossa non valida " + nodeId.id() + " - connessione non esistente!",
-                    "Invalid Move",
-                    JOptionPane.WARNING_MESSAGE);
+            this.view.showWarningDialog(
+                    "Mossa non valida " + nodeId.id() + " - connessione non esistente!", "Invalid Move");
             return;
         }
 
@@ -174,8 +189,7 @@ public final class MrXGameControllerImpl extends GameControllerImpl {
         // double move in progress, turno non completato
         if (doubleMoveState == DoubleMoveState.WAITING_FIRST_MOVE
                 || doubleMoveState == DoubleMoveState.WAITING_SECOND_MOVE) {
-            JOptionPane.showMessageDialog(
-                    null, "Completa prima la double move!", "Double Move in Progress", JOptionPane.WARNING_MESSAGE);
+            this.view.showWarningDialog("Completa prima la double move!", "Double Move in Progress");
             return;
         }
 
@@ -189,11 +203,7 @@ public final class MrXGameControllerImpl extends GameControllerImpl {
         } else if (doubleMoveState == DoubleMoveState.AVAILABLE || doubleMoveState == DoubleMoveState.USED) {
             // Mossa normale (può farla se è AVAILABLE o USED)
             if (selectedMove == null) {
-                JOptionPane.showMessageDialog(
-                        null,
-                        "Seleziona la prima destinazione!",
-                        ViewConstants.NO_MOVES_SELECTED,
-                        JOptionPane.WARNING_MESSAGE);
+                this.view.showWarningDialog("Seleziona la prima destinazione!", ViewConstants.NO_MOVES_SELECTED);
                 return;
             }
 
@@ -210,8 +220,7 @@ public final class MrXGameControllerImpl extends GameControllerImpl {
                 // Rimane nello stato corrente (AVAILABLE o USED)
 
             } catch (IllegalArgumentException | IllegalStateException e) {
-                JOptionPane.showMessageDialog(
-                        null, "Mossa non valida: " + e.getMessage(), "Errore", JOptionPane.ERROR_MESSAGE);
+                this.view.showErrorDialog("Mossa non valida: " + e.getMessage(), "Errore");
                 return;
             }
         }
@@ -255,11 +264,7 @@ public final class MrXGameControllerImpl extends GameControllerImpl {
             case AVAILABLE:
                 // Activate double move
                 if (!mrX.isDoubleMoveAvailable()) {
-                    JOptionPane.showMessageDialog(
-                            null,
-                            "Double move is not available!",
-                            "Double Move Unavailable",
-                            JOptionPane.WARNING_MESSAGE);
+                    this.view.showWarningDialog("Double move is not available!", "Double Move Unavailable");
                     return;
                 }
 
@@ -267,21 +272,14 @@ public final class MrXGameControllerImpl extends GameControllerImpl {
                 selectedMove = null;
                 dispatcher.dispatch(new UseDoubleMoveCommand());
 
-                JOptionPane.showMessageDialog(
-                        null,
-                        "Double move activated!\n\nSelect your first destination.",
-                        "Double Move",
-                        JOptionPane.INFORMATION_MESSAGE);
+                this.view.showInfoDialog("Double move activated!\n\nSelect your first destination.", "Double Move");
                 break;
 
             case WAITING_FIRST_MOVE:
                 // Confirm first move
                 if (selectedMove == null) {
-                    JOptionPane.showMessageDialog(
-                            null,
-                            "Please select your first destination!",
-                            ViewConstants.NO_MOVES_SELECTED,
-                            JOptionPane.WARNING_MESSAGE);
+                    this.view.showWarningDialog(
+                            "Please select your first destination!", ViewConstants.NO_MOVES_SELECTED);
                     return;
                 }
 
@@ -297,15 +295,12 @@ public final class MrXGameControllerImpl extends GameControllerImpl {
                     doubleMoveState = DoubleMoveState.WAITING_SECOND_MOVE;
                     selectedMove = null;
 
-                    JOptionPane.showMessageDialog(
-                            null,
+                    this.view.showInfoDialog(
                             "First move completed!\n\nNow select your second destination.",
-                            "Double Move - Step 1 Done",
-                            JOptionPane.INFORMATION_MESSAGE);
+                            "Double Move - Step 1 Done");
 
                 } catch (IllegalArgumentException | IllegalStateException e) {
-                    JOptionPane.showMessageDialog(
-                            null, "Invalid move: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                    this.view.showErrorDialog("Invalid move: " + e.getMessage(), "Error");
                     return;
                 }
                 break;
@@ -313,11 +308,8 @@ public final class MrXGameControllerImpl extends GameControllerImpl {
             case WAITING_SECOND_MOVE:
                 // Confirm second move
                 if (selectedMove == null) {
-                    JOptionPane.showMessageDialog(
-                            null,
-                            "Please select your second destination!",
-                            ViewConstants.NO_MOVES_SELECTED,
-                            JOptionPane.WARNING_MESSAGE);
+                    this.view.showWarningDialog(
+                            "Please select your second destination!", ViewConstants.NO_MOVES_SELECTED);
                     return;
                 }
 
@@ -333,15 +325,12 @@ public final class MrXGameControllerImpl extends GameControllerImpl {
                     doubleMoveState = DoubleMoveState.COMPLETED;
                     selectedMove = null;
 
-                    JOptionPane.showMessageDialog(
-                            null,
+                    this.view.showInfoDialog(
                             "Double move completed!\n\nClick 'Fine Turno' to finish your turn.",
-                            "Double Move Complete",
-                            JOptionPane.INFORMATION_MESSAGE);
+                            "Double Move Complete");
 
                 } catch (IllegalArgumentException | IllegalStateException e) {
-                    JOptionPane.showMessageDialog(
-                            null, "Invalid move: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                    this.view.showErrorDialog("Invalid move: " + e.getMessage(), "Error");
                     return;
                 }
                 break;
@@ -385,7 +374,7 @@ public final class MrXGameControllerImpl extends GameControllerImpl {
 
     /** Updates all UI components. */
     private void updateUI() {
-        SwingUtilities.invokeLater(() -> {
+        this.view.executeOnUIThread(() -> {
             final MisterX mrX = (MisterX) this.gameState.getUserPlayer();
 
             updateDoubleMoveButtonUI();
@@ -416,7 +405,7 @@ public final class MrXGameControllerImpl extends GameControllerImpl {
             if (doubleMoveState == DoubleMoveState.COMPLETED) {
                 this.getMapPanel().setValidMoves(Set.of()); // Empty set
             } else {
-                this.getMapPanel().setValidMoves(mrX.getValidMoves(Set.of()));
+                this.getMapPanel().setValidMoves(mrX.getValidMoves(getOccupiedPositions()));
             }
 
             this.getMapPanel().repaint();
@@ -455,12 +444,12 @@ public final class MrXGameControllerImpl extends GameControllerImpl {
     // It doesn't do anything
     @Override
     public void destinationChosen(final NodeId newPositionId) {
-        // TODO : Usare questo metodo (cambiando gestione turno)?
+        //
     }
 
     // It doesn't do anything
     @Override
     public void selectTransport(final TransportType transportType) {
-        // TODO : Usare questo metodo (cambiando gestione turno)?
+        //
     }
 }

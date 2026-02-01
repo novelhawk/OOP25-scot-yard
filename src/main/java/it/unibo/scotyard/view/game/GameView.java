@@ -102,4 +102,36 @@ public interface GameView {
      */
     void displayGameOverWindow(
             String result, long gameDuration, GameMode gameMode, boolean isNewRecord, String currentRecord);
+
+    /**
+     * Shows an information dialog to the user.
+     *
+     * @param message the message to display
+     * @param title   the dialog title
+     */
+    void showInfoDialog(String message, String title);
+
+    /**
+     * Shows a warning dialog to the user.
+     *
+     * @param message the message to display
+     * @param title   the dialog title
+     */
+    void showWarningDialog(String message, String title);
+
+    /**
+     * Shows an error dialog to the user.
+     *
+     * @param message the message to display
+     * @param title   the dialog title
+     */
+    void showErrorDialog(String message, String title);
+
+    /**
+     * Executes a task on the UI thread.
+     * This ensures UI updates happen on the correct thread.
+     *
+     * @param task the task to execute
+     */
+    void executeOnUIThread(Runnable task);
 }

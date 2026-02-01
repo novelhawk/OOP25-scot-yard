@@ -28,7 +28,9 @@ import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
 /**
  * The game view.
@@ -321,5 +323,25 @@ public final class GameViewImpl implements GameView {
         final long minutes = seconds % 3600 / 60;
         final long secs = seconds % 60;
         return String.format("%02d:%02d:%02d", hours, minutes, secs);
+    }
+
+    @Override
+    public void showInfoDialog(final String message, final String title) {
+        JOptionPane.showMessageDialog(null, message, title, JOptionPane.INFORMATION_MESSAGE);
+    }
+
+    @Override
+    public void showWarningDialog(final String message, final String title) {
+        JOptionPane.showMessageDialog(null, message, title, JOptionPane.WARNING_MESSAGE);
+    }
+
+    @Override
+    public void showErrorDialog(final String message, final String title) {
+        JOptionPane.showMessageDialog(null, message, title, JOptionPane.ERROR_MESSAGE);
+    }
+
+    @Override
+    public void executeOnUIThread(final Runnable task) {
+        SwingUtilities.invokeLater(task);
     }
 }
