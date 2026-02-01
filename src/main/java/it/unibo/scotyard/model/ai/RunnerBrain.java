@@ -8,6 +8,7 @@ import it.unibo.scotyard.model.game.GameState;
 import it.unibo.scotyard.model.map.MapConnection;
 import it.unibo.scotyard.model.map.MapData;
 import it.unibo.scotyard.model.map.NodeId;
+import it.unibo.scotyard.model.map.TransportType;
 import it.unibo.scotyard.model.players.Player;
 import java.util.Collection;
 import java.util.Comparator;
@@ -90,7 +91,7 @@ public class RunnerBrain implements PlayerBrain {
      * needed to reach each graph node from any seeker position.
      *
      * @param seekerPositions the position of all seeker players
-     * @return an array where the i-th index contains the distance between the seekers and node i
+     * @return an array where the i-th index contains the distance between the seekers and the node with id i
      */
     public int[] seekerMinimumDistance(final Collection<NodeId> seekerPositions) {
         // We allocate for one more node to allow direct indexing with the 1-based node ids
@@ -102,6 +103,12 @@ public class RunnerBrain implements PlayerBrain {
             final NodeId current = queue.remove();
 
             for (final MapConnection con : mapData.getConnectionsFrom(current)) {
+                if (con.getTransport() == TransportType.FERRY) {
+                    // Seekers cannot take ferries, we cannot mark the node as visited
+                    // in case there is an alternative connection with another ticket type
+                    continue;
+                }
+
                 final NodeId node = con.getTo();
                 if (!visited[node.id()]) {
                     visited[node.id()] = true;
