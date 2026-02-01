@@ -165,7 +165,7 @@ public final class MisterX extends AbstractPlayerImpl {
      */
     public boolean isDoubleMoveAvailable() {
         ensureInitialized();
-        return getTurnManagerImpl().isDoubleMoveAvailable();
+        return getTurnManagerImpl().isDoubleMoveAvailable() && getNumberTickets(TicketType.DOUBLE_MOVE) > 0;
     }
 
     /**
